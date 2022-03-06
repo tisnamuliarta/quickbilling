@@ -14,9 +14,8 @@ class CreatepostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->bigIncrements('post_id');
-            $table->foreignId('author_id')->nullable()->constrained("users")
-                ->references('id')->cascadeOnUpdate()->nullOnDelete();
+            $table->id();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->dateTime('post_date');
             $table->text('post_content');
             $table->text('post_title');
@@ -25,6 +24,7 @@ class CreatepostsTable extends Migration
             $table->string('post_status')->default('Publish');
             $table->string('post_type')->default('Post');
             $table->dateTime('post_modified');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

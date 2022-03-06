@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Students\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attachment;
 use App\Models\Student\Student;
+use App\Models\Transactions\Attachment;
 use Illuminate\Http\Request;
 
 class ReRegistrationController extends Controller

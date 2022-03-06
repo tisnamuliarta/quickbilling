@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Permission;
-use App\Models\Role;
+use App\Models\Master\Permission;
+use App\Models\Master\Role;
 use App\Models\User;
 
 trait RolePermission

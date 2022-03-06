@@ -1,0 +1,240 @@
+[
+  {
+    "name": "about-us",
+    "path": "/about-us",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\about-us.vue",
+    "chunkName": "pages/about-us",
+    "_name": "_350f25dc"
+  },
+  {
+    "name": "booking",
+    "path": "/booking",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\booking.vue",
+    "chunkName": "pages/booking",
+    "_name": "_6a415c4b"
+  },
+  {
+    "name": "category",
+    "path": "/category",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\category.vue",
+    "chunkName": "pages/category",
+    "_name": "_ee4ff408"
+  },
+  {
+    "name": "contact-us",
+    "path": "/contact-us",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\contact-us.vue",
+    "chunkName": "pages/contact-us",
+    "_name": "_30ae2869"
+  },
+  {
+    "name": "dashboard",
+    "path": "/dashboard",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\index.vue",
+    "chunkName": "pages/dashboard/index",
+    "_name": "_cfb61188"
+  },
+  {
+    "name": "faq",
+    "path": "/faq",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\faq.vue",
+    "chunkName": "pages/faq",
+    "_name": "_0e473588"
+  },
+  {
+    "name": "item",
+    "path": "/item",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\item.vue",
+    "chunkName": "pages/item",
+    "_name": "_639356de"
+  },
+  {
+    "name": "item-detail",
+    "path": "/item-detail",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\item-detail.vue",
+    "chunkName": "pages/item-detail",
+    "_name": "_769b8a3d"
+  },
+  {
+    "name": "privacy-policy",
+    "path": "/privacy-policy",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\privacy-policy.vue",
+    "chunkName": "pages/privacy-policy",
+    "_name": "_07add315"
+  },
+  {
+    "name": "terms",
+    "path": "/terms",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\terms.vue",
+    "chunkName": "pages/terms",
+    "_name": "_169ff60e"
+  },
+  {
+    "name": "auth-login",
+    "path": "/auth/login",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\auth\\\\login.vue",
+    "chunkName": "pages/auth/login",
+    "_name": "_547f2c33"
+  },
+  {
+    "name": "dashboard-order",
+    "path": "/dashboard/order",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\order\\\\index.vue",
+    "chunkName": "pages/dashboard/order/index",
+    "_name": "_5122046c"
+  },
+  {
+    "name": "dashboard-posts",
+    "path": "/dashboard/posts",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\index.vue",
+    "chunkName": "pages/dashboard/posts/index",
+    "_name": "_2e6717b6"
+  },
+  {
+    "name": "dashboard-products",
+    "path": "/dashboard/products",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\products\\\\index.vue",
+    "chunkName": "pages/dashboard/products/index",
+    "_name": "_9010b550"
+  },
+  {
+    "name": "dashboard-tasks",
+    "path": "/dashboard/tasks",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\index.vue",
+    "chunkName": "pages/dashboard/tasks/index",
+    "_name": "_2278e18a"
+  },
+  {
+    "name": "dashboard-users",
+    "path": "/dashboard/users",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\index.vue",
+    "chunkName": "pages/dashboard/users/index",
+    "_name": "_fe274260"
+  },
+  {
+    "name": "student-announcement",
+    "path": "/student/announcement",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\student\\\\announcement.vue",
+    "chunkName": "pages/student/announcement",
+    "_name": "_efc46c98"
+  },
+  {
+    "name": "student-print",
+    "path": "/student/print",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\student\\\\print.vue",
+    "chunkName": "pages/student/print",
+    "_name": "_2f0aa710"
+  },
+  {
+    "name": "student-register",
+    "path": "/student/register",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\student\\\\register.vue",
+    "chunkName": "pages/student/register",
+    "_name": "_2758e0e0"
+  },
+  {
+    "name": "dashboard-order-person",
+    "path": "/dashboard/order/person",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\order\\\\person.vue",
+    "chunkName": "pages/dashboard/order/person",
+    "_name": "_14fc2c0d"
+  },
+  {
+    "name": "dashboard-order-special-offer",
+    "path": "/dashboard/order/special-offer",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\order\\\\special-offer.vue",
+    "chunkName": "pages/dashboard/order/special-offer",
+    "_name": "_b203eb80"
+  },
+  {
+    "name": "dashboard-order-status",
+    "path": "/dashboard/order/status",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\order\\\\status.vue",
+    "chunkName": "pages/dashboard/order/status",
+    "_name": "_095e6bac"
+  },
+  {
+    "name": "dashboard-posts-category",
+    "path": "/dashboard/posts/category",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\category.vue",
+    "chunkName": "pages/dashboard/posts/category",
+    "_name": "_111ed0fb"
+  },
+  {
+    "name": "dashboard-products-brand",
+    "path": "/dashboard/products/brand",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\products\\\\brand.vue",
+    "chunkName": "pages/dashboard/products/brand",
+    "_name": "_8da734e6"
+  },
+  {
+    "name": "dashboard-products-category",
+    "path": "/dashboard/products/category",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\products\\\\category.vue",
+    "chunkName": "pages/dashboard/products/category",
+    "_name": "_f71da230"
+  },
+  {
+    "name": "dashboard-products-price-list",
+    "path": "/dashboard/products/price-list",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\products\\\\price-list.vue",
+    "chunkName": "pages/dashboard/products/price-list",
+    "_name": "_d9e78be8"
+  },
+  {
+    "name": "dashboard-settings-menu",
+    "path": "/dashboard/settings/menu",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\menu.vue",
+    "chunkName": "pages/dashboard/settings/menu",
+    "_name": "_101fa070"
+  },
+  {
+    "name": "dashboard-settings-permissions",
+    "path": "/dashboard/settings/permissions",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\permissions.vue",
+    "chunkName": "pages/dashboard/settings/permissions",
+    "_name": "_3fdc2eaa"
+  },
+  {
+    "name": "dashboard-settings-roles",
+    "path": "/dashboard/settings/roles",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\roles.vue",
+    "chunkName": "pages/dashboard/settings/roles",
+    "_name": "_78c955a4"
+  },
+  {
+    "name": "dashboard-settings-setup",
+    "path": "/dashboard/settings/setup",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\setup.vue",
+    "chunkName": "pages/dashboard/settings/setup",
+    "_name": "_7ed1bd38"
+  },
+  {
+    "name": "dashboard-tasks-show",
+    "path": "/dashboard/tasks/show",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\show.vue",
+    "chunkName": "pages/dashboard/tasks/show",
+    "_name": "_f9e6b816"
+  },
+  {
+    "name": "dashboard-users-current",
+    "path": "/dashboard/users/current",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\current.vue",
+    "chunkName": "pages/dashboard/users/current",
+    "_name": "_0a06c677"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_4ab246c4"
+  },
+  {
+    "name": "__nuxt_laravel",
+    "path": "/__nuxt_laravel",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\index.vue",
+    "chunkName": "pages/index",
+    "_name": "_4ab246c4"
+  }
+]

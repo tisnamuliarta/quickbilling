@@ -49,7 +49,7 @@ class Student extends Model implements Auditable
      */
     public function details()
     {
-        return $this->hasOne(StudentDetails::class, 'user_id', 'id');
+        return $this->hasOne(StudentDetail::class, 'user_id', 'id');
     }
 
     /**

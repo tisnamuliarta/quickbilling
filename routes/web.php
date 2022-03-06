@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'api'], function () {
+    Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index']);
     Route::post('/auth/login', [AuthController::class, 'login']);
 
     Route::group(['prefix' => 'registration'], function () {

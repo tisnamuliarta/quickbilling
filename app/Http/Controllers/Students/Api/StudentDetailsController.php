@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Students\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attachment;
 use App\Models\Student\Student;
-use App\Models\Student\StudentDetails;
+use App\Models\Student\StudentDetail;
+use App\Models\Transactions\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
@@ -87,7 +87,7 @@ class StudentDetailsController extends Controller
             if ($request->user()->student->details) {
                 $this->update($request);
             } else {
-                StudentDetails::create($request->all());
+                StudentDetail::create($request->all());
             }
             return response()->json([
                 "errors" => false,
@@ -106,7 +106,7 @@ class StudentDetailsController extends Controller
      */
     public function update($request)
     {
-        $student_details = StudentDetails::where("user_id", "=", $request->user()->student_id)->first();
+        $student_details = StudentDetail::where("user_id", "=", $request->user()->student_id)->first();
         $student_details->fill($request->all());
         $student_details->save();
     }

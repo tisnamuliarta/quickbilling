@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Option;
+use App\Models\Master\Settings;
 use Illuminate\Console\Command;
 
 class CreateOption extends Command
@@ -12,7 +12,7 @@ class CreateOption extends Command
      *
      * @var string
      */
-    protected $signature = 'make:option {name} {type}';
+    protected $signature = 'make:setting {types} {key}';
 
     /**
      * The console command description.
@@ -38,18 +38,19 @@ class CreateOption extends Command
      */
     public function handle()
     {
-        $option_name = $this->argument('name');
-        $option_type = $this->argument('type');
+        $option_name = $this->argument('key');
+        $option_type = $this->argument('types');
 
-        $check_option = Option::where('option_name', '=', $option_name)->first();
+        $check_option = Settings::where('key', '=', $option_name)->first();
         if (!$check_option) {
-            Option::create([
-                'option_name' => $option_name,
-                'option_type' => $option_type
+            Settings::create([
+                'key' => $option_name,
+                'types' => $option_type,
+                'company_id' => 0
             ]);
-            $this->info('Option created successfully!');
+            $this->info('Setting created successfully!');
         } else {
-            $this->info('Option name already exist!');
+            $this->info('Setting name already exist!');
         }
     }
 }

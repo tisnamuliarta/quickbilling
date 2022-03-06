@@ -1,0 +1,25 @@
+<template>
+  <v-app class="bg-auth">
+    <v-main>
+      <v-container transition="slide-x-transition" fluid fill-height>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+export default {
+  data() {
+    return {}
+  },
+}
+</script>
+
+<style scoped>
+.bg-auth {
+  background-color: #eee;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+</style>

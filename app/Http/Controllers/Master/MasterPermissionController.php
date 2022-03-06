@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\ListPermission;
+use App\Models\Master\ListPermission;
 use App\Traits\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +19,10 @@ class MasterPermissionController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['direct_permission:Permissions-index'])->only(['index', 'show']);
-        $this->middleware(['direct_permission:Permissions-store'])->only('store');
-        $this->middleware(['direct_permission:Permissions-edits'])->only('update');
-        $this->middleware(['direct_permission:Permissions-erase'])->only('destroy');
+//        $this->middleware(['direct_permission:Permissions-index'])->only(['index', 'show']);
+//        $this->middleware(['direct_permission:Permissions-store'])->only('store');
+//        $this->middleware(['direct_permission:Permissions-edits'])->only('update');
+//        $this->middleware(['direct_permission:Permissions-erase'])->only('destroy');
     }
 
     /**
@@ -33,11 +33,11 @@ class MasterPermissionController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $options = $request->options;
+        $options = json_decode($request->options);
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
         $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "order_line";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'asc' : 'desc') : "asc";
         $offset = ($pages - 1) * $row_data;
 
         $result = array();

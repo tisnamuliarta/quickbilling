@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Option;
+use App\Models\Master\Settings;
 use Illuminate\Http\Request;
 
 class OptionsController extends Controller
@@ -32,10 +32,10 @@ class OptionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Option  $option
+     * @param  \App\Models\Master\Settings  $option
      * @return \Illuminate\Http\Response
      */
-    public function show(Option $option)
+    public function show(Settings $option)
     {
         //
     }
@@ -44,10 +44,10 @@ class OptionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Option  $option
+     * @param  \App\Models\Master\Settings  $option
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Option $option)
+    public function update(Request $request, Settings $option)
     {
         //
     }
@@ -55,10 +55,10 @@ class OptionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Option  $option
+     * @param  \App\Models\Master\Settings  $option
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Option $option)
+    public function destroy(Settings $option)
     {
         //
     }

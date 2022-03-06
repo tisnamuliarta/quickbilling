@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Role;
+use App\Models\Master\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 

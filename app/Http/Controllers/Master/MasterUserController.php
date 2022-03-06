@@ -19,10 +19,10 @@ class MasterUserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['direct_permission:Users-index'])->only(['index', 'show']);
-        $this->middleware(['direct_permission:Users-store'])->only('store');
-        $this->middleware(['direct_permission:Users-edits'])->only('update');
-        $this->middleware(['direct_permission:Users-erase'])->only('destroy');
+//        $this->middleware(['direct_permission:Users-index'])->only(['index', 'show']);
+//        $this->middleware(['direct_permission:Users-store'])->only('store');
+//        $this->middleware(['direct_permission:Users-edits'])->only('update');
+//        $this->middleware(['direct_permission:Users-erase'])->only('destroy');
     }
 
     /**
@@ -118,7 +118,7 @@ class MasterUserController extends Controller
                 'name' => $form['name'],
                 'password' => bcrypt($form['password']),
                 'email' => $form['email'],
-                'is_active' => $form['is_active'],
+                'enabled' => $form['enabled'],
             ];
 
             $user = User::create($data);
@@ -151,7 +151,7 @@ class MasterUserController extends Controller
             'form.email' => 'Email Field is required!',
             'form.name' => 'Name Access Field is required!',
             'form.role' => 'Role Field is required!',
-            'form.is_active' => 'Status is required!',
+            'form.enabled' => 'Status is required!',
         ];
         $user_id = $request->form['id'];
         $validator = Validator::make($request->all(), [
@@ -159,7 +159,7 @@ class MasterUserController extends Controller
             'form.email' => 'required|unique:users,email,' . $user_id,
             'form.name' => 'required',
             'form.role' => 'required',
-            'form.is_active' => 'required',
+            'form.enabled' => 'required',
         ], $messages);
 
 
@@ -233,7 +233,7 @@ class MasterUserController extends Controller
                 'username' => $form['username'],
                 'name' => $form['name'],
                 'email' => $form['email'],
-                'is_active' => $form['is_active'],
+                'enabled' => $form['enabled'],
             ];
 
             User::where("id", "=", $id)->update($data);

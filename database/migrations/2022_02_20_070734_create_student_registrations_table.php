@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger("created_by");
             $table->unsignedBigInteger("updated_by")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create("sch_school", function (Blueprint $table) {
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string("name_principle");
             $table->string("nik_principle");
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create("sch_majors", function (Blueprint $table) {
@@ -42,6 +43,7 @@ return new class extends Migration
             $table->string("slug");
             $table->text("description")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create("sch_expertise", function (Blueprint $table) {
@@ -51,11 +53,7 @@ return new class extends Migration
             $table->text("description")->nullable();
             $table->unsignedBigInteger("major_id");
             $table->timestamps();
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger("student_id")->nullable();
-            $table->string("is_active", 10)->default('Y');
+            $table->softDeletes();
         });
 
         Schema::create('sch_students', function (Blueprint $table) {
@@ -85,15 +83,10 @@ return new class extends Migration
             $table->dateTime("date_graduate")->nullable();
             $table->string("approval_step")->default("P");
             $table->unsignedBigInteger("registration_id");
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->string("registration_code");
-
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
-
-            $table->foreign("major_id")->references("id")
-                ->on("majors")->onUpdate('cascade');
-
-            $table->foreign("expertise_id")->references("id")
-                ->on("expertise")->onUpdate('cascade');
 
             /**
              * Approval Step
@@ -116,10 +109,6 @@ return new class extends Migration
             $table->string("type")->default("registration");
             $table->unsignedBigInteger("student_id");
             $table->timestamps();
-
-            $table->foreign("student_id")
-                ->references("id")->on("students")
-                ->onDelete("cascade");
         });
 
         Schema::create('sch_list_schools', function (Blueprint $table) {
@@ -212,63 +201,63 @@ return new class extends Migration
         Schema::create('sch_special_needs', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_residence', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_transportation', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_blood_groups', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_extracurricular', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_kip_worthy_reason', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_school_grade', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_income', function (Blueprint $table) {
             $table->id();
             $table->string("value");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 
         Schema::create('sch_parent_jobs', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string('active', 3)->default('Y');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Students\Api;
 
 use App\Exports\ProspectiveStudentExport;
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Master\Role;
 use App\Models\Student\ListSchool;
 use App\Models\Student\Student;
 use App\Models\Student\StudentRegistration;

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHelpDesksTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -14,14 +13,14 @@ class CreateHelpDesksTable extends Migration
     public function up()
     {
         Schema::create('master_task_category', function (Blueprint $table) {
-            $table->bigIncrements('category_id');
+            $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->timestamps();
         });
 
         Schema::create('master_sub_category', function (Blueprint $table) {
-            $table->bigIncrements('sub_category_id');
+            $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('category_id');
@@ -30,21 +29,21 @@ class CreateHelpDesksTable extends Migration
 
 
         Schema::create('task_priority', function (Blueprint $table) {
-            $table->bigIncrements('priority_id');
+            $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->timestamps();
         });
 
         Schema::create('projects', function (Blueprint $table) {
-            $table->bigIncrements('project_id');
+            $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->timestamps();
         });
 
         Schema::create('boards', function (Blueprint $table) {
-            $table->bigIncrements('board_id');
+            $table->id();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('background')->nullable();
@@ -52,7 +51,7 @@ class CreateHelpDesksTable extends Migration
         });
 
         Schema::create('task_section', function (Blueprint $table) {
-            $table->bigIncrements('section_id');
+            $table->id();
             $table->string('title');
             $table->text('description')->nullable();
             $table->smallInteger('order_line')->default(0);
@@ -62,7 +61,7 @@ class CreateHelpDesksTable extends Migration
         });
 
         Schema::create('tasks', function (Blueprint $table) {
-            $table->bigIncrements('task_id');
+            $table->id();
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('department');
@@ -82,20 +81,15 @@ class CreateHelpDesksTable extends Migration
         });
 
         Schema::create('task_comments', function (Blueprint $table) {
-            $table->bigIncrements('comment_id');
+            $table->id();
             $table->text('content')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('task_id');
             $table->timestamps();
         });
 
-        Schema::create('task_tag_people', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('task_id');
-        });
-
         Schema::create('menus', function (Blueprint $table) {
-            $table->bigIncrements('menu_id');
+            $table->id();
             $table->string('name')->nullable();
             $table->string('path')->nullable();
             $table->unsignedBigInteger('parent_id')->default(0);
@@ -117,6 +111,6 @@ class CreateHelpDesksTable extends Migration
         Schema::dropIfExists('tasks');
         Schema::dropIfExists('task_sub_category');
         Schema::dropIfExists('task_comments');
-        Schema::dropIfExists('task_tag_people');
+        Schema::dropIfExists('menus');
     }
-}
+};

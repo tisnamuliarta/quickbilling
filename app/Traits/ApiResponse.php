@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Option;
+use App\Models\Master\Settings;
 use Illuminate\Support\Facades\DB;
 
 trait ApiResponse
@@ -64,9 +64,9 @@ trait ApiResponse
      */
     public function createOption($name, $type)
     {
-        $check_option = Option::where('option_name', '=', $name)->first();
+        $check_option = Settings::where('option_name', '=', $name)->first();
         if (!$check_option) {
-            Option::create([
+            Settings::create([
                 'option_name' => $name,
                 'option_type' => $type
             ]);

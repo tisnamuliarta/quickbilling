@@ -1,0 +1,95 @@
+{
+  "Attachment": {
+    "description": "Auto imported from components/Attachment.vue"
+  },
+  "DialogForm": {
+    "description": "Auto imported from components/DialogForm.vue"
+  },
+  "DialogMaster": {
+    "description": "Auto imported from components/DialogMaster.vue"
+  },
+  "Editor": {
+    "description": "Auto imported from components/Editor.vue"
+  },
+  "Footer": {
+    "description": "Auto imported from components/Footer.vue"
+  },
+  "MainToolbar": {
+    "description": "Auto imported from components/MainToolbar.vue"
+  },
+  "Snackbar": {
+    "description": "Auto imported from components/Snackbar.vue"
+  },
+  "SpinnerLoading": {
+    "description": "Auto imported from components/SpinnerLoading.vue"
+  },
+  "TableFilter": {
+    "description": "Auto imported from components/TableFilter.vue"
+  },
+  "TableSimple": {
+    "description": "Auto imported from components/TableSimple.vue"
+  },
+  "ToolbarTitle": {
+    "description": "Auto imported from components/ToolbarTitle.vue"
+  },
+  "VideoCard": {
+    "description": "Auto imported from components/VideoCard.vue"
+  },
+  "DashboardCheck": {
+    "description": "Auto imported from components/Dashboard/Check.vue"
+  },
+  "DashboardForm": {
+    "description": "Auto imported from components/Dashboard/Form.vue"
+  },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
+  "SetupCompany": {
+    "description": "Auto imported from components/Setup/Company.vue"
+  },
+  "SetupEmail": {
+    "description": "Auto imported from components/Setup/Email.vue"
+  },
+  "SetupFinance": {
+    "description": "Auto imported from components/Setup/Finance.vue"
+  },
+  "SetupForm": {
+    "description": "Auto imported from components/Setup/Form.vue"
+  },
+  "SetupGeneral": {
+    "description": "Auto imported from components/Setup/General.vue"
+  },
+  "SetupPdf": {
+    "description": "Auto imported from components/Setup/Pdf.vue"
+  },
+  "ProductsFormMaster": {
+    "description": "Auto imported from components/Products/FormMaster.vue"
+  },
+  "ProductsFormProduct": {
+    "description": "Auto imported from components/Products/FormProduct.vue"
+  },
+  "StudentDataHelp": {
+    "description": "Auto imported from components/Student/DataHelp.vue"
+  },
+  "StudentFormStudent": {
+    "description": "Auto imported from components/Student/FormStudent.vue"
+  },
+  "StudentListDocument": {
+    "description": "Auto imported from components/Student/ListDocument.vue"
+  },
+  "StudentParentInfo": {
+    "description": "Auto imported from components/Student/ParentInfo.vue"
+  },
+  "StudentPersonalInfo": {
+    "description": "Auto imported from components/Student/PersonalInfo.vue"
+  },
+  "StudentScoreInfo": {
+    "description": "Auto imported from components/Student/ScoreInfo.vue"
+  },
+  "TasksFormTask": {
+    "description": "Auto imported from components/Tasks/FormTask.vue"
+  }
+}
