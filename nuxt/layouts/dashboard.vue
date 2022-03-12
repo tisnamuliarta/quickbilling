@@ -23,7 +23,6 @@
             :src="logo"
             class="mt-1"
             height="30"
-            alt="E-KB"
           />
         </NuxtLink>
       </v-toolbar-title>
@@ -42,7 +41,7 @@
         <template #activator="{ on }">
           <v-btn
             x-small
-            color="red"
+            color="primary"
             depressed
             fab
             class="white--text"
@@ -53,7 +52,7 @@
         </template>
 
         <v-card>
-          <v-list>
+          <v-list nav dense>
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
@@ -66,18 +65,12 @@
 
           <v-divider></v-divider>
 
-          <v-list>
-            <v-list-item router to="/channels/10">
-              <v-list-item-icon>
-                <v-icon>mdi-account-box</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Your channel</v-list-item-title>
-            </v-list-item>
+          <v-list nav dense>
             <v-list-item router to="/studio">
               <v-list-item-icon>
                 <v-icon>mdi-youtube-studio</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>VueTube Studio</v-list-item-title>
+              <v-list-item-title>Account Settings</v-list-item-title>
             </v-list-item>
             <v-list-item @click="logout">
               <v-list-item-icon>
@@ -110,7 +103,6 @@
             :src="logo"
             class="mt-1"
             height="30"
-            alt="E-KB"
           />
           <v-divider></v-divider>
         </NuxtLink>
@@ -199,6 +191,7 @@ export default {
     this.menus()
     this.rolePermission()
     this.$nuxt.$on('getMenu', ($event) => this.menus($event))
+    this.$nuxt.$on('getLogo', ($event) => this.getLogo($event))
     this.getLogo()
   },
 

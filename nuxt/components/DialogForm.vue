@@ -21,8 +21,8 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-spacer></v-spacer>
         <slot name="addLine"></slot>
+        <v-spacer></v-spacer>
         <slot name="saveData"></slot>
       </v-card-actions>
     </v-card>

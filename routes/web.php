@@ -1,22 +1,22 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Products\ProductBrandController;
-use App\Http\Controllers\Products\ProductCategoryController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Products\ProductFeatureController;
-use App\Http\Controllers\Products\ProductPriceListController;
-use App\Http\Controllers\Products\ProductReviewController;
-use App\Http\Controllers\Sales\SalesOrderController;
-use App\Http\Controllers\Sales\SalesOrderStatusController;
-use App\Http\Controllers\Sales\SalesPersonController;
-use App\Http\Controllers\Sales\SpecialOfferController;
+use App\Http\Controllers\Inventory\ContactController;
+use App\Http\Controllers\Inventory\ItemController;
+use App\Http\Controllers\Inventory\ItemUnitController;
+use App\Http\Controllers\Documents\SalesOrderController;
+use App\Http\Controllers\Documents\SalesOrderStatusController;
+use App\Http\Controllers\Documents\SalesPersonController;
+use App\Http\Controllers\Documents\SpecialOfferController;
+use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Students\Frontend\StudentRegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index']);
+    // List nav bar menu for guest
+    Route::get('menus', [AuthController::class, 'menus']);
     Route::post('/auth/login', [AuthController::class, 'login']);
 
     Route::group(['prefix' => 'registration'], function () {
@@ -34,20 +34,16 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::post('/refresh', [AuthController::class, 'refresh']);
         });
-
-        Route::get('menus', [AuthController::class, 'menus']);
-
-        Route::group(['prefix' => 'products'], function () {
+        // Inventory routes
+        Route::group(['prefix' => 'inventory'], function () {
             Route::apiResources([
-                'review' => ProductReviewController::class,
-                'category' => ProductCategoryController::class,
-                'price-list' => ProductPriceListController::class,
-                'feature' => ProductFeatureController::class,
-                'brand' => ProductBrandController::class,
-                'product' => ProductController::class,
+                'contacts' => ContactController::class,
+                'items' => ItemController::class,
+                'item-units' => ItemUnitController::class,
             ]);
         });
 
+        // List Sales routes
         Route::group(['prefix' => 'sales'], function () {
             Route::apiResources([
                 'order' => SalesOrderController::class,
@@ -57,15 +53,24 @@ Route::group(['prefix' => 'api'], function () {
             ]);
         });
 
+        // Student registration routes
         Route::prefix('student')
             ->group(__DIR__ . '/student.php');
 
+        // List all master routes
         Route::prefix('master')
             ->group(__DIR__ . '/master.php');
+
+        // List all master routes
+        Route::prefix('financial')
+            ->group(__DIR__ . '/financial.php');
+
+        // Route Resource for settings
+        Route::apiResource('settings', SettingController::class);
     });
 });
 
-// Add this route last as a catch all for undefined routes.
+// Add this route last as a catch-all for undefined routes.
 Route::get(
     '/{path?}',
     function (Request $request) {

@@ -1,7 +1,7 @@
 <template>
   <v-form class="pt-2">
     <v-container>
-    <component :is="selectComponent" ref="childComponent"></component>
+    <component :is="selectComponent" ref="childComponent" :formData="form"></component>
     </v-container>
   </v-form>
 </template>
@@ -27,12 +27,21 @@ export default {
   data() {
     return {
       selectComponent: null,
+      form: {},
     }
   },
 
   methods: {
-    changeTab(alias) {
+    changeTab(form, url) {
       this.selectComponent = this.$route.query.page
+      this.form = Object.assign({}, form)
+      setTimeout(() => {
+        this.$refs.childComponent.setForm(this.form, url)
+      }, 300)
+    },
+
+    getForm() {
+      return this.$refs.childComponent.getForm()
     },
   },
 }

@@ -41,11 +41,23 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "FinancialFormAccount": {
+    "description": "Auto imported from components/Financial/FormAccount.vue"
+  },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
+  },
+  "TasksFormTask": {
+    "description": "Auto imported from components/Tasks/FormTask.vue"
+  },
+  "ItemFormItem": {
+    "description": "Auto imported from components/Item/FormItem.vue"
+  },
+  "ItemFormMaster": {
+    "description": "Auto imported from components/Item/FormMaster.vue"
   },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"
@@ -65,12 +77,6 @@
   "SetupPdf": {
     "description": "Auto imported from components/Setup/Pdf.vue"
   },
-  "ProductsFormMaster": {
-    "description": "Auto imported from components/Products/FormMaster.vue"
-  },
-  "ProductsFormProduct": {
-    "description": "Auto imported from components/Products/FormProduct.vue"
-  },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"
   },
@@ -88,8 +94,5 @@
   },
   "StudentScoreInfo": {
     "description": "Auto imported from components/Student/ScoreInfo.vue"
-  },
-  "TasksFormTask": {
-    "description": "Auto imported from components/Tasks/FormTask.vue"
   }
 }

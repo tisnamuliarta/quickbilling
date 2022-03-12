@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Master\BankController;
+use App\Http\Controllers\Master\CategoryController;
 use App\Http\Controllers\Master\MasterPermissionController;
 use App\Http\Controllers\Master\MasterRolesController;
 use App\Http\Controllers\Master\MasterUserController;
@@ -37,6 +39,11 @@ Route::apiResources([
     'permissions' => MasterPermissionController::class,
     'roles' => MasterRolesController::class,
     'users' => MasterUserController::class,
+
+    'banks' => BankController::class,
+    'categories' => CategoryController::class,
+
+    // Student Registration Apps
     'major' => MajorController::class,
     'expertise' => ExpertiseController::class,
     'extracurricular' => ExtraCurricularController::class,

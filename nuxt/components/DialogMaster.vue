@@ -7,22 +7,23 @@
     >
       <template #content>
         <div class="scroll-container">
-          <LazyTableSimple ref="childDetails" @removeData="removeData" />
+          <LazyTableSimple ref="childDetails" @removeData="removeData"/>
         </div>
       </template>
       <template #addLine>
         <v-btn
-          x-small
+          small
+          dark
           color="orange darken-1"
           class="white--text"
           @click="$refs.childDetails.addLine()"
         >
-          <v-icon x-small> mdi-plus </v-icon>
+          Add Line
         </v-btn>
       </template>
       <template #saveData>
         <v-btn
-          color="blue darken-1"
+          color="green darken-1"
           dark
           small
           :loading="submitLoad"
@@ -51,24 +52,41 @@ export default {
       submitLoad: false,
       url: '',
       dialogTitle: '',
+      type: '',
     }
   },
 
   methods: {
-    openDialogForm(url, title) {
+    openDialogForm(url, title, type) {
       this.url = url
+      this.type = type
       this.dialogTitle = title
       this.$refs.dialogForm.openDialog()
       this.getData()
     },
 
     getData() {
-      this.$axios.get(this.url).then((res) => {
+      this.$axios.get(this.url, {
+        params: {
+          type: this.type
+        }
+      }).then((res) => {
+        this.$emit('emitData', {
+          item: res.data.data.simple,
+          type: this.type
+        })
         this.$refs.childDetails.setDataToDetails(
           res.data.data.rows,
           res.data.data.header
         )
       })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
     removeData(data) {
@@ -103,6 +121,7 @@ export default {
       this.$axios
         .post(this.url, {
           details,
+          type: this.type,
         })
         .then((res) => {
           this.$swal({
@@ -110,6 +129,7 @@ export default {
             title: 'Success',
             text: res.data.message,
           })
+
           this.getData()
         })
         .catch((err) => {

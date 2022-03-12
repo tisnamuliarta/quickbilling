@@ -28,5 +28,30 @@
 <script>
 export default {
   name: 'EmailSetup',
+
+  props: {
+    formData: {
+      type: Object,
+      default() {
+        return {}
+      },
+    }
+  },
+
+  data() {
+    return {
+      form: this.formData,
+    }
+  },
+
+  methods: {
+    getForm() {
+      return this.form
+    },
+
+    setForm(form) {
+      this.form = Object.assign({}, form)
+    }
+  }
 }
 </script>

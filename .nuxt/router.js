@@ -17,25 +17,26 @@ const _169ff60e = () => interopDefault(import('..\\nuxt\\pages\\terms.vue' /* we
 const _547f2c33 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
 const _5122046c = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\index.vue' /* webpackChunkName: "pages/dashboard/order/index" */))
 const _2e6717b6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
-const _9010b550 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\products\\index.vue' /* webpackChunkName: "pages/dashboard/products/index" */))
 const _2278e18a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _fe274260 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
 const _efc46c98 = () => interopDefault(import('..\\nuxt\\pages\\student\\announcement.vue' /* webpackChunkName: "pages/student/announcement" */))
 const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.vue' /* webpackChunkName: "pages/student/print" */))
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
+const _1a73bd4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
+const _63dfce18 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\index.vue' /* webpackChunkName: "pages/dashboard/inventory/products/index" */))
 const _14fc2c0d = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\person.vue' /* webpackChunkName: "pages/dashboard/order/person" */))
 const _b203eb80 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\special-offer.vue' /* webpackChunkName: "pages/dashboard/order/special-offer" */))
 const _095e6bac = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\status.vue' /* webpackChunkName: "pages/dashboard/order/status" */))
 const _111ed0fb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
-const _8da734e6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\products\\brand.vue' /* webpackChunkName: "pages/dashboard/products/brand" */))
-const _f71da230 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\products\\category.vue' /* webpackChunkName: "pages/dashboard/products/category" */))
-const _d9e78be8 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\products\\price-list.vue' /* webpackChunkName: "pages/dashboard/products/price-list" */))
 const _101fa070 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\menu.vue' /* webpackChunkName: "pages/dashboard/settings/menu" */))
 const _3fdc2eaa = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\permissions.vue' /* webpackChunkName: "pages/dashboard/settings/permissions" */))
 const _78c955a4 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\roles.vue' /* webpackChunkName: "pages/dashboard/settings/roles" */))
 const _7ed1bd38 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\setup.vue' /* webpackChunkName: "pages/dashboard/settings/setup" */))
 const _f9e6b816 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\show.vue' /* webpackChunkName: "pages/dashboard/tasks/show" */))
 const _0a06c677 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\current.vue' /* webpackChunkName: "pages/dashboard/users/current" */))
+const _65148e4d = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\brand.vue' /* webpackChunkName: "pages/dashboard/inventory/products/brand" */))
+const _fbe163b0 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\category.vue' /* webpackChunkName: "pages/dashboard/inventory/products/category" */))
+const _bcc0ed68 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\price-list.vue' /* webpackChunkName: "pages/dashboard/inventory/products/price-list" */))
 const _4ab246c4 = () => interopDefault(import('..\\nuxt\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -102,10 +103,6 @@ export const routerOptions = {
     component: _2e6717b6,
     name: "dashboard-posts"
   }, {
-    path: "/dashboard/products",
-    component: _9010b550,
-    name: "dashboard-products"
-  }, {
     path: "/dashboard/tasks",
     component: _2278e18a,
     name: "dashboard-tasks"
@@ -126,6 +123,14 @@ export const routerOptions = {
     component: _2758e0e0,
     name: "student-register"
   }, {
+    path: "/dashboard/financial/account",
+    component: _1a73bd4a,
+    name: "dashboard-financial-account"
+  }, {
+    path: "/dashboard/inventory/products",
+    component: _63dfce18,
+    name: "dashboard-inventory-products"
+  }, {
     path: "/dashboard/order/person",
     component: _14fc2c0d,
     name: "dashboard-order-person"
@@ -141,18 +146,6 @@ export const routerOptions = {
     path: "/dashboard/posts/category",
     component: _111ed0fb,
     name: "dashboard-posts-category"
-  }, {
-    path: "/dashboard/products/brand",
-    component: _8da734e6,
-    name: "dashboard-products-brand"
-  }, {
-    path: "/dashboard/products/category",
-    component: _f71da230,
-    name: "dashboard-products-category"
-  }, {
-    path: "/dashboard/products/price-list",
-    component: _d9e78be8,
-    name: "dashboard-products-price-list"
   }, {
     path: "/dashboard/settings/menu",
     component: _101fa070,
@@ -177,6 +170,18 @@ export const routerOptions = {
     path: "/dashboard/users/current",
     component: _0a06c677,
     name: "dashboard-users-current"
+  }, {
+    path: "/dashboard/inventory/products/brand",
+    component: _65148e4d,
+    name: "dashboard-inventory-products-brand"
+  }, {
+    path: "/dashboard/inventory/products/category",
+    component: _fbe163b0,
+    name: "dashboard-inventory-products-category"
+  }, {
+    path: "/dashboard/inventory/products/price-list",
+    component: _bcc0ed68,
+    name: "dashboard-inventory-products-price-list"
   }, {
     path: "/",
     component: _4ab246c4,

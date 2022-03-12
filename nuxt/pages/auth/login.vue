@@ -1,17 +1,16 @@
 <template>
   <v-row no-gutters align="center" align-content="center" justify="center">
     <v-col cols="12" sm="4" md="4" lg="3" xl="3" align-self="center">
-      <v-card class="mt-3" outlined elevation="0">
+      <v-skeleton-loader
+        v-if="loadImage"
+        type="article, actions"
+        class="mx-auto"
+      >
+      </v-skeleton-loader>
+      <v-card v-else class="mt-3" outlined elevation="0">
         <v-form @keyup.native.enter="login">
           <v-card-title primary-title>
-            <v-skeleton-loader
-              v-show="loadImage"
-              type="avatar"
-              class="mx-auto logo"
-            >
-            </v-skeleton-loader>
             <img
-              v-show="!loadImage"
               :src="logo"
               class="align-items-center justify-center logo"
               alt="Logo"
@@ -110,7 +109,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.getLogo()
   },
 
@@ -154,7 +153,7 @@ export default {
 
 <style scoped>
 .logo {
-  max-width: 50px;
+  max-width: 100px;
   margin: 0 auto;
   text-align: center;
 }

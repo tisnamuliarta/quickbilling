@@ -9,6 +9,7 @@
   "license": "MIT",
   "require": {
     "php": "^7.3|^8.0",
+    "ext-json": "*",
     "barryvdh/laravel-dompdf": "^1.0",
     "barryvdh/laravel-ide-helper": "^2.12",
     "fruitcake/laravel-cors": "^2.0",
@@ -20,10 +21,11 @@
     "m2s/laravel-nuxt": "^1.2",
     "maatwebsite/excel": "^3.1",
     "owen-it/laravel-auditing": "^12.2",
+    "scottlaurent/accounting": "^0.3.3",
     "simplesoftwareio/simple-qrcode": "^4.2",
     "spatie/laravel-permission": "^5.5",
     "squizlabs/php_codesniffer": "^3.6",
-    "ext-json": "*"
+    "venturecraft/revisionable": "^1.39"
   },
   "require-dev": {
     "facade/ignition": "^2.5",

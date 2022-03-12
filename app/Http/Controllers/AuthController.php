@@ -26,6 +26,8 @@ class AuthController extends Controller
                 return $this->error('Credentials not match', 401);
             }
 
+            session(['company_id' => 1]);
+
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,
                 'user' => auth()->user()

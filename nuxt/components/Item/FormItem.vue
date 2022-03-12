@@ -1,0 +1,402 @@
+<template>
+  <div>
+    <DialogForm
+      ref="dialogForm"
+      max-width="700px"
+      :dialog-title="formTitle"
+      button-title="Save"
+    >
+      <template #content>
+        <v-form class="pt-2">
+          <v-container>
+            <v-row no-gutters>
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-file-input
+                  accept="image/*"
+                  label="Image"
+                  placeholder="Image"
+                  v-model="form.image"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-file-input>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Name"
+                  placeholder="Name"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-select
+                  v-model="form.category"
+                  :items="itemCategory"
+                  label="Category"
+                  placeholder="Category"
+                  outlined
+                  multiple
+                  persistent-hint
+                  dense
+                  hint="Exp. Component, Services, Design"
+                  hide-details="auto"
+                >
+                  <template #prepend>
+                    <v-btn small icon>
+                      <v-icon
+                        small
+                        color="orange"
+                        @click="
+                            $refs.formMaster.openForm(
+                              '/api/master/categories',
+                              'Item Category',
+                              'Item Category',
+                              '400px'
+                            )
+                          "
+                      >
+                        mdi-arrow-right-bold
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                </v-select>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-select
+                  v-model="form.unit"
+                  :items="itemUnit"
+                  label="Unit"
+                  placeholder="Unit"
+                  outlined
+                  persistent-hint
+                  dense
+                  hide-details="auto"
+                >
+                  <template #prepend>
+                    <v-btn small icon>
+                      <v-icon
+                        small
+                        color="orange"
+                        @click="
+                            $refs.formMaster.openForm(
+                              '/api/inventory/item-units',
+                              'Item Unit',
+                              'Item Unit',
+                              '400px'
+                            )
+                          "
+                      >
+                        mdi-arrow-right-bold
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                </v-select>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <span>Descriptions</span>
+                <client-only>
+                  <!-- Use the component in the right place of the template -->
+                  <tiptap-vuetify
+                    v-model="form.description"
+                    :extensions="extensions"
+                  />
+
+                  <template #placeholder> Loading...</template>
+                </client-only>
+              </v-col>
+
+              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <span>Buy Price</span>
+                <hr>
+              </v-col>
+
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Buy Unit Price"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Buy Account"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Default Buy Tax"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <span>Sell Price</span>
+                <hr>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Sale Unit Price"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Sell Account"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Default Sell Tax"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <span>Track Stock for This Item</span>
+                <hr>
+              </v-col>
+              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Minimum Stock Quantity"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="8" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.name"
+                  label="Default Inventory Account"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </template>
+      <template #saveData>
+        <v-btn
+          color="blue darken-1"
+          dark
+          small
+          :loading="submitLoad"
+          @click="save()"
+        >
+          {{ buttonTitle }}
+        </v-btn>
+      </template>
+    </DialogForm>
+
+    <LazyItemFormMaster ref="formMaster" @returnData="returnData"></LazyItemFormMaster>
+  </div>
+</template>
+
+<script>
+import {
+  Blockquote,
+  Bold,
+  BulletList,
+  HardBreak,
+  Heading,
+  History,
+  HorizontalRule,
+  Italic,
+  ListItem,
+  OrderedList,
+  Paragraph,
+  Strike,
+  TiptapVuetify,
+  Underline,
+} from 'tiptap-vuetify'
+
+export default {
+  name: 'FormProduct',
+
+  components: {TiptapVuetify},
+
+  props: {
+    formTitle: {
+      type: String,
+      default: '',
+    },
+    buttonTitle: {
+      type: String,
+      default: '',
+    },
+    formData: {
+      type: Object,
+      default() {
+        return {}
+      },
+    },
+  },
+
+  data() {
+    return {
+      dialog: false,
+      submitLoad: false,
+      form: this.formData,
+      itemCategory: [],
+      itemUnit: [],
+      statusProcessing: 'insert',
+      extensions: [
+        History,
+        Blockquote,
+        Underline,
+        Strike,
+        Italic,
+        ListItem,
+        BulletList,
+        OrderedList,
+        [
+          Heading,
+          {
+            options: {
+              levels: [1, 2, 3],
+            },
+          },
+        ],
+        Bold,
+        HorizontalRule,
+        Paragraph,
+        HardBreak,
+      ],
+    }
+  },
+
+  mounted() {
+    this.getItemCategory()
+    this.getItemUnit()
+  },
+
+  methods: {
+    newData() {
+      this.$refs.dialogForm.openDialog()
+      this.statusProcessing = 'insert'
+      this.form = Object.assign({}, this.defaultItem)
+    },
+
+    editItem(item) {
+      this.form = Object.assign({}, item)
+      this.statusProcessing = 'update'
+      this.$refs.dialogForm.openDialog()
+    },
+
+    getItemCategory() {
+      this.$axios.get(`/api/master/categories`, {
+        params: {
+          type: 'Item Category'
+        }
+      }).then((res) => {
+        this.itemCategory = res.data.data.simple
+      })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    getItemUnit() {
+      this.$axios.get(`/api/inventory/item-units`, {
+        params: {
+          type: 'Item Category'
+        }
+      }).then((res) => {
+        this.itemUnit = res.data.data.simple
+      })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    returnData(data) {
+      if (data.type === 'Item Category') {
+        this.itemCategory = data.item
+      } else if (data.type === 'Item Unit') {
+        this.itemUnit = data.item
+      }
+    },
+
+    close() {
+      this.$refs.dialogForm.closeDialog()
+      this.statusProcessing = 'insert'
+      setTimeout(() => {
+        this.form = Object.assign({}, this.defaultItem)
+      }, 300)
+    },
+
+    save() {
+      const vm = this
+      const form = this.form
+      const status = this.statusProcessing
+      const data = {
+        form,
+        status,
+      }
+
+      if (status === 'insert') {
+        this.store('post', '/api/products/product', data)
+        vm.submitLoad = false
+      } else if (status === 'update') {
+        this.store('put', '/api/products/product/' + this.form.id, data)
+        vm.submitLoad = false
+      }
+    },
+
+    store(method, url, data) {
+      const vm = this
+      vm.submitLoad = true
+      this.$axios({method, url, data})
+        .then((res) => {
+          this.$refs.dialogForm.closeDialog()
+          this.$emit('getDataFromApi')
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+
+          vm.submitLoad = false
+        })
+    },
+  },
+}
+</script>

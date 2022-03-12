@@ -157,6 +157,15 @@
 export default {
   name: 'EmailSetup',
 
+  props: {
+    form: {
+      type: Object,
+      default() {
+        return {}
+      },
+    }
+  },
+
   data() {
     return {
       paperSize: [
@@ -167,5 +176,15 @@ export default {
       ],
     }
   },
+
+  methods: {
+    getForm() {
+      return this.form
+    },
+
+    setForm(form) {
+      this.form = Object.assign({}, form)
+    }
+  }
 }
 </script>

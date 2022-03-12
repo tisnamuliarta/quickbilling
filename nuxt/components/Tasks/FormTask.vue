@@ -29,7 +29,7 @@
                           @click="
                             $refs.formMaster.openForm(
                               '/api/products/category',
-                              'Product Category'
+                              'Item Category'
                             )
                           "
                         >
@@ -58,7 +58,7 @@
                           @click="
                             $refs.formMaster.openForm(
                               '/api/products/brand',
-                              'Product Brand'
+                              'Item Brand'
                             )
                           "
                         >
