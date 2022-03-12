@@ -118,26 +118,31 @@
               </v-col>
 
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
+                <vuetify-money
+                  v-model="form.purchase_price"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="moneyOptions"
                   label="Buy Unit Price"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></vuetify-money>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
+                <v-autocomplete
+                  v-model="form.buy_account"
+                  :items="itemAccounts"
+                  item-text="name"
+                  item-value="id"
                   label="Buy Account"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></v-autocomplete>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
-                  v-model="form.name"
+                  v-model="form.buy_tax"
                   label="Default Buy Tax"
                   outlined
                   dense
@@ -150,26 +155,31 @@
                 <hr>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
-                  label="Sale Unit Price"
+                <vuetify-money
+                  v-model="form.sale_price"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="moneyOptions"
+                  label="Buy Unit Price"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></vuetify-money>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
+                <v-autocomplete
+                  v-model="form.sell_account"
+                  :items="itemAccounts"
+                  item-text="name"
+                  item-value="id"
                   label="Sell Account"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></v-autocomplete>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
-                  v-model="form.name"
+                  v-model="form.sell_tax"
                   label="Default Sell Tax"
                   outlined
                   dense
@@ -182,22 +192,27 @@
                 <hr>
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
+                <vuetify-money
+                  v-model="form.minimum_stock"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="moneyOptions"
                   label="Minimum Stock Quantity"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></vuetify-money>
               </v-col>
               <v-col cols="12" md="8" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
+                <v-autocomplete
+                  v-model="form.inventory_account_name"
+                  :items="itemAccounts"
+                  item-text="name"
+                  item-value="id"
                   label="Default Inventory Account"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                ></v-autocomplete>
               </v-col>
             </v-row>
           </v-container>
@@ -267,7 +282,14 @@ export default {
       form: this.formData,
       itemCategory: [],
       itemUnit: [],
+      itemAccounts: [],
       statusProcessing: 'insert',
+      valueWhenIsEmpty: '0',
+      moneyOptions: {
+        suffix: "",
+        length: 11,
+        precision: 2
+      },
       extensions: [
         History,
         Blockquote,
@@ -296,6 +318,7 @@ export default {
   mounted() {
     this.getItemCategory()
     this.getItemUnit()
+    this.getAccounts()
   },
 
   methods: {
@@ -336,6 +359,24 @@ export default {
       }).then((res) => {
         this.itemUnit = res.data.data.simple
       })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    getAccounts() {
+      this.$axios.get(`/api/financial/accounts`, {
+        params: {
+          type: "All"
+        }
+      })
+        .then((res) => {
+          this.itemAccounts = res.data.data.rows
+        })
         .catch((err) => {
           this.$swal({
             type: 'error',

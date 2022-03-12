@@ -47,6 +47,7 @@ export default {
     '~/plugins/vue-gates',
     '~/plugins/vuetify-datetime-picker',
     '~/plugins/dragable',
+    '~/plugins/vuetify-money',
     { src: '~/plugins/tiptap-vuetify', mode: 'client' },
   ],
   /*

@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Account;
-use App\Services\Financial\AccountService;
+use App\Models\Financial\Tax;
+use App\Services\Financial\TaxService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class AccountController extends Controller
+class TaxController extends Controller
 {
     public $service;
-
     /**
      * MasterUserController constructor.
      */
-    public function __construct(AccountService $service)
+    public function __construct(TaxService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -33,16 +32,9 @@ class AccountController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = isset($request->type) ? (string)$request->type : 'index';
-
-        if ($type == 'index') {
-            $result = $this->service->index($request);
-        } else {
-            if ($type == 'All') {
-                $type = '';
-            }
-            $result = $this->service->dataByType($type);
-        }
+        $result = [];
+        $result['form'] = $this->form('taxes');
+        $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
     }
@@ -63,7 +55,7 @@ class AccountController extends Controller
         DB::beginTransaction();
         $form = $request->form;
         try {
-            Account::create($this->service->formData($form));
+            Tax::create($this->service->formData($form, $request, 'store'));
 
             DB::commit();
             return $this->success([
@@ -86,12 +78,10 @@ class AccountController extends Controller
     {
         $messages = [
             'form.name' => 'Name is required!',
-            'form.number' => 'Account Number is required!',
         ];
 
         $validator = Validator::make($request->all(), [
             'form.name' => 'required',
-            'form.number' => 'required',
         ], $messages);
 
         $string_data = "";
@@ -115,7 +105,7 @@ class AccountController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Account::where("id", "=", $id)->get();
+        $data = Tax::where("id", "=", $id)->get();
 
         return $this->success([
             'rows' => $data
@@ -139,7 +129,7 @@ class AccountController extends Controller
 
         $form = $request->form;
         try {
-            Account::where("id", "=", $id)->update($this->service->formData($form));
+            Tax::where("id", "=", $id)->update($this->service->formData($form, $request, 'update'));
 
             return $this->success([
                 "errors" => false
@@ -160,9 +150,9 @@ class AccountController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Account::where("id", "=", $id)->first();
+        $details = Tax::where("id", "=", $id)->first();
         if ($details) {
-            Account::where("id", "=", $id)->delete();
+            Tax::where("id", "=", $id)->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

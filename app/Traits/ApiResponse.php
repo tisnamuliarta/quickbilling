@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Models\Master\Settings;
 use Illuminate\Support\Facades\DB;
 
 trait ApiResponse
@@ -56,21 +55,4 @@ trait ApiResponse
         }
         return $arr_form;
     }
-
-    /**
-     * @param $name
-     * @param $type
-     * @return void
-     */
-    public function createOption($name, $type)
-    {
-        $check_option = Settings::where('option_name', '=', $name)->first();
-        if (!$check_option) {
-            Settings::create([
-                'option_name' => $name,
-                'option_type' => $type
-            ]);
-        }
-    }
-
 }

@@ -88,7 +88,8 @@
     "pusher-js": "^7.0.6",
     "tiptap-vuetify": "^2.24.0",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.6.3"
+    "vuetify": "^2.6.3",
+    "vuetify-money": "^1.2.0"
   },
   "config": {
     "commitizen": {

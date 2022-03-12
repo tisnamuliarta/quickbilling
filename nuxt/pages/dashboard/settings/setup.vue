@@ -15,7 +15,7 @@
                       <v-list-item
                         v-for="(item, i) in items"
                         :key="i"
-                        @click="changeTabValue(item.alias)"
+                        @click="changeTabValue(item.alias, item.action)"
                       >
                         <v-list-item-icon>
                           <v-icon v-text="item.icon"></v-icon>
@@ -48,7 +48,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn color="blue darken-1" class="mr-3" dark small :loading="loadingButton" @click="save">
+          <v-btn v-if="showAction" color="blue darken-1" class="mr-3" dark small :loading="loadingButton" @click="save">
             Save
             <v-icon small dark right> mdi-content-save</v-icon>
           </v-btn>
@@ -69,17 +69,18 @@ export default {
       loadingButton: false,
       selectedItem: 0,
       form: {},
+      showAction: true,
       items: [
-        {text: 'Company', icon: 'mdi-office-building-cog', alias: 'company'},
-        {text: 'Finance', icon: 'mdi-finance', alias: 'finance'},
-        {text: 'E-Mail', icon: 'mdi-email', alias: 'email'},
-        {text: 'PDF', icon: 'mdi-file-pdf-box', alias: 'pdf'},
-        {text: 'Tags', icon: 'mdi-tag', alias: 'tags'},
-        {text: 'Item Units', icon: 'mdi-align-vertical-distribute', alias: 'units'},
-        {text: 'Item Category', icon: 'mdi-shape', alias: 'product_category'},
-        {text: 'Payment Method', icon: 'mdi-bank-transfer', alias: 'payment'},
-        {text: 'Taxes', icon: 'mdi-content-cut', alias: 'taxes'},
-        {text: 'Terms', icon: 'mdi-file-document-outline', alias: 'term'},
+        {text: 'Company', icon: 'mdi-office-building-cog', alias: 'company', action: true},
+        {text: 'Finance', icon: 'mdi-finance', alias: 'finance', action: true},
+        {text: 'E-Mail', icon: 'mdi-email', alias: 'email', action: true},
+        {text: 'PDF', icon: 'mdi-file-pdf-box', alias: 'pdf', action: true},
+        {text: 'Tags', icon: 'mdi-tag', alias: 'tags', action: false},
+        {text: 'Item Units', icon: 'mdi-align-vertical-distribute', alias: 'units', action: false},
+        {text: 'Item Category', icon: 'mdi-shape', alias: 'product_category', action: false},
+        {text: 'Payment Method', icon: 'mdi-bank-transfer', alias: 'payment', action: false},
+        {text: 'Taxes', icon: 'mdi-content-cut', alias: 'taxes', action: false},
+        {text: 'Terms', icon: 'mdi-file-document-outline', alias: 'term', action: false},
       ],
     }
   },
@@ -95,27 +96,28 @@ export default {
   },
 
   methods: {
-    changeTabValue(page) {
+    changeTabValue(page, action) {
       this.$axios.get(`/api/settings`, {
         params: {
           page
         }
       })
-      .then(res => {
-        this.loading = true
-        this.tabValue = page
-        this.form = res.data.data.form
-        this.$router.push({
-          path: '/dashboard/settings/setup',
-          query: {
-            page,
-          },
+        .then(res => {
+          this.loading = true
+          this.tabValue = page
+          this.form = res.data.data.form
+          this.$router.push({
+            path: '/dashboard/settings/setup',
+            query: {
+              page,
+            },
+          })
+          setTimeout(() => {
+            this.loading = false
+            this.showAction = action
+            this.$refs.setupForm.changeTab(this.form, res.data.data.url)
+          }, 300)
         })
-        setTimeout(() => {
-          this.loading = false
-          this.$refs.setupForm.changeTab(this.form, res.data.data.url)
-        }, 300)
-      })
     },
 
     save() {

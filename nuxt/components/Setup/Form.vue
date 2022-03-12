@@ -9,9 +9,12 @@
 <script>
 import Company from './Company'
 import Email from './Email'
+import Tax from './Tax'
 import General from './General'
 import Finance from './Finance'
 import Pdf from './Pdf'
+import PaymentMethod from './PaymentMethod'
+import PaymentTerm from './PaymentTerm'
 
 export default {
   name: 'FormSetup',
@@ -22,6 +25,9 @@ export default {
     general: General,
     pdf: Pdf,
     finance: Finance,
+    taxes: Tax,
+    term: PaymentTerm,
+    payment: PaymentMethod,
   },
 
   data() {
