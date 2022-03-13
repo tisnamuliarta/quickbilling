@@ -48,7 +48,15 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
-          <v-btn v-if="showAction" color="blue darken-1" class="mr-3" dark small :loading="loadingButton" @click="save">
+          <v-btn
+            v-if="showAction"
+            color="green darken-1"
+            class="mr-3"
+            dark
+            small
+            :loading="loadingButton"
+            @click="save"
+          >
             Save
             <v-icon small dark right> mdi-content-save</v-icon>
           </v-btn>

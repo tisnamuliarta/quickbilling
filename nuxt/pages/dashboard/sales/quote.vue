@@ -41,13 +41,13 @@
       </div>
     </v-flex>
 
-    <LazyInventoryFormItem
-      ref="formData"
+    <LazyItemFormItem
+      ref="formProduct"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       @getDataFromApi="getDataFromApi"
-    ></LazyInventoryFormItem>
+    ></LazyItemFormItem>
   </v-layout>
 </template>
 
@@ -116,12 +116,12 @@ export default {
   methods: {
     newData() {
       this.editedIndex = -1
-      this.$refs.formData.newData()
+      this.$refs.formProduct.newData()
     },
 
     editItem(item) {
       this.editedIndex = this.allData.indexOf(item)
-      this.$refs.formData.editItem(item)
+      this.$refs.formProduct.editItem(item)
     },
 
     emitData(data) {

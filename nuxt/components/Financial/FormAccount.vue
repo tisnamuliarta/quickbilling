@@ -163,7 +163,7 @@
       </template>
       <template #saveData>
         <v-btn
-          color="blue darken-1"
+          color="green darken-1"
           dark
           small
           :loading="submitLoad"

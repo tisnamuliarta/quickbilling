@@ -15,7 +15,6 @@ const _769b8a3d = () => interopDefault(import('..\\nuxt\\pages\\item-detail.vue'
 const _07add315 = () => interopDefault(import('..\\nuxt\\pages\\privacy-policy.vue' /* webpackChunkName: "pages/privacy-policy" */))
 const _169ff60e = () => interopDefault(import('..\\nuxt\\pages\\terms.vue' /* webpackChunkName: "pages/terms" */))
 const _547f2c33 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
-const _5122046c = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\index.vue' /* webpackChunkName: "pages/dashboard/order/index" */))
 const _2e6717b6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
 const _2278e18a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _fe274260 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
@@ -23,11 +22,21 @@ const _efc46c98 = () => interopDefault(import('..\\nuxt\\pages\\student\\announc
 const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.vue' /* webpackChunkName: "pages/student/print" */))
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
 const _1a73bd4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
+const _441197ca = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\contact.vue' /* webpackChunkName: "pages/dashboard/inventory/contact" */))
 const _63dfce18 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\index.vue' /* webpackChunkName: "pages/dashboard/inventory/products/index" */))
-const _14fc2c0d = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\person.vue' /* webpackChunkName: "pages/dashboard/order/person" */))
-const _b203eb80 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\special-offer.vue' /* webpackChunkName: "pages/dashboard/order/special-offer" */))
-const _095e6bac = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\order\\status.vue' /* webpackChunkName: "pages/dashboard/order/status" */))
 const _111ed0fb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
+const _1fb56a36 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
+const _fe6c83d2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\order.vue' /* webpackChunkName: "pages/dashboard/purchase/order" */))
+const _117376e2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\payment.vue' /* webpackChunkName: "pages/dashboard/purchase/payment" */))
+const _3fbc2e45 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\quote.vue' /* webpackChunkName: "pages/dashboard/purchase/quote" */))
+const _6765c87e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\receipt.vue' /* webpackChunkName: "pages/dashboard/purchase/receipt" */))
+const _84a73a92 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\return.vue' /* webpackChunkName: "pages/dashboard/purchase/return" */))
+const _5d307a6a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\delivery.vue' /* webpackChunkName: "pages/dashboard/sales/delivery" */))
+const _18929da7 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\invoice.vue' /* webpackChunkName: "pages/dashboard/sales/invoice" */))
+const _d4e1cc70 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\order.vue' /* webpackChunkName: "pages/dashboard/sales/order" */))
+const _1fb91000 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\payment.vue' /* webpackChunkName: "pages/dashboard/sales/payment" */))
+const _548189f6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\quote.vue' /* webpackChunkName: "pages/dashboard/sales/quote" */))
+const _41927d26 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\return.vue' /* webpackChunkName: "pages/dashboard/sales/return" */))
 const _101fa070 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\menu.vue' /* webpackChunkName: "pages/dashboard/settings/menu" */))
 const _3fdc2eaa = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\permissions.vue' /* webpackChunkName: "pages/dashboard/settings/permissions" */))
 const _78c955a4 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\roles.vue' /* webpackChunkName: "pages/dashboard/settings/roles" */))
@@ -95,10 +104,6 @@ export const routerOptions = {
     component: _547f2c33,
     name: "auth-login"
   }, {
-    path: "/dashboard/order",
-    component: _5122046c,
-    name: "dashboard-order"
-  }, {
     path: "/dashboard/posts",
     component: _2e6717b6,
     name: "dashboard-posts"
@@ -127,25 +132,65 @@ export const routerOptions = {
     component: _1a73bd4a,
     name: "dashboard-financial-account"
   }, {
+    path: "/dashboard/inventory/contact",
+    component: _441197ca,
+    name: "dashboard-inventory-contact"
+  }, {
     path: "/dashboard/inventory/products",
     component: _63dfce18,
     name: "dashboard-inventory-products"
   }, {
-    path: "/dashboard/order/person",
-    component: _14fc2c0d,
-    name: "dashboard-order-person"
-  }, {
-    path: "/dashboard/order/special-offer",
-    component: _b203eb80,
-    name: "dashboard-order-special-offer"
-  }, {
-    path: "/dashboard/order/status",
-    component: _095e6bac,
-    name: "dashboard-order-status"
-  }, {
     path: "/dashboard/posts/category",
     component: _111ed0fb,
     name: "dashboard-posts-category"
+  }, {
+    path: "/dashboard/purchase/invoice",
+    component: _1fb56a36,
+    name: "dashboard-purchase-invoice"
+  }, {
+    path: "/dashboard/purchase/order",
+    component: _fe6c83d2,
+    name: "dashboard-purchase-order"
+  }, {
+    path: "/dashboard/purchase/payment",
+    component: _117376e2,
+    name: "dashboard-purchase-payment"
+  }, {
+    path: "/dashboard/purchase/quote",
+    component: _3fbc2e45,
+    name: "dashboard-purchase-quote"
+  }, {
+    path: "/dashboard/purchase/receipt",
+    component: _6765c87e,
+    name: "dashboard-purchase-receipt"
+  }, {
+    path: "/dashboard/purchase/return",
+    component: _84a73a92,
+    name: "dashboard-purchase-return"
+  }, {
+    path: "/dashboard/sales/delivery",
+    component: _5d307a6a,
+    name: "dashboard-sales-delivery"
+  }, {
+    path: "/dashboard/sales/invoice",
+    component: _18929da7,
+    name: "dashboard-sales-invoice"
+  }, {
+    path: "/dashboard/sales/order",
+    component: _d4e1cc70,
+    name: "dashboard-sales-order"
+  }, {
+    path: "/dashboard/sales/payment",
+    component: _1fb91000,
+    name: "dashboard-sales-payment"
+  }, {
+    path: "/dashboard/sales/quote",
+    component: _548189f6,
+    name: "dashboard-sales-quote"
+  }, {
+    path: "/dashboard/sales/return",
+    component: _41927d26,
+    name: "dashboard-sales-return"
   }, {
     path: "/dashboard/settings/menu",
     component: _101fa070,

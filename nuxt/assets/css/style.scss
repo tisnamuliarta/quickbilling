@@ -389,19 +389,14 @@ body {
   height: 5em !important;
 }
 
-.v-slide-group__content {
-  display: flex;
-  align-items: baseline !important;
-  flex: 1 0 auto;
-  position: relative;
-  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-  white-space: nowrap;
-}
-
-.v-tabs--vertical > .v-window {
-  flex: 0 1 100%;
-  border-left: 1px solid #e1e0e0;
-}
+//.v-slide-group__content {
+//  display: flex;
+//  align-items: baseline !important;
+//  flex: 1 0 auto;
+//  position: relative;
+//  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+//  white-space: nowrap;
+//}
 
 .v-tab {
   text-transform: capitalize !important;

@@ -27,7 +27,7 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Products"
+              title="Contacts"
               @emitData="emitData"
               @newData="newData"
             />
@@ -41,13 +41,13 @@
       </div>
     </v-flex>
 
-    <LazyInventoryFormItem
+    <LazyInventoryFormContact
       ref="formData"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       @getDataFromApi="getDataFromApi"
-    ></LazyInventoryFormItem>
+    />
   </v-layout>
 </template>
 
@@ -70,16 +70,12 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Product Code', value: 'name' },
-        { text: 'Product Name', value: 'name' },
-        { text: 'Product Category', value: 'name' },
-        { text: 'Qty', value: 'name' },
-        { text: 'Minimum Stock', value: 'name' },
-        { text: 'Unit', value: 'name' },
-        { text: 'Average Price', value: 'name' },
-        { text: 'Last Buy Price', value: 'name' },
-        { text: 'Buy Price', value: 'name' },
-        { text: 'Sell Price', value: 'name' },
+        { text: 'Name', value: 'name' },
+        { text: 'Company', value: 'company_name' },
+        { text: 'Address', value: 'address' },
+        { text: 'Email', value: 'email' },
+        { text: 'Phone', value: 'phone' },
+        { text: 'Balance', value: 'balance' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
@@ -87,13 +83,13 @@ export default {
 
   head() {
     return {
-      title: 'Products',
+      title: 'Contacts',
     }
   },
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Contacts' : 'Edit Contacts'
     },
     buttonTitle() {
       return this.editedIndex === -1 ? 'Save' : 'Update'
@@ -116,7 +112,7 @@ export default {
   methods: {
     newData() {
       this.editedIndex = -1
-      this.$refs.formData.newData()
+      this.$refs.formData.newData(this.form, this.defaultItem)
     },
 
     editItem(item) {
@@ -138,7 +134,7 @@ export default {
       this.loading = true
       const vm = this
       this.$axios
-        .get(`/api/inventory/items`, {
+        .get(`/api/inventory/contacts`, {
           params: {
             options: vm.options,
             searchItem: vm.searchItem,

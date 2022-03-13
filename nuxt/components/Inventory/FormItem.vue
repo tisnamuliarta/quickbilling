@@ -220,7 +220,7 @@
       </template>
       <template #saveData>
         <v-btn
-          color="blue darken-1"
+          color="green darken-1"
           dark
           small
           :loading="submitLoad"
@@ -231,7 +231,7 @@
       </template>
     </DialogForm>
 
-    <LazyItemFormMaster ref="formMaster" @returnData="returnData"></LazyItemFormMaster>
+    <LazyInventoryFormMaster ref="formMaster" @returnData="returnData"></LazyInventoryFormMaster>
   </div>
 </template>
 

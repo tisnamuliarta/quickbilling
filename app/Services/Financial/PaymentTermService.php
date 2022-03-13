@@ -30,10 +30,12 @@ class PaymentTermService
             ->get();
 
         $arr_rows = PaymentTerm::pluck('name');
+        $arr_auto_complete = PaymentTerm::select('id', 'name')->get();
 
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
+            "simple" => $arr_rows,
+            "auto_complete" => $arr_auto_complete,
         ]);
     }
 

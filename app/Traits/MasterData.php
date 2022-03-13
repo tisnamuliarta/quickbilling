@@ -40,16 +40,26 @@ trait MasterData
 
         foreach ($roles as $role) {
             $id = array_key_exists('id', (array)$role) ? $role['id'] : $role;
-            $role_id = Role::where('name', '=', $id)->first();
-            $permissions = DB::select('call sp_role_permissions (' . $role_id->id . ')');
-            $user->assignRole($role_id->name);
+            $this->processUserRolePermission($id, $user);
+        }
+    }
 
-            foreach ($permissions as $permission) {
-                $this->actionStoreRolePermission($user, (array)$permission, 'index');
-                $this->actionStoreRolePermission($user, (array)$permission, 'store');
-                $this->actionStoreRolePermission($user, (array)$permission, 'edits');
-                $this->actionStoreRolePermission($user, (array)$permission, 'erase');
-            }
+    /**
+     * @param $id
+     * @param $user
+     * @return void
+     */
+    protected function processUserRolePermission($id, $user)
+    {
+        $role_id = Role::where('name', '=', $id)->first();
+        $permissions = DB::select('call sp_role_permissions (' . $role_id->id . ')');
+        $user->assignRole($role_id->name);
+
+        foreach ($permissions as $permission) {
+            $this->actionStoreRolePermission($user, (array)$permission, 'index');
+            $this->actionStoreRolePermission($user, (array)$permission, 'store');
+            $this->actionStoreRolePermission($user, (array)$permission, 'edits');
+            $this->actionStoreRolePermission($user, (array)$permission, 'erase');
         }
     }
 }
