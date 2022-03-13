@@ -10,11 +10,24 @@ trait FileUpload
 {
     /**
      * @param $dataFile
-     * @param $path
-     * @param $type
      * @return string
      */
-    public function upload($dataFile, $path, $type): string
+    public function fileName($dataFile): string
+    {
+        $extension = $dataFile->getClientOriginalExtension();
+        $origin_name = $dataFile->getClientOriginalName();
+        $nameWithoutExt = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))) . time();
+        return $nameWithoutExt . '.' . $extension;
+    }
+
+    /**
+     * @param $dataFile
+     * @param $path
+     * @param $type
+     * @param $fileName
+     * @return string
+     */
+    public function upload($dataFile, $path, $type, $fileName): string
     {
         $extension = $dataFile->getClientOriginalExtension();
 
@@ -30,10 +43,6 @@ trait FileUpload
                 );
             }
         }
-
-        $origin_name = $dataFile->getClientOriginalName();
-        $nameWithoutExt = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))) . time();
-        $fileName = $nameWithoutExt . '.' . $extension;
 
         $this->fileStored($extension, $dataFile, $destinationPath, $fileName, $type);
 

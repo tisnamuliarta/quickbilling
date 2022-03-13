@@ -37,7 +37,9 @@ class SettingService
         if ($request->hasFile('company_logo_temp')) {
             $file = $request->file('company_logo_temp');
 
-            $fileName = $this->upload($file, '/files/logo', 'logo');
+            $fileName = $this->fileName($file);
+
+            $this->upload($file, '/files/logo', 'logo', $fileName);
 
             $this->update('company_logo', $fileName);
         }

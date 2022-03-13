@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    protected SettingService $setting;
+    public $setting;
 
     public function __construct(SettingService $setting)
     {

@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       totalData: 0,
+      url: '',
       editedIndex: -1,
       loading: true,
       allData: [],
@@ -70,16 +71,15 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Product Code', value: 'name' },
+        { text: 'Product Code', value: 'code' },
         { text: 'Product Name', value: 'name' },
-        { text: 'Product Category', value: 'name' },
-        { text: 'Qty', value: 'name' },
-        { text: 'Minimum Stock', value: 'name' },
-        { text: 'Unit', value: 'name' },
-        { text: 'Average Price', value: 'name' },
-        { text: 'Last Buy Price', value: 'name' },
-        { text: 'Buy Price', value: 'name' },
-        { text: 'Sell Price', value: 'name' },
+        { text: 'Product Category', value: 'type' },
+        { text: 'Minimum Stock', value: 'minimum_stock' },
+        { text: 'Unit', value: 'unit' },
+        { text: 'Average Price', value: 'average_price' },
+        { text: 'Last Buy Price', value: 'last_buy_price' },
+        { text: 'Buy Price', value: 'purchase_price' },
+        { text: 'Sell Price', value: 'sale_price' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
@@ -121,7 +121,7 @@ export default {
 
     editItem(item) {
       this.editedIndex = this.allData.indexOf(item)
-      this.$refs.formData.editItem(item)
+      this.$refs.formData.editItem(item, this.url)
     },
 
     emitData(data) {
@@ -154,6 +154,7 @@ export default {
           this.itemSearch = res.data.filter
           this.form = Object.assign({}, res.data.data.form)
           this.defaultItem = Object.assign({}, res.data.data.form)
+          this.url = res.data.data.url
         })
         .catch((err) => {
           this.loading = false

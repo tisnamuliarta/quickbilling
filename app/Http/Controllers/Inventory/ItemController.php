@@ -4,44 +4,42 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\Item;
+use App\Services\Inventory\ItemService;
+use App\Traits\FileUpload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
+    use FileUpload;
+
+    public $service;
+
+    /**
+     * MasterUserController constructor.
+     */
+    public function __construct(ItemService $service)
+    {
+        $this->service = $service;
+//        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+//        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+//        $this->middleware(['direct_permission:Roles-edits'])->only('update');
+//        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $pagination = (object)$request->pagination;
-        $pages = isset($pagination->page) ? (int)$pagination->page : 1;
-        $row_data = isset($pagination->itemsPerPage) ? (int)$pagination->itemsPerPage : 20;
-        $sorts = isset($pagination->sortBy[0]) ? (string)$pagination->sortBy[0] : 'name';
-        $order = isset($pagination->sortDesc[0]) ? 'ASC' : 'DESC';
-        $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
-
-        $search = isset($request->q) ? (string)$request->q : '';
-        $select_data = isset($request->selectData) ? (string)$request->selectData : 'name';
-        $offset = ($pages - 1) * $row_data;
-        $form = $this->form('items');
-
-        $result = array();
-        $query = Item::selectRaw("*, 'actions' as ACTIONS");
-
-        $result["total"] = $query->count();
-
-        $all_data = $query->offset($offset)
-            ->orderBy($sorts, $order)
-            ->limit($row_data)
-            ->get();
-
-        $result = array_merge($result, [
-            "rows" => $all_data,
-            'form' => $form,
-        ]);
+        $result = [];
+        $result['form'] = $this->form('items');
+        $result['url'] = url('/');
+        $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
     }
@@ -49,7 +47,7 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -60,19 +58,24 @@ class ItemController extends Controller
             ]);
         }
 
-        $form = $request->form;
+        DB::beginTransaction();
         try {
-            $data = [
-                'name' => $form['name'],
-                'guard_name' => 'web',
-                'description' => $form['description'],
-            ];
-            Item::create($data);
+            $item = Item::create($this->service->formData($request, 'store'));
 
+            if ($request->hasFile('image_temp')) {
+                $file = $request->file('image_temp');
+
+                $fileName = $this->fileName($file);
+
+                $this->upload($file, '/files/items', 'logo', $fileName);
+            }
+
+            DB::commit();
             return $this->success([
                 "errors" => false
             ], 'Data inserted!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,
                 "Trace" => $exception->getTrace()
@@ -100,13 +103,9 @@ class ItemController extends Controller
      */
     protected function validation($request)
     {
-        $messages = [
-            'form.product_name' => 'Item Name is required!',
-        ];
-
         $validator = Validator::make($request->all(), [
-            'form.product_name' => 'required',
-        ], $messages);
+            'name' => 'required',
+        ]);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -136,15 +135,8 @@ class ItemController extends Controller
             ]);
         }
 
-        $form = $request->form;
         try {
-            $data = [
-                'name' => $form['name'],
-                'guard_name' => 'web',
-                'description' => $form['description'],
-            ];
-
-            Item::where("product_id", "=", $id)->update($data);
+            Item::where("product_id", "=", $id)->update($this->service->formData($request, 'update'));
 
             return $this->success([
                 "errors" => false

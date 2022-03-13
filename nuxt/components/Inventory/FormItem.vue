@@ -15,7 +15,7 @@
                   accept="image/*"
                   label="Image"
                   placeholder="Image"
-                  v-model="form.image"
+                  v-model="form.image_temp"
                   outlined
                   dense
                   hide-details="auto"
@@ -23,10 +23,28 @@
               </v-col>
 
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-img
+                  max-width="250"
+                  max-height="150"
+                  :src="logo"
+                ></v-img>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
                   v-model="form.name"
                   label="Name"
                   placeholder="Name"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-text-field
+                  v-model="form.code"
+                  label="Code"
                   outlined
                   dense
                   hide-details="auto"
@@ -277,6 +295,7 @@ export default {
 
   data() {
     return {
+      logo: '',
       dialog: false,
       submitLoad: false,
       form: this.formData,
@@ -285,6 +304,7 @@ export default {
       itemAccounts: [],
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
+      url: '/api/inventory/items',
       moneyOptions: {
         suffix: "",
         length: 11,
@@ -328,8 +348,9 @@ export default {
       this.form = Object.assign({}, this.defaultItem)
     },
 
-    editItem(item) {
+    editItem(item, url) {
       this.form = Object.assign({}, item)
+      this.logo = url + '/files/items/' + this.form.image
       this.statusProcessing = 'update'
       this.$refs.dialogForm.openDialog()
     },
@@ -404,18 +425,19 @@ export default {
 
     save() {
       const vm = this
-      const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
+
+      let data = new FormData()
+      Object.entries(this.form).forEach(entry => {
+        const [key, value] = entry
+        data.append(key, value)
+      })
 
       if (status === 'insert') {
-        this.store('post', '/api/products/product', data)
+        this.store('post', this.url, data)
         vm.submitLoad = false
       } else if (status === 'update') {
-        this.store('put', '/api/products/product/' + this.form.id, data)
+        this.store('put', this.url + '/' + this.form.id, data)
         vm.submitLoad = false
       }
     },
@@ -423,20 +445,42 @@ export default {
     store(method, url, data) {
       const vm = this
       vm.submitLoad = true
-      this.$axios({method, url, data})
-        .then((res) => {
-          this.$refs.dialogForm.closeDialog()
-          this.$emit('getDataFromApi')
-        })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: 'Error',
-            text: err.response.data.message,
+      let options = {
+        headers: {
+          'Content-Type': "Multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
+        }
+      }
+      if (method === 'post') {
+        this.$axios.post(url, data, options)
+          .then((res) => {
+            this.$refs.dialogForm.closeDialog()
+            this.$emit('getDataFromApi')
           })
+          .catch((err) => {
+            this.$swal({
+              type: 'error',
+              title: 'Error',
+              text: err.response.data.message,
+            })
 
-          vm.submitLoad = false
-        })
+            vm.submitLoad = false
+          })
+      } else {
+        this.$axios.put(url, data, options)
+          .then((res) => {
+            this.$refs.dialogForm.closeDialog()
+            this.$emit('getDataFromApi')
+          })
+          .catch((err) => {
+            this.$swal({
+              type: 'error',
+              title: 'Error',
+              text: err.response.data.message,
+            })
+
+            vm.submitLoad = false
+          })
+      }
     },
   },
 }
