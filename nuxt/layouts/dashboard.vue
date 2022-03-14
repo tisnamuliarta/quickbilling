@@ -31,7 +31,8 @@
       <v-tooltip bottom>
         <template #activator="{ on }">
           <v-btn icon class="mr-0" v-on="on">
-            <v-icon size="25">mdi-bell</v-icon></v-btn
+            <v-icon size="25">mdi-bell</v-icon>
+          </v-btn
           >
         </template>
         <span>Notifications</span>
@@ -57,8 +58,9 @@
               <v-list-item-content>
                 <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
                 <v-list-item-subtitle>{{
-                  $auth.user.email
-                }}</v-list-item-subtitle>
+                    $auth.user.email
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -139,7 +141,7 @@
 
     <v-main class="grey lighten-4">
       <v-container fluid>
-        <Nuxt />
+        <Nuxt/>
       </v-container>
     </v-main>
   </v-app>
@@ -160,8 +162,8 @@ export default {
           menu: 'menu1',
           icon: 'mdi-receipt',
           children: [
-            { menu: 'Home', route_name: '/', icon: 'mdi-home' },
-            { menu: 'Trending', route_name: '/trending', icon: 'mdi-fire' },
+            {menu: 'Home', route_name: '/', icon: 'mdi-home'},
+            {menu: 'Trending', route_name: '/trending', icon: 'mdi-fire'},
             {
               menu: 'Subscriptions',
               route_name: '#s',
@@ -175,7 +177,6 @@ export default {
       logo: '',
       rightDrawer: false,
       loadImage: false,
-      title: 'Vuetify.js',
     }
   },
 
@@ -225,14 +226,26 @@ export default {
       this.$router.push('/auth/login')
     },
 
-    async menus() {
+    menus() {
       const appName = this.$auth.$storage.getLocalStorage('app.default_name')
-      const menu = await this.$axios.get(`/api/menus`, {
+      this.$axios.get(`/api/menus`, {
         params: {
           appName,
         },
       })
-      this.items = menu.data.data.menus
+        .then(res => {
+          this.items = res.data.data.menus
+        })
+        .catch((err) => {
+          if (err.response.data.message === 'Call to a member function getAllPermissions() on null') {
+            this.logout()
+          }
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
     changeDrawers(data) {
@@ -245,6 +258,6 @@ export default {
 <style scoped>
 .v-toolbar-flat {
   box-shadow: 0 1px 0 0 rgb(0 0 0 / 20%), 0 0 0 0 rgb(0 0 0 / 14%),
-    0 0 0 0 rgb(0 0 0 / 12%) !important;
+  0 0 0 0 rgb(0 0 0 / 12%) !important;
 }
 </style>

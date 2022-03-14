@@ -119,41 +119,47 @@ class AuthController extends Controller
      */
     protected function menus(Request $request)
     {
-        $permissions = $request->user()
-            ->getAllPermissions()
-            ->where('parent_id', '=', '0');
-
-        $array = [];
-        foreach ($permissions as $permission) {
-            $children = $request->user()
+        try {
+            $permissions = $request->user()
                 ->getAllPermissions()
-                ->where('parent_id', '=', $permission->id);
+                ->where('parent_id', '=', '0');
 
-            $array_child = [];
-            $prev_name = '';
-            foreach ($children as $child) {
-                if ($prev_name != $child->menu_name) {
-                    if (Str::contains($child->name, 'index')) {
-                        $array_child[] = [
-                            'menu' => $child->menu_name,
-                            'icon' => $child->icon,
-                            'route_name' => $child->route_name,
-                        ];
+            $array = [];
+            foreach ($permissions as $permission) {
+                $children = $request->user()
+                    ->getAllPermissions()
+                    ->where('parent_id', '=', $permission->id);
 
-                        $prev_name = $child->menu_name;
+                $array_child = [];
+                $prev_name = '';
+                foreach ($children as $child) {
+                    if ($prev_name != $child->menu_name) {
+                        if (Str::contains($child->name, 'index')) {
+                            $array_child[] = [
+                                'menu' => $child->menu_name,
+                                'icon' => $child->icon,
+                                'route_name' => $child->route_name,
+                            ];
+
+                            $prev_name = $child->menu_name;
+                        }
                     }
                 }
-            }
 
-            $array[] = [
-                'menu' => $permission->menu_name,
-                'icon' => $permission->icon,
-                'route_name' => $permission->route_name,
-                'children' => $array_child
-            ];
+                $array[] = [
+                    'menu' => $permission->menu_name,
+                    'icon' => $permission->icon,
+                    'route_name' => $permission->route_name,
+                    'children' => $array_child
+                ];
+            }
+            return $this->success([
+                'menus' => $array
+            ]);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                'trace' => $exception->getTrace()
+            ]);
         }
-        return $this->success([
-            'menus' => $array
-        ]);
     }
 }
