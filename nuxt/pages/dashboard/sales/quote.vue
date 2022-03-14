@@ -27,7 +27,7 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Products"
+              title="Sales Quotations"
               @emitData="emitData"
               @newData="newData"
             />
@@ -87,7 +87,7 @@ export default {
 
   head() {
     return {
-      title: 'Products',
+      title: 'Sales Quotation',
     }
   },
 

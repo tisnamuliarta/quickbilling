@@ -4,10 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Inventory\ContactController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemUnitController;
-use App\Http\Controllers\Documents\SalesOrderController;
-use App\Http\Controllers\Documents\SalesOrderStatusController;
-use App\Http\Controllers\Documents\SalesPersonController;
-use App\Http\Controllers\Documents\SpecialOfferController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Students\Frontend\StudentRegisterController;
 use Illuminate\Http\Request;
@@ -43,16 +39,6 @@ Route::group(['prefix' => 'api'], function () {
             ]);
         });
 
-        // List Sales routes
-        Route::group(['prefix' => 'sales'], function () {
-            Route::apiResources([
-                'order' => SalesOrderController::class,
-                'person' => SalesPersonController::class,
-                'status' => SalesOrderStatusController::class,
-                'special-offer' => SpecialOfferController::class,
-            ]);
-        });
-
         // Student registration routes
         Route::prefix('student')
             ->group(__DIR__ . '/student.php');
@@ -60,6 +46,14 @@ Route::group(['prefix' => 'api'], function () {
         // List all master routes
         Route::prefix('master')
             ->group(__DIR__ . '/master.php');
+
+        // List all sales routes
+        Route::prefix('sales')
+            ->group(__DIR__ . '/sales.php');
+
+        // List all sales routes
+        Route::prefix('purchase')
+            ->group(__DIR__ . '/purchase.php');
 
         // List all master routes
         Route::prefix('financial')

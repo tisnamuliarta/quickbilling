@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Documents;
+namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Models\SalesOrderStatus;
 use Illuminate\Http\Request;
 
-class SalesOrderStatusController extends Controller
+class SalesReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,10 +31,10 @@ class SalesOrderStatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SalesOrderStatus  $salesOrderStatus
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(SalesOrderStatus $salesOrderStatus)
+    public function show($id)
     {
         //
     }
@@ -44,10 +43,10 @@ class SalesOrderStatusController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SalesOrderStatus  $salesOrderStatus
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SalesOrderStatus $salesOrderStatus)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -55,10 +54,10 @@ class SalesOrderStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SalesOrderStatus  $salesOrderStatus
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SalesOrderStatus $salesOrderStatus)
+    public function destroy($id)
     {
         //
     }

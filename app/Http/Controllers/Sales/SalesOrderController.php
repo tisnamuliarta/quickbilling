@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Documents;
+namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Models\SpecialOffer;
+use App\Models\SalesOrderDetail;
 use Illuminate\Http\Request;
 
-class SpecialOfferController extends Controller
+class SalesOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,10 +32,10 @@ class SpecialOfferController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SpecialOffer  $specialOffer
+     * @param  \App\Models\SalesOrderDetail  $salesOrderDetail
      * @return \Illuminate\Http\Response
      */
-    public function show(SpecialOffer $specialOffer)
+    public function show(SalesOrderDetail $salesOrderDetail)
     {
         //
     }
@@ -44,10 +44,10 @@ class SpecialOfferController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SpecialOffer  $specialOffer
+     * @param  \App\Models\SalesOrderDetail  $salesOrderDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SpecialOffer $specialOffer)
+    public function update(Request $request, SalesOrderDetail $salesOrderDetail)
     {
         //
     }
@@ -55,10 +55,10 @@ class SpecialOfferController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SpecialOffer  $specialOffer
+     * @param  \App\Models\SalesOrderDetail  $salesOrderDetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SpecialOffer $specialOffer)
+    public function destroy(SalesOrderDetail $salesOrderDetail)
     {
         //
     }

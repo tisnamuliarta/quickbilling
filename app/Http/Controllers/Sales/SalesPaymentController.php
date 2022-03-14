@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Documents;
+namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
-use App\Models\SalesOrderHeader;
 use Illuminate\Http\Request;
 
-class SalesOrderHeaderController extends Controller
+class SalesPaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,10 +31,10 @@ class SalesOrderHeaderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SalesOrderHeader  $salesOrderHeader
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(SalesOrderHeader $salesOrderHeader)
+    public function show($id)
     {
         //
     }
@@ -44,10 +43,10 @@ class SalesOrderHeaderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SalesOrderHeader  $salesOrderHeader
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SalesOrderHeader $salesOrderHeader)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -55,10 +54,10 @@ class SalesOrderHeaderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SalesOrderHeader  $salesOrderHeader
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SalesOrderHeader $salesOrderHeader)
+    public function destroy($id)
     {
         //
     }
