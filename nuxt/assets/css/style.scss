@@ -4,6 +4,12 @@
   overflow: hidden;
 }
 
+.scroll-container-min {
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+}
+
 .text--white {
   color: #fff !important;
 }
@@ -408,4 +414,8 @@ body {
 
 .v-data-table-header {
   background-color: #c8dff1;
+}
+
+.form-table > .v-data-table__wrapper > table {
+  table-layout: fixed;
 }

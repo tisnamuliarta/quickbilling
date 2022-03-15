@@ -18,6 +18,7 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
           <template v-slot:top>
@@ -71,6 +72,7 @@ export default {
       options: {},
       headers: [
         { text: 'Name', value: 'name' },
+        { text: 'Type', value: 'type' },
         { text: 'Company', value: 'company_name' },
         { text: 'Address', value: 'address' },
         { text: 'Email', value: 'email' },

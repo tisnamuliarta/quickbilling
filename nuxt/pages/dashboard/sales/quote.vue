@@ -41,19 +41,19 @@
       </div>
     </v-flex>
 
-    <LazyItemFormItem
-      ref="formProduct"
+    <LazySalesFormQuote
+      ref="formData"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       @getDataFromApi="getDataFromApi"
-    ></LazyItemFormItem>
+    ></LazySalesFormQuote>
   </v-layout>
 </template>
 
 <script>
 export default {
-  name: 'Products',
+  name: 'SalesQuote',
   layout: 'dashboard',
   data() {
     return {
@@ -70,16 +70,13 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Product Code', value: 'name' },
-        { text: 'Product Name', value: 'name' },
-        { text: 'Product Category', value: 'name' },
-        { text: 'Qty', value: 'name' },
-        { text: 'Minimum Stock', value: 'name' },
-        { text: 'Unit', value: 'name' },
-        { text: 'Average Price', value: 'name' },
-        { text: 'Last Buy Price', value: 'name' },
-        { text: 'Buy Price', value: 'name' },
-        { text: 'Sell Price', value: 'name' },
+        { text: 'Number', value: 'name' },
+        { text: 'Customer', value: 'name' },
+        { text: 'Date', value: 'name' },
+        { text: 'Due Date', value: 'name' },
+        { text: 'Status', value: 'name' },
+        { text: 'Balance Due', value: 'name', align: 'right' },
+        { text: 'Total', value: 'name', align: 'right' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
@@ -116,12 +113,12 @@ export default {
   methods: {
     newData() {
       this.editedIndex = -1
-      this.$refs.formProduct.newData()
+      this.$refs.formData.newData(this.form, this.defaultItem)
     },
 
     editItem(item) {
       this.editedIndex = this.allData.indexOf(item)
-      this.$refs.formProduct.editItem(item)
+      this.$refs.formData.editItem(item)
     },
 
     emitData(data) {
@@ -138,7 +135,7 @@ export default {
       this.loading = true
       const vm = this
       this.$axios
-        .get(`/api/inventory/items`, {
+        .get(`/api/sales/quote`, {
           params: {
             options: vm.options,
             searchItem: vm.searchItem,

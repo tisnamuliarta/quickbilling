@@ -77,11 +77,11 @@ class ContactController extends Controller
             $contact = Contact::create($this->service->formData($form));
 
             if ($form['bank_list']) {
-                $this->storeContactBank($form['bank_list'], $contact->id);
+                $this->storeContactBank($form['bank_list'], $contact['id']);
             }
 
             if ($form['email_list']) {
-                $this->storeContactEmail($form['email_list'], $contact->id);
+                $this->storeContactEmail($form['email_list'], $contact['id']);
             }
 
             if ($form['can_login']) {

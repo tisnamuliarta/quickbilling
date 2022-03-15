@@ -3,7 +3,6 @@
     v-model="dialog"
     no-click-animation
     persistent
-    scrollable
     :max-width="maxWidth"
     transition="dialog-bottom-transition"
   >
@@ -16,9 +15,9 @@
         </v-btn>
       </v-card-title>
       <v-divider></v-divider>
-      <v-card-text>
-        <slot name="content"></slot>
-      </v-card-text>
+
+      <slot name="content"></slot>
+
       <v-divider></v-divider>
       <v-card-actions>
         <slot name="addLine"></slot>

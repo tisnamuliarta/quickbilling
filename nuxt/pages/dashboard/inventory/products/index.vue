@@ -18,6 +18,7 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
           <template v-slot:top>

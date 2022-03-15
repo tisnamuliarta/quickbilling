@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // List Sales routes
 Route::apiResources([
-    'quotation' => SalesQuotationController::class,
+    'quote' => SalesQuotationController::class,
     'order' => SalesOrderController::class,
     'delivery' => SalesDeliveryController::class,
     'invoice' => SalesInvoiceController::class,

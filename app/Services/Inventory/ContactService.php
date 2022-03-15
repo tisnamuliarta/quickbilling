@@ -68,10 +68,10 @@ class ContactService
             'address' => (array_key_exists('address', $form)) ? $form['address'] : null,
             'payable_account_id' => (array_key_exists('payable_account_id', $form))
                 ? $form['payable_account_id'] : null,
-            'max_payable' => (array_key_exists('max_payable', $form)) ? $form['max_payable'] : null,
-            'can_login' => (array_key_exists('can_login', $form)) ? $form['can_login'] : false,
+            'max_payable' => (array_key_exists('max_payable', $form)) ? (float)$form['max_payable'] : 0,
+            'can_login' => (array_key_exists('can_login', $form)) ? (($form['can_login']) ?: false) : false,
             'active_max_payable' => (array_key_exists('active_max_payable', $form))
-                ? $form['active_max_payable'] : false,
+                ? (($form['active_max_payable']) ?: false) : false,
             'payment_term_id' => (array_key_exists('payment_term_id', $form)) ? $form['payment_term_id'] : null,
             'shipping_address' => (array_key_exists('shipping_address', $form)) ? $form['shipping_address'] : null,
             'receivable_account_id' => (array_key_exists('receivable_account_id', $form))

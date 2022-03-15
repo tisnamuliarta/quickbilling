@@ -19,14 +19,16 @@ trait ContactDetail
     public function storeContactBank($banks, $contact_id)
     {
         foreach ($banks as $bank) {
-            ContactBank::create([
-                'bank_id' => array_key_exists('name', $bank) ? $this->bankIdByName($bank['name']) : null,
-                'contact_account_name' => array_key_exists('account_name', $bank)
-                    ? $bank['account_name'] : null,
-                'contact_account_number' => array_key_exists('account_number', $bank)
-                    ? $bank['account_number'] : null,
-                'contact_id' => $contact_id,
-            ]);
+            if ($bank['name']) {
+                ContactBank::create([
+                    'bank_id' => array_key_exists('name', $bank) ? $this->bankIdByName($bank['name']) : null,
+                    'contact_account_name' => array_key_exists('account_name', $bank)
+                        ? $bank['account_name'] : null,
+                    'contact_account_number' => array_key_exists('account_number', $bank)
+                        ? $bank['account_number'] : null,
+                    'contact_id' => $contact_id,
+                ]);
+            }
         }
     }
 
@@ -38,10 +40,12 @@ trait ContactDetail
     public function storeContactEmail($email, $contact_id)
     {
         foreach ($email as $item) {
-            ContactEmail::create([
-                'email' => array_key_exists('email', $item) ? $item['email'] : null,
-                'contact_id' => $contact_id,
-            ]);
+            if ($item['email']) {
+                ContactEmail::create([
+                    'email' => array_key_exists('email', $item) ? $item['email'] : null,
+                    'contact_id' => $contact_id,
+                ]);
+            }
         }
     }
 
@@ -52,10 +56,10 @@ trait ContactDetail
     public function createUser($form)
     {
         $user = User::create([
-           'name' => $form['name'],
-           'email' => $form['email'],
-           'password' => bcrypt($form['password']),
-           'username' => $form['email'],
+            'name' => $form['name'],
+            'email' => $form['email'],
+            'password' => bcrypt($form['password']),
+            'username' => $form['email'],
         ]);
 
         $this->processUserRolePermission('Customer', $user);
