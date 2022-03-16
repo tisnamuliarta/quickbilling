@@ -4,20 +4,18 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _350f25dc = () => interopDefault(import('..\\nuxt\\pages\\about-us.vue' /* webpackChunkName: "pages/about-us" */))
-const _6a415c4b = () => interopDefault(import('..\\nuxt\\pages\\booking.vue' /* webpackChunkName: "pages/booking" */))
-const _ee4ff408 = () => interopDefault(import('..\\nuxt\\pages\\category.vue' /* webpackChunkName: "pages/category" */))
-const _30ae2869 = () => interopDefault(import('..\\nuxt\\pages\\contact-us.vue' /* webpackChunkName: "pages/contact-us" */))
 const _cfb61188 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\index.vue' /* webpackChunkName: "pages/dashboard/index" */))
-const _0e473588 = () => interopDefault(import('..\\nuxt\\pages\\faq.vue' /* webpackChunkName: "pages/faq" */))
-const _639356de = () => interopDefault(import('..\\nuxt\\pages\\item.vue' /* webpackChunkName: "pages/item" */))
-const _769b8a3d = () => interopDefault(import('..\\nuxt\\pages\\item-detail.vue' /* webpackChunkName: "pages/item-detail" */))
-const _07add315 = () => interopDefault(import('..\\nuxt\\pages\\privacy-policy.vue' /* webpackChunkName: "pages/privacy-policy" */))
-const _169ff60e = () => interopDefault(import('..\\nuxt\\pages\\terms.vue' /* webpackChunkName: "pages/terms" */))
 const _547f2c33 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
 const _2e6717b6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
 const _2278e18a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _fe274260 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
+const _50ceb094 = () => interopDefault(import('..\\nuxt\\pages\\pages\\about-us.vue' /* webpackChunkName: "pages/pages/about-us" */))
+const _10eccada = () => interopDefault(import('..\\nuxt\\pages\\pages\\booking.vue' /* webpackChunkName: "pages/pages/booking" */))
+const _b6d0de98 = () => interopDefault(import('..\\nuxt\\pages\\pages\\category.vue' /* webpackChunkName: "pages/pages/category" */))
+const _5ab5e521 = () => interopDefault(import('..\\nuxt\\pages\\pages\\contact-us.vue' /* webpackChunkName: "pages/pages/contact-us" */))
+const _948c5060 = () => interopDefault(import('..\\nuxt\\pages\\pages\\faq.vue' /* webpackChunkName: "pages/pages/faq" */))
+const _399873cd = () => interopDefault(import('..\\nuxt\\pages\\pages\\privacy-policy.vue' /* webpackChunkName: "pages/pages/privacy-policy" */))
+const _ebf9957e = () => interopDefault(import('..\\nuxt\\pages\\pages\\terms.vue' /* webpackChunkName: "pages/pages/terms" */))
 const _efc46c98 = () => interopDefault(import('..\\nuxt\\pages\\student\\announcement.vue' /* webpackChunkName: "pages/student/announcement" */))
 const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.vue' /* webpackChunkName: "pages/student/print" */))
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
@@ -57,45 +55,9 @@ export const routerOptions = {
   scrollBehavior,
 
   routes: [{
-    path: "/about-us",
-    component: _350f25dc,
-    name: "about-us"
-  }, {
-    path: "/booking",
-    component: _6a415c4b,
-    name: "booking"
-  }, {
-    path: "/category",
-    component: _ee4ff408,
-    name: "category"
-  }, {
-    path: "/contact-us",
-    component: _30ae2869,
-    name: "contact-us"
-  }, {
     path: "/dashboard",
     component: _cfb61188,
     name: "dashboard"
-  }, {
-    path: "/faq",
-    component: _0e473588,
-    name: "faq"
-  }, {
-    path: "/item",
-    component: _639356de,
-    name: "item"
-  }, {
-    path: "/item-detail",
-    component: _769b8a3d,
-    name: "item-detail"
-  }, {
-    path: "/privacy-policy",
-    component: _07add315,
-    name: "privacy-policy"
-  }, {
-    path: "/terms",
-    component: _169ff60e,
-    name: "terms"
   }, {
     path: "/auth/login",
     component: _547f2c33,
@@ -112,6 +74,34 @@ export const routerOptions = {
     path: "/dashboard/users",
     component: _fe274260,
     name: "dashboard-users"
+  }, {
+    path: "/pages/about-us",
+    component: _50ceb094,
+    name: "pages-about-us"
+  }, {
+    path: "/pages/booking",
+    component: _10eccada,
+    name: "pages-booking"
+  }, {
+    path: "/pages/category",
+    component: _b6d0de98,
+    name: "pages-category"
+  }, {
+    path: "/pages/contact-us",
+    component: _5ab5e521,
+    name: "pages-contact-us"
+  }, {
+    path: "/pages/faq",
+    component: _948c5060,
+    name: "pages-faq"
+  }, {
+    path: "/pages/privacy-policy",
+    component: _399873cd,
+    name: "pages-privacy-policy"
+  }, {
+    path: "/pages/terms",
+    component: _ebf9957e,
+    name: "pages-terms"
   }, {
     path: "/student/announcement",
     component: _efc46c98,

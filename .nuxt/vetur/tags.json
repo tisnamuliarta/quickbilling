@@ -41,6 +41,9 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "DocumentFormDocument": {
+    "description": "Auto imported from components/Document/FormDocument.vue"
+  },
   "DocumentTableDetail": {
     "description": "Auto imported from components/Document/TableDetail.vue"
   },
@@ -70,9 +73,6 @@
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
-  },
-  "SalesFormQuote": {
-    "description": "Auto imported from components/Sales/FormQuote.vue"
   },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"

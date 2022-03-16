@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\File\FileController;
 use App\Http\Controllers\Inventory\ContactController;
 use App\Http\Controllers\Inventory\ItemController;
@@ -51,12 +52,11 @@ Route::group(['prefix' => 'api'], function () {
             ->group(__DIR__ . '/master.php');
 
         // List all sales routes
-        Route::prefix('sales')
-            ->group(__DIR__ . '/sales.php');
+        Route::prefix('transactions')
+            ->group(__DIR__ . '/transactions.php');
 
-        // List all sales routes
-        Route::prefix('purchase')
-            ->group(__DIR__ . '/purchase.php');
+        // List all documents routes
+        Route::apiResource('documents', DocumentController::class);
 
         // List all master routes
         Route::prefix('financial')

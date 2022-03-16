@@ -544,18 +544,20 @@
         </v-btn>
       </template>
     </DialogForm>
-
-    <LazyInventoryFormMaster ref="formMaster" @returnData="returnData"></LazyInventoryFormMaster>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'FormQuote',
+  name: 'FormDocument',
 
   props: {
     formTitle: {
+      type: String,
+      default: '',
+    },
+    type: {
       type: String,
       default: '',
     },

@@ -41,13 +41,14 @@
       </div>
     </v-flex>
 
-    <LazySalesFormQuote
+    <LazyDocumentFormDocument
       ref="formData"
+      type="sq"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       @getDataFromApi="getDataFromApi"
-    ></LazySalesFormQuote>
+    ></LazyDocumentFormDocument>
   </v-layout>
 </template>
 
@@ -90,7 +91,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Sales Quote' : 'Edit Sales Quote'
     },
     buttonTitle() {
       return this.editedIndex === -1 ? 'Save' : 'Update'

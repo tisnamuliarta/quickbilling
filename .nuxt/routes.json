@@ -1,73 +1,10 @@
 [
   {
-    "name": "about-us",
-    "path": "/about-us",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\about-us.vue",
-    "chunkName": "pages/about-us",
-    "_name": "_350f25dc"
-  },
-  {
-    "name": "booking",
-    "path": "/booking",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\booking.vue",
-    "chunkName": "pages/booking",
-    "_name": "_6a415c4b"
-  },
-  {
-    "name": "category",
-    "path": "/category",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\category.vue",
-    "chunkName": "pages/category",
-    "_name": "_ee4ff408"
-  },
-  {
-    "name": "contact-us",
-    "path": "/contact-us",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\contact-us.vue",
-    "chunkName": "pages/contact-us",
-    "_name": "_30ae2869"
-  },
-  {
     "name": "dashboard",
     "path": "/dashboard",
     "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\index.vue",
     "chunkName": "pages/dashboard/index",
     "_name": "_cfb61188"
-  },
-  {
-    "name": "faq",
-    "path": "/faq",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\faq.vue",
-    "chunkName": "pages/faq",
-    "_name": "_0e473588"
-  },
-  {
-    "name": "item",
-    "path": "/item",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\item.vue",
-    "chunkName": "pages/item",
-    "_name": "_639356de"
-  },
-  {
-    "name": "item-detail",
-    "path": "/item-detail",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\item-detail.vue",
-    "chunkName": "pages/item-detail",
-    "_name": "_769b8a3d"
-  },
-  {
-    "name": "privacy-policy",
-    "path": "/privacy-policy",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\privacy-policy.vue",
-    "chunkName": "pages/privacy-policy",
-    "_name": "_07add315"
-  },
-  {
-    "name": "terms",
-    "path": "/terms",
-    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\terms.vue",
-    "chunkName": "pages/terms",
-    "_name": "_169ff60e"
   },
   {
     "name": "auth-login",
@@ -96,6 +33,55 @@
     "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\index.vue",
     "chunkName": "pages/dashboard/users/index",
     "_name": "_fe274260"
+  },
+  {
+    "name": "pages-about-us",
+    "path": "/pages/about-us",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\about-us.vue",
+    "chunkName": "pages/pages/about-us",
+    "_name": "_50ceb094"
+  },
+  {
+    "name": "pages-booking",
+    "path": "/pages/booking",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\booking.vue",
+    "chunkName": "pages/pages/booking",
+    "_name": "_10eccada"
+  },
+  {
+    "name": "pages-category",
+    "path": "/pages/category",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\category.vue",
+    "chunkName": "pages/pages/category",
+    "_name": "_b6d0de98"
+  },
+  {
+    "name": "pages-contact-us",
+    "path": "/pages/contact-us",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\contact-us.vue",
+    "chunkName": "pages/pages/contact-us",
+    "_name": "_5ab5e521"
+  },
+  {
+    "name": "pages-faq",
+    "path": "/pages/faq",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\faq.vue",
+    "chunkName": "pages/pages/faq",
+    "_name": "_948c5060"
+  },
+  {
+    "name": "pages-privacy-policy",
+    "path": "/pages/privacy-policy",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\privacy-policy.vue",
+    "chunkName": "pages/pages/privacy-policy",
+    "_name": "_399873cd"
+  },
+  {
+    "name": "pages-terms",
+    "path": "/pages/terms",
+    "component": "C:\\\\laragon\\\\www\\\\tizcrm\\\\nuxt\\\\pages\\\\pages\\\\terms.vue",
+    "chunkName": "pages/pages/terms",
+    "_name": "_ebf9957e"
   },
   {
     "name": "student-announcement",
