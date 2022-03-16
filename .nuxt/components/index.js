@@ -14,6 +14,7 @@ export { default as DashboardCheck } from '../..\\nuxt\\components\\Dashboard\\C
 export { default as DashboardForm } from '../..\\nuxt\\components\\Dashboard\\Form.vue'
 export { default as DocumentFormDocument } from '../..\\nuxt\\components\\Document\\FormDocument.vue'
 export { default as DocumentTableDetail } from '../..\\nuxt\\components\\Document\\TableDetail.vue'
+export { default as DocumentTableDocument } from '../..\\nuxt\\components\\Document\\TableDocument.vue'
 export { default as DocumentTableItem } from '../..\\nuxt\\components\\Document\\TableItem.vue'
 export { default as FinancialFormAccount } from '../..\\nuxt\\components\\Financial\\FormAccount.vue'
 export { default as InventoryFormContact } from '../..\\nuxt\\components\\Inventory\\FormContact.vue'

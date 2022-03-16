@@ -47,6 +47,9 @@
   "DocumentTableDetail": {
     "description": "Auto imported from components/Document/TableDetail.vue"
   },
+  "DocumentTableDocument": {
+    "description": "Auto imported from components/Document/TableDocument.vue"
+  },
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },

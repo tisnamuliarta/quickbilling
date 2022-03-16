@@ -22,6 +22,7 @@ You can directly use them in pages and other components without the need to impo
 - `<DashboardForm>` | `<dashboard-form>` (components/Dashboard/Form.vue)
 - `<DocumentFormDocument>` | `<document-form-document>` (components/Document/FormDocument.vue)
 - `<DocumentTableDetail>` | `<document-table-detail>` (components/Document/TableDetail.vue)
+- `<DocumentTableDocument>` | `<document-table-document>` (components/Document/TableDocument.vue)
 - `<DocumentTableItem>` | `<document-table-item>` (components/Document/TableItem.vue)
 - `<FinancialFormAccount>` | `<financial-form-account>` (components/Financial/FormAccount.vue)
 - `<InventoryFormContact>` | `<inventory-form-contact>` (components/Inventory/FormContact.vue)

@@ -12,8 +12,8 @@
             <v-row no-gutters>
               <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
-                  v-model="form.code"
-                  label="Customer"
+                  v-model="form.contact_id"
+                  label="Customer/Vendor"
                   outlined
                   dense
                   hide-details="auto"
@@ -22,7 +22,7 @@
 
               <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-select
-                  v-model="form.category"
+                  v-model="form.issued_at"
                   :items="itemCategory"
                   label="Transaction Date"
                   outlined
@@ -109,7 +109,7 @@
               <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
                   v-model="form.buy_tax"
-                  label="Customer Reference"
+                  label="Reference No"
                   outlined
                   dense
                   hide-details="auto"
