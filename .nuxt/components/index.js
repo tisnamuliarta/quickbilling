@@ -18,6 +18,8 @@ export { default as FinancialFormAccount } from '../..\\nuxt\\components\\Financ
 export { default as InventoryFormContact } from '../..\\nuxt\\components\\Inventory\\FormContact.vue'
 export { default as InventoryFormItem } from '../..\\nuxt\\components\\Inventory\\FormItem.vue'
 export { default as InventoryFormMaster } from '../..\\nuxt\\components\\Inventory\\FormMaster.vue'
+export { default as InventoryTableContact } from '../..\\nuxt\\components\\Inventory\\TableContact.vue'
+export { default as InventoryTableItem } from '../..\\nuxt\\components\\Inventory\\TableItem.vue'
 export { default as MasterDialogPermission } from '../..\\nuxt\\components\\Master\\DialogPermission.vue'
 export { default as MasterPermissionList } from '../..\\nuxt\\components\\Master\\PermissionList.vue'
 export { default as SalesFormQuote } from '../..\\nuxt\\components\\Sales\\FormQuote.vue'

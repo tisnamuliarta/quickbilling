@@ -9,6 +9,7 @@
         >
         </v-skeleton-loader>
         <v-data-table
+          v-model="selected"
           v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
@@ -18,6 +19,8 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          item-key="id"
+          show-select
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
@@ -38,6 +41,26 @@
               mdi-pencil-circle
             </v-icon>
           </template>
+
+          <template #[`item.categories`]="{ item }">
+            {{ parseJson(item.categories) }}
+          </template>
+
+          <template #[`item.sale_price`]="{ item }">
+            {{ formatPrice(item.sale_price) }}
+          </template>
+
+          <template #[`item.purchase_price`]="{ item }">
+            {{ formatPrice(item.purchase_price) }}
+          </template>
+
+          <template #[`item.last_buy_price`]="{ item }">
+            {{ formatPrice(item.last_buy_price) }}
+          </template>
+
+          <template #[`item.average_price`]="{ item }">
+            {{ formatPrice(item.average_price) }}
+          </template>
         </v-data-table>
       </div>
     </v-flex>
@@ -54,10 +77,11 @@
 
 <script>
 export default {
-  name: 'Products',
-  layout: 'dashboard',
+  name: "TableItem",
+
   data() {
     return {
+      selected: [],
       totalData: 0,
       url: '',
       editedIndex: -1,
@@ -74,21 +98,15 @@ export default {
       headers: [
         { text: 'Product Code', value: 'code' },
         { text: 'Product Name', value: 'name' },
-        { text: 'Product Category', value: 'type' },
+        { text: 'Product Category', value: 'categories' },
         { text: 'Minimum Stock', value: 'minimum_stock' },
         { text: 'Unit', value: 'unit' },
-        { text: 'Average Price', value: 'average_price' },
-        { text: 'Last Buy Price', value: 'last_buy_price' },
-        { text: 'Buy Price', value: 'purchase_price' },
-        { text: 'Sell Price', value: 'sale_price' },
+        { text: 'Average Price', value: 'average_price', align: 'right' },
+        { text: 'Last Buy Price', value: 'last_buy_price', align: 'right' },
+        { text: 'Buy Price', value: 'purchase_price', align: 'right' },
+        { text: 'Sell Price', value: 'sale_price', align: 'right' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
-    }
-  },
-
-  head() {
-    return {
-      title: 'Products',
     }
   },
 
@@ -115,9 +133,22 @@ export default {
   },
 
   methods: {
+    formatPrice(value) {
+      let val = (value/1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    },
+
     newData() {
       this.editedIndex = -1
-      this.$refs.formData.newData()
+      this.$refs.formData.newData(this.form)
+    },
+
+    parseJson(category) {
+      if (Array.isArray(JSON.parse(category))) {
+        return JSON.parse(category).toString()
+      } else {
+        return category
+      }
     },
 
     editItem(item) {

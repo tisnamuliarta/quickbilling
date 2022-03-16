@@ -51,7 +51,11 @@ trait ApiResponse
         $forms = DB::getSchemaBuilder()->getColumnListing($table);
         $arr_form = [];
         foreach ($forms as $form) {
-            $arr_form[$form] = null;
+            if ($form != 'id' && $form != 'created_at' && $form != 'updated_at' &&
+                $form != 'company_id' && $form != 'deleted_at'
+            ) {
+                $arr_form[$form] = null;
+            }
         }
         return $arr_form;
     }

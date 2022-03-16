@@ -23,7 +23,7 @@ const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.v
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
 const _1a73bd4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
 const _441197ca = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\contact.vue' /* webpackChunkName: "pages/dashboard/inventory/contact" */))
-const _63dfce18 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\index.vue' /* webpackChunkName: "pages/dashboard/inventory/products/index" */))
+const _d8ecf74e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
 const _111ed0fb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
 const _1fb56a36 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
 const _fe6c83d2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\order.vue' /* webpackChunkName: "pages/dashboard/purchase/order" */))
@@ -43,9 +43,6 @@ const _78c955a4 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\setti
 const _7ed1bd38 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\setup.vue' /* webpackChunkName: "pages/dashboard/settings/setup" */))
 const _f9e6b816 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\show.vue' /* webpackChunkName: "pages/dashboard/tasks/show" */))
 const _0a06c677 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\current.vue' /* webpackChunkName: "pages/dashboard/users/current" */))
-const _65148e4d = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\brand.vue' /* webpackChunkName: "pages/dashboard/inventory/products/brand" */))
-const _fbe163b0 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\category.vue' /* webpackChunkName: "pages/dashboard/inventory/products/category" */))
-const _bcc0ed68 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\products\\price-list.vue' /* webpackChunkName: "pages/dashboard/inventory/products/price-list" */))
 const _4ab246c4 = () => interopDefault(import('..\\nuxt\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -136,9 +133,9 @@ export const routerOptions = {
     component: _441197ca,
     name: "dashboard-inventory-contact"
   }, {
-    path: "/dashboard/inventory/products",
-    component: _63dfce18,
-    name: "dashboard-inventory-products"
+    path: "/dashboard/inventory/item",
+    component: _d8ecf74e,
+    name: "dashboard-inventory-item"
   }, {
     path: "/dashboard/posts/category",
     component: _111ed0fb,
@@ -215,18 +212,6 @@ export const routerOptions = {
     path: "/dashboard/users/current",
     component: _0a06c677,
     name: "dashboard-users-current"
-  }, {
-    path: "/dashboard/inventory/products/brand",
-    component: _65148e4d,
-    name: "dashboard-inventory-products-brand"
-  }, {
-    path: "/dashboard/inventory/products/category",
-    component: _fbe163b0,
-    name: "dashboard-inventory-products-category"
-  }, {
-    path: "/dashboard/inventory/products/price-list",
-    component: _bcc0ed68,
-    name: "dashboard-inventory-products-price-list"
   }, {
     path: "/",
     component: _4ab246c4,

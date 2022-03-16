@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Models\File\File;
 use App\Models\Inventory\Item;
 use App\Services\Inventory\ItemService;
 use App\Traits\FileUpload;
@@ -38,6 +39,7 @@ class ItemController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('items');
+        $result['form']['temp_id'] = mt_rand(100000, 999999999999);
         $result['url'] = url('/');
         $result = array_merge($result, $this->service->index($request));
 
@@ -60,15 +62,11 @@ class ItemController extends Controller
 
         DB::beginTransaction();
         try {
+            $category = $request->category;
+
             $item = Item::create($this->service->formData($request, 'store'));
 
-            if ($request->hasFile('image_temp')) {
-                $file = $request->file('image_temp');
-
-                $fileName = $this->fileName($file);
-
-                $this->upload($file, '/files/items', 'logo', $fileName);
-            }
+            $this->processItemDetails($category, $item['id']);
 
             DB::commit();
             return $this->success([
@@ -81,6 +79,18 @@ class ItemController extends Controller
                 "Trace" => $exception->getTrace()
             ]);
         }
+    }
+
+    /**
+     * @param $category
+     * @param $id
+     * @return void
+     */
+    protected function processItemDetails($category, $id)
+    {
+        $this->service->processItemCategory($category, $id);
+
+        // this->checkFile($category, $id);
     }
 
     /**
@@ -129,24 +139,44 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
-        }
+//        if ($this->validation($request)) {
+//            return $this->error($this->validation($request), 422, [
+//                "errors" => true
+//            ]);
+//        }
 
+        DB::beginTransaction();
         try {
-            Item::where("product_id", "=", $id)->update($this->service->formData($request, 'update'));
+            $category = $request->category;
+
+            $item = Item::where("id", "=", $id)
+                ->update($this->service->formData($request, 'update', $id));
+
+            $this->processItemDetails($category, $id);
+
+            DB::commit();
 
             return $this->success([
                 "errors" => false
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,
                 "Trace" => $exception->getTrace()
             ]);
         }
+    }
+
+    /**
+     * @param $request
+     * @param $id
+     * @return void
+     */
+    protected function checkFile($request, $id)
+    {
+        $file = File::where('fileable_type', 'item');
     }
 
     /**

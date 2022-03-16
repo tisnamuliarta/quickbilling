@@ -1,14 +1,17 @@
 <template>
-  <div>Post Category</div>
+  <div>
+    <InventoryTableItem></InventoryTableItem>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'ProductCategory',
+  name: "Item",
   layout: 'dashboard',
+
   head() {
     return {
-      title: 'Post Category',
+      title: 'Items',
     }
   },
 }

@@ -59,6 +59,12 @@
   "InventoryFormMaster": {
     "description": "Auto imported from components/Inventory/FormMaster.vue"
   },
+  "InventoryTableContact": {
+    "description": "Auto imported from components/Inventory/TableContact.vue"
+  },
+  "InventoryTableItem": {
+    "description": "Auto imported from components/Inventory/TableItem.vue"
+  },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
   },

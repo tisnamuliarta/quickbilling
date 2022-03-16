@@ -22,6 +22,7 @@ class ContactService
         $result = array();
         $query = Contact::selectRaw(
             " contacts.*,
+            0 as balance,
              CONCAT('(', sell.number, ') ', sell.name) as sell_account_name,
              CONCAT('(', buy.number, ') ', buy.name) as buy_account_name,
              'actions' as ACTIONS "

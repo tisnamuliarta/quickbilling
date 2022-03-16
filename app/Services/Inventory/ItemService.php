@@ -3,13 +3,19 @@
 namespace App\Services\Inventory;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemCategory;
+use App\Traits\Categories;
 use App\Traits\FileUpload;
+use App\Traits\Financial;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ItemService
 {
     use FileUpload;
+    use Categories;
+    use Financial;
 
     /**
      * @param $request
@@ -29,7 +35,20 @@ class ItemService
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
-        $query = Item::selectRaw("*, 'actions' as ACTIONS");
+        $query = Item::selectRaw("
+                items.*,
+                0 as average_price,
+                0 as last_buy_price,
+                (SELECT JSON_ARRAYAGG(t1.name)
+                    FROM categories AS t1
+                    LEFT JOIN item_categories AS t2 ON t1.id = t2.category_id
+               WHERE t2.item_id = items.id ) as category,
+               (SELECT JSON_ARRAYAGG(t1.name)
+                    FROM categories AS t1
+                    LEFT JOIN item_categories AS t2 ON t1.id = t2.category_id
+               WHERE t2.item_id = items.id ) as categories,
+                'actions' as ACTIONS
+            ");
 
         $result["total"] = $query->count();
 
@@ -38,51 +57,44 @@ class ItemService
             ->limit($row_data)
             ->get();
 
-        $result = array_merge($result, [
+        return array_merge($result, [
             "rows" => $all_data,
         ]);
-
-        return $result;
     }
 
     /**
      * @param $request
      * @param $type
+     * @param null $id
      * @return array
      */
-    public function formData($request, $type): array
+    public function formData($request, $type, $id = null): array
     {
-        $fileName = null;
-        if ($request->hasFile('image_temp')) {
-            $file = $request->file('image_temp');
-
-            $fileName = $this->fileName($file);
-        }
-        $data = [
-            'name' => $request->name,
-            'image' => isset($fileName) ? $fileName : '',
+        $request->mergeIfMissing([
             'company_id' => session('company_id'),
-            'item_group_id' => $this->checkItem('item_group_id', $request, true),
-            'sale_price' => $this->checkItem('sale_price', $request, true),
-            'purchase_price' => $this->checkItem('purchase_price', $request, true),
-            'quantity' => $this->checkItem('quantity', $request, true),
-            'minimum_stock' => $this->checkItem('minimum_stock', $request, true),
-            'tract_stock' => $this->checkItem('tract_stock', $request, true),
-            'buy_tax_id' => $this->checkItem('buy_tax_id', $request, false),
-            'sell_tax_id' => $this->checkItem('sell_tax_id', $request, false),
-            'buy_account_id' => $this->checkItem('buy_account_id', $request, false),
-            'sell_account_id' => $this->checkItem('sell_account_id', $request, false),
-            'inventory_account' => $this->checkItem('inventory_account', $request, false),
-            'code' => (isset($request->code)) ? $request->code : $this->generateDocNum(date('Y-m-d H:i:s'), 'ITM'),
-            'unit' => $this->checkItem('unit', $request, false),
-            'description' => $this->checkItem('description', $request, false),
-        ];
+        ]);
 
-        $merge = [];
+        $request->request->remove('category');
+        $request->request->remove('categories');
+        $request->request->remove('ACTIONS');
+        $data = $request->all();
+
+        $data['image'] = '';
+        $data['item_group_id'] = 0;
+        $data['updated_at'] = Carbon::now();
+        $data['created_at'] = Carbon::now();
+        $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $this->getTaxIdByName($request->buy_tax_id) : 0;
+        $data['quantity'] = (isset($request->quantity)) ? $request->quantity : 0;
+        $data['minimum_stock'] = (isset($request->minimum_stock)) ? $request->minimum_stock : 0;
+        $data['tract_stock'] = (isset($request->tract_stock)) ? $request->tract_stock : 0;
+        $data['enabled'] = (isset($request->enabled)) ? $request->enabled : true;
+        $data['sell_tax_id'] = (isset($request->sell_tax_id)) ? $this->getTaxIdByName($request->sell_tax_id) : 0;
+
 
         if ($type == 'store') {
-            $merge['created_by'] = $request->user()->id;
-            $data = array_merge($data, $merge);
+            $data['created_by'] = $request->user()->id;
+            $data['code'] = (isset($request->code)) ? $request->code :
+                $this->generateDocNum(date('Y-m-d H:i:s'), 'ITM');
         }
 
         return $data;
@@ -151,5 +163,22 @@ class ItemService
         $default_int = ($int) ? 0 : null;
 
         return (isset($request->$item)) ? $request->$item : $default_int;
+    }
+
+    /**
+     * @param $category
+     * @param $item_id
+     * @return void
+     */
+    public function processItemCategory($category, $item_id)
+    {
+        if ($category) {
+            foreach ($category as $item) {
+                ItemCategory::updateOrCreate([
+                    'category_id' => $this->categoryIdByName($item),
+                    'item_id' => $item_id
+                ]);
+            }
+        }
     }
 }

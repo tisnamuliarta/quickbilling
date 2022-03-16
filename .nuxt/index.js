@@ -25,6 +25,8 @@ import nuxt_plugin_vuegates_72bed74b from 'nuxt_plugin_vuegates_72bed74b' // Sou
 import nuxt_plugin_vuetifydatetimepicker_cdb158aa from 'nuxt_plugin_vuetifydatetimepicker_cdb158aa' // Source: ..\\nuxt\\plugins\\vuetify-datetime-picker (mode: 'all')
 import nuxt_plugin_dragable_7e1b63f8 from 'nuxt_plugin_dragable_7e1b63f8' // Source: ..\\nuxt\\plugins\\dragable (mode: 'all')
 import nuxt_plugin_vuetifymoney_56b8af0b from 'nuxt_plugin_vuetifymoney_56b8af0b' // Source: ..\\nuxt\\plugins\\vuetify-money (mode: 'all')
+import nuxt_plugin_vuecookie_41e86efe from 'nuxt_plugin_vuecookie_41e86efe' // Source: ..\\nuxt\\plugins\\vue-cookie (mode: 'all')
+import nuxt_plugin_formatter_4867cbd8 from 'nuxt_plugin_formatter_4867cbd8' // Source: ..\\nuxt\\plugins\\formatter (mode: 'all')
 import nuxt_plugin_tiptapvuetify_576a6ddf from 'nuxt_plugin_tiptapvuetify_576a6ddf' // Source: ..\\nuxt\\plugins\\tiptap-vuetify (mode: 'client')
 import nuxt_plugin_auth_2fc4d66f from 'nuxt_plugin_auth_2fc4d66f' // Source: .\\auth.js (mode: 'all')
 
@@ -266,6 +268,14 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_vuetifymoney_56b8af0b === 'function') {
     await nuxt_plugin_vuetifymoney_56b8af0b(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuecookie_41e86efe === 'function') {
+    await nuxt_plugin_vuecookie_41e86efe(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_formatter_4867cbd8 === 'function') {
+    await nuxt_plugin_formatter_4867cbd8(app.context, inject)
   }
 
   if (process.client && typeof nuxt_plugin_tiptapvuetify_576a6ddf === 'function') {

@@ -317,10 +317,10 @@ return new class extends Migration {
             $table->unsignedBigInteger('item_group_id');
             $table->string('code', 50)->unique();
             $table->string('name', 200);
-            $table->string('image', 200);
+            $table->string('image', 200)->nullable();
             $table->text('description')->nullable();
-            $table->decimal('sale_price', 15, 4);
-            $table->decimal('purchase_price', 15, 4);
+            $table->decimal('sale_price', 15, 4)->nullable();
+            $table->decimal('purchase_price', 15, 4)->nullable();
             $table->float('quantity', 12, 4)->default(0);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('buy_tax_id')->nullable();

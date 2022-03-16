@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inventory\ProductCategory;
+use App\Models\Inventory\ItemCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +19,7 @@ class ProductCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $brands = ProductCategory::select('category_id', 'category_name')->get();
+        $brands = ItemCategory::select('category_id', 'category_name')->get();
         if (count($brands) < 1) {
             $brands = [
                 [
@@ -50,13 +50,13 @@ class ProductCategoryController extends Controller
                 if (empty($detail['category_name'])) {
                     return $this->error('Brand cannot empty', '422');
                 }
-                $brand = ProductCategory::where('category_id', '=', $detail['category_id'])->first();
+                $brand = ItemCategory::where('category_id', '=', $detail['category_id'])->first();
                 if ($brand) {
                     $brand->category_name = Str::ucfirst($detail['category_name']);
                     $brand->updated_at = Carbon::now();
                     $brand->updated_by = $request->user()->id;
                 } else {
-                    $brand = new ProductCategory();
+                    $brand = new ItemCategory();
                     $brand->category_name = Str::ucfirst($detail['category_name']);
                     $brand->created_at = Carbon::now();
                     $brand->created_by = $request->user()->id;
@@ -79,7 +79,7 @@ class ProductCategoryController extends Controller
      */
     public function show($id)
     {
-        $brand = ProductCategory::find($id);
+        $brand = ItemCategory::find($id);
         return $this->success($brand);
     }
 
@@ -107,7 +107,7 @@ class ProductCategoryController extends Controller
         DB::beginTransaction();
         try {
             $id = $request->id;
-            ProductCategory::whereIn('category_id', $id)->delete();
+            ItemCategory::whereIn('category_id', $id)->delete();
             DB::commit();
             return $this->success([], 'Data updated!');
         } catch (\Exception $exception) {

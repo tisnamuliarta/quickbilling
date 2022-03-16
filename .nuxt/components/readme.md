@@ -26,6 +26,8 @@ You can directly use them in pages and other components without the need to impo
 - `<InventoryFormContact>` | `<inventory-form-contact>` (components/Inventory/FormContact.vue)
 - `<InventoryFormItem>` | `<inventory-form-item>` (components/Inventory/FormItem.vue)
 - `<InventoryFormMaster>` | `<inventory-form-master>` (components/Inventory/FormMaster.vue)
+- `<InventoryTableContact>` | `<inventory-table-contact>` (components/Inventory/TableContact.vue)
+- `<InventoryTableItem>` | `<inventory-table-item>` (components/Inventory/TableItem.vue)
 - `<MasterDialogPermission>` | `<master-dialog-permission>` (components/Master/DialogPermission.vue)
 - `<MasterPermissionList>` | `<master-permission-list>` (components/Master/PermissionList.vue)
 - `<SalesFormQuote>` | `<sales-form-quote>` (components/Sales/FormQuote.vue)

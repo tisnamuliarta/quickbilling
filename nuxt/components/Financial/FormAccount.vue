@@ -149,6 +149,7 @@
 
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-textarea
+                  rows="3"
                   v-model="form.descriptions"
                   label="Descriptions"
                   outlined
@@ -174,7 +175,7 @@
       </template>
     </DialogForm>
 
-    <LazyItemFormMaster ref="formMaster" @returnData="returnData"></LazyItemFormMaster>
+    <LazyInventoryFormMaster ref="formMaster" @returnData="returnData"></LazyInventoryFormMaster>
   </div>
 </template>
 

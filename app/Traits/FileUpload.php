@@ -21,6 +21,21 @@ trait FileUpload
     }
 
     /**
+     * @param $request
+     * @return void
+     */
+    public function processUploadFile($request)
+    {
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $fileName = $this->fileName($file);
+
+            $this->upload($file, '/files/items', 'logo', $fileName);
+        }
+    }
+
+    /**
      * @param $dataFile
      * @param $path
      * @param $type

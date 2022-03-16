@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\File\FileController;
 use App\Http\Controllers\Inventory\ContactController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemUnitController;
@@ -38,6 +39,8 @@ Route::group(['prefix' => 'api'], function () {
                 'item-units' => ItemUnitController::class,
             ]);
         });
+
+        Route::apiResource('files', FileController::class)->only(['index', 'store', 'destroy']);
 
         // Student registration routes
         Route::prefix('student')
