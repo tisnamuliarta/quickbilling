@@ -83,7 +83,7 @@ export default {
   props: {
     viewData: {
       type: Boolean,
-      default: true
+      default: false
     },
     showAddBtn: {
       type: Boolean,

@@ -132,16 +132,13 @@
               </v-col>
 
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Descriptions</span>
-                <client-only>
-                  <!-- Use the component in the right place of the template -->
-                  <tiptap-vuetify
-                    v-model="form.description"
-                    :extensions="extensions"
-                  />
-
-                  <template #placeholder> Loading...</template>
-                </client-only>
+                <v-textarea
+                  v-model="form.description"
+                  label="Descriptions"
+                  outlined
+                  dense
+                  rows="2"
+                ></v-textarea>
               </v-col>
 
               <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -274,29 +271,13 @@
 </template>
 
 <script>
-import {
-  Blockquote,
-  Bold,
-  BulletList,
-  HardBreak,
-  Heading,
-  History,
-  HorizontalRule,
-  Italic,
-  ListItem,
-  OrderedList,
-  Paragraph,
-  Strike,
-  TiptapVuetify,
-  Underline,
-} from 'tiptap-vuetify'
 import Dropzone from 'nuxt-dropzone'
 import 'nuxt-dropzone/dropzone.css'
 
 export default {
   name: 'FormProduct',
 
-  components: {TiptapVuetify, Dropzone},
+  components: {Dropzone},
 
   props: {
     formTitle: {
@@ -349,28 +330,6 @@ export default {
           'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN')
         }
       },
-      extensions: [
-        History,
-        Blockquote,
-        Underline,
-        Strike,
-        Italic,
-        ListItem,
-        BulletList,
-        OrderedList,
-        [
-          Heading,
-          {
-            options: {
-              levels: [1, 2, 3],
-            },
-          },
-        ],
-        Bold,
-        HorizontalRule,
-        Paragraph,
-        HardBreak,
-      ],
     }
   },
 

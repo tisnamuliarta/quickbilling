@@ -77,6 +77,8 @@ class ItemService
         $request->request->remove('category');
         $request->request->remove('categories');
         $request->request->remove('ACTIONS');
+        $request->request->remove('average_price');
+        $request->request->remove('last_buy_price');
         $data = $request->all();
 
         $data['image'] = '';

@@ -132,6 +132,7 @@ export default {
           {
             data: 'unit',
             width: 30,
+            readOnly: true,
             wordWrap: false,
           },
           {
