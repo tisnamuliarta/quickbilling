@@ -41,6 +41,12 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "DocumentDialogFormDocument": {
+    "description": "Auto imported from components/Document/DialogFormDocument.vue"
+  },
+  "DocumentFieldUpload": {
+    "description": "Auto imported from components/Document/FieldUpload.vue"
+  },
   "DocumentFormDocument": {
     "description": "Auto imported from components/Document/FormDocument.vue"
   },
@@ -55,21 +61,6 @@
   },
   "FinancialFormAccount": {
     "description": "Auto imported from components/Financial/FormAccount.vue"
-  },
-  "InventoryFormContact": {
-    "description": "Auto imported from components/Inventory/FormContact.vue"
-  },
-  "InventoryFormItem": {
-    "description": "Auto imported from components/Inventory/FormItem.vue"
-  },
-  "InventoryFormMaster": {
-    "description": "Auto imported from components/Inventory/FormMaster.vue"
-  },
-  "InventoryTableContact": {
-    "description": "Auto imported from components/Inventory/TableContact.vue"
-  },
-  "InventoryTableItem": {
-    "description": "Auto imported from components/Inventory/TableItem.vue"
   },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
@@ -103,6 +94,24 @@
   },
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
+  },
+  "InventoryDialogItem": {
+    "description": "Auto imported from components/Inventory/DialogItem.vue"
+  },
+  "InventoryFormContact": {
+    "description": "Auto imported from components/Inventory/FormContact.vue"
+  },
+  "InventoryFormItem": {
+    "description": "Auto imported from components/Inventory/FormItem.vue"
+  },
+  "InventoryFormMaster": {
+    "description": "Auto imported from components/Inventory/FormMaster.vue"
+  },
+  "InventoryTableContact": {
+    "description": "Auto imported from components/Inventory/TableContact.vue"
+  },
+  "InventoryTableItem": {
+    "description": "Auto imported from components/Inventory/TableItem.vue"
   },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"

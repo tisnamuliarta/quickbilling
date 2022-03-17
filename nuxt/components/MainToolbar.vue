@@ -38,7 +38,7 @@
       @passDataToToolbar="passDataToToolbar"
     ></TableFilter>
 
-    <v-btn small color="green" dark @click="newData()">
+    <v-btn v-if="showAdd" small color="green" dark @click="newData()">
       <v-icon>mdi-plus-circle</v-icon>
       New
     </v-btn>
@@ -88,6 +88,10 @@ export default {
       default() {
         return []
       },
+    },
+    showAdd: {
+      type: Boolean,
+      default: true
     },
     itemSearch: {
       type: Array,

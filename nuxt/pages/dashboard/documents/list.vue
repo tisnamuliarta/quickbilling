@@ -6,12 +6,12 @@
 
 <script>
 export default {
-  name: 'SalesQuote',
+  name: 'DocumentList',
   layout: 'dashboard',
 
   head() {
     return {
-      title: 'Sales Quotation',
+      title: 'Documents',
     }
   },
 }

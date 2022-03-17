@@ -1,550 +1,548 @@
 <template>
-  <div>
-    <DialogForm
-      ref="dialogForm"
-      max-width="1200px"
-      :dialog-title="formTitle"
-      button-title="Save"
-    >
-      <template #content>
-        <v-form class="pt-0">
-          <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.contact_id"
-                  label="Customer/Vendor"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+  <v-form class="pt-0">
+    <v-container>
+      <v-row no-gutters>
+        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-select
+            v-model="form.contact_id"
+            :items="itemContact"
+            label="Customer/Vendor"
+            item-value="id"
+            item-text="name"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-select>
+        </v-col>
 
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.issued_at"
-                  :items="itemCategory"
-                  label="Transaction Date"
-                  outlined
-                  multiple
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                </v-select>
-              </v-col>
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-menu
+            ref='menu'
+            v-model='menu'
+            :close-on-content-click='false'
+            transition='scale-transition'
+            offset-y
+            min-width='290px'
+          >
+            <template #activator='{ on, attrs }'>
+              <v-text-field
+                v-model="form.issued_at"
+                label="Transaction Date"
+                prepend-icon='mdi-calendar'
+                readonly
+                persistent-hint
+                outlined dense hide-details='auto'
+                v-bind='attrs'
+                v-on='on'
+              ></v-text-field>
+            </template>
 
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-show="checkbox"
-                  v-model="form.unit"
-                  :items="itemUnit"
-                  label="Shipping Date"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                </v-select>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
-                  label="Transaction Number"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
-                  label="Tags"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-model="form.purchase_price"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Billing Address"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.buy_account"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Due Date"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-show="checkbox"
-                  v-model="form.sale_price"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Ship Via"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-
-              <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.buy_tax"
-                  label="Reference No"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1">
-                <v-checkbox
-                  v-model="checkbox"
-                  dense
-                  hide-details
-                  label="Shipping Info"
-                  class="mt-0"
-                ></v-checkbox>
-              </v-col>
-
-              <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-show="checkbox"
-                  v-model="form.sell_account"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Shipping Address"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.sell_tax"
-                  label="Payment Term"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-show="checkbox"
-                  v-model="form.inventory_account_name"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Tracking No"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-
-              <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-model="form.minimum_stock"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Warehouse"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-card>
-                  <div class="scroll-container-min">
-                    <LazyDocumentTableDetail ref="childDetails"/>
-                  </div>
-                  <v-card-actions>
-                    <v-btn
-                      color="blue darken-1"
-                      dark
-                      small
-                      depressed
-                      @click="$refs.childDetails.addLine()"
-                    >
-                      Add Line
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                  <v-textarea
-                    v-model="form.code"
-                    rows="2"
-                    label="Message"
-                    outlined
-                    dense
-                    hide-details="auto"
-                  ></v-textarea>
-                </v-col>
-
-                <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                  <v-textarea
-                    v-model="form.code"
-                    rows="2"
-                    label="Memo"
-                    outlined
-                    dense
-                    hide-details="auto"
-                  ></v-textarea>
-                </v-col>
-
-                <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                  <v-file-input
-                    v-model="form.code"
-                    multiple
-                    label="Memo"
-                    outlined
-                    dense
-                    hide-details="auto"
-                  ></v-file-input>
-                </v-col>
-              </v-col>
-
-              <v-spacer class="hidden-sm-and-down"></v-spacer>
-
-              <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-row no-gutters>
-
-                  <v-col cols="12" md="7"></v-col>
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Sub Total"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="7"></v-col>
-
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Discount Per Lines"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <v-select
-                      v-model="form.code"
-                      :items="['Amount', 'Percent']"
-                      label="Discount Type"
-                      outlined
-                      dense
-                      hide-details="auto"
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Discount Rate"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Discount Amount"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col v-show="tax" cols="12" md="7"></v-col>
-                  <v-col v-show="tax" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="PPN"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col v-show="checkbox" cols="12" md="7"></v-col>
-                  <v-col v-show="checkbox" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Shipping Fee"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="7"></v-col>
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Total"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <v-checkbox
-                      v-model="withholding"
-                      dense
-                      hide-details
-                      label="Withholding"
-                      class="mt-0"
-                    ></v-checkbox>
-                  </v-col>
-
-                  <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <v-select
-                      v-show="withholding"
-                      v-model="form.code"
-                      :items="['Amount', 'Percent']"
-                      label="Type"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-show="withholding"
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Rate"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-show="withholding"
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Amount"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-show="withholding"
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Withholding Account"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <v-checkbox
-                      v-model="deposit"
-                      dense
-                      hide-details
-                      label="Deposit"
-                      class="mt-0"
-                    ></v-checkbox>
-                  </v-col>
-
-                  <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-show="deposit"
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Deposit Account"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-show="deposit"
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Amount"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-
-                  <v-col cols="12" md="7"></v-col>
-                  <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                    <vuetify-money
-                      v-model="form.code"
-                      v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                      v-bind:options="moneyOptionTotal"
-                      label="Balance Due"
-                      outlined
-                      dense
-                      class="align-end"
-                      hide-details="auto"
-                    ></vuetify-money>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </template>
-      <template #addLine>
-        <v-menu
-          offset-y
-        >
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              class="white--text"
-              color="primary"
-              dark
-              v-bind="attrs"
-              small
-              v-on="on"
+            <v-date-picker
+              v-model="form.issued_at"
+              no-title
+              @input='menu = false'
             >
-              Print & Preview
-              <v-icon
-                right
+            </v-date-picker>
+          </v-menu>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-menu
+            ref='menu2'
+            v-model='menu2'
+            :close-on-content-click='false'
+            transition='scale-transition'
+            offset-y
+            min-width='290px'
+          >
+            <template #activator='{ on, attrs }'>
+              <v-text-field
+                v-show="form.shipping_info"
+                v-model="form.shipping_date"
+                label="Shipping Date"
+                prepend-icon='mdi-calendar'
+                readonly
+                persistent-hint
+                outlined dense hide-details='auto'
+                v-bind='attrs'
+                v-on='on'
+              ></v-text-field>
+            </template>
+
+            <v-date-picker
+              v-model="form.shipping_info"
+              no-title
+              @input='menu2 = false'
+            >
+            </v-date-picker>
+          </v-menu>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-text-field
+            v-model="form.document_number"
+            readonly
+            label="Transaction Number"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-combobox
+            v-model="form.tags"
+            :items="itemTag"
+            :search-input.sync="search"
+            hide-selected
+            label="Tags"
+            hide-details
+            dense
+            multiple
+            persistent-hint
+            small-chips
+            outlined
+          >
+            <template v-slot:no-data>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-combobox>
+        </v-col>
+
+        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-textarea
+            rows="1"
+            v-model="form.contact_address"
+            label="Billing Address"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-textarea>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-menu
+            ref='menu3'
+            v-model='menu3'
+            :close-on-content-click='false'
+            transition='scale-transition'
+            offset-y
+            min-width='290px'
+          >
+            <template #activator='{ on, attrs }'>
+              <v-text-field
+                v-model="form.due_at"
+                label="Due Date"
+                prepend-icon='mdi-calendar'
+                readonly
+                persistent-hint
+                outlined dense hide-details='auto'
+                v-bind='attrs'
+                v-on='on'
+              ></v-text-field>
+            </template>
+
+            <v-date-picker
+              v-model="form.due_at"
+              no-title
+              @input='menu3 = false'
+            >
+            </v-date-picker>
+          </v-menu>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-text-field
+            v-show="form.shipping_info"
+            v-model="form.shipping_via"
+            label="Ship Via"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-text-field
+            v-model="form.reference_no"
+            label="Reference No"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1">
+          <v-checkbox
+            v-model="form.shipping_info"
+            dense
+            hide-details
+            label="Shipping Info"
+            class="mt-0"
+          ></v-checkbox>
+        </v-col>
+
+        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-textarea
+            v-show="form.shipping_info"
+            v-model="form.shipping_address"
+            rows="1"
+            label="Shipping Address"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-textarea>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-select
+            v-model="form.payment_term_id"
+            :items="itemPaymentTerm"
+            item-value="id"
+            item-text="name"
+            label="Payment Term"
+            outlined
+            dense
+            hide-details="auto"
+            @change="changePaymentTerm"
+          ></v-select>
+        </v-col>
+
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-text-field
+            v-show="form.shipping_info"
+            v-model="form.tracking_code"
+            label="Tracking No"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+
+        <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-select
+            v-model="form.warehouse_id"
+            :items="itemWarehouse"
+            item-text="name"
+            item-value="id"
+            label="Warehouse"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-select>
+        </v-col>
+
+        <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-card>
+            <div class="scroll-container-min">
+              <LazyDocumentTableDetail ref="childDetails"/>
+            </div>
+            <v-card-actions>
+              <v-btn
+                color="blue darken-1"
                 dark
+                small
+                depressed
+                @click="$refs.childDetails.addLine()"
               >
-                mdi-printer
-              </v-icon>
-            </v-btn>
-          </template>
+                Add Line
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
 
-          <v-list>
-            <v-list-item
-              v-for="item in items"
-              :key="item"
-              link
-            >
-              <v-list-item-title v-text="item"></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-textarea
+              v-model="form.footer"
+              rows="2"
+              label="Message"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-textarea>
+          </v-col>
 
-        <v-menu
-          offset-y
-        >
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              class="white--text ml-5"
-              color="primary"
-              dark
-              v-bind="attrs"
-              small
-              v-on="on"
-            >
-              Action
-              <v-icon
-                right
-                dark
+          <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-textarea
+              v-model="form.notes"
+              rows="2"
+              label="Memo"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-textarea>
+          </v-col>
+
+          <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <DocumentFieldUpload
+              :form-data="form"
+              form-type="document"
+              @eventGetFiles="eventGetFiles"
+            ></DocumentFieldUpload>
+          </v-col>
+
+          <v-col v-if="itemFiles.length > 0" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-list dense>
+              <v-subheader>Files</v-subheader>
+              <v-list-item-group
+                v-model="selectedItem"
+                color="primary"
               >
-                mdi-content-copy
-              </v-icon>
-            </v-btn>
-          </template>
+                <v-list-item
+                  v-for="(item, i) in itemFiles"
+                  :key="i"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <a :href="item.directory" target="_blank">{{ item.filename }}</a>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-col>
+        </v-col>
 
-          <v-list>
-            <v-list-item
-              v-for="item in items"
-              :key="item"
-              link
-            >
-              <v-list-item-title v-text="item"></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-      <template #saveData>
-        <v-btn
-          color="green darken-1"
-          dark
-          small
-          :loading="submitLoad"
-          @click="save()"
-        >
-          {{ buttonTitle }}
-        </v-btn>
-      </template>
-    </DialogForm>
-  </div>
+        <v-spacer class="hidden-sm-and-down"></v-spacer>
+
+        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-row no-gutters>
+
+            <v-col cols="12" md="7"></v-col>
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.sub_total"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Sub Total"
+                outlined
+                dense
+                reverse
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="7"></v-col>
+
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.discount_per_line"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Discount Per Lines"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.discount_type"
+                :items="['Amount', 'Percent']"
+                label="Discount Type"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.discount_rate"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Discount Rate"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.discount_amount"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Discount Amount"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col v-show="tax" cols="12" md="7"></v-col>
+            <v-col v-show="tax" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.ppn_amount"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="PPN"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col v-show="form.shipping_info" cols="12" md="7"></v-col>
+            <v-col v-show="form.shipping_info" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.shipping_fee"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Shipping Fee"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="7"></v-col>
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.amount"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Total"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-checkbox
+                v-model="form.withholding_info"
+                dense
+                hide-details
+                label="Withholding"
+                class="mt-0"
+              ></v-checkbox>
+            </v-col>
+
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-show="form.withholding_info"
+                v-model="form.withholding_type"
+                :items="['Amount', 'Percent']"
+                label="Type"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-show="form.withholding_info"
+                v-model="form.withholding_rate"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Rate"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-show="form.withholding_info"
+                v-model="form.withholding_amount"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Amount"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col v-show="form.withholding_info" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.withholding_account_id"
+                :items="itemAccounts"
+                item-value="id"
+                item-text="name"
+                label="Withholding Account"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-checkbox
+                v-model="form.deposit_info"
+                dense
+                hide-details
+                label="Deposit"
+                class="mt-0"
+              ></v-checkbox>
+            </v-col>
+
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-show="form.deposit_info"
+                v-model="form.deposit_account_id"
+                :items="itemAccounts"
+                item-text="name"
+                item-value="id"
+                label="Deposit Account"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-show="form.deposit_info"
+                v-model="form.deposit_amount"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Amount"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="7"></v-col>
+            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <vuetify-money
+                v-model="form.balance_due"
+                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                v-bind:options="moneyOptionTotal"
+                label="Balance Due"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
 
 <script>
@@ -561,35 +559,38 @@ export default {
       type: String,
       default: '',
     },
-    buttonTitle: {
+    url: {
       type: String,
       default: '',
-    },
-    formData: {
-      type: Object,
-      default() {
-        return {}
-      },
     },
   },
 
   data() {
     return {
+      menu: '',
+      menu2: '',
+      menu3: '',
+      menu4: '',
       logo: '',
+      search: null,
+      selectedItem: 1,
       dialog: false,
       checkbox: false,
       deposit: false,
-      tax: false,
+      tax: true,
       withholding: false,
       submitLoad: false,
-      form: this.formData,
+      form: {},
       itemCategory: [],
       itemUnit: [],
+      itemContact: [],
       itemAccounts: [],
+      itemTag: [],
+      itemPaymentTerm: [],
+      itemWarehouse: [],
+      itemFiles: [],
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
-      url: '/api/sales/quote',
-      items: ['Item 1', 'Item 2'],
       moneyOptions: {
         suffix: "",
         length: 11,
@@ -608,48 +609,27 @@ export default {
     this.getItemCategory()
     this.getItemUnit()
     this.getAccounts()
+    this.getContact()
+    this.getPaymentTerms()
+    this.getTax()
   },
 
   methods: {
-    addLine() {
-      console.log(this.form.details)
-      this.form.details.push({
-        item_id: null,
-        description: null,
-        quantity: null,
-        unit: null,
-        price: null,
-        discount_rate: null,
-        tax: null,
-        total: null,
-      })
-    },
-
-    removeLine(index, type) {
-      this.form.details.splice(index, 1)
-    },
-
-    newData(form, defaultItem) {
-      this.$refs.dialogForm.openDialog()
-      setTimeout(() => {
-        this.$refs.childDetails.setDataToDetails([
-          {
-            item_number: null,
-            description: null,
-            qty: null,
-            unit: null,
-          }
-        ])
-      }, 300)
+    setData(form) {
+      this.$refs.childDetails.setDataToDetails([
+        {
+          item_number: null,
+          description: null,
+          qty: null,
+          unit: null,
+        }
+      ])
+      this.form = Object.assign({}, form)
       this.statusProcessing = 'insert'
-      this.form = Object.assign({}, defaultItem)
     },
 
-    editItem(item, url) {
-      this.form = Object.assign({}, item)
-      this.logo = url + '/files/items/' + this.form.image
-      this.statusProcessing = 'update'
-      this.$refs.dialogForm.openDialog()
+    eventGetFiles(data) {
+      this.itemFiles = data.row
     },
 
     getItemCategory() {
@@ -704,79 +684,79 @@ export default {
         })
     },
 
-    returnData(data) {
-      if (data.type === 'Item Category') {
-        this.itemCategory = data.item
-      } else if (data.type === 'Item Unit') {
-        this.itemUnit = data.item
-      }
+    getContact() {
+      this.$axios.get(`/api/inventory/contacts`, {
+        params: {
+          type: "All"
+        }
+      })
+        .then((res) => {
+          this.itemContact = res.data.data.auto_complete
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
-    close() {
-      this.$refs.dialogForm.closeDialog()
-      this.statusProcessing = 'insert'
-      setTimeout(() => {
-        this.form = Object.assign({}, this.defaultItem)
-      }, 300)
+    getPaymentTerms() {
+      this.$axios.get(`/api/financial/payment-terms`, {
+        params: {
+          type: "All"
+        }
+      })
+        .then((res) => {
+          this.itemPaymentTerm = res.data.data.auto_complete
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
-    save() {
+    getTax() {
+      this.$axios.get(`/api/financial/taxes`, {
+        params: {
+          type: "All"
+        }
+      })
+        .then((res) => {
+          this.$auth.$storage.setLocalStorage('tax', res.data.data.simple)
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    changePaymentTerm() {
+      this.$axios.get(`/api/financial/payment-terms/` + this.form.payment_term_id)
+        .then(res => {
+
+        })
+    },
+
+    returnData() {
       const vm = this
-      const status = this.statusProcessing
-
-      let data = new FormData()
-      Object.entries(this.form).forEach(entry => {
-        const [key, value] = entry
-        data.append(key, value)
+      const form = this.form
+      const clearData = {}
+      const details = vm.$refs.childDetails.getAddData()
+      details.forEach(function (item, key) {
+        if (!vm.$refs.childDetails.checkIfEmptyRow(key)) clearData[key] = item
       })
 
-      if (status === 'insert') {
-        this.store('post', this.url, data)
-        vm.submitLoad = false
-      } else if (status === 'update') {
-        this.store('put', this.url + '/' + this.form.id, data)
-        vm.submitLoad = false
-      }
-    },
-
-    store(method, url, data) {
-      const vm = this
-      vm.submitLoad = true
-      let options = {
-        headers: {
-          'Content-Type': "Multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
-        }
-      }
-      if (method === 'post') {
-        this.$axios.post(url, data, options)
-          .then((res) => {
-            this.$refs.dialogForm.closeDialog()
-            this.$emit('getDataFromApi')
-          })
-          .catch((err) => {
-            this.$swal({
-              type: 'error',
-              title: 'Error',
-              text: err.response.data.message,
-            })
-
-            vm.submitLoad = false
-          })
-      } else {
-        this.$axios.put(url, data, options)
-          .then((res) => {
-            this.$refs.dialogForm.closeDialog()
-            this.$emit('getDataFromApi')
-          })
-          .catch((err) => {
-            this.$swal({
-              type: 'error',
-              title: 'Error',
-              text: err.response.data.message,
-            })
-
-            vm.submitLoad = false
-          })
+      return {
+        form,
+        details: clearData,
       }
     },
   },

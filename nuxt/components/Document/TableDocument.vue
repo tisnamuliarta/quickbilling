@@ -41,14 +41,14 @@
       </div>
     </v-flex>
 
-    <LazyDocumentFormDocument
+    <LazyDocumentDialogFormDocument
       ref="formData"
       :type="typeDocument"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       @getDataFromApi="getDataFromApi"
-    ></LazyDocumentFormDocument>
+    ></LazyDocumentDialogFormDocument>
   </v-layout>
 </template>
 
@@ -78,21 +78,21 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Number', value: 'name' },
-        { text: 'Customer', value: 'name' },
-        { text: 'Date', value: 'name' },
-        { text: 'Due Date', value: 'name' },
-        { text: 'Status', value: 'name' },
-        { text: 'Balance Due', value: 'name', align: 'right' },
-        { text: 'Total', value: 'name', align: 'right' },
-        { text: 'Action', value: 'ACTIONS', align: 'center' },
+        {text: 'Number', value: 'name'},
+        {text: 'Customer', value: 'name'},
+        {text: 'Date', value: 'name'},
+        {text: 'Due Date', value: 'name'},
+        {text: 'Status', value: 'name'},
+        {text: 'Balance Due', value: 'name', align: 'right'},
+        {text: 'Total', value: 'name', align: 'right'},
+        {text: 'Action', value: 'ACTIONS', align: 'center'},
       ],
     }
   },
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New ' + this.typeDocument : 'Edit ' + + this.typeDocument
+      return this.editedIndex === -1 ? 'New ' + this.typeDocument : 'Edit ' + +this.typeDocument
     },
     buttonTitle() {
       return this.editedIndex === -1 ? 'Save' : 'Update'
@@ -114,8 +114,14 @@ export default {
 
   methods: {
     newData() {
-      this.editedIndex = -1
-      this.$refs.formData.newData(this.form, this.defaultItem)
+      this.$router.push({
+        path: '/dashboard/documents/form',
+        query: {
+          id: 0,
+          status: 'add',
+          type: this.typeDocument
+        }
+      })
     },
 
     editItem(item) {
@@ -144,7 +150,7 @@ export default {
             documentStatus: vm.documentStatus,
             searchStatus: vm.searchStatus,
             search: vm.search,
-            typeDocument: this.typeDocument,
+            type: this.typeDocument,
           },
         })
         .then((res) => {

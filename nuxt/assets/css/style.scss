@@ -419,3 +419,7 @@ body {
 .form-table > .v-data-table__wrapper > table {
   table-layout: fixed;
 }
+
+.text-money >>> input {
+  text-align: right;
+}

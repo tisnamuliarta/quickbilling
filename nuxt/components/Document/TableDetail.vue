@@ -1,5 +1,14 @@
 <template>
-  <hot-table ref="details" :root="detailsRoot" :settings="settings"></hot-table>
+  <div>
+    <hot-table ref="details" :root="detailsRoot" :settings="settings"></hot-table>
+
+    <LazyInventoryDialogItem
+      ref="dialogItem"
+      :view-data="true"
+      :show-add-btn="false"
+      @selectItems="selectItems"
+    ></LazyInventoryDialogItem>
+  </div>
 </template>
 
 <script>
@@ -92,9 +101,7 @@ export default {
 
               Handsontable.dom.addEvent(button, 'mousedown', (event) => {
                 event.preventDefault()
-                vm.$emit('openDialogAsset', {
-                  row
-                })
+                vm.$refs.dialogItem.openDialog(row)
                 // vm.$refs.inv.open()
               })
 
@@ -140,11 +147,25 @@ export default {
             data: 'discount',
             width: 30,
             wordWrap: false,
+            type: 'numeric',
+            numericFormat: {
+              pattern: '0,0.00',
+            },
           },
           {
             data: 'tax',
             width: 30,
+            type: 'dropdown',
+            height: 26,
             wordWrap: false,
+            source(query, process) {
+              const vm = window.details
+              const data = vm.$auth.$storage.getLocalStorage('tax')
+              process(data)
+            },
+            strict: true,
+            filter: false,
+            allowInvalid: false,
           },
           {
             data: 'amount',
@@ -214,12 +235,33 @@ export default {
       })
     },
 
+    selectItems(data) {
+      let rowData = data.row;
+      let selected = data.selected;
+      const type = this.$route.query.type
+      const vm = this;
+      selected.forEach(function (item, index) {
+        const price = (type.substr(0, 1) === 'S') ? item.sale_price : item.purchase_price
+
+        vm.$refs.details.hotInstance.setDataAtRowProp([
+          [rowData, 'item_name', item.name],
+          [rowData, 'unit', item.unit],
+          [rowData, 'unit_price', price],
+        ]);
+        rowData++
+      })
+    },
+
     setDataToDetails(data) {
       this.updateTableSettings()
       const vm = this
       setTimeout(() => {
         vm.$refs.details.hotInstance.loadData(data)
-      }, 300)
+      }, 150)
+    },
+
+    checkIfEmptyRow(key) {
+      return this.$refs.details.hotInstance.isEmptyRow(key)
     },
 
     getAddData() {

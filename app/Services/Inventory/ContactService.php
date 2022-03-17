@@ -39,9 +39,12 @@ class ContactService
 
         $arr_rows = Contact::pluck('name');
 
+        $arr_auto_complete = Contact::select('id', 'name')->get();
+
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
+            "simple" => $arr_rows,
+            "auto_complete" => $arr_auto_complete,
         ]);
     }
 

@@ -31,7 +31,8 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Products"
+              :show-add="showAdd"
+              title="Items"
               @emitData="emitData"
               @newData="newData"
             />
@@ -79,6 +80,17 @@
 export default {
   name: "TableItem",
 
+  props: {
+    viewData: {
+      type: Boolean,
+      default: true
+    },
+    showAddBtn: {
+      type: Boolean,
+      default: true
+    },
+  },
+
   data() {
     return {
       selected: [],
@@ -87,6 +99,7 @@ export default {
       editedIndex: -1,
       loading: true,
       allData: [],
+      showAdd: this.showAddBtn,
       documentStatus: [],
       itemSearch: [],
       searchStatus: '',
@@ -95,18 +108,7 @@ export default {
       form: {},
       defaultItem: {},
       options: {},
-      headers: [
-        { text: 'Product Code', value: 'code' },
-        { text: 'Product Name', value: 'name' },
-        { text: 'Product Category', value: 'categories' },
-        { text: 'Minimum Stock', value: 'minimum_stock' },
-        { text: 'Unit', value: 'unit' },
-        { text: 'Average Price', value: 'average_price', align: 'right' },
-        { text: 'Last Buy Price', value: 'last_buy_price', align: 'right' },
-        { text: 'Buy Price', value: 'purchase_price', align: 'right' },
-        { text: 'Sell Price', value: 'sale_price', align: 'right' },
-        { text: 'Action', value: 'ACTIONS', align: 'center' },
-      ],
+      headers: [],
     }
   },
 
@@ -129,6 +131,7 @@ export default {
   },
 
   mounted() {
+    this.mappingHeader()
     this.getDataFromApi()
   },
 
@@ -197,6 +200,34 @@ export default {
           })
         })
     },
+
+    returnSelected() {
+      return this.selected
+    },
+
+    mappingHeader() {
+      if (this.viewData) {
+        this.headers = [
+          { text: 'Item Code', value: 'code' },
+          { text: 'Item Name', value: 'name' },
+          { text: 'Item Category', value: 'categories' },
+          { text: 'Unit', value: 'unit' },
+        ]
+      } else {
+        this.headers = [
+          { text: 'Item Code', value: 'code' },
+          { text: 'Item Name', value: 'name' },
+          { text: 'Item Category', value: 'categories' },
+          { text: 'Minimum Stock', value: 'minimum_stock' },
+          { text: 'Unit', value: 'unit' },
+          { text: 'Average Price', value: 'average_price', align: 'right' },
+          { text: 'Last Buy Price', value: 'last_buy_price', align: 'right' },
+          { text: 'Buy Price', value: 'purchase_price', align: 'right' },
+          { text: 'Sell Price', value: 'sale_price', align: 'right' },
+          { text: 'Action', value: 'ACTIONS', align: 'center' },
+        ]
+      }
+    }
   },
 }
 </script>

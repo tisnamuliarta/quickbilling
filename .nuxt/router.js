@@ -19,6 +19,8 @@ const _ebf9957e = () => interopDefault(import('..\\nuxt\\pages\\pages\\terms.vue
 const _efc46c98 = () => interopDefault(import('..\\nuxt\\pages\\student\\announcement.vue' /* webpackChunkName: "pages/student/announcement" */))
 const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.vue' /* webpackChunkName: "pages/student/print" */))
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
+const _54000be6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\form.vue' /* webpackChunkName: "pages/dashboard/documents/form" */))
+const _f00d9a80 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\list.vue' /* webpackChunkName: "pages/dashboard/documents/list" */))
 const _1a73bd4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
 const _441197ca = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\contact.vue' /* webpackChunkName: "pages/dashboard/inventory/contact" */))
 const _d8ecf74e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
@@ -114,6 +116,14 @@ export const routerOptions = {
     path: "/student/register",
     component: _2758e0e0,
     name: "student-register"
+  }, {
+    path: "/dashboard/documents/form",
+    component: _54000be6,
+    name: "dashboard-documents-form"
+  }, {
+    path: "/dashboard/documents/list",
+    component: _f00d9a80,
+    name: "dashboard-documents-list"
   }, {
     path: "/dashboard/financial/account",
     component: _1a73bd4a,

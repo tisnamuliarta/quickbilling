@@ -52,7 +52,7 @@ class DocumentController extends Controller
         DB::beginTransaction();
         $form = $request->form;
         try {
-            $contact = Document::create($this->service->formData($form));
+            $data = Document::create($this->service->formData($form, 'store'));
 
             DB::commit();
             return $this->success([
@@ -73,13 +73,9 @@ class DocumentController extends Controller
      */
     protected function validation($request)
     {
-        $messages = [
-            'form.name' => 'Name is required!',
-        ];
-
         $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-        ], $messages);
+            'document_number' => 'required',
+        ]);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -97,15 +93,19 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show(Request $request, $id): \Illuminate\Http\JsonResponse
     {
+        $type = $request->type;
+        $form = $this->service->getForm($type);
         $data = Document::where("id", "=", $id)->get();
 
         return $this->success([
-            'rows' => $data
+            'rows' => $data,
+            'form' => $form
         ]);
     }
 
@@ -126,7 +126,7 @@ class DocumentController extends Controller
 
         $form = $request->form;
         try {
-            Document::where("id", "=", $id)->update($this->service->formData($form));
+            Document::where("id", "=", $id)->update($this->service->formData($form, 'update'));
 
             return $this->success([
                 "errors" => false
