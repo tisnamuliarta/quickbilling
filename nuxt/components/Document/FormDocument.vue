@@ -1,6 +1,6 @@
 <template>
   <v-form class="pt-0">
-    <v-container>
+    <v-container fluid>
       <v-row no-gutters>
         <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-select
@@ -241,7 +241,10 @@
         <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-card>
             <div class="scroll-container-min">
-              <LazyDocumentTableDetail ref="childDetails"/>
+              <LazyDocumentTableDetail
+                ref="childDetails"
+                @calcTotal="calcTotal"
+              ></LazyDocumentTableDetail>
             </div>
             <v-card-actions>
               <v-btn
@@ -252,6 +255,7 @@
                 @click="$refs.childDetails.addLine()"
               >
                 Add Line
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -312,15 +316,16 @@
 
         <v-spacer class="hidden-sm-and-down"></v-spacer>
 
-        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-row no-gutters>
 
-            <v-col cols="12" md="7"></v-col>
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="8"></v-col>
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.sub_total"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Sub Total"
                 outlined
                 dense
@@ -330,13 +335,14 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="7"></v-col>
+            <v-col cols="12" md="8"></v-col>
 
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.discount_per_line"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Discount Per Lines"
                 outlined
                 dense
@@ -356,11 +362,11 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
-                v-model="form.discount_rate"
+                v-model="discountRate"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
+                v-bind:options="moneyOptionTotalDiscount"
                 label="Discount Rate"
                 outlined
                 dense
@@ -369,11 +375,12 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.discount_amount"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Discount Amount"
                 outlined
                 dense
@@ -382,22 +389,32 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col v-show="tax" cols="12" md="7"></v-col>
-            <v-col v-show="tax" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-model="form.ppn_amount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                label="PPN"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
+            <v-col cols="12">
+              <v-row
+                v-if="form.tax_details.length > 0"
+                v-for="(item, index) in form.tax_details"
+                :key="index"
+                no-gutters
+              >
+                <v-col cols="12" md="8"></v-col>
+                <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <vuetify-money
+                    v-model="item.tax"
+                    v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                    v-bind:options="moneyOptionTotal"
+                    readonly
+                    :label="item.name"
+                    outlined
+                    dense
+                    class="text-money"
+                    hide-details="auto"
+                  ></vuetify-money>
+                </v-col>
+              </v-row>
             </v-col>
 
-            <v-col v-show="form.shipping_info" cols="12" md="7"></v-col>
-            <v-col v-show="form.shipping_info" cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col v-show="form.shipping_info" cols="12" md="8"></v-col>
+            <v-col v-show="form.shipping_info" cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.shipping_fee"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
@@ -410,12 +427,13 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="7"></v-col>
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="8"></v-col>
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.amount"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Total"
                 outlined
                 dense
@@ -446,10 +464,10 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-show="form.withholding_info"
-                v-model="form.withholding_rate"
+                v-model="withholdingRate"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
                 label="Rate"
@@ -460,12 +478,13 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-show="form.withholding_info"
                 v-model="form.withholding_amount"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Amount"
                 outlined
                 dense
@@ -514,7 +533,7 @@
             <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-show="form.deposit_info"
-                v-model="form.deposit_amount"
+                v-model="depositAmount"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
                 label="Amount"
@@ -531,6 +550,7 @@
                 v-model="form.balance_due"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
+                readonly
                 label="Balance Due"
                 outlined
                 dense
@@ -589,20 +609,61 @@ export default {
       itemPaymentTerm: [],
       itemWarehouse: [],
       itemFiles: [],
+      taxDetails: [],
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
+      tempTotalTax: 0,
+      depositAmount: 0,
+      discountRate: 0,
+      subTotalMinDiscount: 0,
+      taxAmount: 0,
+      taxDiscount: 0,
+      amountBeforeTax: 0,
+      withholdingRate: 0,
+      withholdingAmount: 0,
+      discountAmount: 0,
       moneyOptions: {
+        locale: "en",
         suffix: "",
         length: 11,
         precision: 0
       },
 
       moneyOptionTotal: {
+        locale: "en",
         suffix: "",
         length: 14,
         precision: 2
       },
+
+      moneyOptionTotalDiscount: {
+        locale: "en",
+        suffix: "",
+        length: 14,
+        precision: 0
+      },
     }
+  },
+
+  watch: {
+    depositAmount: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
+    discountRate: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
+    withholdingRate: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
   },
 
   mounted() {
@@ -615,6 +676,102 @@ export default {
   },
 
   methods: {
+    calcTotal(data) {
+      this.form.discount_per_line = data.discountAmount
+      this.form.sub_total = data.subTotal
+      this.form.tax_details = this.reduceArrayTax(data.taxDetail)
+      this.taxDetails = this.reduceArrayTax(data.taxDetail)
+      this.form.amount = data.amount + this.tempTotalTax
+      this.form.balance_due = this.form.amount
+      this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
+      this.taxAmount = this.tempTotalTax
+
+      this.changeCalculation()
+    },
+
+    changeCalculation() {
+      this.form.discount_rate = this.discountRate
+      // calculate discount
+      if (this.form.discount_type === 'Percent') {
+        if (this.form.discount_rate > 0) {
+          this.form.discount_amount = (this.form.discount_rate / 100) * this.subTotalMinDiscount
+          this.taxDiscount = (this.form.discount_rate / 100) * this.tempTotalTax
+        }
+      } else {
+        this.form.discount_amount = this.form.discount_rate
+        this.taxDiscount = this.tempTotalTax - this.form.discount_amount
+      }
+      this.taxAmount = this.tempTotalTax - this.taxDiscount
+
+      // calculate tax details
+      if (this.form.discount_rate > 0) {
+        this.form.tax_details = this.reduceArrayTaxAfterDiscount(this.taxDetails)
+      }
+      // calculate total amount
+      this.form.amount = this.form.sub_total - this.form.discount_per_line - this.form.discount_amount + this.taxAmount
+
+      // calculate amount before tax for tax withholding
+      this.amountBeforeTax = this.form.amount - this.taxAmount
+
+      // calculate tax withholding
+      this.form.withholding_rate = this.withholdingRate
+      if (this.form.withholding_type === 'Percent') {
+        if (this.form.withholding_rate > 0) {
+          this.form.withholding_amount = (this.form.withholding_rate / 100) * this.amountBeforeTax
+        }
+      } else {
+        this.form.withholding_amount = this.form.withholding_rate
+      }
+
+      this.form.deposit_amount = this.depositAmount
+      this.form.balance_due = this.form.amount - this.form.deposit_amount - this.form.withholding_amount
+    },
+
+    reduceArrayTaxAfterDiscount(tax_details) {
+      const result = [];
+      const vm = this
+      tax_details.reduce(function (res, value) {
+        if (!res[value.name]) {
+          res[value.name] = {name: value.name, tax: 0};
+          result.push(res[value.name])
+        }
+        if (vm.discountRate > 0) {
+          let taxDiscountValue = 0
+          if (vm.form.discount_type === 'Percent') {
+            taxDiscountValue = (vm.form.discount_rate / 100) * value.tax
+          } else {
+            taxDiscountValue = vm.form.discount_rate
+          }
+          res[value.name].tax = value.tax - taxDiscountValue;
+        }
+        return res;
+      }, {});
+
+      return result
+    },
+
+    reduceArrayTax(tax_details) {
+      const result = [];
+      const vm = this
+      let totalTax = 0;
+      tax_details.forEach(function (item, index) {
+        totalTax += parseFloat(item.tax)
+      })
+      vm.tempTotalTax = totalTax
+
+      tax_details.reduce(function (res, value) {
+        if (!res[value.name]) {
+          res[value.name] = {name: value.name, tax: 0};
+          result.push(res[value.name])
+        }
+        res[value.name].tax += value.tax;
+
+        return res;
+      }, {});
+
+      return result
+    },
+
     setData(form) {
       this.$refs.childDetails.setDataToDetails([
         {
@@ -728,6 +885,7 @@ export default {
       })
         .then((res) => {
           this.$auth.$storage.setLocalStorage('tax', res.data.data.simple)
+          this.$auth.$storage.setLocalStorage('tax_row', res.data.data.rows)
         })
         .catch((err) => {
           this.$swal({

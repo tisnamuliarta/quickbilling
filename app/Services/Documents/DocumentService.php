@@ -59,6 +59,9 @@ class DocumentService
         $form['issued_at'] = Carbon::now()->format('Y-m-d');
         $form['due_at'] = Carbon::now()->addDay(30)->format('Y-m-d');
         $form['payment_term_id'] = 1;
+        $form['discount_type'] = 'Percent';
+        $form['withholding_type'] = 'Percent';
+        $form['tax_details'] = [];
         $form['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 

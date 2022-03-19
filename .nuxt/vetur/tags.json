@@ -50,6 +50,9 @@
   "DocumentFormDocument": {
     "description": "Auto imported from components/Document/FormDocument.vue"
   },
+  "DocumentFormWindow": {
+    "description": "Auto imported from components/Document/FormWindow.vue"
+  },
   "DocumentTableDetail": {
     "description": "Auto imported from components/Document/TableDetail.vue"
   },
@@ -62,11 +65,23 @@
   "FinancialFormAccount": {
     "description": "Auto imported from components/Financial/FormAccount.vue"
   },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
+  "InventoryDialogItem": {
+    "description": "Auto imported from components/Inventory/DialogItem.vue"
   },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
+  "InventoryFormContact": {
+    "description": "Auto imported from components/Inventory/FormContact.vue"
+  },
+  "InventoryFormItem": {
+    "description": "Auto imported from components/Inventory/FormItem.vue"
+  },
+  "InventoryFormMaster": {
+    "description": "Auto imported from components/Inventory/FormMaster.vue"
+  },
+  "InventoryTableContact": {
+    "description": "Auto imported from components/Inventory/TableContact.vue"
+  },
+  "InventoryTableItem": {
+    "description": "Auto imported from components/Inventory/TableItem.vue"
   },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"
@@ -95,23 +110,11 @@
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
   },
-  "InventoryDialogItem": {
-    "description": "Auto imported from components/Inventory/DialogItem.vue"
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
   },
-  "InventoryFormContact": {
-    "description": "Auto imported from components/Inventory/FormContact.vue"
-  },
-  "InventoryFormItem": {
-    "description": "Auto imported from components/Inventory/FormItem.vue"
-  },
-  "InventoryFormMaster": {
-    "description": "Auto imported from components/Inventory/FormMaster.vue"
-  },
-  "InventoryTableContact": {
-    "description": "Auto imported from components/Inventory/TableContact.vue"
-  },
-  "InventoryTableItem": {
-    "description": "Auto imported from components/Inventory/TableItem.vue"
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"

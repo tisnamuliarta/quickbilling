@@ -1,112 +1,101 @@
 <template>
-  <v-container fluid>
-    <v-row no-gutters>
-      <v-col cols="12">
-        <v-card>
-          <v-toolbar flat color='grey lighten-2' dense style='height: 32px' class='toolbar-content'>
-            <v-divider class='mx-2' inset vertical></v-divider>
-            <!--<breadcrumbs/>-->
+  <div>
+    <DocumentFormWindow
+      ref="formWindow"
+      :breadcrumb="breadcrumb"
+      @getDataFromApi="getDataFromApi"
+    >
+      <template #content>
+        <DocumentFormDocument ref="formDocument"></DocumentFormDocument>
+      </template>
 
-            <v-breadcrumbs
-              :items='breadcrumb'
-              divider='/'
-              class='hidden-xs-only'
-            ></v-breadcrumbs>
-
-            <v-spacer class='hidden-xs-only'></v-spacer>
-            <v-btn icon @click="getDataFromApi">
-              <v-icon>mdi-refresh</v-icon>
-            </v-btn>
-          </v-toolbar>
-
-          <DocumentFormDocument ref="formDocument"></DocumentFormDocument>
-
-          <v-card-actions>
-            <v-menu
-              offset-y
-            >
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="white--text"
-                  color="primary"
-                  dark
-                  v-bind="attrs"
-                  small
-                  v-on="on"
-                >
-                  Print & Preview
-                  <v-icon
-                    right
-                    dark
-                  >
-                    mdi-printer
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <v-list>
-                <v-list-item
-                  v-for="item in items"
-                  :key="item"
-                  link
-                >
-                  <v-list-item-title v-text="item"></v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-
-            <v-menu
-              offset-y
-            >
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="white--text ml-5"
-                  color="primary"
-                  dark
-                  v-bind="attrs"
-                  small
-                  v-on="on"
-                >
-                  Action
-                  <v-icon
-                    right
-                    dark
-                  >
-                    mdi-content-copy
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <v-list>
-                <v-list-item
-                  v-for="item in items"
-                  :key="item"
-                  link
-                >
-                  <v-list-item-title v-text="item"></v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-
-            <v-spacer></v-spacer>
-
+      <template #action>
+        <v-menu
+          offset-y
+        >
+          <template v-slot:activator="{ attrs, on }">
             <v-btn
-              color="green darken-1"
+              class="white--text"
+              color="primary"
               dark
+              v-bind="attrs"
               small
+              v-on="on"
             >
-              Save
+              Print & Preview
+              <v-icon
+                right
+                dark
+              >
+                mdi-printer
+              </v-icon>
             </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+          </template>
+
+          <v-list>
+            <v-list-item
+              v-for="item in items"
+              :key="item"
+              link
+            >
+              <v-list-item-title v-text="item"></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-menu
+          offset-y
+        >
+          <template v-slot:activator="{ attrs, on }">
+            <v-btn
+              class="white--text ml-5"
+              color="primary"
+              dark
+              v-bind="attrs"
+              small
+              v-on="on"
+            >
+              Action
+              <v-icon
+                right
+                dark
+              >
+                mdi-content-copy
+              </v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              v-for="item in items"
+              :key="item"
+              link
+            >
+              <v-list-item-title v-text="item"></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+
+      <template #saveData>
+        <v-btn
+          color="green darken-1"
+          dark
+          small
+        >
+          {{ $route.query.status }}
+          <v-icon>
+            mdi-check
+          </v-icon>
+        </v-btn>
+      </template>
+    </DocumentFormWindow>
 
     <LazySpinnerLoading
       v-if='dialogLoading'
       ref='spinnerLoadingImport'
     ></LazySpinnerLoading>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -149,7 +138,9 @@ export default {
           this.form = Object.assign({}, res.data.data.form)
           this.defaultItem = Object.assign({}, res.data.data.form)
           this.getBreadcrumb(type)
-          this.$refs.formDocument.setData(this.defaultItem)
+          setTimeout(() => {
+            this.$refs.formDocument.setData(this.defaultItem)
+          }, 100)
         })
         .catch((err) => {
           this.$swal({

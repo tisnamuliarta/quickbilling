@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Financial;
 use App\Http\Controllers\Controller;
 use App\Models\Financial\Tax;
 use App\Services\Financial\TaxService;
+use App\Traits\Financial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TaxController extends Controller
 {
+    use Financial;
+
     public $service;
     /**
      * MasterUserController constructor.
@@ -100,12 +103,14 @@ class TaxController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
     {
-        $data = Tax::where("id", "=", $id)->get();
+        $name = (isset($request->name)) ? $this->getTaxIdByName($request->name) : $id;
+        $data = Tax::where("id", "=", $name)->first();
 
         return $this->success([
             'rows' => $data

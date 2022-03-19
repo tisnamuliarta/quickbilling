@@ -80,15 +80,15 @@ export default {
         hiddenColumns: {
           copyPasteEnabled: false,
           indicator: false,
-          columns: [20],
+          columns: [1],
         },
         colHeaders: [
-          '', 'Product', 'Description', 'Qty', 'Units', 'Unit Price', 'Discount', 'Tax', 'Amount', ''
+          '', 'Id', 'Item', 'Description', 'Qty', 'Units', 'Unit Price', 'Discount', 'Tax', 'Amount', ''
         ],
         columns: [
           // TODO
           {
-            width: 10,
+            width: '24px',
             wordWrap: false,
             renderer(instance, td, row, col, prop, value, cellProperties) {
               let button = null
@@ -111,18 +111,23 @@ export default {
             },
           },
           {
-            data: 'item_name',
+            data: 'id',
             width: 100,
+            wordWrap: false,
+          },
+          {
+            data: 'item_name',
+            width: '200px',
             wordWrap: false,
           },
           {
             data: 'description',
-            width: 100,
+            width: '250px',
             wordWrap: false,
           },
           {
             data: 'qty',
-            width: 40,
+            width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -131,13 +136,13 @@ export default {
           },
           {
             data: 'unit',
-            width: 30,
+            width: '100px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'unit_price',
-            width: 50,
+            width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -146,7 +151,7 @@ export default {
           },
           {
             data: 'discount',
-            width: 30,
+            width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -155,7 +160,7 @@ export default {
           },
           {
             data: 'tax',
-            width: 30,
+            width: '100px',
             type: 'dropdown',
             height: 26,
             wordWrap: false,
@@ -170,15 +175,16 @@ export default {
           },
           {
             data: 'amount',
-            width: 50,
+            width: '100px',
             wordWrap: false,
             type: 'numeric',
+            readOnly: true,
             numericFormat: {
               pattern: '0,0.00',
             },
           },
           {
-            width: 10,
+            width: '24px',
             wordWrap: false,
             renderer(instance, td, row, col, prop, value, cellProperties) {
               let button = null
@@ -212,25 +218,54 @@ export default {
             }
           },
         },
+        afterRemoveRow: (index, amount, physicalRow, source) => {
+          const vm = window.details
+          vm.calculateTotal()
+        },
         beforeRemoveRow: (index, amount, physicalRow, source) => {
           const vm = window.details
-          const delQuestion = prompt('Are your sure want to delete this rows?')
           const id = []
-          if (delQuestion === '') {
-            physicalRow.forEach(function (index, value) {
-              const entry = vm.$refs.details.hotInstance.getDataAtCell(index, 0)
-              if (entry) {
-                id.push(entry)
-              }
-            })
-            if (id.length > 0) {
-              vm.$emit('removeData', {
-                id,
-              })
+          physicalRow.forEach(function (index, value) {
+            const entry = vm.$refs.details.hotInstance.getDataAtCell(index, 0)
+            if (entry) {
+              id.push(entry)
             }
-            return true
-          } else {
-            return false
+          })
+          const countRows = vm.$refs.details.hotInstance.countRows()
+          if (countRows === 1) {
+            vm.$emit('calcTotal', {
+              subTotal: 0,
+              amount: 0,
+              discountAmount: 0,
+              taxDetail: []
+            })
+          }
+
+          if (id.length > 0) {
+            vm.$emit('removeData', {
+              id,
+            })
+          }
+          return true
+        },
+
+        afterChange: (changes, source) => {
+          const vm = window.details
+          if (changes) {
+            try {
+              let propNew = 0
+              changes.forEach(([row, prop, oldValue, newValue]) => {
+                propNew = prop
+                if (propNew === 'qty' || propNew === 'unit_price' || propNew === 'discount' || propNew === 'tax') {
+                  if (oldValue !== newValue) {
+                    vm.calculateTotal()
+                  }
+                }
+              })
+            } catch (e) {
+              // eslint-disable-next-line no-console
+              console.log(e)
+            }
           }
         },
       })
@@ -247,7 +282,9 @@ export default {
         vm.$refs.details.hotInstance.setDataAtRowProp([
           [rowData, 'item_name', item.name],
           [rowData, 'unit', item.unit],
+          [rowData, 'description', item.description],
           [rowData, 'unit_price', price],
+          [rowData, 'qty', 1],
         ]);
         rowData++
       })
@@ -259,6 +296,77 @@ export default {
       setTimeout(() => {
         vm.$refs.details.hotInstance.loadData(data)
       }, 150)
+    },
+
+    calculateTotal() {
+      const countRows = this.$refs.details.hotInstance.countRows()
+      let subTotal = 0;
+      let discountAmount = 0;
+      let taxDetail = [];
+      let amount = 0;
+      let amountRow = 0;
+      if (countRows > 0) {
+        for (let i = 0; i < countRows; i++) {
+          const qty = this.$refs.details.hotInstance.getDataAtRowProp(i, 'qty')
+          const unitPrice = this.$refs.details.hotInstance.getDataAtRowProp(i, 'unit_price')
+          const discount = this.$refs.details.hotInstance.getDataAtRowProp(i, 'discount')
+          const tax = this.$refs.details.hotInstance.getDataAtRowProp(i, 'tax')
+
+          const subTotalRow = (qty * unitPrice)
+          subTotal = subTotal + (qty * unitPrice)
+
+          const discountPerLine = parseFloat((discount / 100) * subTotalRow).toFixed(2)
+          discountAmount = parseFloat(discountAmount) + parseFloat(discountPerLine)
+
+          amountRow = (subTotalRow - discountPerLine )
+
+          if (tax) {
+            let taxRate = 0
+            this.$auth.$storage.getLocalStorage('tax_row').forEach(function (item, index) {
+              if (item.name === tax) {
+                taxRate = parseFloat(item.rate)
+              }
+            })
+
+            const taxRow = (parseFloat(taxRate) / 100) * amountRow
+            taxDetail.push({
+              name: tax,
+              tax: taxRow
+            })
+          }
+
+          amount = amount +  (subTotalRow - discountPerLine )
+
+          this.$refs.details.hotInstance.setDataAtRowProp(
+            i,
+            'amount',
+            amountRow
+          )
+        }
+      }
+      this.$emit('calcTotal', {
+        subTotal,
+        amount,
+        discountAmount,
+        taxDetail
+      })
+    },
+
+    async getTaxRate(tax) {
+      const taxRate = await this.$axios.get(`/api/financial/taxes/0`, {
+        params: {
+          name: tax
+        }
+      })
+      return taxRate.data.data.rows
+    },
+
+    getDataAtRowPro(row, prop) {
+      return this.$refs.details.hotInstance.getDataAtRowProp(row, prop)
+    },
+
+    countRows() {
+      return this.$refs.details.hotInstance.countRows()
     },
 
     checkIfEmptyRow(key) {

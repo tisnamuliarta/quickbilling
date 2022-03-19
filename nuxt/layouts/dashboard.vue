@@ -144,6 +144,15 @@
         <Nuxt/>
       </v-container>
     </v-main>
+
+    <v-footer color="grey lighten-3" padless>
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        Copyright © {{ new Date().getFullYear() }} — <strong> TizCRM </strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 

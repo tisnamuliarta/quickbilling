@@ -3,7 +3,6 @@
     v-model="dialog"
     no-click-animation
     persistent
-    hide-overlay
     :origin="original"
     :max-width="maxWidth"
     transition="dialog-bottom-transition"

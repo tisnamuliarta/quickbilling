@@ -380,7 +380,7 @@ export default {
           type: 'Item Category'
         }
       }).then((res) => {
-        this.itemTax = res.data.data.simple
+        this.itemTax = res.data.data.row_simple
       })
         .catch((err) => {
           this.$swal({

@@ -45,12 +45,10 @@ export default {
    */
   plugins: [
     '~/plugins/vue-gates',
-    '~/plugins/vuetify-datetime-picker',
     '~/plugins/dragable',
     '~/plugins/vuetify-money',
     '~/plugins/vue-cookie',
     '~/plugins/formatter',
-    { src: '~/plugins/tiptap-vuetify', mode: 'client' },
   ],
   /*
    ** Auto import components

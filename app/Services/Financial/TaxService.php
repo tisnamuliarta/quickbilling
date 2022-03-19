@@ -37,9 +37,11 @@ class TaxService
             ->get();
 
         $arr_rows = Tax::pluck('name');
+        $arr_row_simple = Tax::select('id', 'name')->get();
 
         return array_merge($result, [
             "rows" => $all_data,
+            "row_simple" => $arr_row_simple,
             "simple" => $arr_rows
         ]);
     }

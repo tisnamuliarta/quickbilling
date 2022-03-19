@@ -53,6 +53,9 @@ export default {
   methods: {
     openDialog(row) {
       this.$refs.dialogForm.openDialog()
+      setTimeout(() => {
+        this.$refs.tableItem.setEmptyToSelected()
+      }, 150)
       this.row = row
     },
 

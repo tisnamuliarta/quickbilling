@@ -85,13 +85,12 @@ class ItemService
         $data['item_group_id'] = 0;
         $data['updated_at'] = Carbon::now();
         $data['created_at'] = Carbon::now();
-        $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $this->getTaxIdByName($request->buy_tax_id) : 0;
+        $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;
         $data['quantity'] = (isset($request->quantity)) ? $request->quantity : 0;
         $data['minimum_stock'] = (isset($request->minimum_stock)) ? $request->minimum_stock : 0;
         $data['tract_stock'] = (isset($request->tract_stock)) ? $request->tract_stock : 0;
         $data['enabled'] = (isset($request->enabled)) ? $request->enabled : true;
-        $data['sell_tax_id'] = (isset($request->sell_tax_id)) ? $this->getTaxIdByName($request->sell_tax_id) : 0;
-
+        $data['sell_tax_id'] = (isset($request->sell_tax_id)) ? $request->sell_tax_id : 0;
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
