@@ -6,7 +6,7 @@
       @getDataFromApi="getDataFromApi"
     >
       <template #content>
-        <DocumentFormDocument ref="formDocument"></DocumentFormDocument>
+        <LazyDocumentFormDocument ref="formDocument"></LazyDocumentFormDocument>
       </template>
 
       <template #action>
@@ -82,6 +82,7 @@
           color="green darken-1"
           dark
           small
+          @click="store"
         >
           {{ $route.query.status }}
           <v-icon>
@@ -110,6 +111,7 @@ export default {
       form: {},
       defaultItem: {},
       items: [],
+      url: '/api/documents',
       dialogLoading: false,
     }
   },
@@ -129,7 +131,7 @@ export default {
       this.dialogLoading = true
       const type = this.$route.query.type
       this.$axios
-        .get(`/api/documents/` + this.$route.query.id, {
+        .get(this.url + '/' + this.$route.query.id, {
           params: {
             type,
           },
@@ -149,9 +151,9 @@ export default {
             text: err.response.data.message,
           })
         })
-      .finally(res => {
-        this.dialogLoading = false
-      })
+        .finally(res => {
+          this.dialogLoading = false
+        })
     },
 
     getBreadcrumb(type) {
@@ -185,6 +187,28 @@ export default {
         case 'SQ':
           return '/dashboard/sales/quote'
       }
+    },
+
+    store() {
+      const method = (this.$route.query.status === 'save') ? 'post' : 'patch'
+      const url = (this.$route.query.status === 'save') ? this.url : this.url + '/' + this.$route.query.id
+      let data = this.$refs.formDocument.returnData()
+
+      this.dialogLoading = true
+      this.$axios({method, url, data})
+        .then((res) => {
+          this.getDataFromApi()
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+        .finally(res => {
+          this.dialogLoading = false
+        })
     },
   }
 }

@@ -40,15 +40,6 @@
         </v-data-table>
       </div>
     </v-flex>
-
-    <LazyDocumentDialogFormDocument
-      ref="formData"
-      :type="typeDocument"
-      :form-data="form"
-      :form-title="formTitle"
-      :button-title="buttonTitle"
-      @getDataFromApi="getDataFromApi"
-    ></LazyDocumentDialogFormDocument>
   </v-layout>
 </template>
 
@@ -108,25 +99,27 @@ export default {
     },
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
-
   methods: {
     newData() {
       this.$router.push({
         path: '/dashboard/documents/form',
         query: {
           id: 0,
-          status: 'add',
+          status: 'save',
           type: this.typeDocument
         }
       })
     },
 
     editItem(item) {
-      this.editedIndex = this.allData.indexOf(item)
-      this.$refs.formData.editItem(item)
+      this.$router.push({
+        path: '/dashboard/documents/form',
+        query: {
+          id: item.id,
+          status: 'update',
+          type: this.typeDocument
+        }
+      })
     },
 
     emitData(data) {

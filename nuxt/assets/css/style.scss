@@ -427,3 +427,8 @@ body {
 .text-money > .v-input > .v-input__control > .v-input__slot > .v-text-field__slot > input {
   text-align: right;
 }
+
+.dropzone {
+  min-height: 80px !important;
+  padding: 0 !important;
+}

@@ -73,9 +73,14 @@ class DocumentController extends Controller
      */
     protected function validation($request)
     {
+        $messages = [
+            'form.contact_id.required' => 'Customer/Vendor is required!',
+        ];
+
         $validator = Validator::make($request->all(), [
-            'document_number' => 'required',
-        ]);
+            'form.document_number' => 'required',
+            'form.contact_id' => 'required',
+        ], $messages);
 
         $string_data = "";
         if ($validator->fails()) {

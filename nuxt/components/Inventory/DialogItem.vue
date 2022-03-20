@@ -23,6 +23,7 @@
         @click="selectData"
       >
         Select Item
+        <v-icon>mdi-arrow-down-right</v-icon>
       </v-btn>
     </template>
   </DialogForm>

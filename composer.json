@@ -21,6 +21,7 @@
     "m2s/laravel-nuxt": "^1.2",
     "maatwebsite/excel": "^3.1",
     "owen-it/laravel-auditing": "^12.2",
+    "qoraiche/laravel-mail-editor": "^3",
     "scottlaurent/accounting": "^0.3.3",
     "simplesoftwareio/simple-qrcode": "^4.2",
     "spatie/laravel-permission": "^5.5",

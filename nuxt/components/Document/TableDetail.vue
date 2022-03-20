@@ -68,7 +68,7 @@ export default {
         manualRowResize: true,
         filters: true,
         autoRowSize: false,
-        autoColumnSize: false,
+        autoColumnSize: true,
         viewportRowRenderingOffset: 1000,
         viewportColumnRenderingOffset: 100,
         colWidths: 80,
@@ -80,10 +80,10 @@ export default {
         hiddenColumns: {
           copyPasteEnabled: false,
           indicator: false,
-          columns: [1],
+          columns: [1, 2, 3],
         },
         colHeaders: [
-          '', 'Id', 'Item', 'Description', 'Qty', 'Units', 'Unit Price', 'Discount', 'Tax', 'Amount', ''
+          '', 'Id', 'Item ID', 'Item Code', 'Item Name', 'Description', 'Qty', 'Units', 'Unit Price', 'Discount', 'Tax', 'Amount', '',
         ],
         columns: [
           // TODO
@@ -116,17 +116,29 @@ export default {
             wordWrap: false,
           },
           {
-            data: 'item_name',
-            width: '200px',
+            data: 'item_id',
+            width: '50px',
+            wordWrap: false,
+          },
+          {
+            data: 'sku',
+            width: '100px',
+            readOnly: true,
+            wordWrap: false,
+          },
+          {
+            data: 'name',
+            width: '150px',
+            readOnly: true,
             wordWrap: false,
           },
           {
             data: 'description',
-            width: '250px',
+            width: '230px',
             wordWrap: false,
           },
           {
-            data: 'qty',
+            data: 'quantity',
             width: '100px',
             wordWrap: false,
             type: 'numeric',
@@ -141,7 +153,7 @@ export default {
             wordWrap: false,
           },
           {
-            data: 'unit_price',
+            data: 'price',
             width: '100px',
             wordWrap: false,
             type: 'numeric',
@@ -150,7 +162,7 @@ export default {
             },
           },
           {
-            data: 'discount',
+            data: 'discount_rate',
             width: '100px',
             wordWrap: false,
             type: 'numeric',
@@ -159,7 +171,7 @@ export default {
             },
           },
           {
-            data: 'tax',
+            data: 'tax_name',
             width: '100px',
             type: 'dropdown',
             height: 26,
@@ -174,7 +186,7 @@ export default {
             allowInvalid: false,
           },
           {
-            data: 'amount',
+            data: 'total',
             width: '100px',
             wordWrap: false,
             type: 'numeric',
@@ -256,7 +268,7 @@ export default {
               let propNew = 0
               changes.forEach(([row, prop, oldValue, newValue]) => {
                 propNew = prop
-                if (propNew === 'qty' || propNew === 'unit_price' || propNew === 'discount' || propNew === 'tax') {
+                if (propNew === 'quantity' || propNew === 'price' || propNew === 'discount_rate' || propNew === 'tax_name') {
                   if (oldValue !== newValue) {
                     vm.calculateTotal()
                   }
@@ -280,11 +292,13 @@ export default {
         const price = (type.substr(0, 1) === 'S') ? item.sale_price : item.purchase_price
 
         vm.$refs.details.hotInstance.setDataAtRowProp([
-          [rowData, 'item_name', item.name],
+          [rowData, 'name', item.name],
+          [rowData, 'sku', item.code],
           [rowData, 'unit', item.unit],
           [rowData, 'description', item.description],
-          [rowData, 'unit_price', price],
-          [rowData, 'qty', 1],
+          [rowData, 'item_id', item.id],
+          [rowData, 'price', price],
+          [rowData, 'quantity', 1],
         ]);
         rowData++
       })
@@ -307,10 +321,10 @@ export default {
       let amountRow = 0;
       if (countRows > 0) {
         for (let i = 0; i < countRows; i++) {
-          const qty = this.$refs.details.hotInstance.getDataAtRowProp(i, 'qty')
-          const unitPrice = this.$refs.details.hotInstance.getDataAtRowProp(i, 'unit_price')
-          const discount = this.$refs.details.hotInstance.getDataAtRowProp(i, 'discount')
-          const tax = this.$refs.details.hotInstance.getDataAtRowProp(i, 'tax')
+          const qty = this.$refs.details.hotInstance.getDataAtRowProp(i, 'quantity')
+          const unitPrice = this.$refs.details.hotInstance.getDataAtRowProp(i, 'price')
+          const discount = this.$refs.details.hotInstance.getDataAtRowProp(i, 'discount_rate')
+          const tax = this.$refs.details.hotInstance.getDataAtRowProp(i, 'tax_name')
 
           const subTotalRow = (qty * unitPrice)
           subTotal = subTotal + (qty * unitPrice)
@@ -339,7 +353,7 @@ export default {
 
           this.$refs.details.hotInstance.setDataAtRowProp(
             i,
-            'amount',
+            'total',
             amountRow
           )
         }

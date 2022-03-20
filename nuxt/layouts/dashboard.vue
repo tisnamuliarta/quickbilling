@@ -89,8 +89,8 @@
       id="nav"
       v-model="drawer"
       app
-      :clipped="$route.name !== 'Watch'"
-      :temporary="$route.name === 'Watch'"
+      :clipped="$route.name !== 'dashboard-documents-form'"
+      :temporary="$route.name === 'dashboard-documents-form'"
     >
       <v-list dense nav expand>
         <NuxtLink to="/" class="hidden-md-and-up">
@@ -194,7 +194,7 @@ export default {
     this.activateMultipleDraggableDialogs()
 
     this.drawer = !this.$vuetify.breakpoint.mdAndDown
-    this.drawer = this.$route.name === 'Watch' ? false : this.drawer
+    this.drawer = this.$route.name === 'dashboard-documents-form' ? false : this.drawer
   },
 
   created() {

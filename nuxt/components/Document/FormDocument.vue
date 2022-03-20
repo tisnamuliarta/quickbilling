@@ -70,7 +70,7 @@
             </template>
 
             <v-date-picker
-              v-model="form.shipping_info"
+              v-model="form.shipping_date"
               no-title
               @input='menu2 = false'
             >
@@ -117,7 +117,7 @@
 
         <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-textarea
-            rows="1"
+            rows="2"
             v-model="form.contact_address"
             label="Billing Address"
             outlined
@@ -168,7 +168,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-text-field
             v-model="form.reference_no"
             label="Reference No"
@@ -192,7 +192,7 @@
           <v-textarea
             v-show="form.shipping_info"
             v-model="form.shipping_address"
-            rows="1"
+            rows="2"
             label="Shipping Address"
             outlined
             dense
@@ -316,7 +316,7 @@
 
         <v-spacer class="hidden-sm-and-down"></v-spacer>
 
-        <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-col cols="12" md="6" lg="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-row no-gutters>
 
             <v-col cols="12" md="8"></v-col>
@@ -364,7 +364,7 @@
 
             <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
-                v-model="discountRate"
+                v-model="form.discount_rate"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotalDiscount"
                 label="Discount Rate"
@@ -442,121 +442,133 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-checkbox
-                v-model="form.withholding_info"
-                dense
-                hide-details
-                label="Withholding"
-                class="mt-0"
-              ></v-checkbox>
+            <v-col v-if="checkDocument()" cols="12">
+              <v-row no-gutters>
+                <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <v-checkbox
+                    v-model="form.withholding_info"
+                    dense
+                    hide-details
+                    label="Withholding"
+                    class="mt-0"
+                  ></v-checkbox>
+                </v-col>
+
+                <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <v-select
+                    v-show="form.withholding_info"
+                    v-model="form.withholding_type"
+                    :items="['Amount', 'Percent']"
+                    label="Type"
+                    outlined
+                    dense
+                    hide-details="auto"
+                  ></v-select>
+                </v-col>
+
+                <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <vuetify-money
+                    v-show="form.withholding_info"
+                    v-model="form.withholding_rate"
+                    v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                    v-bind:options="moneyOptionTotal"
+                    label="Rate"
+                    outlined
+                    dense
+                    class="text-money"
+                    hide-details="auto"
+                  ></vuetify-money>
+                </v-col>
+
+                <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <vuetify-money
+                    v-show="form.withholding_info"
+                    v-model="form.withholding_amount"
+                    v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                    v-bind:options="moneyOptionTotal"
+                    readonly
+                    label="Amount"
+                    outlined
+                    dense
+                    class="text-money"
+                    hide-details="auto"
+                  ></vuetify-money>
+                </v-col>
+
+                <v-col v-show="form.withholding_info" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <v-select
+                    v-model="form.withholding_account_id"
+                    :items="itemAccounts"
+                    item-value="id"
+                    item-text="name"
+                    label="Withholding Account"
+                    outlined
+                    dense
+                    hide-details="auto"
+                  ></v-select>
+                </v-col>
+              </v-row>
             </v-col>
 
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-select
-                v-show="form.withholding_info"
-                v-model="form.withholding_type"
-                :items="['Amount', 'Percent']"
-                label="Type"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-select>
+            <v-col v-if="checkDocument()" cols="12">
+              <v-row no-gutters>
+                <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <v-checkbox
+                    v-model="form.deposit_info"
+                    dense
+                    hide-details
+                    label="Deposit"
+                    class="mt-0"
+                  ></v-checkbox>
+                </v-col>
+
+                <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <v-select
+                    v-show="form.deposit_info"
+                    v-model="form.deposit_account_id"
+                    :items="itemAccounts"
+                    item-text="name"
+                    item-value="id"
+                    label="Deposit Account"
+                    outlined
+                    dense
+                    hide-details="auto"
+                  ></v-select>
+                </v-col>
+
+                <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <vuetify-money
+                    v-show="form.deposit_info"
+                    v-model="form.deposit_amount"
+                    v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                    v-bind:options="moneyOptionTotal"
+                    label="Amount"
+                    outlined
+                    dense
+                    class="text-money"
+                    hide-details="auto"
+                  ></vuetify-money>
+                </v-col>
+              </v-row>
             </v-col>
 
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-show="form.withholding_info"
-                v-model="withholdingRate"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                label="Rate"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
-            </v-col>
-
-            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-show="form.withholding_info"
-                v-model="form.withholding_amount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                readonly
-                label="Amount"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
-            </v-col>
-
-            <v-col v-show="form.withholding_info" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-select
-                v-model="form.withholding_account_id"
-                :items="itemAccounts"
-                item-value="id"
-                item-text="name"
-                label="Withholding Account"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-checkbox
-                v-model="form.deposit_info"
-                dense
-                hide-details
-                label="Deposit"
-                class="mt-0"
-              ></v-checkbox>
-            </v-col>
-
-            <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-select
-                v-show="form.deposit_info"
-                v-model="form.deposit_account_id"
-                :items="itemAccounts"
-                item-text="name"
-                item-value="id"
-                label="Deposit Account"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-show="form.deposit_info"
-                v-model="depositAmount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                label="Amount"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
-            </v-col>
-
-            <v-col cols="12" md="7"></v-col>
-            <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-model="form.balance_due"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                readonly
-                label="Balance Due"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
+            <v-col cols="12">
+              <v-row no-gutters>
+                <v-spacer></v-spacer>
+                <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                  <vuetify-money
+                    v-model="form.balance_due"
+                    v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                    v-bind:options="moneyOptionTotal"
+                    readonly
+                    label="Balance Due"
+                    outlined
+                    dense
+                    class="text-money"
+                    hide-details="auto"
+                  ></vuetify-money>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-col>
@@ -613,13 +625,10 @@ export default {
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
       tempTotalTax: 0,
-      depositAmount: 0,
-      discountRate: 0,
       subTotalMinDiscount: 0,
       taxAmount: 0,
       taxDiscount: 0,
       amountBeforeTax: 0,
-      withholdingRate: 0,
       withholdingAmount: 0,
       discountAmount: 0,
       moneyOptions: {
@@ -645,8 +654,47 @@ export default {
     }
   },
 
+  computed: {
+    depositAmount() {
+      return this.form.deposit_amount;
+    },
+    discountRate() {
+      return this.form.discount_rate;
+    },
+    discountType() {
+      return this.form.discount_type;
+    },
+    withholdingType() {
+      return this.form.withholding_type;
+    },
+    withholdingRate() {
+      return this.form.withholding_rate;
+    },
+    shippingFee() {
+      return this.form.shipping_fee;
+    },
+  },
+
   watch: {
+    shippingFee: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
     depositAmount: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
+    withholdingType: {
+      handler() {
+        this.changeCalculation()
+      },
+      deep: true,
+    },
+    discountType: {
       handler() {
         this.changeCalculation()
       },
@@ -686,11 +734,15 @@ export default {
       this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
       this.taxAmount = this.tempTotalTax
 
+      if (this.form.sub_total === 0) {
+        this.form.discount_rate = 0
+        this.form.discount_amount = 0
+      }
+
       this.changeCalculation()
     },
 
     changeCalculation() {
-      this.form.discount_rate = this.discountRate
       // calculate discount
       if (this.form.discount_type === 'Percent') {
         if (this.form.discount_rate > 0) {
@@ -698,10 +750,13 @@ export default {
           this.taxDiscount = (this.form.discount_rate / 100) * this.tempTotalTax
         }
       } else {
-        this.form.discount_amount = this.form.discount_rate
-        this.taxDiscount = this.tempTotalTax - this.form.discount_amount
+        this.form.discount_amount = parseFloat(this.form.discount_rate)
+        if (this.tempTotalTax > 0) {
+          this.taxDiscount = this.tempTotalTax - this.form.discount_amount
+        }
       }
-      this.taxAmount = this.tempTotalTax - this.taxDiscount
+      this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
+      this.taxAmount = (this.taxAmount === undefined) ? 0 : this.taxAmount
 
       // calculate tax details
       if (this.form.discount_rate > 0) {
@@ -714,16 +769,14 @@ export default {
       this.amountBeforeTax = this.form.amount - this.taxAmount
 
       // calculate tax withholding
-      this.form.withholding_rate = this.withholdingRate
       if (this.form.withholding_type === 'Percent') {
         if (this.form.withholding_rate > 0) {
           this.form.withholding_amount = (this.form.withholding_rate / 100) * this.amountBeforeTax
         }
       } else {
-        this.form.withholding_amount = this.form.withholding_rate
+        this.form.withholding_amount = parseFloat(this.form.withholding_rate)
       }
 
-      this.form.deposit_amount = this.depositAmount
       this.form.balance_due = this.form.amount - this.form.deposit_amount - this.form.withholding_amount
     },
 
@@ -735,7 +788,7 @@ export default {
           res[value.name] = {name: value.name, tax: 0};
           result.push(res[value.name])
         }
-        if (vm.discountRate > 0) {
+        if (vm.form.discount_rate > 0) {
           let taxDiscountValue = 0
           if (vm.form.discount_type === 'Percent') {
             taxDiscountValue = (vm.form.discount_rate / 100) * value.tax
@@ -901,6 +954,17 @@ export default {
         .then(res => {
 
         })
+    },
+
+    checkDocument() {
+      const routeType = this.$route.query.type
+      switch (routeType) {
+        case 'SQ':
+        case 'PQ':
+          return false;
+        default:
+          return true
+      }
     },
 
     returnData() {

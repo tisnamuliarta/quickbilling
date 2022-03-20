@@ -83,6 +83,12 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"
   },
@@ -109,12 +115,6 @@
   },
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
-  },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"
