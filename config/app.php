@@ -167,6 +167,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
+        Venturecraft\Revisionable\RevisionableServiceProvider::class,
 
         /*
          * Application Service Providers...

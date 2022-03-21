@@ -105,10 +105,6 @@ export default {
     },
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
-
   methods: {
     newData() {
       this.editedIndex = -1

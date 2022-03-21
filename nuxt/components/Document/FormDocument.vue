@@ -2,240 +2,252 @@
   <v-form class="pt-0">
     <v-container fluid>
       <v-row no-gutters>
-        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-select
-            v-model="form.contact_id"
-            :items="itemContact"
-            label="Customer/Vendor"
-            item-value="id"
-            item-text="name"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-select>
-        </v-col>
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.contact_id"
+                :items="itemContact"
+                label="Customer/Vendor"
+                item-value="id"
+                item-text="name"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
 
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-menu
-            ref='menu'
-            v-model='menu'
-            :close-on-content-click='false'
-            transition='scale-transition'
-            offset-y
-            min-width='290px'
-          >
-            <template #activator='{ on, attrs }'>
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-menu
+                ref='menu'
+                v-model='menu'
+                :close-on-content-click='false'
+                transition='scale-transition'
+                offset-y
+                min-width='290px'
+              >
+                <template #activator='{ on, attrs }'>
+                  <v-text-field
+                    v-model="form.issued_at"
+                    label="Transaction Date"
+                    prepend-icon='mdi-calendar'
+                    readonly
+                    persistent-hint
+                    outlined dense hide-details='auto'
+                    v-bind='attrs'
+                    v-on='on'
+                  ></v-text-field>
+                </template>
+
+                <v-date-picker
+                  v-model="form.issued_at"
+                  no-title
+                  @input='menu = false'
+                >
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-menu
+                ref='menu2'
+                v-model='menu2'
+                :close-on-content-click='false'
+                transition='scale-transition'
+                offset-y
+                min-width='290px'
+              >
+                <template #activator='{ on, attrs }'>
+                  <v-text-field
+                    v-show="form.shipping_info"
+                    v-model="form.shipping_date"
+                    label="Shipping Date"
+                    prepend-icon='mdi-calendar'
+                    readonly
+                    persistent-hint
+                    outlined dense hide-details='auto'
+                    v-bind='attrs'
+                    v-on='on'
+                  ></v-text-field>
+                </template>
+
+                <v-date-picker
+                  v-model="form.shipping_date"
+                  no-title
+                  @input='menu2 = false'
+                >
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
-                v-model="form.issued_at"
-                label="Transaction Date"
-                prepend-icon='mdi-calendar'
+                v-model="form.document_number"
                 readonly
-                persistent-hint
-                outlined dense hide-details='auto'
-                v-bind='attrs'
-                v-on='on'
+                label="Transaction Number"
+                outlined
+                dense
+                hide-details="auto"
               ></v-text-field>
-            </template>
+            </v-col>
 
-            <v-date-picker
-              v-model="form.issued_at"
-              no-title
-              @input='menu = false'
-            >
-            </v-date-picker>
-          </v-menu>
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-combobox
+                v-model="form.tags"
+                :items="itemTag"
+                :search-input.sync="search"
+                hide-selected
+                label="Tags"
+                hide-details
+                dense
+                multiple
+                persistent-hint
+                small-chips
+                outlined
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </v-combobox>
+            </v-col>
+          </v-row>
         </v-col>
 
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-menu
-            ref='menu2'
-            v-model='menu2'
-            :close-on-content-click='false'
-            transition='scale-transition'
-            offset-y
-            min-width='290px'
-          >
-            <template #activator='{ on, attrs }'>
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-textarea
+                rows="2"
+                v-model="form.contact_address"
+                label="Billing Address"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-textarea>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-menu
+                ref='menu3'
+                v-model='menu3'
+                :close-on-content-click='false'
+                transition='scale-transition'
+                offset-y
+                min-width='290px'
+              >
+                <template #activator='{ on, attrs }'>
+                  <v-text-field
+                    v-model="form.due_at"
+                    label="Due Date"
+                    prepend-icon='mdi-calendar'
+                    readonly
+                    persistent-hint
+                    outlined dense hide-details='auto'
+                    v-bind='attrs'
+                    v-on='on'
+                  ></v-text-field>
+                </template>
+
+                <v-date-picker
+                  v-model="form.due_at"
+                  no-title
+                  @input='menu3 = false'
+                >
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-show="form.shipping_info"
-                v-model="form.shipping_date"
-                label="Shipping Date"
-                prepend-icon='mdi-calendar'
-                readonly
-                persistent-hint
-                outlined dense hide-details='auto'
-                v-bind='attrs'
-                v-on='on'
+                v-model="form.shipping_via"
+                label="Ship Via"
+                outlined
+                dense
+                hide-details="auto"
               ></v-text-field>
-            </template>
+            </v-col>
 
-            <v-date-picker
-              v-model="form.shipping_date"
-              no-title
-              @input='menu2 = false'
-            >
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-text-field
-            v-model="form.document_number"
-            readonly
-            label="Transaction Number"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-combobox
-            v-model="form.tags"
-            :items="itemTag"
-            :search-input.sync="search"
-            hide-selected
-            label="Tags"
-            hide-details
-            dense
-            multiple
-            persistent-hint
-            small-chips
-            outlined
-          >
-            <template v-slot:no-data>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </v-combobox>
-        </v-col>
-
-        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-textarea
-            rows="2"
-            v-model="form.contact_address"
-            label="Billing Address"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-textarea>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-menu
-            ref='menu3'
-            v-model='menu3'
-            :close-on-content-click='false'
-            transition='scale-transition'
-            offset-y
-            min-width='290px'
-          >
-            <template #activator='{ on, attrs }'>
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
-                v-model="form.due_at"
-                label="Due Date"
-                prepend-icon='mdi-calendar'
-                readonly
-                persistent-hint
-                outlined dense hide-details='auto'
-                v-bind='attrs'
-                v-on='on'
+                v-model="form.reference_no"
+                label="Reference No"
+                outlined
+                dense
+                hide-details="auto"
               ></v-text-field>
-            </template>
+            </v-col>
 
-            <v-date-picker
-              v-model="form.due_at"
-              no-title
-              @input='menu3 = false'
-            >
-            </v-date-picker>
-          </v-menu>
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-textarea
+                v-show="form.shipping_info"
+                v-model="form.shipping_address"
+                rows="2"
+                label="Shipping Address"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-textarea>
+            </v-col>
+          </v-row>
         </v-col>
 
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-text-field
-            v-show="form.shipping_info"
-            v-model="form.shipping_via"
-            label="Ship Via"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1">
+              <v-checkbox
+                v-model="form.shipping_info"
+                dense
+                hide-details
+                label="Shipping Info"
+                class="mt-0"
+              ></v-checkbox>
+            </v-col>
 
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-text-field
-            v-model="form.reference_no"
-            label="Reference No"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.payment_term_id"
+                :items="itemPaymentTerm"
+                item-value="id"
+                item-text="name"
+                label="Payment Term"
+                outlined
+                dense
+                hide-details="auto"
+                @change="changePaymentTerm"
+              ></v-select>
+            </v-col>
 
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1">
-          <v-checkbox
-            v-model="form.shipping_info"
-            dense
-            hide-details
-            label="Shipping Info"
-            class="mt-0"
-          ></v-checkbox>
-        </v-col>
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-text-field
+                v-show="form.shipping_info"
+                v-model="form.tracking_code"
+                label="Tracking No"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
 
-        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-textarea
-            v-show="form.shipping_info"
-            v-model="form.shipping_address"
-            rows="2"
-            label="Shipping Address"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-textarea>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-select
-            v-model="form.payment_term_id"
-            :items="itemPaymentTerm"
-            item-value="id"
-            item-text="name"
-            label="Payment Term"
-            outlined
-            dense
-            hide-details="auto"
-            @change="changePaymentTerm"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-text-field
-            v-show="form.shipping_info"
-            v-model="form.tracking_code"
-            label="Tracking No"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-          <v-select
-            v-model="form.warehouse_id"
-            :items="itemWarehouse"
-            item-text="name"
-            item-value="id"
-            label="Warehouse"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-select>
+            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.warehouse_id"
+                :items="itemWarehouse"
+                item-text="name"
+                item-value="id"
+                label="Warehouse"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -316,7 +328,7 @@
 
         <v-spacer class="hidden-sm-and-down"></v-spacer>
 
-        <v-col cols="12" md="6" lg="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-col cols="12" md="6" lg="5" xl="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-row no-gutters>
 
             <v-col cols="12" md="8"></v-col>
@@ -574,6 +586,8 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <LazyDocumentDialogSendEmail ref="dialogSendEmail" ></LazyDocumentDialogSendEmail>
   </v-form>
 </template>
 
@@ -843,6 +857,7 @@ export default {
     },
 
     getItemCategory() {
+      this.$refs.dialogSendEmail.openEmailDialog()
       this.$axios.get(`/api/master/categories`, {
         params: {
           type: 'Item Category'

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models\Documents;
+namespace App\Models\Bills;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class DocumentItem extends Model
+class BillItemTax extends Model
 {
     use HasFactory;
-
     use RevisionableTrait;
 
     protected $guarded = [];

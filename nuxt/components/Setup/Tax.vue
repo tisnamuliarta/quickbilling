@@ -200,7 +200,6 @@ export default {
   },
 
   mounted() {
-    this.getDataFromApi()
     this.getAccounts()
   },
 

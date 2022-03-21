@@ -148,10 +148,6 @@ export default {
     },
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
-
   methods: {
     getDataFromApi() {
       this.loading = true

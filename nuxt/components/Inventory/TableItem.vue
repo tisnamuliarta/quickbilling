@@ -62,6 +62,10 @@
           <template #[`item.average_price`]="{ item }">
             {{ formatPrice(item.average_price) }}
           </template>
+
+          <template #[`item.minimum_stock`]="{ item }">
+            {{ formatPrice(item.minimum_stock) }}
+          </template>
         </v-data-table>
       </div>
     </v-flex>
@@ -133,7 +137,6 @@ export default {
 
   mounted() {
     this.mappingHeader()
-    this.getDataFromApi()
   },
 
   methods: {
@@ -223,7 +226,7 @@ export default {
           { text: 'Item Code', value: 'code' },
           { text: 'Item Name', value: 'name' },
           { text: 'Item Category', value: 'categories' },
-          { text: 'Minimum Stock', value: 'minimum_stock' },
+          { text: 'Minimum Stock', value: 'minimum_stock', align: 'right', sortable: false, filterable: false  },
           { text: 'Unit', value: 'unit' },
           { text: 'Average Price', value: 'average_price', align: 'right' },
           { text: 'Last Buy Price', value: 'last_buy_price', align: 'right' },
