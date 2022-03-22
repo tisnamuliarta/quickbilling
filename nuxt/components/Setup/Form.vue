@@ -15,6 +15,7 @@ import Finance from './Finance'
 import Pdf from './Pdf'
 import PaymentMethod from './PaymentMethod'
 import PaymentTerm from './PaymentTerm'
+import Currency from './Currency'
 
 export default {
   name: 'FormSetup',
@@ -28,6 +29,7 @@ export default {
     taxes: Tax,
     term: PaymentTerm,
     payment: PaymentMethod,
+    currency: Currency,
   },
 
   data() {

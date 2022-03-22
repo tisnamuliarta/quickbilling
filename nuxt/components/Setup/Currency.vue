@@ -23,7 +23,7 @@
         >
           <template v-slot:top>
             <v-toolbar flat color="white" dense>
-              <v-toolbar-title class="hidden-xs-only">Payment Terms</v-toolbar-title>
+              <v-toolbar-title class="hidden-xs-only">Currency</v-toolbar-title>
               <v-divider class="mx-2" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-btn icon color="green" dark @click="newData()">
@@ -64,8 +64,28 @@
             </v-col>
 
             <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-text-field
+                v-model="form.code"
+                label="Code"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-text-field
+                v-model="form.symbol"
+                label="Symbol"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
-                v-model="form.value"
+                v-model="form.rate"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptions"
                 label="Rate"
@@ -94,7 +114,7 @@
 
 <script>
 export default {
-  name: 'PaymentTerm',
+  name: 'Currency',
   layout: 'dashboard',
   data() {
     return {
@@ -105,7 +125,7 @@ export default {
       dialog: false,
       loading: true,
       insert: true,
-      url: '/api/financial/payment-terms',
+      url: '/api/financial/currency',
 
       valueWhenIsEmpty: '0',
       moneyOptions: {
@@ -121,7 +141,9 @@ export default {
       options: {},
       headers: [
         { text: 'Name', value: 'name' },
-        { text: 'Length (Days)', value: 'value' },
+        { text: 'Code', value: 'code' },
+        { text: 'Symbol', value: 'symbol' },
+        { text: 'Rate', value: 'rate' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
@@ -129,7 +151,7 @@ export default {
 
   head() {
     return {
-      title: 'Payment Term',
+      title: 'Master Currency',
     }
   },
 
@@ -162,6 +184,8 @@ export default {
           this.loading = false
           this.allData = res.data.data.rows
           this.totalData = res.data.data.total
+          this.form = res.data.data.form
+          this.defaultItem = res.data.data.form
         })
         .catch((err) => {
           this.loading = false
@@ -207,12 +231,8 @@ export default {
 
     save(type = 'all', row = null) {
       const vm = this
-      const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
+      const data = this.form
 
       if (status === 'insert') {
         this.store('post', this.url, data, 'insert', type)

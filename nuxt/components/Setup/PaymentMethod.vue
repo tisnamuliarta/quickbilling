@@ -116,7 +116,7 @@ export default {
 
   head() {
     return {
-      title: 'Master Roles',
+      title: 'Payment Method',
     }
   },
 

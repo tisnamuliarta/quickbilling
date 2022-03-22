@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Documents;
+namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Documents\Document;
-use App\Services\Documents\DocumentService;
+use App\Models\Financial\Currency;
+use App\Services\Financial\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class DocumentController extends Controller
+class CurrencyController extends Controller
 {
     public $service;
-
     /**
      * MasterUserController constructor.
      */
-    public function __construct(DocumentService $service)
+    public function __construct(CurrencyService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -33,7 +32,15 @@ class DocumentController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        return $this->success($this->service->index($request));
+        $result = [];
+        $result['form'] = $this->form('currencies');
+        $result['form']['company_id'] = session('company_id');
+        $result['form']['enabled'] = true;
+        $result['form']['symbol_first'] = true;
+        $result['form']['rate'] = 0;
+        $result = array_merge($result, $this->service->index($request));
+
+        return $this->success($result);
     }
 
     /**
@@ -49,22 +56,9 @@ class DocumentController extends Controller
                 "errors" => true
             ]);
         }
-
-        $items = collect($request->items);
-        $tax_details = collect($request->tax_details);
-
-        $validate_details = $this->validateDetails($items);
-        if ($validate_details['error']) {
-            return $this->error($validate_details['message']);
-        }
-
         DB::beginTransaction();
         try {
-            $data = Document::create($this->service->formData($request, 'store'));
-
-            $this->service->processItems($items, $data);
-
-            $this->service->processItemTax($data, $tax_details);
+            Currency::create($this->service->formData($request, 'store'));
 
             DB::commit();
             return $this->success([
@@ -80,48 +74,16 @@ class DocumentController extends Controller
     }
 
     /**
-     * @param $details
-     * @return array|false[]
-     */
-    protected function validateDetails($details): array
-    {
-        if (count($details) == 0) {
-            return ['error' => true, 'message' => 'Details cannot empty!'];
-        }
-
-        foreach ($details as $index => $detail) {
-            $lines = $index + 1;
-
-            if (!array_key_exists('item_id', $detail)) {
-                return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
-            } elseif (empty($detail['item_id'])) {
-                return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
-            }
-
-            if (empty($detail['quantity'])) {
-                return ['error' => true, 'message' => "Line ${lines}: Quantity cannot empty!"];
-            }
-            if ($detail['quantity'] == 0) {
-                return ['error' => true, 'message' => "Line ${lines}: Quantity cannot 0!"];
-            }
-        }
-        return ['error' => false];
-    }
-
-    /**
      * @param $request
      * @return false|string
      */
     protected function validation($request)
     {
-        $messages = [
-            'contact_id.required' => 'Customer/Vendor is required!',
-        ];
-
         $validator = Validator::make($request->all(), [
-            'document_number' => 'required',
-            'contact_id' => 'required',
-        ], $messages);
+            'name' => 'required',
+            'code' => 'required',
+            'symbol' => 'required',
+        ]);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -139,19 +101,15 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function show($id): \Illuminate\Http\JsonResponse
     {
-        $type = $request->type;
-        $form = $this->service->getForm($type);
-        $data = Document::where("id", "=", $id)->get();
+        $data = Currency::where("id", "=", $id)->get();
 
         return $this->success([
-            'rows' => $data,
-            'form' => $form
+            'rows' => $data
         ]);
     }
 
@@ -172,7 +130,7 @@ class DocumentController extends Controller
 
         $form = $request->form;
         try {
-            Document::where("id", "=", $id)->update($this->service->formData($form, 'update'));
+            Currency::where("id", "=", $id)->update($this->service->formData($form, $request, 'update'));
 
             return $this->success([
                 "errors" => false
@@ -191,11 +149,11 @@ class DocumentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
-        $details = Document::where("id", "=", $id)->first();
+        $details = Currency::where("id", "=", $id)->first();
         if ($details) {
-            Document::where("id", "=", $id)->delete();
+            Currency::where("id", "=", $id)->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

@@ -3,7 +3,10 @@
 namespace App\Services\Documents;
 
 use App\Models\Documents\Document;
+use App\Models\Documents\DocumentItem;
+use App\Models\Documents\DocumentItemTax;
 use App\Traits\ApiResponse;
+use App\Traits\Financial;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -11,6 +14,7 @@ use Illuminate\Support\Str;
 class DocumentService
 {
     use ApiResponse;
+    use Financial;
 
     /**
      * @param $request
@@ -62,6 +66,7 @@ class DocumentService
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
         $form['tax_details'] = [];
+        $form['items'] = [];
         $form['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 
@@ -81,18 +86,18 @@ class DocumentService
         ]);
 
         $request->request->remove('tags');
-        $request->request->remove('ACTIONS');
+        $request->request->remove('items');
+        $request->request->remove('tax_details');
         $data = $request->all();
-
-        $data['updated_at'] = Carbon::now();
-        $data['created_at'] = Carbon::now();
-        $data['enabled'] = (isset($request->enabled)) ? $request->enabled : true;
 
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
-            $data['code'] = (isset($request->code)) ? $request->code :
-                $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
+            $data['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
+            $data['created_at'] = Carbon::now();
+            $data['status'] = 'open';
+        } else {
+            $data['updated_at'] = Carbon::now();
         }
 
         return $data;
@@ -152,5 +157,74 @@ class DocumentService
         $number = $clear_doc_num + 1;
 
         return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', $number);
+    }
+
+    /**
+     * @param $items
+     * @param $document
+     * @return void
+     */
+    public function processItems($items, $document)
+    {
+        foreach ($items as $item) {
+            if (array_key_exists('id', $item)) {
+                $data = DocumentItem::where('id', $item['id'])
+                    ->update($this->detailsForm($document, $item, 'update'));
+            } else {
+                DocumentItem::create($this->detailsForm($document, $item, 'store'));
+            }
+        }
+    }
+
+    /**
+     * @param $document
+     * @param $item
+     * @param $type
+     * @return array
+     */
+    protected function detailsForm($document, $item, $type): array
+    {
+        $form = [
+            'company_id' => session('company_id'),
+            'type' => $document->type,
+            'document_id' => $document->id,
+            'item_id' => $item['item_id'],
+            'name' => $item['name'],
+            'description' => $item['description'],
+            'sku' => $item['sku'],
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+            'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'discount_rate' => (array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0,
+            'total' => $item['total'],
+        ];
+
+        $merge = [];
+        if ($type == 'store') {
+            $merge['created_by'] = auth()->user()->id;
+            $form = array_merge($form, $merge);
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param $document
+     * @param $tax
+     * @return void
+     */
+    public function processItemTax($document, $tax)
+    {
+        if (count($tax) > 0) {
+            DocumentItemTax::updateOrCreate([
+                'company_id' => session('company_id'),
+                'type' => $document->type,
+                'document_id' => $document->id,
+                'item_id' => 0,
+                'tax_id' => $this->getTaxIdByName($tax['name']),
+                'name' => $tax['name'],
+                'amount' => $tax['tax']
+            ]);
+        }
     }
 }

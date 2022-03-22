@@ -857,7 +857,7 @@ export default {
     },
 
     getItemCategory() {
-      this.$refs.dialogSendEmail.openEmailDialog()
+      //this.$refs.dialogSendEmail.openEmailDialog()
       this.$axios.get(`/api/master/categories`, {
         params: {
           type: 'Item Category'
@@ -984,17 +984,14 @@ export default {
 
     returnData() {
       const vm = this
-      const form = this.form
-      const clearData = {}
-      const details = vm.$refs.childDetails.getAddData()
-      details.forEach(function (item, key) {
-        if (!vm.$refs.childDetails.checkIfEmptyRow(key)) clearData[key] = item
+      const details = {}
+      const clearData = vm.$refs.childDetails.getAddData()
+      clearData.forEach(function (item, key) {
+        if (!vm.$refs.childDetails.checkIfEmptyRow(key)) details[key] = item
       })
 
-      return {
-        form,
-        details: clearData,
-      }
+      this.form.items = details
+      return this.form
     },
   },
 }

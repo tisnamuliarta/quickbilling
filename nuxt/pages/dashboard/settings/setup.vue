@@ -89,6 +89,7 @@ export default {
         {text: 'Payment Method', icon: 'mdi-bank-transfer', alias: 'payment', action: false},
         {text: 'Taxes', icon: 'mdi-content-cut', alias: 'taxes', action: false},
         {text: 'Terms', icon: 'mdi-file-document-outline', alias: 'term', action: false},
+        {text: 'Currency', icon: 'mdi-currency-usd', alias: 'currency', action: false},
       ],
     }
   },

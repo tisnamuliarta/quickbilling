@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Master\Settings;
+use App\Models\Settings\Setting;
 use Illuminate\Console\Command;
 
 class CreateOption extends Command
@@ -41,9 +41,9 @@ class CreateOption extends Command
         $option_name = $this->argument('key');
         $option_type = $this->argument('types');
 
-        $check_option = Settings::where('key', '=', $option_name)->first();
+        $check_option = Setting::where('key', '=', $option_name)->first();
         if (!$check_option) {
-            Settings::create([
+            Setting::create([
                 'key' => $option_name,
                 'types' => $option_type,
                 'company_id' => 0

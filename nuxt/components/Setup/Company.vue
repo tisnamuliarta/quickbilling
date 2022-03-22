@@ -183,6 +183,23 @@
           hide-details="auto"
         />
       </v-col>
+
+      <v-subheader>Additional Feature Settings</v-subheader>
+      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-divider/>
+      </v-col>
+      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-select
+          label="Currency"
+          v-model="form.company_currency_code"
+          :items="itemCurrency"
+          item-value="code"
+          item-text="name"
+          outlined
+          dense
+          hide-details="auto"
+        />
+      </v-col>
     </v-col>
   </v-row>
 </template>
@@ -203,11 +220,23 @@ export default {
   data() {
     return {
       form: this.formData,
-      logo: ''
+      logo: '',
+      itemCurrency: []
     }
   },
 
+  mounted() {
+    this.getCurrency()
+  },
+
   methods: {
+    getCurrency() {
+      this.$axios.get(`/api/financial/currency`)
+      .then(res => {
+        this.itemCurrency = res.data.data.simple
+      })
+    },
+
     getForm() {
       let data = new FormData()
       Object.entries(this.form).forEach(entry => {
