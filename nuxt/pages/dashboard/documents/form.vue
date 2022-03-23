@@ -128,7 +128,8 @@ export default {
 
   methods: {
     getDataFromApi() {
-      this.dialogLoading = true
+      // this.dialogLoading = true
+      this.$refs.formDocument.showLoad(true)
       const type = this.$route.query.type
       this.$axios
         .get(this.url + '/' + this.$route.query.id, {
@@ -140,8 +141,9 @@ export default {
           this.form = Object.assign({}, res.data.data.form)
           this.defaultItem = Object.assign({}, res.data.data.form)
           this.getBreadcrumb(type)
+
           setTimeout(() => {
-            this.$refs.formDocument.setData(this.defaultItem)
+            this.$refs.formDocument.setData(this.form)
           }, 100)
         })
         .catch((err) => {
@@ -152,7 +154,8 @@ export default {
           })
         })
         .finally(res => {
-          this.dialogLoading = false
+          // this.dialogLoading = false
+          this.$refs.formDocument.showLoad(false)
         })
     },
 

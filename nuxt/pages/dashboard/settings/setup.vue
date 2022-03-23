@@ -46,8 +46,9 @@
             </v-row>
           </v-container>
         </v-card-text>
+        <v-divider v-if="showAction"></v-divider>
         <v-card-actions>
-          <v-spacer/>
+          <v-spacer />
           <v-btn
             v-if="showAction"
             color="green darken-1"
@@ -81,6 +82,7 @@ export default {
       items: [
         {text: 'Company', icon: 'mdi-office-building-cog', alias: 'company', action: true},
         {text: 'Finance', icon: 'mdi-finance', alias: 'finance', action: true},
+        {text: 'Account Mapping', icon: 'mdi-map', alias: 'account_mapping', action: true},
         {text: 'E-Mail', icon: 'mdi-email', alias: 'email', action: true},
         {text: 'PDF', icon: 'mdi-file-pdf-box', alias: 'pdf', action: true},
         {text: 'Tags', icon: 'mdi-tag', alias: 'tags', action: false},
@@ -123,7 +125,7 @@ export default {
           })
           setTimeout(() => {
             this.loading = false
-            this.showAction = action
+            this.showAction = (action === undefined) ? true : action
             this.$refs.setupForm.changeTab(this.form, res.data.data.url)
           }, 300)
         })
@@ -132,15 +134,19 @@ export default {
     save() {
       const form = this.$refs.setupForm.getForm()
       let options = {}
+      let url = '/api/settings'
       if (this.tabValue === 'company') {
         options = {
           headers: {
             'Content-Type': "Multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
           }
         }
+      } else if (this.tabValue === 'account_mapping') {
+        url = '/api/financial/account-mapping'
       }
+
       this.loadingButton = true
-      this.$axios.post(`/api/settings`, form, options)
+      this.$axios.post(url, form, options)
         .then(res => {
           this.loadingButton = false
 
@@ -152,8 +158,8 @@ export default {
           this.loadingButton = false
           this.$swal({
             type: 'error',
-            title: err.response.data.message,
-            text: JSON.stringify(err.response.data.errors),
+            title: 'Error',
+            text: err.response.data.message,
           })
         })
     },

@@ -34,6 +34,7 @@ export default {
       },
       detailsRoot: 'detailsRoot',
       colHeaders: [],
+      form: {},
     }
   },
 
@@ -83,7 +84,7 @@ export default {
           columns: [1, 2, 3],
         },
         colHeaders: [
-          '', 'Id', 'Item ID', 'Item Code', 'Item Name', 'Description', 'Qty', 'Units', 'Unit Price', 'Discount', 'Tax', 'Amount', '',
+          '', 'Id', 'Item ID', 'Item Code', 'Item Name', 'Description', 'Qty', 'Units', 'Curency', 'Unit Price', 'Discount', 'Tax', 'Amount', '',
         ],
         columns: [
           // TODO
@@ -151,6 +152,13 @@ export default {
             width: '100px',
             readOnly: true,
             wordWrap: false,
+          },
+          {
+            data: 'default_currency_symbol',
+            width: '50px',
+            readOnly: true,
+            wordWrap: false,
+            align: 'right',
           },
           {
             data: 'price',
@@ -296,6 +304,7 @@ export default {
           [rowData, 'sku', item.code],
           [rowData, 'unit', item.unit],
           [rowData, 'description', item.description],
+          [rowData, 'default_currency_symbol', vm.form.default_currency_symbol],
           [rowData, 'item_id', item.id],
           [rowData, 'price', price],
           [rowData, 'quantity', 1],
@@ -304,8 +313,9 @@ export default {
       })
     },
 
-    setDataToDetails(data) {
+    setDataToDetails(data, form) {
       this.updateTableSettings()
+      this.form = form
       const vm = this
       setTimeout(() => {
         vm.$refs.details.hotInstance.loadData(data)

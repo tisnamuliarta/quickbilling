@@ -16,6 +16,7 @@ import Pdf from './Pdf'
 import PaymentMethod from './PaymentMethod'
 import PaymentTerm from './PaymentTerm'
 import Currency from './Currency'
+import AccountMapping from './AccountMapping'
 
 export default {
   name: 'FormSetup',
@@ -30,6 +31,7 @@ export default {
     term: PaymentTerm,
     payment: PaymentMethod,
     currency: Currency,
+    account_mapping: AccountMapping,
   },
 
   data() {

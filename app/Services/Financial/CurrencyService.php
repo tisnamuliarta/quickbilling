@@ -45,13 +45,12 @@ class CurrencyService
      */
     public function formData($request, $type): array
     {
+        $request->request->remove('updated_at');
+        $request->request->remove('created_at');
         $data = $request->all();
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
-            $data['created_at'] = Carbon::now();
-        } else {
-            $data['updated_at'] = Carbon::now();
         }
 
         return $data;

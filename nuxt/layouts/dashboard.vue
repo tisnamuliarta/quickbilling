@@ -11,7 +11,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
-        <NuxtLink to="/">
+        <NuxtLink to="/dashboard">
           <v-skeleton-loader
             v-show="loadImage"
             type="avatar"
@@ -93,7 +93,7 @@
       :temporary="$route.name === 'dashboard-documents-form'"
     >
       <v-list dense nav expand>
-        <NuxtLink to="/" class="hidden-md-and-up">
+        <NuxtLink to="/dashboard" class="hidden-md-and-up">
           <v-skeleton-loader
             v-show="loadImage"
             type="avatar"

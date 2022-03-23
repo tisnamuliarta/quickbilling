@@ -67,6 +67,7 @@ class DocumentService
         $form['withholding_type'] = 'Percent';
         $form['tax_details'] = [];
         $form['items'] = [];
+        $form['shipping_fee'] = 0;
         $form['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 

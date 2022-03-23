@@ -23,11 +23,11 @@ class ItemService
      */
     public function index($request): array
     {
-        $pagination = (object)$request->pagination;
+        $pagination = (object)$request->options;
         $pages = isset($pagination->page) ? (int)$pagination->page : 1;
         $row_data = isset($pagination->itemsPerPage) ? (int)$pagination->itemsPerPage : 20;
         $sorts = isset($pagination->sortBy[0]) ? (string)$pagination->sortBy[0] : 'name';
-        $order = isset($pagination->sortDesc[0]) ? 'ASC' : 'DESC';
+        $order = isset($pagination->sortDesc[0]) ? 'DESC' : 'asc';
         $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
 
         $search = isset($request->q) ? (string)$request->q : '';

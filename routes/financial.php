@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Financial\AccountController;
+use App\Http\Controllers\Financial\AccountMappingController;
 use App\Http\Controllers\Financial\CurrencyController;
 use App\Http\Controllers\Financial\PaymentMethodController;
 use App\Http\Controllers\Financial\PaymentTermController;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResources([
     'accounts' => AccountController::class,
+    'account-mapping' => AccountMappingController::class,
     'currency' => CurrencyController::class,
     'taxes' => TaxController::class,
     'payment-terms' => PaymentTermController::class,

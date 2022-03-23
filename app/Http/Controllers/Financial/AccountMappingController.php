@@ -3,19 +3,21 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Currency;
-use App\Services\Financial\CurrencyService;
+use App\Models\Financial\Account;
+use App\Models\Financial\AccountMapping;
+use App\Services\Financial\AccountService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class CurrencyController extends Controller
+class AccountMappingController extends Controller
 {
     public $service;
+
     /**
      * MasterUserController constructor.
      */
-    public function __construct(CurrencyService $service)
+    public function __construct(AccountService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -32,13 +34,14 @@ class CurrencyController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
+        $mapping = AccountMapping::distinct()->select('type')->get();
         $result = [];
-        $result['form'] = $this->form('currencies');
-        $result['form']['company_id'] = session('company_id');
-        $result['form']['enabled'] = true;
-        $result['form']['symbol_first'] = true;
-        $result['form']['rate'] = 0;
-        $result = array_merge($result, $this->service->index($request));
+        foreach ($mapping as $item) {
+            $result[] = [
+                'type' => $item->type,
+                'items' => AccountMapping::where('type', $item->type)->get()
+            ];
+        }
 
         return $this->success($result);
     }
@@ -51,14 +54,15 @@ class CurrencyController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
-        }
         DB::beginTransaction();
+        $form = $request->all();
         try {
-            Currency::create($this->service->formData($request, 'store'));
+            foreach ($form as $index => $item) {
+                AccountMapping::where('name', $index)
+                ->update([
+                    'account_id' => $item
+                ]);
+            }
 
             DB::commit();
             return $this->success([
@@ -79,11 +83,15 @@ class CurrencyController extends Controller
      */
     protected function validation($request)
     {
+        $messages = [
+            'form.name' => 'Name is required!',
+            'form.number' => 'Account Number is required!',
+        ];
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'code' => 'required',
-            'symbol' => 'required',
-        ]);
+            'form.name' => 'required',
+            'form.number' => 'required',
+        ], $messages);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -106,7 +114,7 @@ class CurrencyController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Currency::where("id", "=", $id)->get();
+        $data = Account::where("id", "=", $id)->get();
 
         return $this->success([
             'rows' => $data
@@ -128,8 +136,9 @@ class CurrencyController extends Controller
             ]);
         }
 
+        $form = $request->form;
         try {
-            Currency::where("id", "=", $id)->update($this->service->formData($request, 'update'));
+            Account::where("id", "=", $id)->update($this->service->formData($form));
 
             return $this->success([
                 "errors" => false
@@ -148,11 +157,11 @@ class CurrencyController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(int $id): \Illuminate\Http\JsonResponse
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Currency::where("id", "=", $id)->first();
+        $details = Account::where("id", "=", $id)->first();
         if ($details) {
-            Currency::where("id", "=", $id)->delete();
+            Account::where("id", "=", $id)->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

@@ -1,10 +1,17 @@
 <template>
   <v-form class="pt-0">
     <v-container fluid>
-      <v-row no-gutters>
+      <v-row v-show="showLoading" no-gutters>
+        <v-col cols="12">
+          <v-skeleton-loader
+            type="list-item-three-line, table-thead, table-tbody, list-item-three-line"
+          ></v-skeleton-loader>
+        </v-col>
+      </v-row>
+      <v-row v-show="!showLoading" no-gutters>
         <v-col cols="12">
           <v-row no-gutters>
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-select
                 v-model="form.contact_id"
                 :items="itemContact"
@@ -17,7 +24,7 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
                 ref='menu'
                 v-model='menu'
@@ -48,7 +55,7 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
                 ref='menu2'
                 v-model='menu2'
@@ -80,7 +87,7 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-model="form.document_number"
                 readonly
@@ -121,7 +128,7 @@
 
         <v-col cols="12">
           <v-row no-gutters>
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-textarea
                 rows="2"
                 v-model="form.contact_address"
@@ -132,7 +139,7 @@
               ></v-textarea>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
                 ref='menu3'
                 v-model='menu3'
@@ -163,7 +170,7 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-show="form.shipping_info"
                 v-model="form.shipping_via"
@@ -174,7 +181,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-model="form.reference_no"
                 label="Reference No"
@@ -184,7 +191,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-textarea
                 v-show="form.shipping_info"
                 v-model="form.shipping_address"
@@ -200,7 +207,7 @@
 
         <v-col cols="12">
           <v-row no-gutters>
-            <v-col cols="12" md="3" class="pr-1 pl-1 pb-1">
+            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1">
               <v-checkbox
                 v-model="form.shipping_info"
                 dense
@@ -210,7 +217,7 @@
               ></v-checkbox>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-select
                 v-model="form.payment_term_id"
                 :items="itemPaymentTerm"
@@ -224,7 +231,7 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-show="form.shipping_info"
                 v-model="form.tracking_code"
@@ -235,7 +242,7 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" md="2" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-select
                 v-model="form.warehouse_id"
                 :items="itemWarehouse"
@@ -626,6 +633,7 @@ export default {
       tax: true,
       withholding: false,
       submitLoad: false,
+      showLoading: false,
       form: {},
       itemCategory: [],
       itemUnit: [],
@@ -647,21 +655,21 @@ export default {
       discountAmount: 0,
       moneyOptions: {
         locale: "en",
-        suffix: "",
+        prefix: "",
         length: 11,
         precision: 0
       },
 
       moneyOptionTotal: {
         locale: "en",
-        suffix: "",
+        prefix: "",
         length: 14,
         precision: 2
       },
 
       moneyOptionTotalDiscount: {
         locale: "en",
-        suffix: "",
+        prefix: "",
         length: 14,
         precision: 0
       },
@@ -791,7 +799,7 @@ export default {
         this.form.withholding_amount = parseFloat(this.form.withholding_rate)
       }
 
-      this.form.balance_due = this.form.amount - this.form.deposit_amount - this.form.withholding_amount
+      this.form.balance_due = this.form.amount - this.form.deposit_amount - this.form.withholding_amount - parseFloat(this.form.shipping_fee)
     },
 
     reduceArrayTaxAfterDiscount(tax_details) {
@@ -839,6 +847,10 @@ export default {
       return result
     },
 
+    showLoad(value) {
+      this.showLoading = value
+    },
+
     setData(form) {
       this.$refs.childDetails.setDataToDetails([
         {
@@ -847,8 +859,11 @@ export default {
           qty: null,
           unit: null,
         }
-      ])
+      ], form)
       this.form = Object.assign({}, form)
+      this.moneyOptionTotal.prefix = this.form.default_currency_symbol
+      this.moneyOptionTotalDiscount.prefix = this.form.default_currency_symbol
+      this.moneyOptions.prefix = this.form.default_currency_symbol
       this.statusProcessing = 'insert'
     },
 
