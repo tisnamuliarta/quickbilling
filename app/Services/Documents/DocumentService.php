@@ -37,7 +37,7 @@ class DocumentService
             " documents.*,
               CONVERT(issued_at, date) as issued_at,
               CONVERT(due_at, date) as due_at"
-        );
+        )->where('type', $type);
 
         $result["total"] = $query->count();
 

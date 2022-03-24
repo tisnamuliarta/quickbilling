@@ -1,17 +1,17 @@
 <template>
   <div>
-    <DocumentTableDocument type-document="SQ"></DocumentTableDocument>
+    <DocumentTableDocument type-document="SR"></DocumentTableDocument>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SalesQuote',
+  name: 'SalesReturn',
   layout: 'dashboard',
 
   head() {
     return {
-      title: 'Sales Quotation',
+      title: 'Sales Return',
     }
   },
 }

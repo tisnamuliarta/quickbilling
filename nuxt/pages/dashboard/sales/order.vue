@@ -1,14 +1,17 @@
 <template>
-  <div>Post Category</div>
+  <div>
+    <DocumentTableDocument type-document="SO"></DocumentTableDocument>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'SalesPerson',
+  name: 'SalesOrder',
   layout: 'dashboard',
+
   head() {
     return {
-      title: 'Post Category',
+      title: 'Sales Order',
     }
   },
 }

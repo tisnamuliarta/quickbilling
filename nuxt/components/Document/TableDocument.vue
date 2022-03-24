@@ -27,7 +27,7 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Sales Quotations"
+              :title="toolbarTitle"
               @emitData="emitData"
               @newData="newData"
             />
@@ -36,12 +36,24 @@
             <a @click="editItem(item)" v-text="item.document_number"></a>
           </template>
 
+          <template #[`item.status`]="{ item }">
+            <v-btn
+              text
+              small
+            >
+              <v-icon :color="statusColor(item)" left>
+                mdi-circle
+              </v-icon>
+              {{ item.status }}
+            </v-btn>
+          </template>
+
           <template #[`item.balance_due`]="{ item }">
-            {{ company.company_currency_symbol + ' '+ $formatter.formatPrice(item.balance_due) }}
+            {{ form.default_currency_symbol + ' '+ $formatter.formatPrice(item.balance_due) }}
           </template>
 
           <template #[`item.amount`]="{ item }">
-            {{ company.company_currency_symbol + ' '+ $formatter.formatPrice(item.amount) }}
+            {{ form.default_currency_symbol + ' '+ $formatter.formatPrice(item.amount) }}
           </template>
         </v-data-table>
       </div>
@@ -69,6 +81,7 @@ export default {
       allData: [],
       documentStatus: [],
       itemSearch: [],
+      toolbarTitle: '',
       searchStatus: '',
       searchItem: '',
       search: '',
@@ -80,7 +93,7 @@ export default {
         {text: 'Customer', value: 'contact_name'},
         {text: 'Date', value: 'issued_at'},
         {text: 'Due Date', value: 'due_at'},
-        {text: 'Status', value: 'status'},
+        {text: 'Status', value: 'status', align: 'center'},
         {text: 'Balance Due', value: 'balance_due', align: 'right'},
         {text: 'Total', value: 'amount', align: 'right'},
       ],
@@ -105,6 +118,10 @@ export default {
     },
   },
 
+  created() {
+    this.mappingDocument()
+  },
+
   methods: {
     newData() {
       this.$router.push({
@@ -117,6 +134,18 @@ export default {
       })
     },
 
+    statusColor(item) {
+      switch (item.status) {
+        case 'open':
+        case 'partial':
+          return 'warning'
+        case 'paid':
+          return 'green'
+        case 'overdue':
+          return 'red'
+      }
+    },
+
     editItem(item) {
       this.$router.push({
         path: '/dashboard/documents/form',
@@ -126,6 +155,47 @@ export default {
           type: this.typeDocument
         }
       })
+    },
+
+    mappingDocument() {
+      switch (this.typeDocument) {
+        case 'PQ':
+          this.toolbarTitle = 'Purchase Quotation'
+          break;
+        case 'PO':
+          this.toolbarTitle = 'Purchase Order'
+          break;
+        case 'PD':
+          this.toolbarTitle = 'Goods Receipt'
+          break;
+        case 'PI':
+          this.toolbarTitle = 'A/P Invoice'
+          break;
+        case 'PP':
+          this.toolbarTitle = 'Outgoing Payment'
+          break;
+        case 'PN':
+          this.toolbarTitle = 'Goods Return'
+          break;
+        case 'SQ':
+          this.toolbarTitle = 'Sales Quotation'
+          break;
+        case 'SO':
+          this.toolbarTitle = 'Sales Order'
+          break;
+        case 'SD':
+          this.toolbarTitle = 'Sales Delivery'
+          break;
+        case 'SI':
+          this.toolbarTitle = 'A/R Invoice'
+          break;
+        case 'SP':
+          this.toolbarTitle = 'Incoming Payment'
+          break;
+        case 'SR':
+          this.toolbarTitle = 'Sales Return'
+          break;
+      }
     },
 
     emitData(data) {
@@ -141,7 +211,6 @@ export default {
     getDataFromApi() {
       this.loading = true
       const vm = this
-      this.company = this.$auth.$state.company
       this.$axios
         .get(`/api/documents`, {
           params: {
@@ -160,6 +229,7 @@ export default {
           this.itemSearch = res.data.filter
           this.form = Object.assign({}, res.data.data.form)
           this.defaultItem = Object.assign({}, res.data.data.form)
+          this.company = this.$auth.$storage.getState('company')
         })
         .catch((err) => {
           this.loading = false
