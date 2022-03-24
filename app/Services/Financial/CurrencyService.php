@@ -30,11 +30,8 @@ class CurrencyService
             ->limit($row_data)
             ->get();
 
-        $arr_rows = Currency::select('name', 'code')->get();
-
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
         ]);
     }
 

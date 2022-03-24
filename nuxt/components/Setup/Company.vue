@@ -189,12 +189,24 @@
         <v-divider/>
       </v-col>
       <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-select
-          label="Currency"
+        <v-autocomplete
+          label="Currency Code"
           v-model="form.company_currency_code"
           :items="itemCurrency"
+          return-object
           item-value="code"
           item-text="name"
+          @change="changeCurrency"
+          outlined
+          dense
+          hide-details="auto"
+        />
+      </v-col>
+      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+        <v-text-field
+          label="Currency Symbol"
+          v-model="form.company_currency_symbol"
+          readonly
           outlined
           dense
           hide-details="auto"
@@ -232,9 +244,15 @@ export default {
   methods: {
     getCurrency() {
       this.$axios.get(`/api/financial/currency`)
-      .then(res => {
-        this.itemCurrency = res.data.data.simple
-      })
+        .then(res => {
+          this.itemCurrency = res.data.data.rows
+        })
+    },
+
+    changeCurrency() {
+      const currency = this.form.company_currency_code
+      this.form.company_currency_symbol = currency.symbol
+      this.form.company_currency_code = currency.code
     },
 
     getForm() {

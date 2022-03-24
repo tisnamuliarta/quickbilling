@@ -37,11 +37,11 @@
           </template>
 
           <template #[`item.balance_due`]="{ item }">
-            {{ $formatter.formatPrice(item.balance_due) }}
+            {{ company.company_currency_symbol + ' '+ $formatter.formatPrice(item.balance_due) }}
           </template>
 
           <template #[`item.amount`]="{ item }">
-            {{ $formatter.formatPrice(item.amount) }}
+            {{ company.company_currency_symbol + ' '+ $formatter.formatPrice(item.amount) }}
           </template>
         </v-data-table>
       </div>
@@ -65,6 +65,7 @@ export default {
       totalData: 0,
       editedIndex: -1,
       loading: true,
+      company: [],
       allData: [],
       documentStatus: [],
       itemSearch: [],
@@ -140,6 +141,7 @@ export default {
     getDataFromApi() {
       this.loading = true
       const vm = this
+      this.company = this.$auth.$state.company
       this.$axios
         .get(`/api/documents`, {
           params: {
