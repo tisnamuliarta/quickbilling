@@ -47,8 +47,12 @@ class ItemService
                     FROM categories AS t1
                     LEFT JOIN item_categories AS t2 ON t1.id = t2.category_id
                WHERE t2.item_id = items.id ) as categories,
+               sell_tax.name as sell_tax_name,
+               buy_tax.name as buy_tax_name,
                 'actions' as ACTIONS
-            ");
+            ")
+            ->leftJoin('taxes as sell_tax', 'sell_tax.id', 'items.sell_tax_id')
+            ->leftJoin('taxes as buy_tax', 'buy_tax.id', 'items.buy_tax_id');
 
         $result["total"] = $query->count();
 
@@ -79,6 +83,8 @@ class ItemService
         $request->request->remove('ACTIONS');
         $request->request->remove('average_price');
         $request->request->remove('last_buy_price');
+        $request->request->remove('sell_tax_name');
+        $request->request->remove('buy_tax_name');
         $data = $request->all();
 
         $data['image'] = '';

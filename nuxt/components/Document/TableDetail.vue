@@ -298,6 +298,7 @@ export default {
       const vm = this;
       selected.forEach(function (item, index) {
         const price = (type.substr(0, 1) === 'S') ? item.sale_price : item.purchase_price
+        const tax_name = (type.substr(0, 1) === 'S') ? item.sell_tax_name : item.buy_tax_name
 
         vm.$refs.details.hotInstance.setDataAtRowProp([
           [rowData, 'name', item.name],
@@ -307,6 +308,7 @@ export default {
           [rowData, 'default_currency_symbol', vm.form.default_currency_symbol],
           [rowData, 'item_id', item.id],
           [rowData, 'price', price],
+          [rowData, 'tax_name', tax_name],
           [rowData, 'quantity', 1],
         ]);
         rowData++
@@ -317,9 +319,15 @@ export default {
       this.updateTableSettings()
       this.form = form
       const vm = this
-      setTimeout(() => {
-        vm.$refs.details.hotInstance.loadData(data)
-      }, 150)
+      const items = (form.items !== undefined) ? form.items : data
+      vm.$refs.details.hotInstance.loadData(items)
+      const countRows = this.$refs.details.hotInstance.countRows()
+      for (let i = 0; i < countRows; i++) {
+        this.$refs.details.hotInstance.setDataAtRowProp(i, 'default_currency_symbol', vm.form.default_currency_symbol)
+      }
+      // setTimeout(() => {
+      //   vm.$refs.details.hotInstance.loadData(data)
+      // }, 10)
     },
 
     calculateTotal() {
@@ -355,7 +363,7 @@ export default {
             const taxRow = (parseFloat(taxRate) / 100) * amountRow
             taxDetail.push({
               name: tax,
-              tax: taxRow
+              amount: taxRow
             })
           }
 

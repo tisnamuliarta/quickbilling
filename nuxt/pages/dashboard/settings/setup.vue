@@ -150,7 +150,10 @@ export default {
         .then(res => {
           this.loadingButton = false
 
-          this.$nuxt.$emit('getLogo')
+          if (this.tabValue === 'company') {
+            this.$nuxt.$emit('getLogo')
+            this.$nuxt.$emit('getCompany')
+          }
 
           this.changeTabValue(this.tabValue)
         })

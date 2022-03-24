@@ -5,6 +5,8 @@ namespace App\Services\Documents;
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
+use App\Models\Financial\Currency;
+use App\Models\Inventory\Contact;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
@@ -33,7 +35,8 @@ class DocumentService
         $result = array();
         $query = Document::selectRaw(
             " documents.*,
-             'actions' as ACTIONS "
+              CONVERT(issued_at, date) as issued_at,
+              CONVERT(due_at, date) as due_at"
         );
 
         $result["total"] = $query->count();
@@ -68,6 +71,8 @@ class DocumentService
         $form['tax_details'] = [];
         $form['items'] = [];
         $form['shipping_fee'] = 0;
+        $form['category_id'] = 0;
+        $form['parent_id'] = 0;
         $form['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 
@@ -86,9 +91,25 @@ class DocumentService
             'company_id' => session('company_id'),
         ]);
 
+        $currency = Currency::where('code', $request->default_currency_code)->first();
+
+        $contact = Contact::where('id', $request->contact_id)->first();
+
         $request->request->remove('tags');
         $request->request->remove('items');
         $request->request->remove('tax_details');
+        $request->merge([
+            'currency_code' => $request->default_currency_code,
+            'currency_rate' => $currency->rate,
+            'contact_name' => $contact->name,
+            'contact_email' => $contact->email,
+            'contact_tax_number' => $contact->tax_number,
+            'contact_phone' => $contact->phone,
+            'contact_zip_code' => $contact->zip_code,
+            'contact_city' => $contact->city,
+        ]);
+        $request->request->remove('default_currency_code');
+        $request->request->remove('default_currency_symbol');
         $data = $request->all();
 
 
@@ -98,6 +119,7 @@ class DocumentService
             $data['created_at'] = Carbon::now();
             $data['status'] = 'open';
         } else {
+            $data['created_at'] = Carbon::parse($request->created_at);
             $data['updated_at'] = Carbon::now();
         }
 
@@ -163,16 +185,22 @@ class DocumentService
     /**
      * @param $items
      * @param $document
+     * @param $tax_details
      * @return void
      */
-    public function processItems($items, $document)
+    public function processItems($items, $document, $tax_details)
     {
         foreach ($items as $item) {
             if (array_key_exists('id', $item)) {
-                $data = DocumentItem::where('id', $item['id'])
+                DocumentItem::where('id', $item['id'])
                     ->update($this->detailsForm($document, $item, 'update'));
+                $item_detail = DocumentItem::find($item['id']);
             } else {
-                DocumentItem::create($this->detailsForm($document, $item, 'store'));
+                $item_detail = DocumentItem::create($this->detailsForm($document, $item, 'store'));
+            }
+            // process tax details
+            foreach ($tax_details as $tax_detail) {
+                $this->processItemTax($document, $tax_detail, $item_detail);
             }
         }
     }
@@ -195,6 +223,8 @@ class DocumentService
             'sku' => $item['sku'],
             'quantity' => $item['quantity'],
             'price' => $item['price'],
+            'unit' => $item['unit'],
+            'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'discount_rate' => (array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0,
             'total' => $item['total'],
@@ -212,20 +242,27 @@ class DocumentService
     /**
      * @param $document
      * @param $tax
+     * @param $item_detail
      * @return void
      */
-    public function processItemTax($document, $tax)
+    public function processItemTax($document, $tax, $item_detail)
     {
         if (count($tax) > 0) {
-            DocumentItemTax::updateOrCreate([
-                'company_id' => session('company_id'),
-                'type' => $document->type,
-                'document_id' => $document->id,
-                'item_id' => 0,
-                'tax_id' => $this->getTaxIdByName($tax['name']),
-                'name' => $tax['name'],
-                'amount' => $tax['tax']
-            ]);
+            DocumentItemTax::updateOrCreate(
+                [
+                    'document_id' => $document->id,
+                    'document_item_id' => $item_detail->id,
+                ],
+                [
+                    'company_id' => session('company_id'),
+                    'type' => $document->type,
+                    'document_id' => $document->id,
+                    'document_item_id' => $item_detail->id,
+                    'tax_id' => $this->getTaxIdByName($tax['name']),
+                    'name' => $tax['name'],
+                    'amount' => $tax['amount']
+                ]
+            );
         }
     }
 }

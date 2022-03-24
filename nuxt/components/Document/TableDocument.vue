@@ -32,10 +32,16 @@
               @newData="newData"
             />
           </template>
-          <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
+          <template #[`item.document_number`]="{ item }">
+            <a @click="editItem(item)" v-text="item.document_number"></a>
+          </template>
+
+          <template #[`item.balance_due`]="{ item }">
+            {{ $formatter.formatPrice(item.balance_due) }}
+          </template>
+
+          <template #[`item.amount`]="{ item }">
+            {{ $formatter.formatPrice(item.amount) }}
           </template>
         </v-data-table>
       </div>
@@ -69,14 +75,13 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        {text: 'Number', value: 'name'},
-        {text: 'Customer', value: 'name'},
-        {text: 'Date', value: 'name'},
-        {text: 'Due Date', value: 'name'},
-        {text: 'Status', value: 'name'},
-        {text: 'Balance Due', value: 'name', align: 'right'},
-        {text: 'Total', value: 'name', align: 'right'},
-        {text: 'Action', value: 'ACTIONS', align: 'center'},
+        {text: 'Number', value: 'document_number'},
+        {text: 'Customer', value: 'contact_name'},
+        {text: 'Date', value: 'issued_at'},
+        {text: 'Due Date', value: 'due_at'},
+        {text: 'Status', value: 'status'},
+        {text: 'Balance Due', value: 'balance_due', align: 'right'},
+        {text: 'Total', value: 'amount', align: 'right'},
       ],
     }
   },

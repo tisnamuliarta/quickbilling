@@ -28,6 +28,7 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+      <span v-text="company.company_name"></span>
       <v-tooltip bottom>
         <template #activator="{ on }">
           <v-btn icon class="mr-0" v-on="on">
@@ -181,6 +182,7 @@ export default {
           ],
         },
       ],
+      company: [],
       miniVariant: false,
       right: true,
       logo: '',
@@ -200,8 +202,10 @@ export default {
   created() {
     this.menus()
     this.rolePermission()
+    this.getCompany()
     this.$nuxt.$on('getMenu', ($event) => this.menus($event))
     this.$nuxt.$on('getLogo', ($event) => this.getLogo($event))
+    this.$nuxt.$on('getCompany', ($event) => this.getCompany($event))
     this.getLogo()
   },
 
@@ -212,6 +216,18 @@ export default {
         .then((res) => {
           this.logo = res.data.data.logo
           this.loadImage = false
+        })
+    },
+
+    getCompany() {
+      this.$axios.get(`/api/settings`, {
+        params: {
+          page: 'company'
+        }
+      })
+        .then(res => {
+          this.$auth.$storage.setState('company', res.data.data.form)
+          this.company = this.$auth.$storage.getState('company')
         })
     },
 

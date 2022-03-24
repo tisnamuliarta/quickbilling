@@ -130,6 +130,7 @@ export default {
     getDataFromApi() {
       // this.dialogLoading = true
       this.$refs.formDocument.showLoad(true)
+      let status = this.$route.query.status
       const type = this.$route.query.type
       this.$axios
         .get(this.url + '/' + this.$route.query.id, {
@@ -138,13 +139,14 @@ export default {
           },
         })
         .then((res) => {
-          this.form = Object.assign({}, res.data.data.form)
-          this.defaultItem = Object.assign({}, res.data.data.form)
-          this.getBreadcrumb(type)
+          const form = (status === 'update') ? res.data.data.rows : res.data.data.form
+          this.form = Object.assign({}, form)
+          this.defaultItem = Object.assign({}, form)
+          this.getBreadcrumb(type, form, status)
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
-          }, 100)
+          }, 50)
         })
         .catch((err) => {
           this.$swal({
@@ -159,7 +161,8 @@ export default {
         })
     },
 
-    getBreadcrumb(type) {
+    getBreadcrumb(type, form, status) {
+      const text = (status === 'update') ? form.document_number : 'Create Document'
       this.breadcrumb = [
         {
           text: 'Dashboard',
@@ -176,7 +179,7 @@ export default {
           }
         },
         {
-          text: 'Create Document',
+          text: text,
           disabled: true,
           to: {
             path: '/dashboard/documents/form'

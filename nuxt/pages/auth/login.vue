@@ -46,7 +46,7 @@
           <v-card-actions>
             <v-flex class="text-right" xs12>
               <v-spacer></v-spacer>
-              <v-btn small text @click="clear">clear</v-btn>
+              <v-btn small color="red" text @click="clear">clear</v-btn>
               <v-btn
                 color="primary"
                 class="mr-2"

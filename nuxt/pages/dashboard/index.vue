@@ -26,7 +26,7 @@
             </v-card-text>
 
             <v-card-text>
-              <div class="text-h4 font-weight-thin">
+              <div class="text-h6">
                 Sales Last 24h
               </div>
             </v-card-text>
@@ -45,27 +45,50 @@
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-card>
-            <v-sparkline
-              :value="value"
-              :gradient="gradient"
-              :smooth="radius || false"
-              :padding="padding"
-              :line-width="width"
-              :stroke-linecap="lineCap"
-              :gradient-direction="gradientDirection"
-              :fill="fill"
-              :type="type"
-              :auto-line-width="autoLineWidth"
-              auto-draw
-            ></v-sparkline>
+          <v-card
+            class="mx-auto text-center"
+            color="primary"
+            dark
+          >
+            <v-card-text>
+              <v-sheet color="rgba(0, 0, 0, .12)">
+                <v-sparkline
+                  :value="value"
+                  color="rgba(255, 255, 255, .7)"
+                  height="100"
+                  padding="24"
+                  stroke-linecap="round"
+                  smooth
+                >
+                  <template v-slot:label="item">
+                    ${{ item.value }}
+                  </template>
+                </v-sparkline>
+              </v-sheet>
+            </v-card-text>
+
+            <v-card-text>
+              <div class="text-h6">
+                Sales Last 24h
+              </div>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions class="justify-center">
+              <v-btn
+                block
+                text
+              >
+                Go to Report
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-col>
 
         <v-col cols="12" md="4">
           <v-card
             class="mt-4 mx-auto"
-            max-width="400"
           >
             <v-sheet
               class="v-sheet--offset mx-auto"
@@ -78,7 +101,7 @@
                 :value="value"
                 color="white"
                 line-width="2"
-                padding="16"
+                padding="24"
               ></v-sparkline>
             </v-sheet>
 

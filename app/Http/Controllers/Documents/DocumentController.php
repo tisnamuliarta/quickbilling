@@ -60,15 +60,15 @@ class DocumentController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = Document::create($this->service->formData($request, 'store'));
+            $document = Document::create($this->service->formData($request, 'store'));
 
-            $this->service->processItems($items, $data);
-
-            $this->service->processItemTax($data, $tax_details);
+            $this->service->processItems($items, $document, $tax_details);
 
             DB::commit();
             return $this->success([
-                "errors" => false
+                "id" => $document->id,
+                "status" => "update",
+                "type" => $request->type
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -147,7 +147,17 @@ class DocumentController extends Controller
     {
         $type = $request->type;
         $form = $this->service->getForm($type);
-        $data = Document::where("id", "=", $id)->get();
+        $data = Document::where("documents.id", "=", $id)
+            ->select(
+                'documents.*',
+                DB::raw('CONVERT(issued_at, date) as issued_at'),
+                DB::raw('CONVERT(due_at, date) as due_at'),
+                'currencies.code as default_currency_code',
+                'currencies.symbol as default_currency_symbol',
+            )
+            ->leftJoin('currencies', 'currencies.code', 'documents.currency_code')
+            ->with(['items', 'taxDetails'])
+            ->first();
 
         return $this->success([
             'rows' => $data,
@@ -170,13 +180,27 @@ class DocumentController extends Controller
             ]);
         }
 
-        $form = $request->form;
-        try {
-            Document::where("id", "=", $id)->update($this->service->formData($form, 'update'));
+        $items = collect($request->items);
+        $tax_details = collect($request->tax_details);
 
+        $validate_details = $this->validateDetails($items);
+        if ($validate_details['error']) {
+            return $this->error($validate_details['message']);
+        }
+
+        try {
+            Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
+
+            $document = Document::find($id);
+
+            $this->service->processItems($items, $document, $tax_details);
+
+            DB::commit();
             return $this->success([
-                "errors" => false
-            ], 'Data updated!');
+                "id" => $document->id,
+                "status" => "update",
+                "type" => $request->type
+            ], 'Data inserted!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,

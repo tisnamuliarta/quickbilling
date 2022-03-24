@@ -12,16 +12,19 @@
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-select
+              <v-autocomplete
                 v-model="form.contact_id"
                 :items="itemContact"
+                @change="changeContact"
                 label="Customer/Vendor"
+                return-object
                 item-value="id"
                 item-text="name"
                 outlined
                 dense
+                clearable
                 hide-details="auto"
-              ></v-select>
+              ></v-autocomplete>
             </v-col>
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -418,7 +421,7 @@
                 <v-col cols="12" md="8"></v-col>
                 <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                   <vuetify-money
-                    v-model="item.tax"
+                    v-model="item.amount"
                     v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                     v-bind:options="moneyOptionTotal"
                     readonly
@@ -807,17 +810,17 @@ export default {
       const vm = this
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = {name: value.name, tax: 0};
+          res[value.name] = {name: value.name, amount: 0};
           result.push(res[value.name])
         }
         if (vm.form.discount_rate > 0) {
           let taxDiscountValue = 0
           if (vm.form.discount_type === 'Percent') {
-            taxDiscountValue = (vm.form.discount_rate / 100) * value.tax
+            taxDiscountValue = (vm.form.discount_rate / 100) * value.amount
           } else {
             taxDiscountValue = vm.form.discount_rate
           }
-          res[value.name].tax = value.tax - taxDiscountValue;
+          res[value.name].amount = value.amount - taxDiscountValue;
         }
         return res;
       }, {});
@@ -830,16 +833,16 @@ export default {
       const vm = this
       let totalTax = 0;
       tax_details.forEach(function (item, index) {
-        totalTax += parseFloat(item.tax)
+        totalTax += parseFloat(item.amount)
       })
       vm.tempTotalTax = totalTax
 
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = {name: value.name, tax: 0};
+          res[value.name] = {name: value.name, amount: 0};
           result.push(res[value.name])
         }
-        res[value.name].tax += value.tax;
+        res[value.name].amount += value.amount;
 
         return res;
       }, {});
@@ -931,7 +934,7 @@ export default {
         }
       })
         .then((res) => {
-          this.itemContact = res.data.data.auto_complete
+          this.itemContact = res.data.data.rows
         })
         .catch((err) => {
           this.$swal({
@@ -984,6 +987,13 @@ export default {
         .then(res => {
 
         })
+    },
+
+    changeContact() {
+      let contact = this.form.contact_id
+      this.form.contact_id = contact.id
+      this.form.contact_address = (this.form.contact_address) ? this.form.contact_address : contact.address
+      this.form.shipping_address = (this.form.shipping_address) ? this.form.shipping_address : contact.shipping_address
     },
 
     checkDocument() {
