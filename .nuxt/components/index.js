@@ -15,7 +15,7 @@ export { default as DashboardForm } from '../..\\nuxt\\components\\Dashboard\\Fo
 export { default as DocumentDialogFormDocument } from '../..\\nuxt\\components\\Document\\DialogFormDocument.vue'
 export { default as DocumentDialogSendEmail } from '../..\\nuxt\\components\\Document\\DialogSendEmail.vue'
 export { default as DocumentFieldUpload } from '../..\\nuxt\\components\\Document\\FieldUpload.vue'
-export { default as DocumentFormDocument } from '../..\\nuxt\\components\\Document\\FormDocument.vue'
+export { default as DocumentFormInput } from '../..\\nuxt\\components\\Document\\FormInput.vue'
 export { default as DocumentFormWindow } from '../..\\nuxt\\components\\Document\\FormWindow.vue'
 export { default as DocumentTableDetail } from '../..\\nuxt\\components\\Document\\TableDetail.vue'
 export { default as DocumentTableDocument } from '../..\\nuxt\\components\\Document\\TableDocument.vue'

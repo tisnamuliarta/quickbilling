@@ -13,12 +13,39 @@
 
 <script>
 import {HotTable} from '@handsontable/vue'
-import Handsontable from 'handsontable'
-import {registerAllModules} from 'handsontable/registry'
+// import the base only
+import Handsontable from 'handsontable';
+// choose cell types you want to use and import them
+import { registerCellType, DropdownCellType, NumericCellType, CheckboxCellType } from 'handsontable/cellTypes';
+// choose plugins you want to use and import them
+import {
+  registerPlugin,
+  ManualColumnResize,
+  AutoColumnSize,
+  CopyPaste,
+  Filters,
+  PersistentState,
+  HiddenColumns,
+  ContextMenu,
+  DropdownMenu,
+  HiddenRows,
+} from 'handsontable/plugins';
+
+// register imported cell types and plugins
+registerCellType(DropdownCellType);
+registerCellType(NumericCellType);
+registerCellType(CheckboxCellType);
+registerPlugin(AutoColumnSize);
+registerPlugin(ManualColumnResize);
+registerPlugin(CopyPaste);
+registerPlugin(Filters);
+registerPlugin(PersistentState);
+registerPlugin(HiddenColumns);
+registerPlugin(HiddenRows);
+registerPlugin(ContextMenu);
+registerPlugin(DropdownMenu);
 
 import 'handsontable/dist/handsontable.full.css'
-
-registerAllModules()
 
 export default {
   name: 'TableDetail',
@@ -61,20 +88,14 @@ export default {
         currentRowClassName: 'currentRow',
         currentColClassName: 'currentCol',
         startRows: 2,
-        manualColumnFreeze: true,
-        currData: {},
         rowHeaders: true,
         manualColumnResize: true,
         rowHeights: 28,
-        manualRowResize: true,
         filters: true,
-        autoRowSize: false,
         autoColumnSize: true,
         viewportRowRenderingOffset: 1000,
         viewportColumnRenderingOffset: 100,
         colWidths: 80,
-        dropdownMenu: true,
-        columnSorting: true,
         persistentState: true,
         width: '100%',
         stretchH: 'all',
@@ -272,20 +293,15 @@ export default {
         afterChange: (changes, source) => {
           const vm = window.details
           if (changes) {
-            try {
-              let propNew = 0
-              changes.forEach(([row, prop, oldValue, newValue]) => {
-                propNew = prop
-                if (propNew === 'quantity' || propNew === 'price' || propNew === 'discount_rate' || propNew === 'tax_name') {
-                  if (oldValue !== newValue) {
-                    vm.calculateTotal()
-                  }
+            let propNew = 0
+            changes.forEach(([row, prop, oldValue, newValue]) => {
+              propNew = prop
+              if (propNew === 'quantity' || propNew === 'price' || propNew === 'discount_rate' || propNew === 'tax_name') {
+                if (oldValue !== newValue) {
+                  vm.calculateTotal()
                 }
-              })
-            } catch (e) {
-              // eslint-disable-next-line no-console
-              console.log(e)
-            }
+              }
+            })
           }
         },
       })

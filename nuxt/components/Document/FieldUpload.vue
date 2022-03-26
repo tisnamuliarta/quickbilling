@@ -37,7 +37,7 @@ export default {
       showLoadingAttachment: false,
       form: this.formData,
       options: {
-        url: '/api/files',
+        url: '/api/document-files',
         timeout: 9000000000,
         addRemoveLinks: true,
         withCredentials: true,
@@ -92,7 +92,7 @@ export default {
       const vm = this
       const temp_id = (this.form.id) ? this.form.id : this.form.temp_id;
 
-      this.$axios.get(`/api/files`, {
+      this.$axios.get(vm.options.url, {
         params: {
           type: this.formType,
           temp_id
@@ -113,6 +113,43 @@ export default {
             text: err.response.message,
           })
         })
+    },
+
+    deleteFile(item) {
+      const vm = this
+      this.$swal({
+        title: 'Are you sure?',
+        text: 'The file will be permanently deleted',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.value) {
+          this.$axios
+            .delete(vm.options.url, {
+              params: {
+                id: item.id,
+              },
+            })
+            .then((res) => {
+              this.$swal({
+                type: 'success',
+                title: 'Success...',
+                text: 'Attachment Deleted!',
+              })
+              vm.getFiles()
+            })
+            .catch((err) => {
+              this.$swal({
+                type: 'error',
+                title: 'Oops...',
+                text: err.response.data.message,
+              })
+            })
+        }
+      })
     },
   }
 }

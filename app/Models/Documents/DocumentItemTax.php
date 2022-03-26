@@ -2,6 +2,7 @@
 
 namespace App\Models\Documents;
 
+use App\Models\Financial\Tax;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -17,4 +18,9 @@ class DocumentItemTax extends Model
     protected $revisionCleanup = true; //Remove old revisions (works only when used with $historyLimit)
     protected $historyLimit = 500;
     protected $revisionForceDeleteEnabled = true;
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
 }

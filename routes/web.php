@@ -25,6 +25,7 @@ Route::group(['prefix' => 'api'], function () {
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
         Route::group(['prefix' => 'auth'], function () {
             Route::post('/roles', [AuthController::class, 'roles']);
             Route::post('/permissions', [AuthController::class, 'permissions']);
@@ -41,8 +42,6 @@ Route::group(['prefix' => 'api'], function () {
             ]);
         });
 
-        Route::apiResource('files', FileController::class)->only(['index', 'store', 'destroy']);
-
         // Student registration routes
         Route::prefix('student')
             ->group(__DIR__ . '/student.php');
@@ -56,6 +55,10 @@ Route::group(['prefix' => 'api'], function () {
             ->group(__DIR__ . '/transactions.php');
 
         // List all documents routes
+        Route::get('document-files', [FileController::class, 'index']);
+        Route::post('document-files', [FileController::class, 'store']);
+        Route::delete('document-files', [FileController::class, 'destroy']);
+
         Route::apiResource('documents', DocumentController::class);
 
         // List all master routes

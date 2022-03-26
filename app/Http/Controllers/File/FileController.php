@@ -99,10 +99,6 @@ class FileController extends Controller
                 ->first();
 
             if ($attachment) {
-                if ($attachment->created_by != $request->user()->id) {
-                    return $this->error('Not authorized to delete this file!');
-                }
-
                 $file = '/files/files/' . $attachment->filename;
                 unlink(public_path() . $file);
                 File::where('id', '=', $attachment->id)

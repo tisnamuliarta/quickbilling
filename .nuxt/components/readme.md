@@ -23,7 +23,7 @@ You can directly use them in pages and other components without the need to impo
 - `<DocumentDialogFormDocument>` | `<document-dialog-form-document>` (components/Document/DialogFormDocument.vue)
 - `<DocumentDialogSendEmail>` | `<document-dialog-send-email>` (components/Document/DialogSendEmail.vue)
 - `<DocumentFieldUpload>` | `<document-field-upload>` (components/Document/FieldUpload.vue)
-- `<DocumentFormDocument>` | `<document-form-document>` (components/Document/FormDocument.vue)
+- `<DocumentFormInput>` | `<document-form-input>` (components/Document/FormInput.vue)
 - `<DocumentFormWindow>` | `<document-form-window>` (components/Document/FormWindow.vue)
 - `<DocumentTableDetail>` | `<document-table-detail>` (components/Document/TableDetail.vue)
 - `<DocumentTableDocument>` | `<document-table-document>` (components/Document/TableDocument.vue)

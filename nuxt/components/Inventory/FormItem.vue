@@ -318,7 +318,7 @@ export default {
         precision: 2
       },
       options: {
-        url: '/api/files',
+        url: '/api/document-files',
         timeout: 9000000000,
         addRemoveLinks: true,
         withCredentials: true,
@@ -470,7 +470,7 @@ export default {
       const vm = this
       const temp_id = (this.form.id) ? this.form.id : this.form.temp_id;
 
-      this.$axios.get(`/api/files`, {
+      this.$axios.get(this.options.url, {
         params: {
           type: 'item',
           temp_id

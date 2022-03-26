@@ -4,11 +4,27 @@
 
 <script>
 import { HotTable } from '@handsontable/vue'
-import { registerAllModules } from 'handsontable/registry'
+// choose cell types you want to use and import them
+import { registerCellType, DropdownCellType } from 'handsontable/cellTypes';
+// choose plugins you want to use and import them
+import {
+  registerPlugin,
+  AutoColumnSize,
+  CopyPaste,
+  Filters,
+  HiddenColumns,
+  ContextMenu,
+} from 'handsontable/plugins';
+
+// register imported cell types and plugins
+registerCellType(DropdownCellType);
+registerPlugin(AutoColumnSize);
+registerPlugin(CopyPaste);
+registerPlugin(Filters);
+registerPlugin(HiddenColumns);
+registerPlugin(ContextMenu);
 
 import 'handsontable/dist/handsontable.full.css'
-
-registerAllModules()
 
 export default {
   name: 'TableSimple',
@@ -47,20 +63,13 @@ export default {
         currentRowClassName: 'currentRow',
         currentColClassName: 'currentCol',
         startRows: 1,
-        manualColumnFreeze: true,
         currData: {},
         rowHeaders: true,
-        manualColumnResize: true,
-        manualRowResize: true,
         filters: true,
-        autoRowSize: false,
         autoColumnSize: false,
         viewportRowRenderingOffset: 1000,
         viewportColumnRenderingOffset: 100,
         colWidths: 80,
-        dropdownMenu: true,
-        columnSorting: true,
-        persistentState: true,
         width: '100%',
         stretchH: 'all',
         hiddenColumns: {

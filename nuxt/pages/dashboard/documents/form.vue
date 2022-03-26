@@ -6,7 +6,14 @@
       @getDataFromApi="getDataFromApi"
     >
       <template #content>
-        <LazyDocumentFormDocument ref="formDocument"></LazyDocumentFormDocument>
+        <v-row v-show="showLoading" no-gutters>
+          <v-col cols="12">
+            <v-skeleton-loader
+              type="list-item-three-line, table-thead, table-tbody, list-item-three-line"
+            ></v-skeleton-loader>
+          </v-col>
+        </v-row>
+        <LazyDocumentFormInput v-show="!showLoading" ref="formDocument"></LazyDocumentFormInput>
       </template>
 
       <template #action>
@@ -32,13 +39,19 @@
             </v-btn>
           </template>
 
-          <v-list>
+          <v-list dense>
             <v-list-item
               v-for="item in items"
-              :key="item"
+              :key="item.title"
+              dense
               link
             >
-              <v-list-item-title v-text="item"></v-list-item-title>
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title @click="printAction(item.action)" v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -68,7 +81,7 @@
           <v-list>
             <v-list-item
               v-for="item in items"
-              :key="item"
+              :key="item.title"
               link
             >
               <v-list-item-title v-text="item"></v-list-item-title>
@@ -110,9 +123,13 @@ export default {
       breadcrumb: [],
       form: {},
       defaultItem: {},
-      items: [],
       url: '/api/documents',
       dialogLoading: false,
+      showLoading: false,
+      items: [
+        { title: 'Preview', action: 'preview', icon: 'mdi-printer' },
+        { title: 'Send Email', action: 'sendEmail', icon: 'mdi-email' },
+      ],
     }
   },
 
@@ -129,7 +146,7 @@ export default {
   methods: {
     getDataFromApi() {
       // this.dialogLoading = true
-      this.$refs.formDocument.showLoad(true)
+      this.showLoading = true
       let status = this.$route.query.status
       const type = this.$route.query.type
       this.$axios
@@ -146,7 +163,7 @@ export default {
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
-          }, 50)
+          }, 30)
         })
         .catch((err) => {
           this.$swal({
@@ -156,9 +173,12 @@ export default {
           })
         })
         .finally(res => {
-          // this.dialogLoading = false
-          this.$refs.formDocument.showLoad(false)
+          this.showLoading = false
         })
+    },
+
+    printAction(action) {
+
     },
 
     getBreadcrumb(type, form, status) {
