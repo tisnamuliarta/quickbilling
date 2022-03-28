@@ -28,7 +28,8 @@ class ContactService
              'actions' as ACTIONS "
         )
             ->leftJoin('accounts as sell', 'sell.id', 'contacts.receivable_account_id')
-            ->leftJoin('accounts as buy', 'buy.id', 'contacts.payable_account_id');
+            ->leftJoin('accounts as buy', 'buy.id', 'contacts.payable_account_id')
+            ->with(['banks', 'emails']);
 
         $result["total"] = $query->count();
 

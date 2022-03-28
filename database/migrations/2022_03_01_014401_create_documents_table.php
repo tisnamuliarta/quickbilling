@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->string('document_number', 50);
             $table->string('order_number', 50)->nullable();
             $table->string('status');
-            $table->dateTime('issued_at');
-            $table->dateTime('due_at');
+            $table->date('issued_at');
+            $table->date('due_at');
             $table->decimal('amount', 15, 4);
             $table->string('currency_code', 3);
             $table->decimal('currency_rate', 15, 4);

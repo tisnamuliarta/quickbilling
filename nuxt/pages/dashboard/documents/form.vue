@@ -106,6 +106,8 @@
       </template>
     </DocumentFormWindow>
 
+    <LazyDocumentDialogSendEmail ref="dialogSendEmail"></LazyDocumentDialogSendEmail>
+
     <LazySpinnerLoading
       v-if='dialogLoading'
       ref='spinnerLoadingImport'
@@ -128,8 +130,8 @@ export default {
       dialogLoading: false,
       showLoading: false,
       items: [
-        { title: 'Preview', action: 'preview', icon: 'mdi-printer' },
-        { title: 'Send Email', action: 'sendEmail', icon: 'mdi-email' },
+        {title: 'Preview', action: 'preview', icon: 'mdi-printer'},
+        {title: 'Send Email', action: 'sendEmail', icon: 'mdi-email'},
       ],
     }
   },
@@ -182,33 +184,46 @@ export default {
       const vm = this
       switch (action) {
         case 'preview':
-          this.dialogLoading = true
-          this.$axios.get(`/api/documents/print`, {
-            params: {
-              id: vm.form.id
-            },
-            responseType: 'arraybuffer'
-          })
-            .then(response => {
-              this.dialogLoading = false
-              const url = window.URL.createObjectURL(new Blob([response.data]));
-              const link = document.createElement('a');
-
-              link.href = url;
-              link.setAttribute('download', vm.form.document_number + '.pdf'); // set custom file name
-              document.body.appendChild(link);
-
-              link.click(); // force download file without open new tab
-            })
-            .catch((err) => {
-              this.dialogLoading = false
-              this.$swal({
-                type: 'error',
-                title: 'Error',
-                text: err.response.data.message,
-              })
-            })
+          this.previewDocument()
+          break;
+        case 'sendEmail':
+          this.openDialogEmail()
+          break;
       }
+    },
+
+    openDialogEmail() {
+      this.$refs.dialogSendEmail.openEmailDialog()
+    },
+
+    previewDocument() {
+      const vm = this
+      this.dialogLoading = true
+      this.$axios.get(`/api/documents/print`, {
+        params: {
+          id: vm.form.id
+        },
+        responseType: 'arraybuffer'
+      })
+        .then(response => {
+          this.dialogLoading = false
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+
+          link.href = url;
+          link.setAttribute('download', vm.form.document_number + '.pdf'); // set custom file name
+          document.body.appendChild(link);
+
+          link.click(); // force download file without open new tab
+        })
+        .catch((err) => {
+          this.dialogLoading = false
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
     getBreadcrumb(type, form, status) {

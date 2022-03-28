@@ -98,6 +98,11 @@ class DocumentService
         $request->request->remove('tags');
         $request->request->remove('items');
         $request->request->remove('tax_details');
+        $request->request->remove('id');
+        $request->request->remove('created_at');
+        $request->request->remove('updated_at');
+        $request->request->remove('deleted_at');
+
         $request->merge([
             'currency_code' => $request->default_currency_code,
             'currency_rate' => $currency->rate,
@@ -116,11 +121,7 @@ class DocumentService
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
             $data['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
-            $data['created_at'] = Carbon::now();
             $data['status'] = 'open';
-        } else {
-            $data['created_at'] = Carbon::parse($request->created_at);
-            $data['updated_at'] = Carbon::now();
         }
 
         return $data;
@@ -192,9 +193,12 @@ class DocumentService
     {
         foreach ($items as $item) {
             if (array_key_exists('id', $item)) {
-                DocumentItem::where('id', $item['id'])
-                    ->update($this->detailsForm($document, $item, 'update'));
                 $item_detail = DocumentItem::find($item['id']);
+                $forms = $this->detailsForm($document, $item, 'update');
+                foreach ($forms as $index => $form) {
+                    $item_detail->$index = $form;
+                }
+                $item_detail->save();
             } else {
                 $item_detail = DocumentItem::create($this->detailsForm($document, $item, 'store'));
             }

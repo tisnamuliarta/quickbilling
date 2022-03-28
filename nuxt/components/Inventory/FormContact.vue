@@ -207,7 +207,7 @@
 
                     <v-tab-item value="tab-2">
                       <v-row
-                        v-for="(item, index) in form.bank_list"
+                        v-for="(item, index) in form.banks"
                         :key="index"
                         no-gutters
                       >
@@ -254,7 +254,7 @@
                             class="pr-1 pl-1 pb-1 pt-1 mt-1"
                           >
                             <v-text-field
-                              v-model="item.account_name"
+                              v-model="item.contact_account_name"
                               label="Bank Holder Name"
                               outlined
                               dense
@@ -267,7 +267,7 @@
                             class="pr-1 pl-1 pb-1 pt-1 mt-1"
                           >
                             <v-text-field
-                              v-model="item.account_number"
+                              v-model="item.contact_account_number"
                               label="Bank Holder Account"
                               outlined
                               dense
@@ -282,7 +282,7 @@
                             dark
                             small
                             icon
-                            @click="removeLine(index, 'bank')"
+                            @click="removeLine(index, 'bank', item)"
                           >
                             <v-icon>
                               mdi-delete
@@ -370,7 +370,7 @@
 
                     <v-tab-item value="tab-4">
                       <v-row
-                        v-for="(item, index) in form.email_list"
+                        v-for="(item, index) in form.emails"
                         :key="index"
                         no-gutters
                         class="mt-2"
@@ -394,7 +394,7 @@
                             dark
                             small
                             icon
-                            @click="removeLine(index, 'email')"
+                            @click="removeLine(index, 'email', item)"
                           >
                             <v-icon>
                               mdi-delete
@@ -473,7 +473,7 @@ export default {
       itemPaymentTerm: [],
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
-      url: '/api/inventory/contacts',
+      url: '/api/bp/contacts',
       moneyOptions: {
         suffix: "",
         length: 11,
@@ -510,24 +510,26 @@ export default {
 
     addLine(type) {
       if (type === 'email') {
-        this.form.email_list.push({
+        this.form.emails.push({
           email: null,
         })
       } else if (type === 'bank') {
-        this.form.bank_list.push({
+        this.form.banks.push({
           name: null,
           branch: null,
-          account_name: null,
-          account_number: null,
+          contact_account_name: null,
+          contact_account_number: null,
         })
       }
     },
 
-    removeLine(index, type) {
+    removeLine(index, type, item) {
       if (type === 'email') {
-        this.form.email_list.splice(index, 1)
+        this.form.emails.splice(index, 1)
+        this.$axios.delete(`/api/bp/delete-email/` + item.email)
       } else if (type === 'bank') {
-        this.form.bank_list.splice(index, 1)
+        this.form.banks.splice(index, 1)
+        this.$axios.delete(`/api/bp/delete-bank/` + item.id)
       }
     },
 

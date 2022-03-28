@@ -36,9 +36,16 @@ Route::group(['prefix' => 'api'], function () {
         // Inventory routes
         Route::group(['prefix' => 'inventory'], function () {
             Route::apiResources([
-                'contacts' => ContactController::class,
                 'items' => ItemController::class,
                 'item-units' => ItemUnitController::class,
+            ]);
+        });
+
+        Route::group(['prefix' => 'bp'], function () {
+            Route::delete('delete-bank/{id}', [ContactController::class, 'deleteBank']);
+            Route::delete('delete-email/{id}', [ContactController::class, 'deleteEmail']);
+            Route::apiResources([
+                'contacts' => ContactController::class,
             ]);
         });
 

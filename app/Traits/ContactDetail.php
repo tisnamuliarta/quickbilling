@@ -20,13 +20,16 @@ trait ContactDetail
     {
         foreach ($banks as $bank) {
             if ($bank['name']) {
-                ContactBank::create([
+                ContactBank::updateOrCreate([
                     'bank_id' => array_key_exists('name', $bank) ? $this->bankIdByName($bank['name']) : null,
-                    'contact_account_name' => array_key_exists('account_name', $bank)
-                        ? $bank['account_name'] : null,
-                    'contact_account_number' => array_key_exists('account_number', $bank)
-                        ? $bank['account_number'] : null,
+                    'contact_account_name' => array_key_exists('contact_account_name', $bank)
+                        ? $bank['contact_account_name'] : null,
+                    'contact_account_number' => array_key_exists('contact_account_number', $bank)
+                        ? $bank['contact_account_number'] : null,
                     'contact_id' => $contact_id,
+                ], [
+                    'branch' => array_key_exists('branch', $bank)
+                        ? $bank['branch'] : null,
                 ]);
             }
         }
@@ -41,7 +44,7 @@ trait ContactDetail
     {
         foreach ($email as $item) {
             if ($item['email']) {
-                ContactEmail::create([
+                ContactEmail::updateOrCreate([
                     'email' => array_key_exists('email', $item) ? $item['email'] : null,
                     'contact_id' => $contact_id,
                 ]);
@@ -55,10 +58,12 @@ trait ContactDetail
      */
     public function createUser($form)
     {
-        $user = User::create([
+        $usr = User::where('username', $form['email'])->first();
+        $password = ($usr) ? $usr->password : null;
+        $user = User::updateOrCreate([
             'name' => $form['name'],
             'email' => $form['email'],
-            'password' => bcrypt($form['password']),
+            'password' => (array_key_exists('password', $form)) ? bcrypt($form['password']) : $password,
             'username' => $form['email'],
         ]);
 

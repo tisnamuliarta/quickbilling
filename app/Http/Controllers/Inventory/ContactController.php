@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\ContactBank;
+use App\Models\Inventory\ContactEmail;
 use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
 use Illuminate\Http\Request;
@@ -38,18 +40,18 @@ class ContactController extends Controller
     {
         $type = isset($request->type) ? (string)$request->type : 'index';
         $result = [];
-        $extra_list['email_list'] = [
+        $extra_list['emails'] = [
             [
                 'email' => null
             ]
         ];
         $extra_list['password'] = null;
-        $extra_list['bank_list'] = [
+        $extra_list['banks'] = [
             [
                 'name' => null,
                 'branch' => null,
-                'account_name' => null,
-                'account_number' => null,
+                'contact_account_name' => null,
+                'contact_account_number' => null,
             ]
         ];
         $result['form'] = array_merge($this->form('contacts'), $extra_list);
@@ -76,17 +78,7 @@ class ContactController extends Controller
         try {
             $contact = Contact::create($this->service->formData($form));
 
-            if ($form['bank_list']) {
-                $this->storeContactBank($form['bank_list'], $contact['id']);
-            }
-
-            if ($form['email_list']) {
-                $this->storeContactEmail($form['email_list'], $contact['id']);
-            }
-
-            if ($form['can_login']) {
-                $this->createUser($form);
-            }
+            $this->processDetails($form, $contact);
 
             DB::commit();
             return $this->success([
@@ -144,6 +136,26 @@ class ContactController extends Controller
     }
 
     /**
+     * @param $form
+     * @param $contact
+     * @return void
+     */
+    protected function processDetails($form, $contact)
+    {
+        if ($form['banks']) {
+            $this->storeContactBank($form['banks'], $contact['id']);
+        }
+
+        if ($form['emails']) {
+            $this->storeContactEmail($form['emails'], $contact['id']);
+        }
+
+        if ($form['can_login']) {
+            $this->createUser($form);
+        }
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -160,7 +172,16 @@ class ContactController extends Controller
 
         $form = $request->form;
         try {
-            Contact::where("id", "=", $id)->update($this->service->formData($form));
+            $formData = $this->service->formData($form);
+            $contact = Contact::find($id);
+            foreach ($formData as $index => $formDatum) {
+                $contact->$index = $formDatum;
+            }
+            $contact->save();
+
+            $this->processDetails($form, $contact);
+
+            DB::commit();
 
             return $this->success([
                 "errors" => false
@@ -192,5 +213,15 @@ class ContactController extends Controller
         return $this->error('Row not found', 422, [
             "errors" => true
         ]);
+    }
+
+    public function deleteBank($id)
+    {
+        ContactBank::where('id', $id)->delete();
+    }
+
+    public function deleteEmail($id)
+    {
+        ContactEmail::where('email', $id)->delete();
     }
 }

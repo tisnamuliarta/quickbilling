@@ -148,14 +148,6 @@ class DocumentController extends Controller
         $type = $request->type;
         $form = $this->service->getForm($type);
         $data = Document::where("documents.id", "=", $id)
-            ->select(
-                'documents.*',
-                DB::raw('CONVERT(issued_at, date) as issued_at'),
-                DB::raw('CONVERT(due_at, date) as due_at'),
-                'currencies.code as default_currency_code',
-                'currencies.symbol as default_currency_symbol',
-            )
-            ->leftJoin('currencies', 'currencies.code', 'documents.currency_code')
             ->with(['items', 'taxDetails'])
             ->first();
 
@@ -189,9 +181,14 @@ class DocumentController extends Controller
         }
 
         try {
-            Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
+            // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
 
             $document = Document::find($id);
+            $forms = collect($this->service->formData($request, 'update'));
+            foreach ($forms as $index => $form) {
+                $document->$index = $form;
+            }
+            $document->save();
 
             $this->service->processItems($items, $document, $tax_details);
 

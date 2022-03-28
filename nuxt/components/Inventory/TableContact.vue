@@ -132,7 +132,7 @@ export default {
       this.loading = true
       const vm = this
       this.$axios
-        .get(`/api/inventory/contacts`, {
+        .get(`/api/bp/contacts`, {
           params: {
             options: vm.options,
             searchItem: vm.searchItem,

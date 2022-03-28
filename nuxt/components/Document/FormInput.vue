@@ -595,8 +595,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <LazyDocumentDialogSendEmail ref="dialogSendEmail"></LazyDocumentDialogSendEmail>
   </v-form>
 </template>
 
@@ -933,7 +931,7 @@ export default {
     },
 
     getContact() {
-      this.$axios.get(`/api/inventory/contacts`, {
+      this.$axios.get(`/api/bp/contacts`, {
         params: {
           type: "All"
         }

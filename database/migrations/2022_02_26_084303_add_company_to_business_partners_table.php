@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('bank_id');
             $table->string('contact_account_name');
             $table->string('contact_account_number');
+            $table->string('branch')->nullable();
             $table->timestamps();
         });
 

@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters align="center" align-content="center" justify="center">
-    <v-col cols="12" sm="4" md="4" lg="3" xl="3" align-self="center">
+    <v-col cols="12" sm="4" md="4" align-self="center">
       <v-skeleton-loader
         v-if="loadImage"
         type="article, actions"
