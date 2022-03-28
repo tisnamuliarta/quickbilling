@@ -59,7 +59,11 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('document-files', [FileController::class, 'store']);
         Route::delete('document-files', [FileController::class, 'destroy']);
 
-        Route::apiResource('documents', DocumentController::class);
+        Route::group(['prefix' => 'documents'], function () {
+            Route::apiResource('form', DocumentController::class);
+            Route::get('print', [\App\Http\Controllers\Documents\DocumentExportController::class, 'print']);
+            Route::get('email', [\App\Http\Controllers\Documents\DocumentExportController::class, 'email']);
+        });
 
         // List all master routes
         Route::prefix('financial')

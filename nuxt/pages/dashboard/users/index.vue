@@ -36,38 +36,40 @@
             />
           </template>
           <template #[`item.Action`]="{ item }">
-            <v-btn-toggle
-              color="deep-blue accent-3"
-              group
-              dense
-              tile
+            <v-btn
+              value="left"
+              small
+              icon
+              @click="editItem(item)"
             >
-              <v-btn value="left" @click="editItem(item)">
-                <v-icon left>
-                  mdi-pencil-circle
-                </v-icon>
-                <span class="hidden-sm-and-down">Edit</span>
-              </v-btn>
-
-              <v-btn value="center" @click="copyItem(item)">
-                <v-icon left>
-                  mdi-content-copy
-                </v-icon>
-                <span class="hidden-sm-and-down">Copy</span>
-              </v-btn>
-
-              <v-btn value="right" @click="
+              <v-icon left>
+                mdi-pencil-circle
+              </v-icon>
+            </v-btn>
+            <v-btn
+              value="center"
+              small
+              icon
+              @click="copyItem(item)"
+            >
+              <v-icon left>
+                mdi-content-copy
+              </v-icon>
+            </v-btn>
+            <v-btn
+              value="right"
+              small
+              icon
+              @click="
                       $refs.dialogPermission.openDialogPermission(
                         item,
                         'Direct Permissions'
                       )
                     ">
-                <v-icon left>
-                  mdi-playlist-edit
-                </v-icon>
-                <span class="hidden-sm-and-down">Permissions</span>
-              </v-btn>
-            </v-btn-toggle>
+              <v-icon left>
+                mdi-playlist-edit
+              </v-icon>
+            </v-btn>
           </template>
         </v-data-table>
       </div>

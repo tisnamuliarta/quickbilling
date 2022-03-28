@@ -71,6 +71,7 @@
     "@handsontable/vue": "^11.1.0",
     "@luxdamore/nuxt-prune-html": "^2.0.6",
     "@mdi/font": "^6.5.95",
+    "@nuxt/types": "^2.15.8",
     "@nuxtjs/auth-next": "^5.0.0-1643705077.3d7afbe",
     "@nuxtjs/composition-api": "^0.31.0",
     "@nuxtjs/proxy": "^2.1.0",

@@ -23,7 +23,7 @@
           <template v-slot:activator="{ attrs, on }">
             <v-btn
               class="white--text"
-              color="primary"
+              color="green"
               dark
               v-bind="attrs"
               small
@@ -45,12 +45,13 @@
               :key="item.title"
               dense
               link
+              @click="printAction(item.action)"
             >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title @click="printAction(item.action)" v-text="item.title"></v-list-item-title>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -62,7 +63,7 @@
           <template v-slot:activator="{ attrs, on }">
             <v-btn
               class="white--text ml-5"
-              color="primary"
+              color="green"
               dark
               v-bind="attrs"
               small
@@ -123,7 +124,7 @@ export default {
       breadcrumb: [],
       form: {},
       defaultItem: {},
-      url: '/api/documents',
+      url: '/api/documents/form',
       dialogLoading: false,
       showLoading: false,
       items: [
@@ -178,7 +179,36 @@ export default {
     },
 
     printAction(action) {
+      const vm = this
+      switch (action) {
+        case 'preview':
+          this.dialogLoading = true
+          this.$axios.get(`/api/documents/print`, {
+            params: {
+              id: vm.form.id
+            },
+            responseType: 'arraybuffer'
+          })
+            .then(response => {
+              this.dialogLoading = false
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement('a');
 
+              link.href = url;
+              link.setAttribute('download', vm.form.document_number + '.pdf'); // set custom file name
+              document.body.appendChild(link);
+
+              link.click(); // force download file without open new tab
+            })
+            .catch((err) => {
+              this.dialogLoading = false
+              this.$swal({
+                type: 'error',
+                title: 'Error',
+                text: err.response.data.message,
+              })
+            })
+      }
     },
 
     getBreadcrumb(type, form, status) {

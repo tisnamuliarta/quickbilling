@@ -34,7 +34,7 @@
             />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-btn x-small dark @click="editItem(item)" color="green">
+            <v-btn small text dark @click="editItem(item)" color="green">
               <v-icon left class="mr-2">
                 mdi-pencil-circle
               </v-icon>

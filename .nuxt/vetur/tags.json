@@ -41,6 +41,15 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
+  "FinancialFormAccount": {
+    "description": "Auto imported from components/Financial/FormAccount.vue"
+  },
   "DocumentDialogFormDocument": {
     "description": "Auto imported from components/Document/DialogFormDocument.vue"
   },
@@ -65,9 +74,6 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
-  "FinancialFormAccount": {
-    "description": "Auto imported from components/Financial/FormAccount.vue"
-  },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
   },
@@ -86,11 +92,26 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
+  "StudentDataHelp": {
+    "description": "Auto imported from components/Student/DataHelp.vue"
   },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
+  "StudentFormStudent": {
+    "description": "Auto imported from components/Student/FormStudent.vue"
+  },
+  "StudentListDocument": {
+    "description": "Auto imported from components/Student/ListDocument.vue"
+  },
+  "StudentParentInfo": {
+    "description": "Auto imported from components/Student/ParentInfo.vue"
+  },
+  "StudentPersonalInfo": {
+    "description": "Auto imported from components/Student/PersonalInfo.vue"
+  },
+  "StudentScoreInfo": {
+    "description": "Auto imported from components/Student/ScoreInfo.vue"
+  },
+  "TasksFormTask": {
+    "description": "Auto imported from components/Tasks/FormTask.vue"
   },
   "SetupAccountMapping": {
     "description": "Auto imported from components/Setup/AccountMapping.vue"
@@ -124,26 +145,5 @@
   },
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
-  },
-  "StudentDataHelp": {
-    "description": "Auto imported from components/Student/DataHelp.vue"
-  },
-  "StudentFormStudent": {
-    "description": "Auto imported from components/Student/FormStudent.vue"
-  },
-  "StudentListDocument": {
-    "description": "Auto imported from components/Student/ListDocument.vue"
-  },
-  "StudentParentInfo": {
-    "description": "Auto imported from components/Student/ParentInfo.vue"
-  },
-  "StudentPersonalInfo": {
-    "description": "Auto imported from components/Student/PersonalInfo.vue"
-  },
-  "StudentScoreInfo": {
-    "description": "Auto imported from components/Student/ScoreInfo.vue"
-  },
-  "TasksFormTask": {
-    "description": "Auto imported from components/Tasks/FormTask.vue"
   }
 }

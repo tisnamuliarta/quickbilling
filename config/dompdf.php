@@ -11,7 +11,7 @@ return array(
     | in dompdf_config.inc.php. You can also override the entire config file.
     |
     */
-    'show_warnings' => false,   // Throw an Exception on warnings from dompdf
+    'show_warnings' => true,   // Throw an Exception on warnings from dompdf
     'orientation' => 'portrait',
     /*
      * Dejavu Sans font is missing glyphs for converted entities, turn it off if you need to show € and £.
@@ -80,7 +80,7 @@ return array(
         /**
          * Whether to enable font subsetting or not.
          */
-        "enable_font_subsetting" => false,
+        "enable_font_subsetting" => true,
 
         /**
          * The PDF rendering backend to use
@@ -202,7 +202,7 @@ return array(
          *
          * @var bool
          */
-        "enable_php" => false,
+        "enable_php" => true,
 
         /**
          * Enable inline Javascript
@@ -241,7 +241,8 @@ return array(
         /**
          * Use the more-than-experimental HTML5 Lib parser
          */
-        "enable_html5_parser" => false,
+        "enable_html5_parser" => true,
+        "isHtml5ParserEnabled" => true,
     ),
 
 

@@ -19,10 +19,10 @@ const _ebf9957e = () => interopDefault(import('..\\nuxt\\pages\\pages\\terms.vue
 const _efc46c98 = () => interopDefault(import('..\\nuxt\\pages\\student\\announcement.vue' /* webpackChunkName: "pages/student/announcement" */))
 const _2f0aa710 = () => interopDefault(import('..\\nuxt\\pages\\student\\print.vue' /* webpackChunkName: "pages/student/print" */))
 const _2758e0e0 = () => interopDefault(import('..\\nuxt\\pages\\student\\register.vue' /* webpackChunkName: "pages/student/register" */))
+const _a54e4608 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\bp\\contact.vue' /* webpackChunkName: "pages/dashboard/bp/contact" */))
 const _54000be6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\form.vue' /* webpackChunkName: "pages/dashboard/documents/form" */))
 const _f00d9a80 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\list.vue' /* webpackChunkName: "pages/dashboard/documents/list" */))
 const _1a73bd4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
-const _441197ca = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\contact.vue' /* webpackChunkName: "pages/dashboard/inventory/contact" */))
 const _d8ecf74e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
 const _111ed0fb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
 const _1fb56a36 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
@@ -117,6 +117,10 @@ export const routerOptions = {
     component: _2758e0e0,
     name: "student-register"
   }, {
+    path: "/dashboard/bp/contact",
+    component: _a54e4608,
+    name: "dashboard-bp-contact"
+  }, {
     path: "/dashboard/documents/form",
     component: _54000be6,
     name: "dashboard-documents-form"
@@ -128,10 +132,6 @@ export const routerOptions = {
     path: "/dashboard/financial/account",
     component: _1a73bd4a,
     name: "dashboard-financial-account"
-  }, {
-    path: "/dashboard/inventory/contact",
-    component: _441197ca,
-    name: "dashboard-inventory-contact"
   }, {
     path: "/dashboard/inventory/item",
     component: _d8ecf74e,
