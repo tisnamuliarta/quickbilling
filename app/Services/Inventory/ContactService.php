@@ -10,11 +10,11 @@ class ContactService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request, $type): array
     {
         $options = $request->options;
         $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
+        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 0;
         $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
         $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
         $offset = ($pages - 1) * $row_data;
@@ -33,19 +33,15 @@ class ContactService
 
         $result["total"] = $query->count();
 
-        $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
-            ->get();
-
-        $arr_rows = Contact::pluck('name');
-
-        $arr_auto_complete = Contact::select('id', 'name')->get();
+        $query->orderBy($sorts, $order);
+        if ($row_data != 0) {
+            $query->offset($offset)
+                ->limit($row_data);
+        }
+        $all_data = $query->get();
 
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows,
-            "auto_complete" => $arr_auto_complete,
         ]);
     }
 

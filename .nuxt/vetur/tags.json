@@ -41,6 +41,15 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "FinancialFormAccount": {
+    "description": "Auto imported from components/Financial/FormAccount.vue"
+  },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
   "DocumentDialogFormDocument": {
     "description": "Auto imported from components/Document/DialogFormDocument.vue"
   },
@@ -64,15 +73,6 @@
   },
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
-  },
-  "FinancialFormAccount": {
-    "description": "Auto imported from components/Financial/FormAccount.vue"
-  },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
@@ -125,6 +125,9 @@
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
   },
+  "TasksFormTask": {
+    "description": "Auto imported from components/Tasks/FormTask.vue"
+  },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"
   },
@@ -142,8 +145,5 @@
   },
   "StudentScoreInfo": {
     "description": "Auto imported from components/Student/ScoreInfo.vue"
-  },
-  "TasksFormTask": {
-    "description": "Auto imported from components/Tasks/FormTask.vue"
   }
 }

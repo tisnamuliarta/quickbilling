@@ -931,9 +931,10 @@ export default {
     },
 
     getContact() {
+      const vm = this
       this.$axios.get(`/api/bp/contacts`, {
         params: {
-          type: "All"
+          type: vm.$route.query.type
         }
       })
         .then((res) => {
