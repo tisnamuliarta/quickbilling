@@ -42,6 +42,7 @@
             icon
             color="success"
             small
+            fill
             @click="getDataFromApi"
           >
             <v-icon>mdi-magnify</v-icon>

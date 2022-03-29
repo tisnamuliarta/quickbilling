@@ -62,6 +62,7 @@ class DocumentService
         $form['deposit_info'] = false;
         $form['shipping_info'] = false;
         $form['withholding_info'] = false;
+        $form['price_include_tax'] = false;
         $form['type'] = $type;
         $form['issued_at'] = Carbon::now()->format('Y-m-d');
         $form['due_at'] = Carbon::now()->addDay(30)->format('Y-m-d');

@@ -268,7 +268,17 @@ export default {
       this.dialogLoading = true
       this.$axios({method, url, data})
         .then((res) => {
-          this.getDataFromApi()
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              id: res.data.data.id,
+              status: res.data.data.status,
+              type: res.data.data.type
+            }
+          })
+          setTimeout(() => {
+            this.getDataFromApi()
+          }, 50)
         })
         .catch((err) => {
           this.$swal({

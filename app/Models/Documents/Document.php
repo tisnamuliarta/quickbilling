@@ -30,8 +30,6 @@ class Document extends Model implements Auditable
 //        'contact_location'
     ];
 
-    protected $dates = ['deleted_at', 'issued_at', 'due_at'];
-
     /**
      * The attributes that should be cast.
      *
