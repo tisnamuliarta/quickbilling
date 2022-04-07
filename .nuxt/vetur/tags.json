@@ -41,6 +41,9 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
+  "FinancialFormAccount": {
+    "description": "Auto imported from components/Financial/FormAccount.vue"
+  },
   "DocumentDialogFormDocument": {
     "description": "Auto imported from components/Document/DialogFormDocument.vue"
   },
@@ -65,9 +68,6 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
-  "FinancialFormAccount": {
-    "description": "Auto imported from components/Financial/FormAccount.vue"
-  },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
   },
@@ -86,11 +86,8 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
+  "SettingEntity": {
+    "description": "Auto imported from components/Setting/Entity.vue"
   },
   "SetupAccountMapping": {
     "description": "Auto imported from components/Setup/AccountMapping.vue"
@@ -124,6 +121,12 @@
   },
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
+  },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"

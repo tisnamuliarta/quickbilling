@@ -15,7 +15,7 @@ class CreateBanksTable extends Migration
     {
         Schema::table('accounts', function (Blueprint $table) {
             $table->dropColumn(['bank_name', 'bank_phone', 'bank_address']);
-            $table->unsignedBigInteger('category_id')->after('company_id');
+            $table->unsignedBigInteger('category_id')->after('entity_id');
             $table->unsignedBigInteger('bank_id')->after('category_id');
             $table->string('details', 100)->default('None')->after('enabled');
             $table->unsignedBigInteger('related_id')->nullable()->after('details');

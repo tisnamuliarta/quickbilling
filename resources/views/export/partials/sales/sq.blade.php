@@ -39,15 +39,20 @@
     <td class="text-right" colspan="3">{{ strtoupper('Sub Total') }}</td>
     <td class="text-right">{{ number_format($documents->sub_total, 2) }}</td>
   </tr>
-  <tr>
-    <td class="text-right" colspan="3">{{ strtoupper('Discount per Item') }}</td>
-    <td class="text-right">{{ number_format($documents->discount_per_line, 2) }}</td>
-  </tr>
 
-  <tr>
-    <td class="text-right" colspan="3">DISCOUNT {{ number_format($documents->discount_rate, 0) . ' %' }}</td>
-    <td class="text-right">{{ number_format($documents->discount_amount, 2) }}</td>
-  </tr>
+  @if($documents->discount_per_line > 0)
+    <tr>
+      <td class="text-right" colspan="3">{{ strtoupper('Discount per Item') }}</td>
+      <td class="text-right">{{ number_format($documents->discount_per_line, 2) }}</td>
+    </tr>
+  @endif
+
+  @if($documents->discount_rate > 0)
+    <tr>
+      <td class="text-right" colspan="3">DISCOUNT {{ number_format($documents->discount_rate, 0) . ' %' }}</td>
+      <td class="text-right">{{ number_format($documents->discount_amount, 2) }}</td>
+    </tr>
+  @endif
 
   @foreach($documents->taxDetails as $tax)
     <tr>

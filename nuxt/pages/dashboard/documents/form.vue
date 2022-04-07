@@ -81,11 +81,15 @@
 
           <v-list>
             <v-list-item
-              v-for="item in items"
+              v-for="item in itemAction"
               :key="item.title"
+              dense
               link
+              @click="actionDocument(item.action)"
             >
-              <v-list-item-title v-text="item"></v-list-item-title>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -98,7 +102,7 @@
           small
           @click="store"
         >
-          {{ $route.query.status }}
+          {{ actionName }}
           <v-icon>
             mdi-check
           </v-icon>
@@ -129,6 +133,8 @@ export default {
       url: '/api/documents/form',
       dialogLoading: false,
       showLoading: false,
+      itemAction: [],
+      actionName: 'Save',
       items: [
         {title: 'Preview', action: 'preview', icon: 'mdi-printer'},
         {title: 'Send Email', action: 'sendEmail', icon: 'mdi-email'},
@@ -142,7 +148,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.getDataFromApi()
   },
 
@@ -150,19 +156,26 @@ export default {
     getDataFromApi() {
       // this.dialogLoading = true
       this.showLoading = true
-      let status = this.$route.query.status
       const type = this.$route.query.type
       this.$axios
-        .get(this.url + '/' + this.$route.query.id, {
+        .get(this.url + '/' + this.$route.query.document, {
           params: {
             type,
           },
         })
         .then((res) => {
-          const form = (status === 'update') ? res.data.data.rows : res.data.data.form
+          let form = ''
+          if (res.data.data.count > 0) {
+            form = res.data.data.rows
+            this.itemAction = this.$helper.itemAction(form.type)
+            this.actionName = 'Update'
+          } else {
+            form = res.data.data.form
+            this.actionName = 'Save'
+          }
           this.form = Object.assign({}, form)
           this.defaultItem = Object.assign({}, form)
-          this.getBreadcrumb(type, form, status)
+          this.getBreadcrumb(type, form, form.status)
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
@@ -180,8 +193,18 @@ export default {
         })
     },
 
+    actionDocument(action) {
+      switch (action) {
+        case 'preview':
+          this.previewDocument()
+          break;
+        case 'sendEmail':
+          this.openDialogEmail()
+          break;
+      }
+    },
+
     printAction(action) {
-      const vm = this
       switch (action) {
         case 'preview':
           this.previewDocument()
@@ -193,7 +216,7 @@ export default {
     },
 
     openDialogEmail() {
-      this.$refs.dialogSendEmail.openEmailDialog()
+      this.$refs.dialogSendEmail.openEmailDialog(this.form)
     },
 
     previewDocument() {
@@ -237,10 +260,10 @@ export default {
           }
         },
         {
-          text: 'Documents',
+          text: this.$helper.mapping(type),
           disabled: false,
           to: {
-            path: this.mappingType(type)
+            path: this.$helper.mappingAction(type)
           }
         },
         {

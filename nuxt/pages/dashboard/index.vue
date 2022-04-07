@@ -2,6 +2,10 @@
   <div id="home">
     <v-container fluid>
       <v-row>
+        <v-col cols="12" md="8">
+          <LazySettingEntity ref="entity"></LazySettingEntity>
+        </v-col>
+
         <v-col cols="12" md="4">
           <v-card
             class="mx-auto text-center"

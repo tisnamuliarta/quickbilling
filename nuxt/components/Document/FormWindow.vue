@@ -8,7 +8,6 @@
 
       <v-spacer class='hidden-xs-only'></v-spacer>
       <v-btn color="green" small dark outlined @click="getDataFromApi">
-        refresh
         <v-icon>mdi-refresh-circle</v-icon>
       </v-btn>
     </v-toolbar>

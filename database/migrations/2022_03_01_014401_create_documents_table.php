@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('type', 150);
             $table->string('document_number', 50);
             $table->string('order_number', 50)->nullable();
@@ -43,14 +43,14 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
             $table->index('type');
-            $table->unique(['document_number', 'deleted_at', 'company_id', 'type']);
+            $table->unique(['document_number', 'deleted_at', 'entity_id', 'type']);
         });
 
         Schema::create('document_histories', function (Blueprint $table) {
             $table->id();
-            $table->integer('company_id');
+            $table->integer('entity_id');
             $table->string('type', 150);
             $table->unsignedBigInteger('document_id');
             $table->string('status');
@@ -60,14 +60,14 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
             $table->index('type');
             $table->index('document_id');
         });
 
         Schema::create('document_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('type', 150);
             $table->unsignedBigInteger('document_id');
             $table->unsignedBigInteger('item_id')->nullable();
@@ -84,14 +84,14 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
             $table->index('type');
             $table->index('document_id');
         });
 
         Schema::create('document_item_taxes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('type', 100);
             $table->unsignedBigInteger('document_id');
             $table->unsignedBigInteger('document_item_id');
@@ -102,14 +102,14 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
             $table->index('type');
             $table->index('document_id');
         });
 
         Schema::create('document_totals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('type', 100);
             $table->unsignedBigInteger('document_id');
             $table->string('code', 50)->nullable();
@@ -120,27 +120,27 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
             $table->index('type');
             $table->index('document_id');
         });
 
         Schema::create('item_taxes', function (Blueprint $table) {
             $table->id();
-            $table->integer('company_id');
+            $table->integer('entity_id');
             $table->integer('item_id');
             $table->integer('tax_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id', 'item_id']);
+            $table->index(['entity_id', 'item_id']);
         });
 
         // Contacts
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->integer('company_id');
+            $table->integer('entity_id');
             $table->string('type', 100);
             $table->string('name', 200);
             $table->string('email', 150)->nullable();
@@ -161,8 +161,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id', 'type']);
-            $table->unique(['company_id', 'type', 'email', 'deleted_at']);
+            $table->index(['entity_id', 'type']);
+            $table->unique(['entity_id', 'type', 'email', 'deleted_at']);
         });
     }
 

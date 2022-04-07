@@ -8,6 +8,7 @@ use App\Services\Documents\DocumentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Vinkla\Hashids\Facades\Hashids;
 
 class DocumentController extends Controller
 {
@@ -33,7 +34,13 @@ class DocumentController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        return $this->success($this->service->index($request));
+        try {
+            return $this->success($this->service->index($request));
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                $exception->getTrace()
+            ]);
+        }
     }
 
     /**
@@ -140,7 +147,7 @@ class DocumentController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param int $id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id): \Illuminate\Http\JsonResponse
@@ -153,7 +160,8 @@ class DocumentController extends Controller
 
         return $this->success([
             'rows' => $data,
-            'form' => $form
+            'form' => $form,
+            'count' => ($data) ? 1 : 0
         ]);
     }
 
@@ -164,7 +172,7 @@ class DocumentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         if ($this->validation($request)) {
             return $this->error($this->validation($request), 422, [
@@ -212,7 +220,7 @@ class DocumentController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
         $details = Document::where("id", "=", $id)->first();
         if ($details) {

@@ -49,6 +49,7 @@ export default {
     '~/plugins/vuetify-money',
     '~/plugins/vue-cookie',
     '~/plugins/formatter',
+    '~/plugins/helper',
   ],
   /*
    ** Auto import components

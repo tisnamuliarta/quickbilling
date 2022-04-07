@@ -9,6 +9,7 @@ const _ed3554be = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue'
 const _6d09e893 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
 const _b2935410 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _0529d33e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
+const _6bb8a93d = () => interopDefault(import('..\\nuxt\\pages\\documents\\view.vue' /* webpackChunkName: "pages/documents/view" */))
 const _2af319fc = () => interopDefault(import('..\\nuxt\\pages\\pages\\about-us.vue' /* webpackChunkName: "pages/pages/about-us" */))
 const _388e5b36 = () => interopDefault(import('..\\nuxt\\pages\\pages\\booking.vue' /* webpackChunkName: "pages/pages/booking" */))
 const _3e4f5322 = () => interopDefault(import('..\\nuxt\\pages\\pages\\category.vue' /* webpackChunkName: "pages/pages/category" */))
@@ -76,6 +77,10 @@ export const routerOptions = {
     path: "/dashboard/users",
     component: _0529d33e,
     name: "dashboard-users"
+  }, {
+    path: "/documents/view",
+    component: _6bb8a93d,
+    name: "documents-view"
   }, {
     path: "/pages/about-us",
     component: _2af319fc,

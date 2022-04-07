@@ -77,7 +77,7 @@
 
     <DialogForm
       ref="dialogForm"
-      max-width="700px"
+      max-width="600px"
       :dialog-title="formTitle"
       button-title="Save"
     >
@@ -142,11 +142,26 @@
                 </v-flex>
 
                 <v-flex xs12 class="pa-2">
+                  <v-select
+                    v-model="form.entity_id"
+                    :items="itemEntity"
+                    hide-no-data
+                    label="Company"
+                    outlined
+                    dense
+                    item-text="name"
+                    item-value="id"
+                    hide-details="auto"
+                    clearable
+                  ></v-select>
+                </v-flex>
+
+                <v-flex xs12 class="pa-2">
                   <v-switch
                     v-model="form.enabled"
                     inset
-                    label="Enabled"></v-switch>
-                  <v-radio-group
+                    label="Enabled"
+                  ></v-switch>
                 </v-flex>
               </v-layout>
             </v-flex>
@@ -180,7 +195,6 @@ export default {
       editedIndex: -1,
       loadNewBtn: false,
       submitLoad: false,
-      singleSelect: false,
       statusProcessing: 'insert',
       show: false,
 
@@ -196,42 +210,14 @@ export default {
 
       allData: [],
       itemRole: [],
-      itemApps: [],
+      itemEntity: [],
       itemSearch: [],
       documentStatus: [],
       options: {},
-      entries: [],
-      dataUser: {},
-      dataCompany: {},
       sub_id: {},
-      searchUsername: null,
-      form: {
-        id: null,
-        enabled: false,
-        is_superuser: 'No',
-        username: null,
-        role: [],
-        apps: [],
-        division: [],
-        whs: [],
-        item_group: [],
-        work_location: [],
-        sub_role: [],
-      },
-
-      defaultForm: {
-        id: null,
-        is_superuser: 'No',
-        enabled: false,
-        username: null,
-        role: [],
-        apps: [],
-        division: [],
-        whs: [],
-        item_group: [],
-        work_location: [],
-        sub_role: [],
-      },
+      url: '',
+      form: {},
+      defaultForm: {},
 
       headers: [
         {text: 'Username', value: 'username'},
@@ -263,10 +249,6 @@ export default {
       },
       deep: true,
     },
-
-    searchUsername(val) {
-      this.getDataEmployee()
-    },
   },
 
   mounted() {
@@ -289,6 +271,7 @@ export default {
     refreshData() {
       this.getDataFromApi()
       this.getRole()
+      this.getEntity()
     },
 
     getRole() {
@@ -296,6 +279,21 @@ export default {
         .get(`/api/master/roles`)
         .then((res) => {
           this.itemRole = res.data.data.simple
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    getEntity() {
+      this.$axios
+        .get(`/api/entities`)
+        .then((res) => {
+          this.itemEntity = res.data.data.rows
         })
         .catch((err) => {
           this.$swal({
@@ -321,10 +319,11 @@ export default {
         })
         .then((res) => {
           this.loading = false
-          this.allData = res.data.rows
-          this.totalData = res.data.total
-          this.itemSearch = res.data.filter
-          this.itemWorkLocation = res.data.work_location
+          this.allData = res.data.data.rows
+          this.totalData = res.data.data.total
+          this.itemSearch = res.data.data.filter
+          this.form = Object.assign({}, res.data.data.form)
+          this.defaultForm = Object.assign({}, res.data.data.form)
         })
         .catch((err) => {
           this.loading = false
@@ -352,7 +351,6 @@ export default {
       this.editedIndex = this.allData.indexOf(item)
       this.form = Object.assign({}, dateForm)
       this.$refs.dialogForm.openDialog()
-      this.dataUser = item
       this.insert = false
     },
 
@@ -363,7 +361,6 @@ export default {
       this.editedIndex = this.allData.indexOf(item)
       this.form = Object.assign({}, dateForm)
       this.$refs.dialogForm.openDialog()
-      this.dataUser = item
       this.insert = false
     },
 
@@ -380,20 +377,16 @@ export default {
       const vm = this
       const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
       vm.submitLoad = true
       if (status === 'insert') {
-        this.store('post', '/api/master/users', data, 'insert', type)
+        this.store('post', '/api/master/users', form, 'insert', type)
       } else if (status === 'copy') {
-        this.store('post', '/api/master/users', data, 'insert', type)
+        this.store('post', '/api/master/users', form, 'insert', type)
       } else if (status === 'update') {
         this.store(
           'put',
           '/api/master/users/' + this.form.id,
-          data,
+          form,
           'update',
           type
         )
@@ -405,28 +398,16 @@ export default {
       vm.submitLoad = true
       this.$axios({method, url, data})
         .then((res) => {
-          if (res.data.status === 'Error') {
-            this.$swal({
-              type: 'error',
-              title: 'Error',
-              text: res.data.message,
-            })
-          } else {
-            this.dialog = false
-            this.message = res.data.message
-            setTimeout(() => (this.message = false), 8000)
-
-            this.$swal({
-              type: 'success',
-              title: 'Success!',
-              text: res.data.message,
-            })
-            this.$refs.dialogForm.closeDialog()
-            this.getDataFromApi()
-          }
+          this.dialog = false
+          this.$swal({
+            type: 'success',
+            title: 'Success!',
+            text: res.data.message,
+          })
+          this.$refs.dialogForm.closeDialog()
+          this.getDataFromApi()
           vm.submitLoad = false
         })
-        // eslint-disable-next-line node/handle-callback-err
         .catch((err) => {
           this.$swal({
             type: 'error',

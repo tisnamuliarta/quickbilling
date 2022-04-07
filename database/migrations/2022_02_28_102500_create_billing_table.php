@@ -26,7 +26,7 @@ return new class extends Migration {
         // Accounts
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 200);
             $table->string('number', 20);
             $table->string('currency_code', 5);
@@ -40,13 +40,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Bills
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('bill_number', 50);
             $table->string('order_number', 50)->nullable();
             $table->string('status', 50);
@@ -68,13 +68,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'bill_number', 'deleted_at']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'bill_number', 'deleted_at']);
         });
 
         Schema::create('bill_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('bill_id');
             $table->string('status', 50);
             $table->boolean('notify')->default(false);
@@ -83,12 +83,12 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('bill_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('bill_id');
             $table->unsignedBigInteger('item_id')->nullable();
             $table->string('name', 200);
@@ -103,12 +103,12 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('bill_item_taxes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('bill_id');
             $table->unsignedBigInteger('bill_item_id');
             $table->unsignedBigInteger('tax_id');
@@ -118,24 +118,24 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('bill_statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
             $table->string('code', 50);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('bill_totals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('bill_id');
             $table->string('code', 50)->nullable();
             $table->string('name', 150);
@@ -145,14 +145,15 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Categories
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
+            $table->string('code', 20)->unique();
             $table->string('type', 50);
             $table->string('color', 50);
             $table->boolean('enabled')->default(1);
@@ -160,13 +161,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Currencies
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
             $table->string('code', 5);
             $table->decimal('rate', 15, 8);
@@ -180,8 +181,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'code', 'deleted_at']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'code', 'deleted_at']);
         });
 
         Schema::create('currency_rates', function (Blueprint $table) {
@@ -198,7 +199,7 @@ return new class extends Migration {
         // Invoices
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('invoice_number', 50);
             $table->string('order_number', 50)->nullable();
             $table->string('status', 20);
@@ -221,13 +222,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'invoice_number', 'deleted_at']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'invoice_number', 'deleted_at']);
         });
 
         Schema::create('invoice_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('invoice_id');
             $table->string('status_code', 20);
             $table->boolean('notify')->default(false);
@@ -236,12 +237,12 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('item_id')->nullable();
             $table->string('name', 200);
@@ -256,12 +257,12 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('invoice_item_taxes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('invoice_item_id');
             $table->unsignedBigInteger('tax_id');
@@ -271,24 +272,24 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('invoice_statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 200);
             $table->string('code', 50);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         Schema::create('invoice_totals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('invoice_id');
             $table->string('code', 50)->nullable();
             $table->string('name', 150);
@@ -298,7 +299,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Items
@@ -311,17 +312,20 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
+
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('item_group_id');
             $table->string('code', 50)->unique();
             $table->string('name', 200);
+            $table->string('unit', 100);
             $table->string('image', 200)->nullable();
             $table->text('description')->nullable();
             $table->decimal('sale_price', 15, 4)->nullable();
             $table->decimal('purchase_price', 15, 4)->nullable();
             $table->float('quantity', 12, 4)->default(0);
+            $table->decimal('minimum_stock', 14, 4)->default(0);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('buy_tax_id')->nullable();
             $table->unsignedBigInteger('sell_tax_id')->nullable();
@@ -331,29 +335,43 @@ return new class extends Migration {
             $table->unsignedBigInteger('inventory_account')->nullable();
             $table->boolean('enabled')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('temp_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
+        });
+
+        Schema::create('item_units', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('item_categories', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('item_id');
+            $table->timestamps();
         });
 
         // Modules
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('alias', 150);
             $table->boolean('enabled')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'alias', 'deleted_at']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'alias', 'deleted_at']);
         });
 
         Schema::create('module_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('module_id');
             $table->string('category', 200);
             $table->string('version', 10);
@@ -362,7 +380,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id', 'module_id']);
+            $table->index(['entity_id', 'module_id']);
         });
 
         // Notifications
@@ -378,7 +396,7 @@ return new class extends Migration {
         // Reconciliations
         Schema::create('reconciliations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('account_id');
             $table->dateTime('started_at');
             $table->dateTime('ended_at');
@@ -388,13 +406,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Recurring
         Schema::create('recurring', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->morphs('recurable');
             $table->string('frequency', 100);
             $table->unsignedBigInteger('interval')->default(1);
@@ -404,70 +422,71 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Settings
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('key', 200);
             $table->string('types', 150);
             $table->text('value')->nullable();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'key']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'key']);
         });
 
         // Taxes
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
             $table->decimal('rate', 15, 4);
             $table->string('type')->default('normal');
             $table->boolean('enabled')->default(1);
+            $table->boolean('withholding')->default(false);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('sell_account')->nullable();
             $table->unsignedBigInteger('buy_account')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Transfers
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('expense_transaction_id');
             $table->unsignedBigInteger('income_transaction_id');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
 
         Schema::create('user_companies', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->unsigned();
-            $table->unsignedBigInteger('company_id')->unsigned();
+            $table->unsignedBigInteger('entity_id')->unsigned();
             $table->string('user_type');
 
-            $table->primary(['user_id', 'company_id', 'user_type']);
+            $table->primary(['user_id', 'entity_id', 'user_type']);
         });
 
         // Dashboards
         Schema::create('dashboards', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('name', 200);
             $table->boolean('enabled')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id']);
+            $table->index(['entity_id']);
         });
 
         Schema::create('user_dashboards', function (Blueprint $table) {
@@ -480,7 +499,7 @@ return new class extends Migration {
 
         Schema::create('widgets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('dashboard_id');
             $table->string('class', 200);
             $table->string('name', 150);
@@ -490,13 +509,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id', 'dashboard_id']);
+            $table->index(['entity_id', 'dashboard_id']);
         });
 
         // Email templates
         Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('alias', 200);
             $table->string('class', 150);
             $table->string('name', 150);
@@ -507,8 +526,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
-            $table->unique(['company_id', 'alias', 'deleted_at']);
+            $table->index('entity_id');
+            $table->unique(['entity_id', 'alias', 'deleted_at']);
         });
 
         // Firewall
@@ -544,7 +563,7 @@ return new class extends Migration {
         // Reports
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('class', 200);
             $table->string('name', 150);
             $table->text('description');
@@ -553,13 +572,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('company_id');
+            $table->index('entity_id');
         });
 
         // Transactions
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('entity_id');
             $table->string('type', 150);
             $table->dateTime('paid_at');
             $table->decimal('amount', 15, 4);
@@ -578,7 +597,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['company_id', 'type']);
+            $table->index(['entity_id', 'type']);
             $table->index('account_id');
             $table->index('category_id');
             $table->index('contact_id');
@@ -596,6 +615,7 @@ return new class extends Migration {
         Schema::create('payment_terms', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
+            $table->smallInteger('value')->default(0);
             $table->boolean('enabled')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -609,23 +629,11 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 150);
-            $table->boolean('enabled')->default(1);
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('taggables', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->morphs('taggable');
-        });
-
         Schema::create('account_mappings', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
+            $table->string('type')->nullable();
+            $table->string('label')->nullable();
             $table->unsignedBigInteger('account_id');
             $table->timestamps();
         });
@@ -654,6 +662,8 @@ return new class extends Migration {
         Schema::drop('invoice_item_taxes');
         Schema::drop('invoice_totals');
         Schema::drop('items');
+        Schema::dropIfExists('item_categories');
+        Schema::dropIfExists('item_units');
         Schema::drop('modules');
         Schema::drop('module_histories');
         Schema::drop('notifications');

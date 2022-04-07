@@ -26,6 +26,7 @@ import nuxt_plugin_dragable_7e1b63f8 from 'nuxt_plugin_dragable_7e1b63f8' // Sou
 import nuxt_plugin_vuetifymoney_56b8af0b from 'nuxt_plugin_vuetifymoney_56b8af0b' // Source: ..\\nuxt\\plugins\\vuetify-money (mode: 'all')
 import nuxt_plugin_vuecookie_41e86efe from 'nuxt_plugin_vuecookie_41e86efe' // Source: ..\\nuxt\\plugins\\vue-cookie (mode: 'all')
 import nuxt_plugin_formatter_4867cbd8 from 'nuxt_plugin_formatter_4867cbd8' // Source: ..\\nuxt\\plugins\\formatter (mode: 'all')
+import nuxt_plugin_helper_619f8ab8 from 'nuxt_plugin_helper_619f8ab8' // Source: ..\\nuxt\\plugins\\helper (mode: 'all')
 import nuxt_plugin_auth_67d79bdd from 'nuxt_plugin_auth_67d79bdd' // Source: .\\auth.js (mode: 'all')
 
 // Component: <ClientOnly>
@@ -270,6 +271,10 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_formatter_4867cbd8 === 'function') {
     await nuxt_plugin_formatter_4867cbd8(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_helper_619f8ab8 === 'function') {
+    await nuxt_plugin_helper_619f8ab8(app.context, inject)
   }
 
   if (typeof nuxt_plugin_auth_67d79bdd === 'function') {

@@ -128,9 +128,8 @@ export default {
       this.$router.push({
         path: '/dashboard/documents/form',
         query: {
-          id: 0,
-          status: 'save',
-          type: this.typeDocument
+          document: this.form.id,
+          type: this.form.type
         }
       })
     },
@@ -151,52 +150,14 @@ export default {
       this.$router.push({
         path: '/dashboard/documents/form',
         query: {
-          id: item.id,
-          status: 'update',
+          document: item.id,
           type: this.typeDocument
         }
       })
     },
 
     mappingDocument() {
-      switch (this.typeDocument) {
-        case 'PQ':
-          this.toolbarTitle = 'Purchase Quotation'
-          break;
-        case 'PO':
-          this.toolbarTitle = 'Purchase Order'
-          break;
-        case 'PD':
-          this.toolbarTitle = 'Goods Receipt'
-          break;
-        case 'PI':
-          this.toolbarTitle = 'A/P Invoice'
-          break;
-        case 'PP':
-          this.toolbarTitle = 'Outgoing Payment'
-          break;
-        case 'PN':
-          this.toolbarTitle = 'Goods Return'
-          break;
-        case 'SQ':
-          this.toolbarTitle = 'Sales Quotation'
-          break;
-        case 'SO':
-          this.toolbarTitle = 'Sales Order'
-          break;
-        case 'SD':
-          this.toolbarTitle = 'Sales Delivery'
-          break;
-        case 'SI':
-          this.toolbarTitle = 'A/R Invoice'
-          break;
-        case 'SP':
-          this.toolbarTitle = 'Incoming Payment'
-          break;
-        case 'SR':
-          this.toolbarTitle = 'Sales Return'
-          break;
-      }
+      this.toolbarTitle = this.$helper.mapping(this.typeDocument)
     },
 
     emitData(data) {

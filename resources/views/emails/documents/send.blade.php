@@ -1,10 +1,10 @@
 @component('mail::message')
-# Introduction
+Dear, {{ $documents->contact_name }},
 
-The body of your message.
+{{ $messages }}
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::button', ['url' => $url])
+View Invoice
 @endcomponent
 
 Thanks,<br>

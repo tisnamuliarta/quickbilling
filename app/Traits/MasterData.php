@@ -11,12 +11,11 @@ trait MasterData
     use RolePermission;
 
     /**
-     * @param $request
+     * @param $roles
      * @param $user
      */
-    protected function storeUserRole($request, $user)
+    protected function storeUserRole($roles, $user)
     {
-        $roles = $request->form['role'];
         $user_roles = User::where('id', '=', $user->id)->first();
         foreach ($user_roles->roles as $value) {
             foreach ($roles as $role) {

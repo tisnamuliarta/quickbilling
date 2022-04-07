@@ -3,18 +3,26 @@
 namespace App\Models;
 
 use App\Models\Settings\Company;
+use IFRS\Interfaces\Recyclable;
+use IFRS\Traits\IFRSUser;
+use IFRS\Traits\Recycling;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Recyclable
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
     use HasRoles;
+    use SoftDeletes;
+
+    use IFRSUser;
+    use Recycling;
 
     /**
      * The attributes that are mass assignable.

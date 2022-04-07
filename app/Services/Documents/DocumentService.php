@@ -12,6 +12,7 @@ use App\Traits\Financial;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Vinkla\Hashids\Facades\Hashids;
 
 class DocumentService
 {
@@ -46,7 +47,6 @@ class DocumentService
             ->limit($row_data)
             ->get();
 
-        $result['form'] = $this->getForm($type);
         return array_merge($result, [
             "rows" => $all_data,
         ]);
@@ -69,11 +69,13 @@ class DocumentService
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
+        $form['status'] = 'open';
         $form['tax_details'] = [];
         $form['items'] = [];
         $form['shipping_fee'] = 0;
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
+        $form['id'] = 0;
         $form['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 
@@ -103,6 +105,7 @@ class DocumentService
         $request->request->remove('created_at');
         $request->request->remove('updated_at');
         $request->request->remove('deleted_at');
+        $request->request->remove('currency');
 
         $request->merge([
             'currency_code' => $request->default_currency_code,

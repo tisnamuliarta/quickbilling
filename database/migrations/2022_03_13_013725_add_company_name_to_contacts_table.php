@@ -26,6 +26,7 @@ class AddCompanyNameToContactsTable extends Migration
             $table->unsignedBigInteger('payment_term_id')->nullable()->after('payable_account_id');
             $table->decimal('max_payable', 14, 4)->default(0)->after('payment_term_id');
             $table->boolean('active_max_payable')->default(false)->after('max_payable');
+            $table->boolean('can_login')->default(false)->after('active_max_payable');
         });
 
         Schema::create('contact_emails', function (Blueprint $table) {

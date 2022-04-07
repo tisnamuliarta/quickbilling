@@ -74,7 +74,7 @@
 
             <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-textarea
-                rows="5"
+                rows="7"
                 v-model="form.messages"
                 label="Message"
                 outlined
@@ -95,9 +95,10 @@
     </template>
     <template #saveData>
       <v-btn
-        color="green darken-1"
+        color="primary"
         dark
         small
+        :loading="loading"
         @click="sendEmail"
       >
         Send
@@ -124,6 +125,7 @@ export default {
       itemCC: [],
       search: null,
       search2: null,
+      loading: false,
     }
   },
 
@@ -134,7 +136,29 @@ export default {
     },
 
     sendEmail() {
-
+      this.loading = true
+      this.$axios.post(`/api/documents/email`, {
+        form: this.form,
+        defaultItem: this.defaultItem
+      })
+        .then(res => {
+          this.$refs.dialogForm.closeDialog()
+          this.$swal({
+            type: 'success',
+            title: 'Success',
+            text: res.data.data.message,
+          })
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+        .finally(res => {
+          this.loading = false
+        })
     }
   }
 }

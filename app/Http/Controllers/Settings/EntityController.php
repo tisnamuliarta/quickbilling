@@ -1,32 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\Master\UserService;
-use App\Traits\MasterData;
-use App\Traits\RolePermission;
+use App\Models\Settings\Setting;
+use App\Services\Settings\EntityService;
+use IFRS\Models\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class MasterUserController extends Controller
+class EntityController extends Controller
 {
-    use MasterData, RolePermission;
-
-    protected $service;
+    public $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(UserService $service)
+    public function __construct(EntityService $service)
     {
         $this->service = $service;
-        $this->middleware(['direct_permission:Users-index'])->only(['index', 'show']);
-        $this->middleware(['direct_permission:Users-store'])->only('store');
-        $this->middleware(['direct_permission:Users-edits'])->only('update');
-        $this->middleware(['direct_permission:Users-erase'])->only('destroy');
+//        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+//        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+//        $this->middleware(['direct_permission:Roles-edits'])->only('update');
+//        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
     }
 
     /**
@@ -38,7 +35,7 @@ class MasterUserController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('users');
+        $result['form'] = $this->form('ifrs_entities');
         $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
@@ -57,22 +54,22 @@ class MasterUserController extends Controller
                 "errors" => true
             ]);
         }
-
         DB::beginTransaction();
+        $form = $request->form;
         try {
-            $role = $request->role;
-            $user = User::create($this->service->formData($request, 'store'));
+            Entity::create($this->service->formData($form, $request, 'store'));
 
-            $this->storeUserDetails($role, $user);
+            Setting::where('key', 'company_name')
+                ->update([
+                    'value' => $request->name
+                ]);
 
             DB::commit();
-
             return $this->success([
                 "errors" => false
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
-
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,
                 "Trace" => $exception->getTrace()
@@ -86,19 +83,9 @@ class MasterUserController extends Controller
      */
     protected function validation($request)
     {
-        $messages = [
-            'entity_id.required' => 'Company field is required'
-        ];
-        $user_id = $request->id;
         $validator = Validator::make($request->all(), [
-            'entity_id' => 'required',
-            'username' => 'required|unique:users,username,' . $user_id,
-            'email' => 'required|unique:users,email,' . $user_id,
             'name' => 'required',
-            'role' => 'required',
-            'enabled' => 'required',
-        ], $messages);
-
+        ]);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -121,17 +108,11 @@ class MasterUserController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $user = User::find($id);
-        return $this->success($user);
-    }
+        $data = Entity::find($id);
 
-    /**
-     * @param $roles
-     * @param $user
-     */
-    protected function storeUserDetails($roles, $user)
-    {
-        $this->storeUserRole($roles, $user);
+        return $this->success([
+            'rows' => $data
+        ]);
     }
 
     /**
@@ -141,7 +122,7 @@ class MasterUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function update(Request $request, $id)
     {
         if ($this->validation($request)) {
             return $this->error($this->validation($request), 422, [
@@ -150,17 +131,14 @@ class MasterUserController extends Controller
         }
 
         $form = $request->form;
-
         try {
-            $role = $request->role;
-            $user = User::find($id);
-            $forms = collect($this->service->formData($request, 'update'));
-            foreach ($forms as $index => $form) {
-                $user->$index = $form;
-            }
-            $user->save();
+            Entity::where("id", "=", $id)
+                ->update($this->service->formData($form, $request, 'update'));
 
-            $this->storeUserDetails($role, $user);
+            Setting::where('key', 'company_name')
+                ->update([
+                    'value' => $request->name
+                ]);
 
             return $this->success([
                 "errors" => false
@@ -179,11 +157,11 @@ class MasterUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
-        $details = User::where("id", "=", $id)->first();
+        $details = Entity::find($id);
         if ($details) {
-            User::where("id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

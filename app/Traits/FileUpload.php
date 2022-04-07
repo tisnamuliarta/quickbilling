@@ -2,12 +2,32 @@
 
 namespace App\Traits;
 
+use App\Models\File\File;
 use App\Models\Settings\Setting;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 trait FileUpload
 {
+    /**
+     * @param $temp_id
+     * @return array
+     */
+    public function getFilesArray($temp_id)
+    {
+        $files = File::where('fileable_id', $temp_id)
+            ->where('fileable_type', 'document')
+            ->get();
+
+        $result = [];
+
+        foreach ($files as $file) {
+            $result[] = public_path('files/files/' . $file->filename);
+        }
+
+        return $result;
+    }
+
     /**
      * @param $dataFile
      * @return string

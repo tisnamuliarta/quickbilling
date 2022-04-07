@@ -1,7 +1,7 @@
 <template>
   <v-form class="pt-0">
     <v-container fluid>
-      <v-row  no-gutters>
+      <v-row no-gutters>
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -125,14 +125,7 @@
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-textarea
-                rows="2"
-                v-model="form.contact_address"
-                label="Billing Address"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-textarea>
+
             </v-col>
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -188,15 +181,16 @@
             </v-col>
 
             <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-textarea
-                v-show="form.shipping_info"
-                v-model="form.shipping_address"
-                rows="2"
-                label="Shipping Address"
+              <v-select
+                v-model="form.warehouse_id"
+                :items="itemWarehouse"
+                item-text="name"
+                item-value="id"
+                label="Warehouse"
                 outlined
                 dense
                 hide-details="auto"
-              ></v-textarea>
+              ></v-select>
             </v-col>
           </v-row>
         </v-col>
@@ -204,13 +198,7 @@
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1">
-              <v-checkbox
-                v-model="form.shipping_info"
-                dense
-                hide-details
-                label="Shipping Info"
-                class="mt-0"
-              ></v-checkbox>
+
             </v-col>
 
             <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -239,16 +227,23 @@
             </v-col>
 
             <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-select
-                v-model="form.warehouse_id"
-                :items="itemWarehouse"
-                item-text="name"
-                item-value="id"
-                label="Warehouse"
-                outlined
+              <v-checkbox
+                v-model="form.shipping_info"
                 dense
-                hide-details="auto"
-              ></v-select>
+                hide-details
+                label="Shipping Info"
+                class="mt-0"
+              ></v-checkbox>
+            </v-col>
+
+            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1">
+              <v-checkbox
+                v-model="form.price_include_tax"
+                dense
+                hide-details
+                label="Price Include Tax"
+                class="mt-0"
+              ></v-checkbox>
             </v-col>
           </v-row>
         </v-col>
@@ -310,6 +305,28 @@
         </v-col>
 
         <v-col cols="12" md="2" lg="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-textarea
+              rows="2"
+              v-model="form.contact_address"
+              label="Billing Address"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-textarea>
+          </v-col>
+          <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-textarea
+              v-show="form.shipping_info"
+              v-model="form.shipping_address"
+              rows="2"
+              label="Shipping Address"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-textarea>
+          </v-col>
+
           <v-col v-if="itemFiles.length > 0" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
             <v-list dense>
               <v-subheader>Files</v-subheader>
@@ -760,7 +777,6 @@ export default {
         this.form.discount_rate = 0
         this.form.discount_amount = 0
       }
-      console.log(this.form.discount_amount)
 
       this.changeCalculation()
     },

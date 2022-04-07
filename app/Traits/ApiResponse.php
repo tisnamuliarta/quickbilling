@@ -65,8 +65,8 @@ trait ApiResponse
             ->first();
 
         $arr_form['company_id'] = session('company_id');
-        $arr_form['default_currency_code'] = $currency->code;
-        $arr_form['default_currency_symbol'] = $currency->symbol;
+        $arr_form['default_currency_code'] = (isset($currency)) ? $currency->code : null;
+        $arr_form['default_currency_symbol'] = (isset($currency)) ? $currency->symbol : null;
 
         return $arr_form;
     }

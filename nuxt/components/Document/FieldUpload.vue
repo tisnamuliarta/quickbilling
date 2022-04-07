@@ -54,7 +54,7 @@ export default {
 
   methods: {
     sendingParams(file, xhr, formData) {
-      const temp_id = (this.form.id) ? this.form.id : this.form.temp_id;
+      const temp_id = (this.form.id !== 0) ? this.form.id : this.form.temp_id;
       formData.append('temp_id', temp_id)
       formData.append('type', this.formType)
     },

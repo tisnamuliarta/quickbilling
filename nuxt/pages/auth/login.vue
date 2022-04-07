@@ -153,7 +153,7 @@ export default {
 
 <style scoped>
 .logo {
-  max-width: 100px;
+  width: 100px;
   margin: 0 auto;
   text-align: center;
 }
