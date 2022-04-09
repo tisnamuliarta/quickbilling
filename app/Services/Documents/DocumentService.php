@@ -47,6 +47,7 @@ class DocumentService
             ->limit($row_data)
             ->get();
 
+        $result['form'] = $this->getForm($type);
         return array_merge($result, [
             "rows" => $all_data,
         ]);
@@ -69,7 +70,7 @@ class DocumentService
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
-        $form['status'] = 'open';
+        $form['status'] = 'draft';
         $form['tax_details'] = [];
         $form['items'] = [];
         $form['shipping_fee'] = 0;
@@ -91,7 +92,7 @@ class DocumentService
     public function formData($request, $type, $id = null): array
     {
         $request->mergeIfMissing([
-            'company_id' => session('company_id'),
+            'entity_id' => auth()->user()->entity_id,
         ]);
 
         $currency = Currency::where('code', $request->default_currency_code)->first();

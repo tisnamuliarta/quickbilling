@@ -75,7 +75,7 @@ class ItemService
     public function formData($request, $type, $id = null): array
     {
         $request->mergeIfMissing([
-            'company_id' => session('company_id'),
+            'entity_id' => auth()->user()->entity_id,
         ]);
 
         $request->request->remove('category');

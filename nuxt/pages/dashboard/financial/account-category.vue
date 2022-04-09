@@ -28,12 +28,12 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Chart of Accounts"
+              title="Account Category"
               @emitData="emitData"
               @newData="newData"
             />
           </template>
-          <template #[`item.ACTIONS`]="{ item }">
+          <template #[`item.id`]="{ item }">
             <v-icon small class="mr-2" color="orange" @click="editItem(item)">
               mdi-pencil-circle
             </v-icon>
@@ -42,20 +42,20 @@
       </div>
     </v-flex>
 
-    <LazyFinancialFormAccount
+    <LazyFinancialFormAccountCategory
       ref="forms"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       :url="url"
       @getDataFromApi="getDataFromApi"
-    ></LazyFinancialFormAccount>
+    ></LazyFinancialFormAccountCategory>
   </v-layout>
 </template>
 
 <script>
 export default {
-  name: 'Account',
+  name: 'AccountCategory',
   layout: 'dashboard',
   data() {
     return {
@@ -71,26 +71,24 @@ export default {
       form: {},
       defaultItem: {},
       options: {},
-      url: '/api/financial/accounts',
+      url: '/api/financial/account-category',
       headers: [
-        { text: 'Account Code', value: 'number' },
-        { text: 'Account Name', value: 'name' },
-        { text: 'Category', value: 'category' },
-        { text: 'Default Tax', value: 'tax' },
-        { text: 'Balance', value: 'opening_balance' },
+        { text: 'Category Name', value: 'name' },
+        { text: 'Category Type', value: 'category_type' },
+        { text: 'Actions', value: 'id' },
       ],
     }
   },
 
   head() {
     return {
-      title: 'Chart Of Accounts',
+      title: 'Account Category',
     }
   },
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Account' : 'Edit Account'
+      return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
     },
     buttonTitle() {
       return this.editedIndex === -1 ? 'Save' : 'Update'
@@ -109,7 +107,7 @@ export default {
   methods: {
     newData() {
       this.editedIndex = -1
-      this.$refs.forms.newData()
+      this.$refs.forms.newData(this.form)
     },
 
     editItem(item) {

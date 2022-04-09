@@ -24,6 +24,7 @@ const _4e8422ce = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\bp\\c
 const _3f9018b8 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\form.vue' /* webpackChunkName: "pages/dashboard/documents/form" */))
 const _73893f92 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\list.vue' /* webpackChunkName: "pages/dashboard/documents/list" */))
 const _6a90b190 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
+const _4511b6ba = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account-category.vue' /* webpackChunkName: "pages/dashboard/financial/account-category" */))
 const _7f19912b = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
 const _06a24466 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
 const _67758a88 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
@@ -137,6 +138,10 @@ export const routerOptions = {
     path: "/dashboard/financial/account",
     component: _6a90b190,
     name: "dashboard-financial-account"
+  }, {
+    path: "/dashboard/financial/account-category",
+    component: _4511b6ba,
+    name: "dashboard-financial-account-category"
   }, {
     path: "/dashboard/inventory/item",
     component: _7f19912b,

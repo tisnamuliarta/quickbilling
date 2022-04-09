@@ -65,7 +65,7 @@
 
             <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
-                v-model="form.code"
+                v-model="form.currency_code"
                 label="Code"
                 outlined
                 dense
@@ -73,27 +73,27 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-text-field
-                v-model="form.symbol"
-                label="Symbol"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-text-field>
-            </v-col>
+<!--            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
+<!--              <v-text-field-->
+<!--                v-model="form.symbol"-->
+<!--                label="Symbol"-->
+<!--                outlined-->
+<!--                dense-->
+<!--                hide-details="auto"-->
+<!--              ></v-text-field>-->
+<!--            </v-col>-->
 
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <vuetify-money
-                v-model="form.rate"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptions"
-                label="Rate"
-                outlined
-                dense
-                hide-details="auto"
-              ></vuetify-money>
-            </v-col>
+<!--            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
+<!--              <vuetify-money-->
+<!--                v-model="form.rate"-->
+<!--                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"-->
+<!--                v-bind:options="moneyOptions"-->
+<!--                label="Rate"-->
+<!--                outlined-->
+<!--                dense-->
+<!--                hide-details="auto"-->
+<!--              ></vuetify-money>-->
+<!--            </v-col>-->
           </v-row>
         </v-container>
       </template>
@@ -141,9 +141,7 @@ export default {
       options: {},
       headers: [
         { text: 'Name', value: 'name' },
-        { text: 'Code', value: 'code' },
-        { text: 'Symbol', value: 'symbol' },
-        { text: 'Rate', value: 'rate' },
+        { text: 'Code', value: 'currency_code' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }

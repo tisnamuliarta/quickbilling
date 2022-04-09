@@ -1,22 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Financial;
+namespace App\Http\Controllers\BusinessPartner;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Account;
-use App\Services\Financial\AccountService;
+use App\Models\Inventory\Contact;
+use App\Models\Inventory\ContactBank;
+use App\Models\Inventory\ContactEmail;
+use App\Services\Inventory\ContactService;
+use App\Traits\ContactDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class AccountController extends Controller
+class ContactController extends Controller
 {
+    use ContactDetail;
+
     public $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(AccountService $service)
+    public function __construct(ContactService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -34,18 +39,23 @@ class AccountController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $type = isset($request->type) ? (string)$request->type : 'index';
-
-        if ($type == 'index') {
-            $form = $this->form('ifrs_accounts');
-            $result = array_merge($this->service->index($request), [
-                'form' => $form
-            ]);
-        } else {
-            if ($type == 'All') {
-                $type = '';
-            }
-            $result = $this->service->dataByType($type);
-        }
+        $result = [];
+        $extra_list['emails'] = [
+            [
+                'email' => null
+            ]
+        ];
+        $extra_list['password'] = null;
+        $extra_list['banks'] = [
+            [
+                'name' => null,
+                'branch' => null,
+                'contact_account_name' => null,
+                'contact_account_number' => null,
+            ]
+        ];
+        $result['form'] = array_merge($this->form('contacts'), $extra_list);
+        $result = array_merge($result, $this->service->index($request, $type));
 
         return $this->success($result);
     }
@@ -66,7 +76,9 @@ class AccountController extends Controller
         DB::beginTransaction();
         $form = $request->form;
         try {
-            Account::create($this->service->formData($form));
+            $contact = Contact::create($this->service->formData($form));
+
+            $this->processDetails($form, $contact);
 
             DB::commit();
             return $this->success([
@@ -89,12 +101,10 @@ class AccountController extends Controller
     {
         $messages = [
             'form.name' => 'Name is required!',
-            'form.number' => 'Account Number is required!',
         ];
 
         $validator = Validator::make($request->all(), [
             'form.name' => 'required',
-            'form.number' => 'required',
         ], $messages);
 
         $string_data = "";
@@ -118,11 +128,31 @@ class AccountController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Account::where("id", "=", $id)->get();
+        $data = Contact::where("id", "=", $id)->get();
 
         return $this->success([
             'rows' => $data
         ]);
+    }
+
+    /**
+     * @param $form
+     * @param $contact
+     * @return void
+     */
+    protected function processDetails($form, $contact)
+    {
+        if ($form['banks']) {
+            $this->storeContactBank($form['banks'], $contact['id']);
+        }
+
+        if ($form['emails']) {
+            $this->storeContactEmail($form['emails'], $contact['id']);
+        }
+
+        if ($form['can_login']) {
+            $this->createUser($form);
+        }
     }
 
     /**
@@ -142,7 +172,16 @@ class AccountController extends Controller
 
         $form = $request->form;
         try {
-            Account::where("id", "=", $id)->update($this->service->formData($form));
+            $formData = $this->service->formData($form);
+            $contact = Contact::find($id);
+            foreach ($formData as $index => $formDatum) {
+                $contact->$index = $formDatum;
+            }
+            $contact->save();
+
+            $this->processDetails($form, $contact);
+
+            DB::commit();
 
             return $this->success([
                 "errors" => false
@@ -163,9 +202,9 @@ class AccountController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Account::where("id", "=", $id)->first();
+        $details = Contact::where("id", "=", $id)->first();
         if ($details) {
-            Account::where("id", "=", $id)->delete();
+            Contact::where("id", "=", $id)->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');
@@ -174,5 +213,15 @@ class AccountController extends Controller
         return $this->error('Row not found', 422, [
             "errors" => true
         ]);
+    }
+
+    public function deleteBank($id)
+    {
+        ContactBank::where('id', $id)->delete();
+    }
+
+    public function deleteEmail($id)
+    {
+        ContactEmail::where('email', $id)->delete();
     }
 }

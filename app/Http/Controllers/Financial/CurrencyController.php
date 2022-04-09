@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Currency;
 use App\Services\Financial\CurrencyService;
+use IFRS\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -81,8 +81,7 @@ class CurrencyController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'code' => 'required',
-            'symbol' => 'required',
+            'currency_code' => 'required',
         ]);
 
         $string_data = "";

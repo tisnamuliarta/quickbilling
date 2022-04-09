@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessPartner\ContactController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\File\FileController;
-use App\Http\Controllers\Inventory\ContactController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemUnitController;
 use App\Http\Controllers\Settings\SettingController;

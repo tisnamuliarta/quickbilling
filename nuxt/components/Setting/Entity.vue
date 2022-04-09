@@ -1,109 +1,77 @@
 <template>
   <v-layout>
-    <v-flex sm12>
-      <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
-        <v-data-table
-          v-show="!loading"
-          :mobile-breakpoint="0"
-          :headers="headers"
-          :items="allData"
-          :items-per-page="20"
-          :options.sync="options"
-          :server-items-length="totalData"
-          :loading="loading"
-          class="elevation-1"
-          dense
-          :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
-        >
-          <template v-slot:top>
-            <v-toolbar flat color="white" dense>
-              <v-toolbar-title class="hidden-xs-only">Company</v-toolbar-title>
-              <v-divider class="mx-2" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-btn icon color="green" dark @click="newData()">
-                <v-icon>mdi-plus-circle</v-icon>
-              </v-btn>
-
-              <v-btn :loading="loading" icon @click="getDataFromApi">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </v-toolbar>
-          </template>
-          <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
-          </template>
-        </v-data-table>
-      </div>
-    </v-flex>
-
-    <DialogForm
-      ref="dialogForm"
-      max-width="400px"
-      :dialog-title="formTitle"
-      button-title="Save"
+    <v-skeleton-loader
+      v-show="loading"
+      type="card-heading, article, actions"
+      max-width="100%"
+      class="mx-auto"
     >
-      <template #content>
-        <v-container>
-          <v-row no-gutters>
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-text-field
-                v-model="form.name"
-                label="Name"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-text-field
-                v-model="form.currency_id"
-                label="Currency"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-checkbox
-                v-model="form.multi_currency"
-                dense
-                hide-details
-                label="Multi Currency"
-                class="mt-0"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-checkbox
-                v-model="form.mid_year_balances"
-                dense
-                hide-details
-                label="Mid Year Balances"
-                class="mt-0"
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-text-field
-                v-model="form.year_start"
-                dense
-                hide-details
-                outlined
-                label="Year Start"
-                class="mt-0"
-                type="number"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
-      <template #saveData>
+    </v-skeleton-loader>
+    <v-card v-show="!loading">
+      <v-card-title>
+        Company
+        <v-spacer/>
+        <v-btn :loading="loading" icon @click="refreshData">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-container>
+        <v-row no-gutters>
+          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-text-field
+              v-model="form.name"
+              label="Name"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-select
+              v-model="form.currency_id"
+              :items="itemCurrency"
+              item-value="id"
+              item-text="name"
+              clearable
+              label="Currency"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-checkbox
+              v-model="form.multi_currency"
+              dense
+              hide-details
+              label="Multi Currency"
+              class="mt-0"
+            ></v-checkbox>
+          </v-col>
+          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-checkbox
+              v-model="form.mid_year_balances"
+              dense
+              hide-details
+              label="Mid Year Balances"
+              class="mt-0"
+            ></v-checkbox>
+          </v-col>
+          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-text-field
+              v-model="form.year_start"
+              dense
+              hide-details
+              outlined
+              label="Year Start"
+              class="mt-0"
+              type="number"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-card-actions>
+        <v-spacer/>
         <v-btn
           color="green darken-1"
           dark
@@ -113,8 +81,8 @@
         >
           Save
         </v-btn>
-      </template>
-    </DialogForm>
+      </v-card-actions>
+    </v-card>
   </v-layout>
 </template>
 
@@ -132,30 +100,17 @@ export default {
       insert: true,
       url: '/api/entities',
 
-      valueWhenIsEmpty: '0',
-      moneyOptions: {
-        suffix: "",
-        length: 11,
-        precision: 0
-      },
-
-      itemAccounts: [],
+      itemCurrency: [],
       allData: [],
       form: {},
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Name', value: 'name' },
-        { text: 'Currency', value: 'currency' },
-        { text: 'Year Start', value: 'year_start' },
-        { text: 'Action', value: 'ACTIONS', align: 'center' },
+        {text: 'Name', value: 'name'},
+        {text: 'Currency', value: 'currency'},
+        {text: 'Year Start', value: 'year_start'},
+        {text: 'Action', value: 'ACTIONS', align: 'center'},
       ],
-    }
-  },
-
-  head() {
-    return {
-      title: 'Entity',
     }
   },
 
@@ -165,16 +120,30 @@ export default {
     },
   },
 
-  watch: {
-    options: {
-      handler() {
-        this.getDataFromApi()
-      },
-      deep: true,
-    },
+  mounted() {
+    this.refreshData()
   },
 
   methods: {
+    refreshData() {
+      this.getDataFromApi()
+      this.getCurrency()
+    },
+
+    getCurrency() {
+      this.$axios.get(`/api/financial/currency`)
+        .then(res => {
+          this.itemCurrency = res.data.data.rows
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
     getDataFromApi() {
       this.loading = true
       const vm = this
@@ -188,7 +157,8 @@ export default {
           this.loading = false
           this.allData = res.data.data.rows
           this.totalData = res.data.data.total
-          this.form = Object.assign({}, res.data.data.form)
+          this.statusProcessing = res.data.data.status
+          this.form = Object.assign({}, res.data.data.rows)
           this.defaultForm = Object.assign({}, res.data.data.form)
         })
         .catch((err) => {
@@ -201,28 +171,10 @@ export default {
         })
     },
 
-    newData() {
-      this.$refs.dialogForm.openDialog()
-      this.statusProcessing = 'insert'
-      this.form = Object.assign({}, this.defaultItem)
-    },
-
-    editItem(item) {
-      this.editedIndex = this.allData.indexOf(item)
-      this.form = Object.assign({}, item)
-      this.statusProcessing = 'update'
-      this.$refs.dialogForm.openDialog()
-      this.insert = false
-    },
-
     save(type = 'all', row = null) {
       const vm = this
       const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
 
       if (status === 'insert') {
         this.store('post', this.url, form, 'insert', type)
@@ -242,10 +194,14 @@ export default {
     store(method, url, data, type, column = 'all') {
       const vm = this
       vm.submitLoad = true
-      this.$axios({ method, url, data })
+      this.$axios({method, url, data})
         .then((res) => {
           vm.submitLoad = false
-          this.$refs.dialogForm.closeDialog()
+          this.$swal({
+            type: 'success',
+            title: 'Success',
+            text: res.data.message,
+          })
           this.getDataFromApi()
         })
         .catch((err) => {

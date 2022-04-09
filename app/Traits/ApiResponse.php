@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\Settings\Setting;
+use App\Models\Financial\Currency;
 use Illuminate\Support\Facades\DB;
 
 trait ApiResponse
@@ -59,15 +59,30 @@ trait ApiResponse
             }
         }
 
-        $currency = Setting::leftJoin('currencies', 'currencies.code', 'settings.value')
-            ->where('settings.key', 'company_currency_code')
+        $currency = Currency::where('code', auth()->user()->entity->currency->currency_code)
             ->select('currencies.code', 'currencies.symbol')
             ->first();
 
-        $arr_form['company_id'] = session('company_id');
+        $arr_form['entity_id'] = auth()->user()->entity_id;
         $arr_form['default_currency_code'] = (isset($currency)) ? $currency->code : null;
         $arr_form['default_currency_symbol'] = (isset($currency)) ? $currency->symbol : null;
 
         return $arr_form;
+    }
+
+    /**
+     * @param $table
+     * @param $column
+     * @return array
+     */
+    public function getEnumValues($table, $column): array
+    {
+        $type = DB::select(DB::raw("SHOW COLUMNS FROM $table WHERE Field = '{$column}'"))[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+        $values = array();
+        foreach (explode(',', $matches[1]) as $value) {
+            $values[] = trim($value, "'");
+        }
+        return $values;
     }
 }

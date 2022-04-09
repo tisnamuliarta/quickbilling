@@ -125,7 +125,14 @@
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="3" sm="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-
+              <v-text-field
+                v-model="form.status"
+                readonly
+                label="Statur"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
             </v-col>
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">

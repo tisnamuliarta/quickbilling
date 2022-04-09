@@ -56,7 +56,7 @@ class TaxService
     {
         $data = [
             'name' => $form['name'],
-            'company_id' => session('company_id'),
+            'entity_id' => auth()->user()->entity_id,
             'rate' => (array_key_exists('rate', $form)) ? $form['rate'] : 0,
             'type' => (array_key_exists('type', $form)) ? $form['type'] : 'normal',
             'enabled' => (array_key_exists('enabled', $form)) ? $form['enabled'] : true,

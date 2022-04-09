@@ -1,27 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Inventory;
+namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inventory\Contact;
-use App\Models\Inventory\ContactBank;
-use App\Models\Inventory\ContactEmail;
-use App\Services\Inventory\ContactService;
-use App\Traits\ContactDetail;
+use App\Services\Financial\AccountCategoryService;
+use IFRS\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class ContactController extends Controller
+class AccountCategoryController extends Controller
 {
-    use ContactDetail;
-
     public $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(ContactService $service)
+    public function __construct(AccountCategoryService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -38,25 +33,10 @@ class ContactController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = isset($request->type) ? (string)$request->type : 'index';
         $result = [];
-        $extra_list['emails'] = [
-            [
-                'email' => null
-            ]
-        ];
-        $extra_list['password'] = null;
-        $extra_list['banks'] = [
-            [
-                'name' => null,
-                'branch' => null,
-                'contact_account_name' => null,
-                'contact_account_number' => null,
-            ]
-        ];
-        $result['form'] = array_merge($this->form('contacts'), $extra_list);
-        $result = array_merge($result, $this->service->index($request, $type));
-
+        $result['form'] = $this->form('ifrs_categories');
+        $result['form']['category_type_list'] = $this->getEnumValues('ifrs_categories', 'category_type');
+        $result = array_merge($result, $this->service->index($request));
         return $this->success($result);
     }
 
@@ -76,9 +56,7 @@ class ContactController extends Controller
         DB::beginTransaction();
         $form = $request->form;
         try {
-            $contact = Contact::create($this->service->formData($form));
-
-            $this->processDetails($form, $contact);
+            Category::create($this->service->formData($request));
 
             DB::commit();
             return $this->success([
@@ -99,13 +77,10 @@ class ContactController extends Controller
      */
     protected function validation($request)
     {
-        $messages = [
-            'form.name' => 'Name is required!',
-        ];
-
         $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-        ], $messages);
+            'category_type' => 'required',
+            'name' => 'required',
+        ]);
 
         $string_data = "";
         if ($validator->fails()) {
@@ -128,31 +103,11 @@ class ContactController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Contact::where("id", "=", $id)->get();
+        $data = Category::where("id", "=", $id)->get();
 
         return $this->success([
             'rows' => $data
         ]);
-    }
-
-    /**
-     * @param $form
-     * @param $contact
-     * @return void
-     */
-    protected function processDetails($form, $contact)
-    {
-        if ($form['banks']) {
-            $this->storeContactBank($form['banks'], $contact['id']);
-        }
-
-        if ($form['emails']) {
-            $this->storeContactEmail($form['emails'], $contact['id']);
-        }
-
-        if ($form['can_login']) {
-            $this->createUser($form);
-        }
     }
 
     /**
@@ -172,16 +127,7 @@ class ContactController extends Controller
 
         $form = $request->form;
         try {
-            $formData = $this->service->formData($form);
-            $contact = Contact::find($id);
-            foreach ($formData as $index => $formDatum) {
-                $contact->$index = $formDatum;
-            }
-            $contact->save();
-
-            $this->processDetails($form, $contact);
-
-            DB::commit();
+            Category::where("id", "=", $id)->update($this->service->formData($form));
 
             return $this->success([
                 "errors" => false
@@ -202,9 +148,9 @@ class ContactController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Contact::where("id", "=", $id)->first();
+        $details = Category::find($id);
         if ($details) {
-            Contact::where("id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');
@@ -213,15 +159,5 @@ class ContactController extends Controller
         return $this->error('Row not found', 422, [
             "errors" => true
         ]);
-    }
-
-    public function deleteBank($id)
-    {
-        ContactBank::where('id', $id)->delete();
-    }
-
-    public function deleteEmail($id)
-    {
-        ContactEmail::where('email', $id)->delete();
     }
 }

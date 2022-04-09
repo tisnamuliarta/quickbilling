@@ -2,9 +2,9 @@
 
 namespace App\Services\Financial;
 
-use App\Models\Financial\Account;
 use App\Traits\Accounting;
 use App\Traits\Categories;
+use IFRS\Models\Account;
 
 class AccountService
 {
@@ -19,22 +19,12 @@ class AccountService
         $options = $request->options;
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "number";
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "code";
         $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
-        $query = Account::selectRaw(
-            " accounts.*,
-             categories.name as category,
-             banks.name as bank,
-             taxes.name as tax,
-             'actions' as ACTIONS "
-        )
-            ->leftJoin('categories', 'categories.id', 'accounts.category_id')
-            ->leftJoin('taxes', 'taxes.id', 'accounts.tax_id')
-            ->leftJoin('banks', 'banks.id', 'accounts.bank_id')
-            ->where('categories.type', 'Account Category');
+        $query = Account::select('*');
 
         $result["total"] = $query->count();
 
@@ -81,7 +71,7 @@ class AccountService
     {
         return [
             'name' => $form['name'],
-            'company_id' => session('company_id'),
+            'entity_id' => auth()->user()->entity_id,
             'category_id' => $this->categoryIdByName($form['category']),
             'bank_id' => (array_key_exists('bank', $form)) ? $this->bankIdByName($form['bank']) : 0,
             'details' => (array_key_exists('details', $form)) ? $form['details'] : '',

@@ -20,6 +20,7 @@
           :loading="loading"
           class="elevation-1"
           item-key="id"
+          calculate-widths
           show-select
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
@@ -223,16 +224,16 @@ export default {
         ]
       } else {
         this.headers = [
-          { text: 'Item Code', value: 'code' },
-          { text: 'Item Name', value: 'name' },
-          { text: 'Item Category', value: 'categories' },
+          { text: 'Item Code', value: 'code', width: '120px' },
+          { text: 'Item Name', value: 'name', width: '150px' },
+          { text: 'Item Category', value: 'categories', width: '120px' },
           { text: 'Minimum Stock', value: 'minimum_stock', align: 'right', sortable: false, filterable: false  },
-          { text: 'Unit', value: 'unit' },
-          { text: 'Average Price', value: 'average_price', align: 'right' },
-          { text: 'Last Buy Price', value: 'last_buy_price', align: 'right' },
-          { text: 'Buy Price', value: 'purchase_price', align: 'right' },
-          { text: 'Sell Price', value: 'sale_price', align: 'right' },
-          { text: 'Action', value: 'ACTIONS', align: 'center' },
+          { text: 'Unit', value: 'unit', sortable: false, filterable: false },
+          { text: 'Average Price', value: 'average_price', align: 'right', sortable: false, filterable: false },
+          { text: 'Last Buy Price', value: 'last_buy_price', align: 'right', sortable: false, filterable: false },
+          { text: 'Buy Price', value: 'purchase_price', align: 'right', sortable: false, filterable: false },
+          { text: 'Sell Price', value: 'sale_price', align: 'right', sortable: false, filterable: false },
+          { text: 'Action', value: 'ACTIONS', align: 'center', sortable: false, filterable: false },
         ]
       }
     }

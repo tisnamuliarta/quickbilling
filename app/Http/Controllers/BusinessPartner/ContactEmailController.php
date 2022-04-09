@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Inventory;
+namespace App\Http\Controllers\BusinessPartner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\ContactEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ContactEmailController extends Controller
 {

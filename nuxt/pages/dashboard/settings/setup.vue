@@ -8,7 +8,7 @@
         <v-card-text>
           <v-container>
             <v-row no-gutters>
-              <v-col cols="12" md="2">
+              <v-col cols="12" md="3">
                 <v-navigation-drawer permanent>
                   <v-list nav dense>
                     <v-list-item-group v-model="selectedItem" color="primary">
@@ -31,7 +31,7 @@
                   </v-list>
                 </v-navigation-drawer>
               </v-col>
-              <v-col cols="12" md="10">
+              <v-col cols="12" md="9">
                 <v-card flat>
                   <v-skeleton-loader
                     v-if="loading"

@@ -12,29 +12,12 @@ class EntityService
      */
     public function index($request): array
     {
-        $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
-        $offset = ($pages - 1) * $row_data;
+        $query = Entity::first();
 
-        $result = array();
-        $query = Entity::select('*');
-
-        $result["total"] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
-            ->get();
-
-        $arr_rows = Entity::pluck('name');
-
-        return array_merge($result, [
-            "rows" => $all_data,
-            "simple" => $arr_rows,
-        ]);
+        return [
+            "rows" => $query,
+            "status" => ($query) ? 'update' : 'insert'
+        ];
     }
 
     /**

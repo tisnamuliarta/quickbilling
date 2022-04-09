@@ -140,6 +140,13 @@
     "_name": "_6a90b190"
   },
   {
+    "name": "dashboard-financial-account-category",
+    "path": "/dashboard/financial/account-category",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\account-category.vue",
+    "chunkName": "pages/dashboard/financial/account-category",
+    "_name": "_4511b6ba"
+  },
+  {
     "name": "dashboard-inventory-item",
     "path": "/dashboard/inventory/item",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\item.vue",
