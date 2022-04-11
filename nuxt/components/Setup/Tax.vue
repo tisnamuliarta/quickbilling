@@ -64,6 +64,16 @@
             </v-col>
 
             <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-text-field
+                v-model="form.code"
+                label="Code"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
                 v-model="form.rate"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
@@ -77,50 +87,15 @@
 
             <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-autocomplete
-                v-model="form.sell_account"
+                v-model="form.account_id"
                 :items="itemAccounts"
                 item-text="name"
                 item-value="id"
-                label="Sell Tax Account"
+                label="Accounts"
                 outlined
                 dense
                 hide-details="auto"
               ></v-autocomplete>
-            </v-col>
-
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-autocomplete
-                v-model="form.buy_account"
-                :items="itemAccounts"
-                item-text="name"
-                item-value="id"
-                label="Buy Tax Account"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-autocomplete>
-            </v-col>
-
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-sheet>
-                <v-switch
-                  v-model="form.enabled"
-                  inset
-                  label="Enabled"
-                  hide-details
-                ></v-switch>
-              </v-sheet>
-            </v-col>
-
-            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <v-sheet>
-                <v-switch
-                  v-model="form.withholding"
-                  inset
-                  label="Withholding"
-                  hide-details
-                ></v-switch>
-              </v-sheet>
             </v-col>
           </v-row>
         </v-container>
@@ -169,10 +144,9 @@ export default {
       options: {},
       headers: [
         { text: 'Name', value: 'name' },
-        { text: 'Rate', value: 'rate' },
-        { text: 'Withholding', value: 'withholding' },
-        { text: 'Sell Tax Account', value: 'sell_account_name' },
-        { text: 'Buy Tax Account', value: 'buy_account_name' },
+        { text: 'code', value: 'code' },
+        { text: 'rate', value: 'rate' },
+        { text: 'Account', value: 'account.name' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
@@ -180,7 +154,7 @@ export default {
 
   head() {
     return {
-      title: 'Master Roles',
+      title: 'VAT',
     }
   },
 
@@ -264,19 +238,15 @@ export default {
       const vm = this
       const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
 
       if (status === 'insert') {
-        this.store('post', this.url, data, 'insert', type)
+        this.store('post', this.url, form, 'insert', type)
         vm.submitLoad = false
       } else if (status === 'update') {
         this.store(
           'put',
           this.url + '/' + this.form.id,
-          data,
+          form,
           'update',
           type
         )

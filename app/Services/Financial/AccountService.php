@@ -45,14 +45,10 @@ class AccountService
     public function dataByType($type): array
     {
         $query = Account::selectRaw(
-            " CONCAT('(', accounts.number, ') ', accounts.name, ' (', categories.name, ')') as name, accounts.id "
+            " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
         )
-            ->leftJoin('categories', 'categories.id', 'accounts.category_id')
-            ->leftJoin('taxes', 'taxes.id', 'accounts.tax_id')
-            ->leftJoin('banks', 'banks.id', 'accounts.bank_id')
-            ->where('categories.type', 'Account Category')
-            ->where('categories.name', 'LIKE', '%' . $type . '%')
-            ->orderBy('accounts.number')
+            ->where('account_type', 'LIKE', '%' . $type . '%')
+            ->orderBy('code')
             ->get();
 
         return [
