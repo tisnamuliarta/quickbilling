@@ -51,10 +51,12 @@ class DocumentController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'document_number' => 'required',
+            'contact_id' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $items = collect($request->items);
@@ -116,34 +118,6 @@ class DocumentController extends Controller
     }
 
     /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'contact_id.required' => 'Customer/Vendor is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'document_number' => 'required',
-            'contact_id' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -174,10 +148,12 @@ class DocumentController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'document_number' => 'required',
+            'contact_id' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $items = collect($request->items);

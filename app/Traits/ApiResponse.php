@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Financial\Currency;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 trait ApiResponse
 {
@@ -79,10 +80,32 @@ trait ApiResponse
     {
         $type = DB::select(DB::raw("SHOW COLUMNS FROM $table WHERE Field = '{$column}'"))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
-        $values = array();
+        $items = [];
         foreach (explode(',', $matches[1]) as $value) {
-            $values[] = trim($value, "'");
+            $items[] = trim($value, "'");
         }
-        return $values;
+        return $items;
+    }
+
+    /**
+     * @param $request
+     * @param $rules
+     * @return false|string
+     */
+    protected function validation($request, $rules)
+    {
+        $validator = Validator::make($request->all(), $rules);
+
+        $string_data = "";
+        if ($validator->fails()) {
+            foreach (collect($validator->messages()) as $error) {
+                foreach ($error as $items) {
+                    $string_data .= $items . " \n  ";
+                }
+            }
+            return $string_data;
+        } else {
+            return false;
+        }
     }
 }

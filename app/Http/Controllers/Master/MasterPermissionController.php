@@ -82,10 +82,13 @@ class MasterPermissionController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'form.menu_name' => 'Menu Name is required!',
+            'form.order_line' => 'Order line field is required!',
+            'form.role' => 'Role field is required!',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $form = $request->form;
@@ -184,38 +187,6 @@ class MasterPermissionController extends Controller
     }
 
     /**
-     * @param $request
-     *
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'form.menu_name' => 'Menu Name is required!',
-            'form.order_line' => 'Order line field is required!',
-            'form.role' => 'Role field is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'form.menu_name' => 'required',
-            'form.order_line' => 'required',
-            'form.role' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -243,10 +214,13 @@ class MasterPermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'form.menu_name' => 'Menu Name is required!',
+            'form.order_line' => 'Order line field is required!',
+            'form.role' => 'Role field is required!',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $form = $request->form;

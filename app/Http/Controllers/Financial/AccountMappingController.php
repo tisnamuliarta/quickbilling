@@ -77,34 +77,6 @@ class AccountMappingController extends Controller
         }
     }
 
-    /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'form.name' => 'Name is required!',
-            'form.number' => 'Account Number is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-            'form.number' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Display the specified resource.
@@ -130,8 +102,12 @@ class AccountMappingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'form.name' => 'Name is required!',
+            'form.number' => 'Account Number is required!',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }

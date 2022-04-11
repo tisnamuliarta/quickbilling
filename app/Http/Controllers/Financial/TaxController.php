@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Tax;
 use App\Services\Financial\TaxService;
 use App\Traits\Financial;
+use IFRS\Models\Vat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class TaxController extends Controller
 {
     use Financial;
 
     public $service;
+
     /**
      * MasterUserController constructor.
      */
@@ -36,7 +36,7 @@ class TaxController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('taxes');
+        $result['form'] = $this->form('ifrs_vats');
         $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
@@ -50,15 +50,18 @@ class TaxController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
+
         DB::beginTransaction();
-        $form = $request->form;
         try {
-            Tax::create($this->service->formData($form, $request, 'store'));
+            Vat::create($this->service->formData($request));
 
             DB::commit();
             return $this->success([
@@ -74,33 +77,6 @@ class TaxController extends Controller
     }
 
     /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'form.name' => 'Name is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -109,8 +85,7 @@ class TaxController extends Controller
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
     {
-        $name = (isset($request->name)) ? $this->getTaxIdByName($request->name) : $id;
-        $data = Tax::where("id", "=", $name)->first();
+        $data = Vat::find($id);
 
         return $this->success([
             'rows' => $data
@@ -126,15 +101,18 @@ class TaxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
 
-        $form = $request->form;
         try {
-            Tax::where("id", "=", $id)->update($this->service->formData($form, $request, 'update'));
+            Vat::where("id", "=", $id)
+                ->update($this->service->formData($request));
 
             return $this->success([
                 "errors" => false
@@ -155,9 +133,9 @@ class TaxController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Tax::where("id", "=", $id)->first();
+        $details = Vat::find($id);
         if ($details) {
-            Tax::where("id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

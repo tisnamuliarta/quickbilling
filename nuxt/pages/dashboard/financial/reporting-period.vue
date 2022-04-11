@@ -18,6 +18,7 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          fixed-header
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
@@ -28,42 +29,34 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
-              title="Chart of Accounts"
+              title="Reporting Period"
               @emitData="emitData"
               @newData="newData"
             />
           </template>
           <template #[`item.id`]="{ item }">
-            <v-btn icon class="mr-2">
-              <v-icon small color="green" @click="editItem(item)">
-                mdi-pencil-circle
-              </v-icon>
-            </v-btn>
-
-            <v-btn icon class="mr-2">
-              <v-icon small color="red" @click="deleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </v-btn>
+            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
+              mdi-pencil-circle
+            </v-icon>
           </template>
         </v-data-table>
       </div>
     </v-flex>
 
-    <LazyFinancialFormAccount
+    <LazyFinancialFormReportingPeriod
       ref="forms"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       :url="url"
       @getDataFromApi="getDataFromApi"
-    ></LazyFinancialFormAccount>
+    ></LazyFinancialFormReportingPeriod>
   </v-layout>
 </template>
 
 <script>
 export default {
-  name: 'Account',
+  name: 'ReportingPeriod',
   layout: 'dashboard',
   data() {
     return {
@@ -79,13 +72,12 @@ export default {
       form: {},
       defaultItem: {},
       options: {},
-      url: '/api/financial/accounts',
+      url: '/api/financial/reporting-period',
       headers: [
-        { text: 'Account Code', value: 'code' },
-        { text: 'Account Name', value: 'name' },
-        { text: 'Category', value: 'category.name' },
-        { text: 'Account Type', value: 'account_type' },
-        { text: 'Currency', value: 'currency.currency_code' },
+        { text: 'Period Count', value: 'period_count' },
+        { text: 'Status', value: 'status' },
+        { text: 'Year', value: 'calendar_year' },
+        { text: 'Closing Date', value: 'closing_date' },
         { text: 'Actions', value: 'id' },
       ],
     }
@@ -93,13 +85,13 @@ export default {
 
   head() {
     return {
-      title: 'Chart Of Accounts',
+      title: 'Account Category',
     }
   },
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Account' : 'Edit Account'
+      return this.editedIndex === -1 ? 'New Period' : 'Edit Period'
     },
     buttonTitle() {
       return this.editedIndex === -1 ? 'Save' : 'Update'
@@ -124,39 +116,6 @@ export default {
     editItem(item) {
       this.editedIndex = this.allData.indexOf(item)
       this.$refs.forms.editItem(item, this.form)
-    },
-
-    deleteItem(item) {
-      const vm = this
-      this.$swal({
-        title: 'Are you sure?',
-        text: 'The data will be permanently deleted',
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
-        if (result.value) {
-          this.$axios
-            .delete(vm.url + '/' + item.id)
-            .then((res) => {
-              this.$swal({
-                type: 'success',
-                title: 'Success...',
-                text: 'Row Deleted!',
-              })
-              this.getDataFromApi()
-            })
-            .catch((err) => {
-              this.$swal({
-                type: 'error',
-                title: 'Oops...',
-                text: err.response.data.message,
-              })
-            })
-        }
-      })
     },
 
     emitData(data) {

@@ -47,11 +47,13 @@ class PaymentTermController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'form.name' => 'Name is required!',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
+
         DB::beginTransaction();
         $form = $request->form;
         try {
@@ -67,33 +69,6 @@ class PaymentTermController extends Controller
                 "errors" => true,
                 "Trace" => $exception->getTrace()
             ]);
-        }
-    }
-
-    /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'form.name' => 'Name is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
         }
     }
 
@@ -121,10 +96,11 @@ class PaymentTermController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'form.name' => 'Name is required!',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $form = $request->form;

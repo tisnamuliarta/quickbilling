@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\Account;
 use App\Services\Financial\AccountService;
+use IFRS\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -36,10 +36,10 @@ class AccountController extends Controller
         $type = isset($request->type) ? (string)$request->type : 'index';
 
         if ($type == 'index') {
-            $form = $this->form('ifrs_accounts');
-            $result = array_merge($this->service->index($request), [
-                'form' => $form
-            ]);
+            $result = [];
+            $result['form'] = $this->form('ifrs_accounts');
+            $result['form']['account_type_list'] = $this->getEnumValues('ifrs_accounts', 'account_type');
+            $result = array_merge($result, $this->service->index($request));
         } else {
             if ($type == 'All') {
                 $type = '';
@@ -58,15 +58,19 @@ class AccountController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'name' => 'required',
+            'account_type' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
+
         DB::beginTransaction();
-        $form = $request->form;
         try {
-            Account::create($this->service->formData($form));
+            Account::create($this->service->formData($request));
 
             DB::commit();
             return $this->success([
@@ -78,35 +82,6 @@ class AccountController extends Controller
                 "errors" => true,
                 "Trace" => $exception->getTrace()
             ]);
-        }
-    }
-
-    /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'form.name' => 'Name is required!',
-            'form.number' => 'Account Number is required!',
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'form.name' => 'required',
-            'form.number' => 'required',
-        ], $messages);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
         }
     }
 
@@ -134,20 +109,26 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'name' => 'required',
+            'account_type' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
 
-        $form = $request->form;
+        DB::beginTransaction();
         try {
-            Account::where("id", "=", $id)->update($this->service->formData($form));
+            Account::where("id", "=", $id)->update($this->service->formData($request));
 
+            DB::commit();
             return $this->success([
                 "errors" => false
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,
                 "Trace" => $exception->getTrace()
@@ -163,9 +144,9 @@ class AccountController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Account::where("id", "=", $id)->first();
+        $details = Account::find($id);
         if ($details) {
-            Account::where("id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

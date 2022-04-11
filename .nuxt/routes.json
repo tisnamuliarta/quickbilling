@@ -147,6 +147,13 @@
     "_name": "_4511b6ba"
   },
   {
+    "name": "dashboard-financial-reporting-period",
+    "path": "/dashboard/financial/reporting-period",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\reporting-period.vue",
+    "chunkName": "pages/dashboard/financial/reporting-period",
+    "_name": "_694d1545"
+  },
+  {
     "name": "dashboard-inventory-item",
     "path": "/dashboard/inventory/item",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\item.vue",

@@ -11,77 +11,69 @@
           <v-container>
             <v-row no-gutters>
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-autocomplete
+                  v-model="form.status"
+                  :items="itemStatus"
+                  label="Status"
+                  outlined
+                  persistent-hint
+                  dense
+                  hide-details="auto"
+                >
+                </v-autocomplete>
+              </v-col>
+
+              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
-                  v-model="form.name"
-                  label="Name"
+                  v-model="form.period_count"
+                  label="Period Count"
                   outlined
                   dense
+                  type="number"
                   hide-details="auto"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.category_id"
-                  :items="itemCategory"
-                  label="Category"
-                  item-text="name"
-                  item-value="id"
+                <v-text-field
+                  v-model="form.calendar_year"
+                  label="Year"
                   outlined
-                  persistent-hint
                   dense
+                  type="number"
                   hide-details="auto"
-                >
-                </v-autocomplete>
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.currency_id"
-                  :items="itemCurrency"
-                  label="Currency"
-                  item-text="currency_code"
-                  item-value="id"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
+                <v-menu
+                  ref='menu3'
+                  v-model='menu3'
+                  :close-on-content-click='false'
+                  transition='scale-transition'
+                  offset-y
+                  min-width='290px'
                 >
-                </v-autocomplete>
-              </v-col>
+                  <template #activator='{ on, attrs }'>
+                    <v-text-field
+                      v-model="form.closing_date"
+                      label="Closing Date"
+                      prepend-icon='mdi-calendar'
+                      readonly
+                      persistent-hint
+                      outlined dense hide-details='auto'
+                      v-bind='attrs'
+                      v-on='on'
+                    ></v-text-field>
+                  </template>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.account_type"
-                  :items="itemAccountType"
-                  label="Account Type"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                </v-autocomplete>
-              </v-col>
-
-<!--              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
-<!--                <v-text-field-->
-<!--                  v-model="form.code"-->
-<!--                  label="Number"-->
-<!--                  outlined-->
-<!--                  dense-->
-<!--                  hide-details="auto"-->
-<!--                ></v-text-field>-->
-<!--              </v-col>-->
-
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-textarea
-                  rows="3"
-                  v-model="form.description"
-                  label="Description"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-textarea>
+                  <v-date-picker
+                    v-model="form.closing_date"
+                    no-title
+                    @input='menu3 = false'
+                  >
+                  </v-date-picker>
+                </v-menu>
               </v-col>
 
             </v-row>
@@ -100,6 +92,8 @@
         </v-btn>
       </template>
     </DialogForm>
+
+    <LazyInventoryFormMaster ref="formMaster" @returnData="returnData"></LazyInventoryFormMaster>
   </div>
 </template>
 
@@ -133,67 +127,27 @@ export default {
       dialog: false,
       submitLoad: false,
       form: this.formData,
-      itemCategory: [],
-      itemCurrency: [],
-      itemAccountType: [],
+      itemStatus: [],
       itemBank: [],
       itemTax: [],
+      menu3: '',
       statusProcessing: 'insert',
     }
   },
 
-  mounted() {
-    this.getCategory()
-    this.getCurrency()
-  },
-
   methods: {
-    newData(form) {
+    newData(item) {
       this.$refs.dialogForm.openDialog()
       this.statusProcessing = 'insert'
-      this.form = Object.assign({}, form)
-      this.itemAccountType = form.account_type_list
+      this.form = Object.assign({}, item)
+      this.itemStatus = this.form.status_list
     },
 
     editItem(item, form) {
+      this.$refs.dialogForm.openDialog()
       this.form = Object.assign({}, item)
       this.statusProcessing = 'update'
-      this.$refs.dialogForm.openDialog()
-      this.itemAccountType = form.account_type_list
-    },
-
-    getCategory() {
-      this.$axios.get(`/api/financial/account-category`, {
-        params: {
-          type: 'Account Category'
-        }
-      }).then((res) => {
-        this.itemCategory = res.data.data.rows
-      })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: 'Error',
-            text: err.response.data.message,
-          })
-        })
-    },
-
-    getCurrency() {
-      this.$axios.get(`/api/financial/currency`, {
-        params: {
-          type: 'Account Category'
-        }
-      }).then((res) => {
-        this.itemCurrency = res.data.data.rows
-      })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: 'Error',
-            text: err.response.data.message,
-          })
-        })
+      this.itemStatus = form.status_list
     },
 
     returnData(data) {
@@ -214,15 +168,15 @@ export default {
 
     save() {
       const vm = this
-      const form = this.form
       const status = this.statusProcessing
 
       if (status === 'insert') {
-        this.store('post', this.url, form)
+        this.store('post', this.url, this.form)
+        vm.submitLoad = false
       } else if (status === 'update') {
-        this.store('put', this.url + '/' + this.form.id, form)
+        this.store('put', this.url + '/' + this.form.id, this.form)
+        vm.submitLoad = false
       }
-      vm.submitLoad = false
     },
 
     store(method, url, data) {

@@ -54,10 +54,11 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $validation = $this->validation($request, [
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         DB::beginTransaction();
@@ -108,29 +109,6 @@ class ItemController extends Controller
     }
 
     /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -139,11 +117,12 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        if ($this->validation($request)) {
-//            return $this->error($this->validation($request), 422, [
-//                "errors" => true
-//            ]);
-//        }
+        $validation = $this->validation($request, [
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
+        }
 
         DB::beginTransaction();
         try {
@@ -186,9 +165,9 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        $details = Item::where("product_id", "=", $id)->first();
+        $details = Item::find($id);
         if ($details) {
-            Item::where("product_id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

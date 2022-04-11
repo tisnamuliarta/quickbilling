@@ -2,11 +2,15 @@
 
 namespace App\Services\Financial;
 
-use App\Models\Financial\Tax;
-use IFRS\Models\Vat;
+use App\Traits\Accounting;
+use App\Traits\Categories;
+use IFRS\Models\ReportingPeriod;
 
-class TaxService
+class ReportingPeriodService
 {
+    use Categories;
+    use Accounting;
+
     /**
      * @param $request
      * @return array
@@ -16,27 +20,25 @@ class TaxService
         $options = $request->options;
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "id";
         $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
-        $query = Vat::with(['account', 'entity']);
+        $query = ReportingPeriod::select('*');
 
         $result["total"] = $query->count();
 
         $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
+            //->offset($offset)
+            //->limit($row_data)
             ->get();
-
-        $arr_rows = Vat::pluck('name');
 
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
         ]);
     }
+
 
     /**
      * @param $request

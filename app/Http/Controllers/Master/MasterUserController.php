@@ -52,10 +52,17 @@ class MasterUserController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $user_id = $request->id;
+        $validation = $this->validation($request, [
+            'entity_id' => 'required',
+            'username' => 'required|unique:users,username,' . $user_id,
+            'email' => 'required|unique:users,email,' . $user_id,
+            'name' => 'required',
+            'role' => 'required',
+            'enabled' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         DB::beginTransaction();
@@ -80,38 +87,6 @@ class MasterUserController extends Controller
         }
     }
 
-    /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $messages = [
-            'entity_id.required' => 'Company field is required'
-        ];
-        $user_id = $request->id;
-        $validator = Validator::make($request->all(), [
-            'entity_id' => 'required',
-            'username' => 'required|unique:users,username,' . $user_id,
-            'email' => 'required|unique:users,email,' . $user_id,
-            'name' => 'required',
-            'role' => 'required',
-            'enabled' => 'required',
-        ], $messages);
-
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Display the specified resource.
@@ -143,10 +118,17 @@ class MasterUserController extends Controller
      */
     public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
-                "errors" => true
-            ]);
+        $user_id = $request->id;
+        $validation = $this->validation($request, [
+            'entity_id' => 'required',
+            'username' => 'required|unique:users,username,' . $user_id,
+            'email' => 'required|unique:users,email,' . $user_id,
+            'name' => 'required',
+            'role' => 'required',
+            'enabled' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation);
         }
 
         $form = $request->form;

@@ -4,7 +4,6 @@ namespace App\Services\Financial;
 
 use App\Traits\Accounting;
 use App\Traits\Categories;
-use IFRS\Models\Account;
 use IFRS\Models\Category;
 
 class AccountCategoryService
@@ -35,11 +34,8 @@ class AccountCategoryService
             //->limit($row_data)
             ->get();
 
-        $arr_rows = Account::pluck('name');
-
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
         ]);
     }
 

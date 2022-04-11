@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Models\Financial\PaymentMethod;
-use App\Services\Financial\PaymentMethodService;
+use App\Services\Financial\ReportingPeriodService;
+use IFRS\Models\ReportingPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class PaymentMethodController extends Controller
+class ReportingPeriodController extends Controller
 {
     public $service;
+
     /**
      * MasterUserController constructor.
      */
-    public function __construct(PaymentMethodService $service)
+    public function __construct(ReportingPeriodService $service)
     {
         $this->service = $service;
 //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -33,9 +34,10 @@ class PaymentMethodController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('payment_methods');
+        $result['form'] = $this->form('ifrs_categories');
+        $result['form']['status_list'] = $this->getEnumValues('ifrs_reporting_periods', 'status');
+        $result['form']['status'] = 'OPEN';
         $result = array_merge($result, $this->service->index($request));
-
         return $this->success($result);
     }
 
@@ -48,7 +50,9 @@ class PaymentMethodController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'calendar_year' => 'required',
+            'period_count' => 'required',
+            'status' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
@@ -57,7 +61,7 @@ class PaymentMethodController extends Controller
         DB::beginTransaction();
         $form = $request->form;
         try {
-            PaymentMethod::create($this->service->formData($form, $request, 'store'));
+            ReportingPeriod::create($this->service->formData($request));
 
             DB::commit();
             return $this->success([
@@ -80,7 +84,7 @@ class PaymentMethodController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = PaymentMethod::where("id", "=", $id)->get();
+        $data = ReportingPeriod::where("id", "=", $id)->get();
 
         return $this->success([
             'rows' => $data
@@ -97,15 +101,16 @@ class PaymentMethodController extends Controller
     public function update(Request $request, $id)
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'calendar_year' => 'required',
+            'period_count' => 'required',
+            'status' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
         }
 
-        $form = $request->form;
         try {
-            PaymentMethod::where("id", "=", $id)->update($this->service->formData($form, $request, 'update'));
+            ReportingPeriod::where("id", "=", $id)->update($this->service->formData($request));
 
             return $this->success([
                 "errors" => false
@@ -124,11 +129,11 @@ class PaymentMethodController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(int $id): \Illuminate\Http\JsonResponse
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = PaymentMethod::where("id", "=", $id)->first();
+        $details = ReportingPeriod::find($id);
         if ($details) {
-            PaymentMethod::where("id", "=", $id)->delete();
+            $details->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

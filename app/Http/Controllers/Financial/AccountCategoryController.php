@@ -48,11 +48,16 @@ class AccountCategoryController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'category_type' => 'required',
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
+
         DB::beginTransaction();
         $form = $request->form;
         try {
@@ -68,30 +73,6 @@ class AccountCategoryController extends Controller
                 "errors" => true,
                 "Trace" => $exception->getTrace()
             ]);
-        }
-    }
-
-    /**
-     * @param $request
-     * @return false|string
-     */
-    protected function validation($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'category_type' => 'required',
-            'name' => 'required',
-        ]);
-
-        $string_data = "";
-        if ($validator->fails()) {
-            foreach (collect($validator->messages()) as $error) {
-                foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
-                }
-            }
-            return $string_data;
-        } else {
-            return false;
         }
     }
 
@@ -119,15 +100,18 @@ class AccountCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->validation($request)) {
-            return $this->error($this->validation($request), 422, [
+        $validation = $this->validation($request, [
+            'category_type' => 'required',
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
                 "errors" => true
             ]);
         }
 
-        $form = $request->form;
         try {
-            Category::where("id", "=", $id)->update($this->service->formData($form));
+            Category::where("id", "=", $id)->update($this->service->formData($request));
 
             return $this->success([
                 "errors" => false

@@ -140,44 +140,44 @@ return [
         // =============
 
         // Asset Accounts
-        Account::NON_CURRENT_ASSET => 0, // 0 - 99
-        Account::CONTRA_ASSET => 100, // 100 - 199
-        Account::INVENTORY => 200, // 200 - 299
-        Account::BANK => 300, // 300 - 399
-        Account::CURRENT_ASSET => 400, // 400 - 499
-        Account::RECEIVABLE => 500, // 500 - 1999
+        Account::NON_CURRENT_ASSET => 10100, // 0 - 99
+        Account::CONTRA_ASSET => 10200, // 100 - 199
+        Account::INVENTORY => 10300, // 200 - 299
+        Account::BANK => 10400, // 300 - 399
+        Account::CURRENT_ASSET => 10500, // 400 - 499
+        Account::RECEIVABLE => 10600, // 500 - 1999
 
         // Liability Accounts
-        Account::NON_CURRENT_LIABILITY => 2000, // 2000 - 2099
-        Account::CONTROL => 2100, // 2100 - 2199
-        Account::CURRENT_LIABILITY => 2200, // 2200 - 2399
-        Account::PAYABLE => 2400, // 2400 - 2999
+        Account::NON_CURRENT_LIABILITY => 20100, // 2000 - 2099
+        Account::CONTROL => 20200, // 2100 - 2199
+        Account::CURRENT_LIABILITY => 20300, // 2200 - 2399
+        Account::PAYABLE => 20400, // 2400 - 2999
 
         // Equity Accounts
-        Account::EQUITY => 3000, // 3000 - 3999
+        Account::EQUITY => 30100, // 3000 - 3999
 
         // INCOME STATEMENT
         // ================
 
         // Operating Revenue Accounts
-        Account::OPERATING_REVENUE => 4000, // 4000 - 4499
+        Account::OPERATING_REVENUE => 40100, // 4000 - 4499
 
         // Non Operating Revenue Accounts
-        Account::NON_OPERATING_REVENUE => 4500, // 4500 - 4999
+        Account::NON_OPERATING_REVENUE => 40500, // 4500 - 4999
 
         // Operating Expense Accounts
-        Account::OPERATING_EXPENSE => 5000, // 5000 - 5999
+        Account::OPERATING_EXPENSE => 50100, // 5000 - 5999
 
         // Non Operating Expense Accounts
-        Account::DIRECT_EXPENSE => 6000, // 6000 - 6999
-        Account::OVERHEAD_EXPENSE => 7000, // 7000 - 7999
-        Account::OTHER_EXPENSE => 8000, // 8000 - 8999
+        Account::DIRECT_EXPENSE => 60100, // 6000 - 6999
+        Account::OVERHEAD_EXPENSE => 70100, // 7000 - 7999
+        Account::OTHER_EXPENSE => 80100, // 8000 - 8999
 
         // RECONCILIATION
         // ================
 
         // Reconciliation Accounts
-        Account::RECONCILIATION => 9000, // 9000 - 9999
+        Account::RECONCILIATION => 90100, // 9000 - 9999
     ],
 
     /*

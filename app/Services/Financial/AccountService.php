@@ -24,7 +24,7 @@ class AccountService
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
-        $query = Account::select('*');
+        $query = Account::with(['currency', 'entity', 'category', 'balances']);
 
         $result["total"] = $query->count();
 
@@ -33,11 +33,8 @@ class AccountService
             //->limit($row_data)
             ->get();
 
-        $arr_rows = Account::pluck('name');
-
         return array_merge($result, [
             "rows" => $all_data,
-            "simple" => $arr_rows
         ]);
     }
 
@@ -64,21 +61,25 @@ class AccountService
     }
 
     /**
-     * @param $form
+     * @param $request
      * @return array
      */
-    public function formData($form): array
+    public function formData($request): array
     {
-        return [
-            'name' => $form['name'],
-            'entity_id' => auth()->user()->entity_id,
-            'category_id' => $this->categoryIdByName($form['category']),
-            'bank_id' => (array_key_exists('bank', $form)) ? $this->bankIdByName($form['bank']) : 0,
-            'details' => (array_key_exists('details', $form)) ? $form['details'] : '',
-            'opening_balance' => (array_key_exists('opening_balance', $form)) ? $form['opening_balance'] : 0,
-            'descriptions' => (array_key_exists('descriptions', $form)) ? $form['descriptions'] : '',
-            'number' => (array_key_exists('number', $form)) ? $form['number'] : '',
-            'currency_code' => 'IDR',
-        ];
+        $request->request->remove('updated_at');
+        $request->request->remove('created_at');
+        $request->request->remove('deleted_at');
+        $request->request->remove('destroyed_at');
+        $request->request->remove('account_type_list');
+        $request->request->remove('default_currency_code');
+        $request->request->remove('default_currency_symbol');
+        $request->request->remove('id');
+        $request->request->remove('code');
+        $request->request->remove('currency');
+        $request->request->remove('entity');
+        $request->request->remove('category');
+        $request->request->remove('balances');
+
+        return $request->all();
     }
 }

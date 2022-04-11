@@ -151,7 +151,7 @@
         class="text-center"
         cols="12"
       >
-        Copyright © {{ new Date().getFullYear() }} — <strong> TizCRM </strong>
+        Copyright © {{ new Date().getFullYear() }} — <strong> {{ company.company_name }} </strong>
       </v-col>
     </v-footer>
   </v-app>

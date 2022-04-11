@@ -89,7 +89,7 @@ export default {
         {text: 'Item Units', icon: 'mdi-align-vertical-distribute', alias: 'units', action: false},
         {text: 'Item Category', icon: 'mdi-shape', alias: 'product_category', action: false},
         {text: 'Payment Method', icon: 'mdi-bank-transfer', alias: 'payment', action: false},
-        {text: 'Taxes', icon: 'mdi-content-cut', alias: 'taxes', action: false},
+        {text: 'VAT', icon: 'mdi-content-cut', alias: 'taxes', action: false},
         {text: 'Terms', icon: 'mdi-file-document-outline', alias: 'term', action: false},
         {text: 'Currency', icon: 'mdi-currency-usd', alias: 'currency', action: false},
       ],
