@@ -250,7 +250,7 @@ export default {
     },
 
     getBreadcrumb(type, form, status) {
-      const text = (status === 'update') ? form.document_number : 'Create Document'
+      const text = (this.$route.query.document !== '0') ? form.document_number : 'Create Document'
       this.breadcrumb = [
         {
           text: 'Dashboard',

@@ -774,26 +774,27 @@ export default {
       this.form.discount_per_line = data.discountAmount
       this.form.sub_total = data.subTotal
       this.form.tax_details = this.reduceArrayTax(data.taxDetail)
-      this.taxDetails = this.reduceArrayTax(data.taxDetail)
+      this.taxDetails = data.taxDetail
       this.form.amount = data.amount + this.tempTotalTax
       this.form.balance_due = this.form.amount
       this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
-      this.taxAmount = this.tempTotalTax
+      // this.taxAmount = this.tempTotalTax
 
       if (this.form.sub_total === 0) {
         this.form.discount_rate = 0
         this.form.discount_amount = 0
       }
 
-      this.changeCalculation()
+      this.changeCalculation(data)
     },
 
-    changeCalculation() {
+    changeCalculation(data) {
+      // this.taxDetails = (data) ? data.taxDetail : []
       // calculate discount
-      if (this.form.tax_details.length > 0) {
-        this.reduceArrayTax(this.form.tax_details)
+      if (this.taxDetails.length > 0) {
+        this.form.tax_details = this.reduceArrayTax(this.taxDetails)
       }
-
+      this.form.discount_amount = 0;
       if (this.form.discount_type === 'Percent') {
         if (this.form.discount_rate > 0) {
           this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
@@ -807,23 +808,23 @@ export default {
         }
       }
 
-      if (this.form.tax_details.length > 0) {
-        this.taxAmount = parseFloat(this.tempTotalTax)
-      } else {
-        this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
-      }
+      this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
 
       this.taxAmount = (this.taxAmount === undefined) ? 0 : this.taxAmount
 
       // calculate tax details
       // if (this.form.discount_rate > 0) {
       // }
-      if (this.taxDetails.length > 0) {
+      if (this.taxDetails.length > 0 && parseFloat(this.form.discount_rate) > 0) {
         this.form.tax_details = this.reduceArrayTaxAfterDiscount(this.taxDetails)
       }
 
       // calculate total amount
-      this.form.amount = this.form.sub_total - this.form.discount_per_line - this.form.discount_amount + this.taxAmount
+      // console.log(this.form.sub_total)
+      // console.log(this.form.discount_per_line)
+      // console.log(this.form.discount_amount)
+      this.form.amount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
+        - parseFloat(this.form.discount_amount) + parseFloat(this.taxAmount);
 
       // calculate amount before tax for tax withholding
       this.amountBeforeTax = this.form.amount - this.taxAmount
@@ -843,19 +844,21 @@ export default {
     reduceArrayTaxAfterDiscount(tax_details) {
       const result = [];
       const vm = this
+      console.log(tax_details)
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
           res[value.name] = {name: value.name, amount: 0};
           result.push(res[value.name])
         }
-        if (vm.form.discount_rate > 0) {
+
+        if (parseFloat(vm.form.discount_rate) > 0) {
           let taxDiscountValue = 0
           if (vm.form.discount_type === 'Percent') {
-            taxDiscountValue = (vm.form.discount_rate / 100) * value.amount
+            taxDiscountValue = (parseFloat(vm.form.discount_rate) / 100) * parseFloat(value.amount)
           } else {
-            taxDiscountValue = vm.form.discount_rate
+            taxDiscountValue = parseFloat(vm.form.discount_rate)
           }
-          res[value.name].amount = value.amount - taxDiscountValue;
+          res[value.name].amount = parseFloat(value.amount) - parseFloat(taxDiscountValue);
         }
         return res;
       }, {});
