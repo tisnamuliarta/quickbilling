@@ -223,7 +223,7 @@ class DocumentService
     protected function detailsForm($document, $item, $type): array
     {
         $form = [
-            'company_id' => session('company_id'),
+            'entity_id' => $document->entity_id,
             'type' => $document->type,
             'document_id' => $document->id,
             'item_id' => $item['item_id'],
@@ -263,7 +263,7 @@ class DocumentService
                     'document_item_id' => $item_detail->id,
                 ],
                 [
-                    'company_id' => session('company_id'),
+                    'entity_id' => $document->entity_id,
                     'type' => $document->type,
                     'document_id' => $document->id,
                     'document_item_id' => $item_detail->id,

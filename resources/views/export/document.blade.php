@@ -457,7 +457,7 @@
 
 <table class=" table-borderless table-sm" style="margin-bottom: 20px; margin-top: 30px;">
   <tr>
-    <td>
+    <td style="width: 60%">
       <table class=" table-borderless table-sm">
         <tr>
           <td>
@@ -475,7 +475,7 @@
         </tr>
       </table>
     </td>
-    <td>
+    <td style="width: 40%">
       <table class="table-borderless table-sm text-right table-active">
         <tr>
           <td>

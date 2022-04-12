@@ -10,7 +10,7 @@
     >
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+      <v-toolbar-title style="width: 200px" class="ml-0 pl-3">
         <NuxtLink to="/dashboard">
           <v-skeleton-loader
             v-show="loadImage"
@@ -146,6 +146,27 @@
       </v-container>
     </v-main>
 
+    <v-snackbar
+      v-model="snackbar"
+      top
+      color="primary"
+      right
+      elevation="24"
+    >
+      {{ message }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="pink"
+          small
+          icon
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          <v-icon>mdi-close-thick</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
+
     <v-footer color="grey lighten-3" padless>
       <v-col
         class="text-center"
@@ -163,10 +184,12 @@ export default {
   middleware: 'auth',
   data() {
     return {
+      snackbar: false,
       clipped: false,
       drawer: false,
       fixed: false,
       dark: undefined,
+      message: '',
       items: [
         {
           menu: 'menu1',
@@ -206,10 +229,18 @@ export default {
     this.$nuxt.$on('getMenu', ($event) => this.menus($event))
     this.$nuxt.$on('getLogo', ($event) => this.getLogo($event))
     this.$nuxt.$on('getCompany', ($event) => this.getCompany($event))
+    this.$nuxt.$on('snackbar', ($event) => this.openSnackbar($event))
     this.getLogo()
   },
 
   methods: {
+    openSnackbar(data) {
+      if (data) {
+        this.snackbar = true
+        this.message = data
+      }
+    },
+
     getLogo() {
       this.loadImage = true
       this.$axios.get(`/api/logo`)

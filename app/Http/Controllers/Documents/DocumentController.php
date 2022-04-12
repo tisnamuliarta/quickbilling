@@ -181,7 +181,7 @@ class DocumentController extends Controller
                 "id" => $document->id,
                 "status" => "update",
                 "type" => $request->type
-            ], 'Data inserted!');
+            ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
                 "errors" => true,

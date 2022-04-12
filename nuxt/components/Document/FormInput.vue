@@ -790,6 +790,10 @@ export default {
 
     changeCalculation() {
       // calculate discount
+      if (this.form.tax_details.length > 0) {
+        this.reduceArrayTax(this.form.tax_details)
+      }
+
       if (this.form.discount_type === 'Percent') {
         if (this.form.discount_rate > 0) {
           this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
@@ -802,13 +806,22 @@ export default {
           this.taxDiscount = this.tempTotalTax - this.form.discount_amount
         }
       }
-      this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
+
+      if (this.form.tax_details.length > 0) {
+        this.taxAmount = parseFloat(this.tempTotalTax)
+      } else {
+        this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
+      }
+
       this.taxAmount = (this.taxAmount === undefined) ? 0 : this.taxAmount
 
       // calculate tax details
-      if (this.form.discount_rate > 0) {
+      // if (this.form.discount_rate > 0) {
+      // }
+      if (this.taxDetails.length > 0) {
         this.form.tax_details = this.reduceArrayTaxAfterDiscount(this.taxDetails)
       }
+
       // calculate total amount
       this.form.amount = this.form.sub_total - this.form.discount_per_line - this.form.discount_amount + this.taxAmount
 

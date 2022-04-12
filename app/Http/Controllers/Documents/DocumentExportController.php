@@ -27,7 +27,7 @@ class DocumentExportController extends Controller
      * @throws \NumberToWords\Exception\InvalidArgumentException
      * @throws \NumberToWords\Exception\NumberToWordsException
      */
-    public function print(Request $request)
+    public function print(Request $request): \Illuminate\Http\Response
     {
         $documents = Document::find($request->id);
         $pdf = $this->pdfInstance($documents);
@@ -55,13 +55,14 @@ class DocumentExportController extends Controller
      * @throws \NumberToWords\Exception\InvalidArgumentException
      * @throws \NumberToWords\Exception\NumberToWordsException
      */
-    public function pdfInstance($documents)
+    public function pdfInstance($documents): \Barryvdh\DomPDF\PDF
     {
         $company = $this->company();
         $numberToWords = new NumberToWords();
         $currencyTransformer = $numberToWords->getNumberTransformer('en');
         $amount = Str::upper($currencyTransformer->toWords(floatval($documents->amount)));
         $type = Str::upper($this->mapping($documents->type));
+
         return Pdf::loadView('export.document', compact('documents', 'company', 'amount', 'type'));
     }
 
@@ -69,7 +70,7 @@ class DocumentExportController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function email(Request $request)
+    public function email(Request $request): \Illuminate\Http\JsonResponse
     {
         $messages = [
             'form.send_to.required' => 'Receiver is required',

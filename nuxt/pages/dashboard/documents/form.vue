@@ -284,8 +284,8 @@ export default {
     },
 
     store() {
-      const method = (this.$route.query.status === 'save') ? 'post' : 'patch'
-      const url = (this.$route.query.status === 'save') ? this.url : this.url + '/' + this.$route.query.id
+      const method = (this.$route.query.document === '0') ? 'post' : 'patch'
+      const url = (this.$route.query.document === '0') ? this.url : this.url + '/' + this.$route.query.document
       let data = this.$refs.formDocument.returnData()
 
       this.dialogLoading = true
@@ -294,11 +294,11 @@ export default {
           this.$router.push({
             path: '/dashboard/documents/form',
             query: {
-              id: res.data.data.id,
-              status: res.data.data.status,
+              document: res.data.data.id,
               type: res.data.data.type
             }
           })
+          this.$nuxt.$emit('snackbar', res.data.message)
           setTimeout(() => {
             this.getDataFromApi()
           }, 50)

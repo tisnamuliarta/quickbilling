@@ -3,308 +3,264 @@
     "name": "dashboard",
     "path": "/dashboard",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\index.vue",
-    "chunkName": "pages/dashboard/index",
-    "_name": "_3565828e"
+    "chunkName": "pages/dashboard/index"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\auth\\\\login.vue",
-    "chunkName": "pages/auth/login",
-    "_name": "_ed3554be"
+    "chunkName": "pages/auth/login"
   },
   {
     "name": "dashboard-posts",
     "path": "/dashboard/posts",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\index.vue",
-    "chunkName": "pages/dashboard/posts/index",
-    "_name": "_6d09e893"
+    "chunkName": "pages/dashboard/posts/index"
   },
   {
     "name": "dashboard-tasks",
     "path": "/dashboard/tasks",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\index.vue",
-    "chunkName": "pages/dashboard/tasks/index",
-    "_name": "_b2935410"
+    "chunkName": "pages/dashboard/tasks/index"
   },
   {
     "name": "dashboard-users",
     "path": "/dashboard/users",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\index.vue",
-    "chunkName": "pages/dashboard/users/index",
-    "_name": "_0529d33e"
+    "chunkName": "pages/dashboard/users/index"
   },
   {
     "name": "documents-view",
     "path": "/documents/view",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\documents\\\\view.vue",
-    "chunkName": "pages/documents/view",
-    "_name": "_6bb8a93d"
+    "chunkName": "pages/documents/view"
   },
   {
     "name": "pages-about-us",
     "path": "/pages/about-us",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\about-us.vue",
-    "chunkName": "pages/pages/about-us",
-    "_name": "_2af319fc"
+    "chunkName": "pages/pages/about-us"
   },
   {
     "name": "pages-booking",
     "path": "/pages/booking",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\booking.vue",
-    "chunkName": "pages/pages/booking",
-    "_name": "_388e5b36"
+    "chunkName": "pages/pages/booking"
   },
   {
     "name": "pages-category",
     "path": "/pages/category",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\category.vue",
-    "chunkName": "pages/pages/category",
-    "_name": "_3e4f5322"
+    "chunkName": "pages/pages/category"
   },
   {
     "name": "pages-contact-us",
     "path": "/pages/contact-us",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\contact-us.vue",
-    "chunkName": "pages/pages/contact-us",
-    "_name": "_6586c40f"
+    "chunkName": "pages/pages/contact-us"
   },
   {
     "name": "pages-faq",
     "path": "/pages/faq",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\faq.vue",
-    "chunkName": "pages/pages/faq",
-    "_name": "_43d1c8a2"
+    "chunkName": "pages/pages/faq"
   },
   {
     "name": "pages-privacy-policy",
     "path": "/pages/privacy-policy",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\privacy-policy.vue",
-    "chunkName": "pages/pages/privacy-policy",
-    "_name": "_bc37a88a"
+    "chunkName": "pages/pages/privacy-policy"
   },
   {
     "name": "pages-terms",
     "path": "/pages/terms",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\pages\\\\terms.vue",
-    "chunkName": "pages/pages/terms",
-    "_name": "_1c3b8cda"
+    "chunkName": "pages/pages/terms"
   },
   {
     "name": "student-announcement",
     "path": "/student/announcement",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\student\\\\announcement.vue",
-    "chunkName": "pages/student/announcement",
-    "_name": "_1f2cfcbc"
+    "chunkName": "pages/student/announcement"
   },
   {
     "name": "student-print",
     "path": "/student/print",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\student\\\\print.vue",
-    "chunkName": "pages/student/print",
-    "_name": "_1b39dee2"
+    "chunkName": "pages/student/print"
   },
   {
     "name": "student-register",
     "path": "/student/register",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\student\\\\register.vue",
-    "chunkName": "pages/student/register",
-    "_name": "_11b72304"
+    "chunkName": "pages/student/register"
   },
   {
     "name": "dashboard-bp-contact",
     "path": "/dashboard/bp/contact",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\bp\\\\contact.vue",
-    "chunkName": "pages/dashboard/bp/contact",
-    "_name": "_4e8422ce"
+    "chunkName": "pages/dashboard/bp/contact"
   },
   {
     "name": "dashboard-documents-form",
     "path": "/dashboard/documents/form",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\documents\\\\form.vue",
-    "chunkName": "pages/dashboard/documents/form",
-    "_name": "_3f9018b8"
+    "chunkName": "pages/dashboard/documents/form"
   },
   {
     "name": "dashboard-documents-list",
     "path": "/dashboard/documents/list",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\documents\\\\list.vue",
-    "chunkName": "pages/dashboard/documents/list",
-    "_name": "_73893f92"
+    "chunkName": "pages/dashboard/documents/list"
   },
   {
     "name": "dashboard-financial-account",
     "path": "/dashboard/financial/account",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\account.vue",
-    "chunkName": "pages/dashboard/financial/account",
-    "_name": "_6a90b190"
+    "chunkName": "pages/dashboard/financial/account"
   },
   {
     "name": "dashboard-financial-account-category",
     "path": "/dashboard/financial/account-category",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\account-category.vue",
-    "chunkName": "pages/dashboard/financial/account-category",
-    "_name": "_4511b6ba"
+    "chunkName": "pages/dashboard/financial/account-category"
   },
   {
     "name": "dashboard-financial-reporting-period",
     "path": "/dashboard/financial/reporting-period",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\reporting-period.vue",
-    "chunkName": "pages/dashboard/financial/reporting-period",
-    "_name": "_694d1545"
+    "chunkName": "pages/dashboard/financial/reporting-period"
   },
   {
     "name": "dashboard-inventory-item",
     "path": "/dashboard/inventory/item",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\item.vue",
-    "chunkName": "pages/dashboard/inventory/item",
-    "_name": "_7f19912b"
+    "chunkName": "pages/dashboard/inventory/item"
   },
   {
     "name": "dashboard-posts-category",
     "path": "/dashboard/posts/category",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\category.vue",
-    "chunkName": "pages/dashboard/posts/category",
-    "_name": "_06a24466"
+    "chunkName": "pages/dashboard/posts/category"
   },
   {
     "name": "dashboard-purchase-invoice",
     "path": "/dashboard/purchase/invoice",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\invoice.vue",
-    "chunkName": "pages/dashboard/purchase/invoice",
-    "_name": "_67758a88"
+    "chunkName": "pages/dashboard/purchase/invoice"
   },
   {
     "name": "dashboard-purchase-order",
     "path": "/dashboard/purchase/order",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\order.vue",
-    "chunkName": "pages/dashboard/purchase/order",
-    "_name": "_6c59cae9"
+    "chunkName": "pages/dashboard/purchase/order"
   },
   {
     "name": "dashboard-purchase-payment",
     "path": "/dashboard/purchase/payment",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\payment.vue",
-    "chunkName": "pages/dashboard/purchase/payment",
-    "_name": "_3f0664e1"
+    "chunkName": "pages/dashboard/purchase/payment"
   },
   {
     "name": "dashboard-purchase-quote",
     "path": "/dashboard/purchase/quote",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\quote.vue",
-    "chunkName": "pages/dashboard/purchase/quote",
-    "_name": "_2b4c3b17"
+    "chunkName": "pages/dashboard/purchase/quote"
   },
   {
     "name": "dashboard-purchase-receipt",
     "path": "/dashboard/purchase/receipt",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\receipt.vue",
-    "chunkName": "pages/dashboard/purchase/receipt",
-    "_name": "_140d3c13"
+    "chunkName": "pages/dashboard/purchase/receipt"
   },
   {
     "name": "dashboard-purchase-return",
     "path": "/dashboard/purchase/return",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\return.vue",
-    "chunkName": "pages/dashboard/purchase/return",
-    "_name": "_441df025"
+    "chunkName": "pages/dashboard/purchase/return"
   },
   {
     "name": "dashboard-sales-delivery",
     "path": "/dashboard/sales/delivery",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\delivery.vue",
-    "chunkName": "pages/dashboard/sales/delivery",
-    "_name": "_48c0873c"
+    "chunkName": "pages/dashboard/sales/delivery"
   },
   {
     "name": "dashboard-sales-invoice",
     "path": "/dashboard/sales/invoice",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\invoice.vue",
-    "chunkName": "pages/dashboard/sales/invoice",
-    "_name": "_f976a2d6"
+    "chunkName": "pages/dashboard/sales/invoice"
   },
   {
     "name": "dashboard-sales-order",
     "path": "/dashboard/sales/order",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\order.vue",
-    "chunkName": "pages/dashboard/sales/order",
-    "_name": "_19cc8e36"
+    "chunkName": "pages/dashboard/sales/order"
   },
   {
     "name": "dashboard-sales-payment",
     "path": "/dashboard/sales/payment",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\payment.vue",
-    "chunkName": "pages/dashboard/sales/payment",
-    "_name": "_5ad588ee"
+    "chunkName": "pages/dashboard/sales/payment"
   },
   {
     "name": "dashboard-sales-quote",
     "path": "/dashboard/sales/quote",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\quote.vue",
-    "chunkName": "pages/dashboard/sales/quote",
-    "_name": "_4e820338"
+    "chunkName": "pages/dashboard/sales/quote"
   },
   {
     "name": "dashboard-sales-return",
     "path": "/dashboard/sales/return",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\return.vue",
-    "chunkName": "pages/dashboard/sales/return",
-    "_name": "_45039678"
+    "chunkName": "pages/dashboard/sales/return"
   },
   {
     "name": "dashboard-settings-menu",
     "path": "/dashboard/settings/menu",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\menu.vue",
-    "chunkName": "pages/dashboard/settings/menu",
-    "_name": "_62a240b6"
+    "chunkName": "pages/dashboard/settings/menu"
   },
   {
     "name": "dashboard-settings-permissions",
     "path": "/dashboard/settings/permissions",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\permissions.vue",
-    "chunkName": "pages/dashboard/settings/permissions",
-    "_name": "_0f458ffd"
+    "chunkName": "pages/dashboard/settings/permissions"
   },
   {
     "name": "dashboard-settings-roles",
     "path": "/dashboard/settings/roles",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\roles.vue",
-    "chunkName": "pages/dashboard/settings/roles",
-    "_name": "_64596276"
+    "chunkName": "pages/dashboard/settings/roles"
   },
   {
     "name": "dashboard-settings-setup",
     "path": "/dashboard/settings/setup",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\setup.vue",
-    "chunkName": "pages/dashboard/settings/setup",
-    "_name": "_a7b1a394"
+    "chunkName": "pages/dashboard/settings/setup"
   },
   {
     "name": "dashboard-tasks-show",
     "path": "/dashboard/tasks/show",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\show.vue",
-    "chunkName": "pages/dashboard/tasks/show",
-    "_name": "_2437e9c7"
+    "chunkName": "pages/dashboard/tasks/show"
   },
   {
     "name": "dashboard-users-current",
     "path": "/dashboard/users/current",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\current.vue",
-    "chunkName": "pages/dashboard/users/current",
-    "_name": "_74b8d765"
+    "chunkName": "pages/dashboard/users/current"
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_0c179ab2"
+    "chunkName": "pages/index"
   },
   {
     "name": "__nuxt_laravel",
     "path": "/__nuxt_laravel",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_0c179ab2"
+    "chunkName": "pages/index"
   }
 ]

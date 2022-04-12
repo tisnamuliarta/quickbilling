@@ -15,6 +15,7 @@
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
       </v-card-title>
+      <v-divider />
       <v-container>
         <v-row no-gutters>
           <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -70,6 +71,7 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-divider />
       <v-card-actions>
         <v-spacer/>
         <v-btn

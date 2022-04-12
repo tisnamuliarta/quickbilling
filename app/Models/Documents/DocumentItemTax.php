@@ -2,7 +2,7 @@
 
 namespace App\Models\Documents;
 
-use App\Models\Financial\Tax;
+use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -25,6 +25,6 @@ class DocumentItemTax extends Model implements Auditable
 
     public function tax()
     {
-        return $this->belongsTo(Tax::class);
+        return $this->belongsTo(Vat::class, 'tax_id', 'id');
     }
 }

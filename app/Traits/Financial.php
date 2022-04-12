@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Financial\Account;
-use App\Models\Financial\Tax;
+use IFRS\Models\Account;
+use IFRS\Models\Vat;
 
 trait Financial
 {
@@ -13,7 +13,7 @@ trait Financial
      */
     public function getTaxIdByName($name): int
     {
-        $tax = Tax::where('name', $name)->first();
+        $tax = Vat::where('name', $name)->first();
         if ($tax) {
             return $tax->id;
         }
