@@ -4,6 +4,7 @@
       <v-breadcrumbs
         :items='breadcrumb'
         divider='/'
+        class="hidden-sm-and-down"
       ></v-breadcrumbs>
 
       <v-spacer class='hidden-xs-only'></v-spacer>

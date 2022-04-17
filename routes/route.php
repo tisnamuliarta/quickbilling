@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('document-files', [FileController::class, 'destroy']);
 
     Route::group(['prefix' => 'documents'], function () {
+        Route::get('form/arrow', [DocumentController::class, 'arrowAction']);
         Route::apiResource('form', DocumentController::class);
         Route::get('print', [\App\Http\Controllers\Documents\DocumentExportController::class, 'print']);
         Route::post('email', [\App\Http\Controllers\Documents\DocumentExportController::class, 'email']);

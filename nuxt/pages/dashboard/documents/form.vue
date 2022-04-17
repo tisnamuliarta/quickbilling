@@ -7,14 +7,16 @@
         @getDataFromApi="getDataFromApi"
       >
         <template #action-toolbar>
-          <v-btn icon small @click="arrowLink('prev', form.type)">
+          <v-btn text small @click="arrowLink('prev', form.type)">
             <v-icon>mdi-arrow-left</v-icon>
+            <span>Prev</span>
           </v-btn>
-          <v-btn icon small @click="arrowLink('next', form.type)">
+          <v-btn text small @click="arrowLink('next', form.type)">
             <v-icon>mdi-arrow-right</v-icon>
+            <span>Next</span>
           </v-btn>
 
-          <v-btn icon small @click="arrowLink('next', form.type)">
+          <v-btn icon small @click="$refs.dialogAudit.openDialogAudit(audits)">
             <v-icon>mdi-history</v-icon>
           </v-btn>
 
@@ -134,10 +136,12 @@
     </v-col>
     <v-col cols="12" md="2">
       <v-subheader>Action</v-subheader>
-      <DocumentCardAction ref="documentAction" />
+      <DocumentCardAction ref="documentAction"/>
     </v-col>
 
     <LazyDocumentDialogSendEmail ref="dialogSendEmail"></LazyDocumentDialogSendEmail>
+
+    <LazyDocumentDialogAudit ref="dialogAudit"/>
 
     <LazySpinnerLoading
       v-if='dialogLoading'
@@ -156,6 +160,7 @@ export default {
     return {
       breadcrumb: [],
       form: {},
+      audits: {},
       defaultItem: {},
       url: '/api/documents/form',
       dialogLoading: false,
@@ -185,7 +190,33 @@ export default {
     },
 
     arrowLink(status, type) {
+      this.$axios.get(this.url + '/arrow', {
+        params: {
+          type,
+          status,
+          document: this.$route.query.document
+        }
+      })
+        .then(res => {
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              document: res.data.data.id,
+              type
+            }
+          })
 
+          setTimeout(() => {
+            this.getDataFromApi()
+          }, 300)
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
     },
 
     getDataFromApi(copyFromId) {
@@ -201,6 +232,7 @@ export default {
         })
         .then((res) => {
           let form = ''
+          this.audits = res.data.data.audits
           if (res.data.data.count > 0) {
             form = res.data.data.rows
             this.itemAction = res.data.data.action

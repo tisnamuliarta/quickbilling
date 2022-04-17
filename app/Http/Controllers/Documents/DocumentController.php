@@ -42,6 +42,38 @@ class DocumentController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function arrowAction(Request $request)
+    {
+        try {
+            $type = $request->type;
+            $status = $request->status;
+            $document = $request->document;
+
+            $query = Document::where('type', $type);
+            $row = [];
+            if ($status == 'prev') {
+                $row = $query->where('id', '<', $document)
+                    ->orderBy('id', 'desc')
+                    ->first();
+            } elseif ($status == 'next') {
+                $row = $query->where('id', '>', $document)->first();
+            }
+
+            if (!$row) {
+                return $this->error('Document not found', 404);
+            }
+            return $this->success([
+                'id' => $row->id
+            ]);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage());
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -153,7 +185,7 @@ class DocumentController extends Controller
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
                 'action' => $this->service->mappingAction($type),
-                'audit' => $data->audits()->with('user')->get()
+                'audits' => $data->audits()->with('user')->get()
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [

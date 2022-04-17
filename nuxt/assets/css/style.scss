@@ -470,3 +470,7 @@ body {
   position: relative;
 }
 
+.item-baseline > .v-data-table__wrapper > table > tbody > tr {
+  vertical-align: baseline !important;
+}
+
