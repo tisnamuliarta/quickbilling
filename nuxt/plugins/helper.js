@@ -62,9 +62,9 @@ const helper = {
     switch (type) {
       case 'SQ':
         return [
-          {title: 'Create Invoice', action: 'createSalesInvoice', icon: 'mdi-printer'},
-          {title: 'Create Order', action: 'createSalesOrder', icon: 'mdi-email'},
-          {title: 'Clone', action: 'cloneSalesQuotation', icon: 'mdi-email'},
+          {title: 'Create Invoice', action: 'SI', icon: 'mdi-printer'},
+          {title: 'Create Order', action: 'SO', icon: 'mdi-email'},
+          {title: 'Clone', action: 'SQ', icon: 'mdi-email'},
         ];
       case 'SO':
         return 'sales order';

@@ -12,7 +12,6 @@ use App\Traits\Financial;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Vinkla\Hashids\Facades\Hashids;
 
 class DocumentService
 {
@@ -30,7 +29,7 @@ class DocumentService
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
         $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "document_number";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "desc";
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
@@ -38,7 +37,9 @@ class DocumentService
             " documents.*,
               CONVERT(issued_at, date) as issued_at,
               CONVERT(due_at, date) as due_at"
-        )->where('type', $type);
+        )
+            ->with(['items', 'taxDetails', 'entity'])
+            ->where('type', $type);
 
         $result["total"] = $query->count();
 
@@ -107,6 +108,9 @@ class DocumentService
         $request->request->remove('updated_at');
         $request->request->remove('deleted_at');
         $request->request->remove('currency');
+        $request->request->remove('entity');
+        $request->request->remove('parent');
+        $request->request->remove('child');
 
         $request->merge([
             'currency_code' => $request->default_currency_code,
@@ -150,7 +154,9 @@ class DocumentService
 
         if ((int)$day_val === 1) {
             $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
-            $check_document = Document::where('document_number', '=', $document)->first();
+            $check_document = Document::where('document_number', '=', $document)
+                ->where('type', $alias)
+                ->first();
             if (!$check_document) {
                 return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', '1');
             } else {
@@ -178,6 +184,7 @@ class DocumentService
 
         $doc_num = Document::selectRaw('document_number as code')
             ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
+            ->where('type', $alias)
             ->orderBy('code', 'DESC')
             ->first();
 
@@ -197,7 +204,7 @@ class DocumentService
     public function processItems($items, $document, $tax_details)
     {
         foreach ($items as $item) {
-            if (array_key_exists('id', $item)) {
+            if (array_key_exists('id', $item) && $item['id']) {
                 $item_detail = DocumentItem::find($item['id']);
                 $forms = $this->detailsForm($document, $item, 'update');
                 foreach ($forms as $index => $form) {
@@ -230,13 +237,13 @@ class DocumentService
             'name' => $item['name'],
             'description' => $item['description'],
             'sku' => $item['sku'],
-            'quantity' => $item['quantity'],
-            'price' => $item['price'],
+            'quantity' => doubleval($item['quantity']),
+            'price' => doubleval($item['price']),
             'unit' => $item['unit'],
             'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
-            'discount_rate' => (array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0,
-            'total' => $item['total'],
+            'discount_rate' => doubleval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
+            'total' => doubleval($item['total']),
         ];
 
         $merge = [];
@@ -269,9 +276,36 @@ class DocumentService
                     'document_item_id' => $item_detail->id,
                     'tax_id' => $this->getTaxIdByName($tax['name']),
                     'name' => $tax['name'],
-                    'amount' => $tax['amount']
+                    'amount' => doubleval($tax['amount'])
                 ]
             );
+        }
+    }
+
+    /**
+     * @param $type
+     * @return string[][]
+     */
+    public function mappingAction($type): array
+    {
+        switch ($type) {
+            case 'SQ':
+                return [
+                    ['title' => 'Sales Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
+                    ['title' => 'Sales Order', 'action' => 'SO', 'icon' => 'mdi-sale'],
+                    ['title' => 'Clone', 'action' => 'SQ', 'icon' => 'mdi-content-copy'],
+                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-printer']
+                ];
+            case 'SO':
+                return [
+                    ['title' => 'Create Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
+                    ['title' => 'Clone', 'action' => 'SO', 'icon' => 'mdi-content-copy'],
+                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
+                ];
+            default:
+                return [
+                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
+                ];
         }
     }
 }

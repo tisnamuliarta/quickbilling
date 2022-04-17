@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -22,11 +23,17 @@ class AuthController extends Controller
                 'password' => 'required|string'
             ]);
 
-            if (!Auth::attempt($attr)) {
+            $remember = $request->remember;
+
+            if (!Auth::attempt($attr, $remember)) {
                 return $this->error('Credentials not match', 401);
             }
 
             session(['company_id' => 1]);
+
+            $user = User::find(auth()->user()->id);
+            $user->last_logged_in_at = Carbon::now();
+            $user->save();
 
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,

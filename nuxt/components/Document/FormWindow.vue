@@ -7,9 +7,7 @@
       ></v-breadcrumbs>
 
       <v-spacer class='hidden-xs-only'></v-spacer>
-      <v-btn color="green" small dark outlined @click="getDataFromApi">
-        <v-icon>mdi-refresh-circle</v-icon>
-      </v-btn>
+      <slot name="action-toolbar" />
     </v-toolbar>
 
     <slot name="content"></slot>

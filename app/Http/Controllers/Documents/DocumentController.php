@@ -7,8 +7,6 @@ use App\Models\Documents\Document;
 use App\Services\Documents\DocumentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Vinkla\Hashids\Facades\Hashids;
 
 class DocumentController extends Controller
 {
@@ -71,6 +69,14 @@ class DocumentController extends Controller
         try {
             $document = Document::create($this->service->formData($request, 'store'));
 
+            if ($document->parent_id !== 0) {
+                $doc = Document::find($document->parent_id);
+                if ($doc) {
+                    $doc->status = 'closed';
+                    $doc->save();
+                }
+            }
+
             $this->service->processItems($items, $document, $tax_details);
 
             DB::commit();
@@ -126,17 +132,34 @@ class DocumentController extends Controller
      */
     public function show(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        $type = $request->type;
-        $form = $this->service->getForm($type);
-        $data = Document::where("documents.id", "=", $id)
-            ->with(['items', 'taxDetails'])
-            ->first();
+        try {
+            $type = $request->type;
+            $copy_from_id = $request->copyFromId;
 
-        return $this->success([
-            'rows' => $data,
-            'form' => $form,
-            'count' => ($data) ? 1 : 0
-        ]);
+            if (isset($copy_from_id)) {
+                if (intval($copy_from_id) != 0) {
+                    $id = $copy_from_id;
+                }
+            }
+
+            $data = Document::where("id", "=", $id)
+                ->with(['items', 'taxDetails', 'entity', 'parent', 'child'])
+                ->first();
+
+            $form = $this->service->getForm(($data) ? $data->type : $type);
+
+            return $this->success([
+                'rows' => $data,
+                'form' => $form,
+                'count' => ($data) ? 1 : 0,
+                'action' => $this->service->mappingAction($type),
+                'audit' => $data->audits()->with('user')->get()
+            ]);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                'trace' => $exception->getTrace()
+            ]);
+        }
     }
 
     /**
@@ -198,9 +221,9 @@ class DocumentController extends Controller
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
-        $details = Document::where("id", "=", $id)->first();
-        if ($details) {
-            Document::where("id", "=", $id)->delete();
+        $document = Document::find($id);
+        if ($document) {
+            $document->delete();
             return $this->success([
                 "errors" => false
             ], 'Row deleted!');

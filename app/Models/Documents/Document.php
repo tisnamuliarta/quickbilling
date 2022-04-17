@@ -3,9 +3,12 @@
 namespace App\Models\Documents;
 
 use App\Models\Financial\Currency;
+use App\Models\Inventory\Contact;
 use Carbon\Carbon;
+use IFRS\Models\Entity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Document extends Model implements Auditable
@@ -13,6 +16,7 @@ class Document extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [];
 
@@ -54,6 +58,11 @@ class Document extends Model implements Auditable
         return Carbon::parse($value)->format('Y-m-d');
     }
 
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -75,6 +84,31 @@ class Document extends Model implements Auditable
         return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
+    public function entity()
+    {
+        return $this->belongsTo(Entity::class);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(DocumentHistory::class);
+    }
+
+    public function totals()
+    {
+        return $this->hasMany(DocumentTotal::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Document::class, 'parent_id');
+    }
+
+    public function child()
+    {
+        return $this->hasMany(Document::class, 'parent_id');
+    }
+
     public function getDefaultCurrencyCodeAttribute()
     {
         return $this->currency->code;
@@ -83,5 +117,18 @@ class Document extends Model implements Auditable
     public function getDefaultCurrencySymbolAttribute()
     {
         return $this->currency->symbol;
+    }
+
+    // this is a recommended way to declare event handlers
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($document) {
+            // before delete() method call this
+            $document->items()->delete();
+            $document->taxDetails()->delete();
+            // do the rest of the cleanup...
+        });
     }
 }

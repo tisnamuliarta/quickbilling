@@ -1,114 +1,141 @@
 <template>
-  <div>
-    <DocumentFormWindow
-      ref="formWindow"
-      :breadcrumb="breadcrumb"
-      @getDataFromApi="getDataFromApi"
-    >
-      <template #content>
-        <v-row v-show="showLoading" no-gutters>
-          <v-col cols="12">
-            <v-skeleton-loader
-              type="list-item-three-line, table-thead, table-tbody, list-item-three-line"
-            ></v-skeleton-loader>
-          </v-col>
-        </v-row>
-        <LazyDocumentFormInput v-show="!showLoading" ref="formDocument"></LazyDocumentFormInput>
-      </template>
+  <v-row>
+    <v-col cols="12" md="10">
+      <DocumentFormWindow
+        ref="formWindow"
+        :breadcrumb="breadcrumb"
+        @getDataFromApi="getDataFromApi"
+      >
+        <template #action-toolbar>
+          <v-btn icon small @click="arrowLink('prev', form.type)">
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+          <v-btn icon small @click="arrowLink('next', form.type)">
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
 
-      <template #action>
-        <v-menu
-          offset-y
-        >
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              class="white--text"
-              color="green"
-              dark
-              v-bind="attrs"
-              small
-              v-on="on"
-            >
-              Print & Preview
-              <v-icon
-                right
-                dark
+          <v-btn icon small @click="arrowLink('next', form.type)">
+            <v-icon>mdi-history</v-icon>
+          </v-btn>
+
+          <v-btn color="green" dark icon small @click="getDataFromApi">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </template>
+
+        <template #content>
+          <v-row v-show="showLoading" no-gutters>
+            <v-col cols="12">
+              <v-skeleton-loader
+                type="list-item-three-line, table-thead, table-tbody, list-item-three-line"
+              ></v-skeleton-loader>
+            </v-col>
+          </v-row>
+          <LazyDocumentFormInput v-show="!showLoading" ref="formDocument"></LazyDocumentFormInput>
+        </template>
+
+        <template #action>
+          <v-menu
+            offset-y
+          >
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                class="white--text"
+                color="green"
+                :disabled="checkDisable()"
+                v-bind="attrs"
+                small
+                v-on="on"
               >
-                mdi-printer
-              </v-icon>
-            </v-btn>
-          </template>
+                Print & Preview
+                <v-icon
+                  right
+                  dark
+                >
+                  mdi-printer
+                </v-icon>
+              </v-btn>
+            </template>
 
-          <v-list dense>
-            <v-list-item
-              v-for="item in items"
-              :key="item.title"
-              dense
-              link
-              @click="printAction(item.action)"
-            >
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-
-        <v-menu
-          offset-y
-        >
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn
-              class="white--text ml-5"
-              color="green"
-              dark
-              v-bind="attrs"
-              small
-              v-on="on"
-            >
-              Action
-              <v-icon
-                right
-                dark
+            <v-list dense>
+              <v-list-item
+                v-for="item in items"
+                :key="item.title"
+                dense
+                link
+                @click="printAction(item.action)"
               >
-                mdi-content-copy
-              </v-icon>
-            </v-btn>
-          </template>
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
-          <v-list>
-            <v-list-item
-              v-for="item in itemAction"
-              :key="item.title"
-              dense
-              link
-              @click="actionDocument(item.action)"
-            >
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
+          <v-menu
+            offset-y
+          >
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                class="white--text ml-5"
+                color="green"
+                :disabled="checkDisable()"
+                v-bind="attrs"
+                small
+                v-on="on"
+              >
+                Action
+                <v-icon
+                  right
+                  dark
+                >
+                  mdi-folder-cog
+                </v-icon>
+              </v-btn>
+            </template>
 
-      <template #saveData>
-        <v-btn
-          color="green darken-1"
-          dark
-          small
-          @click="store"
-        >
-          {{ actionName }}
-          <v-icon>
-            mdi-check
-          </v-icon>
-        </v-btn>
-      </template>
-    </DocumentFormWindow>
+            <v-list>
+              <v-list-item
+                v-for="item in itemAction"
+                :key="item.title"
+                dense
+                link
+                @click="actionDocument(item.action)"
+              >
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+
+        <template #saveData>
+          <v-btn
+            color="green darken-1"
+            class="white--text"
+            :disabled="checkDisable()"
+            small
+            @click="store"
+          >
+            {{ actionName }}
+            <v-icon>
+              mdi-check
+            </v-icon>
+          </v-btn>
+        </template>
+      </DocumentFormWindow>
+    </v-col>
+    <v-col cols="12" md="2">
+      <v-subheader>Action</v-subheader>
+      <DocumentCardAction ref="documentAction" />
+    </v-col>
 
     <LazyDocumentDialogSendEmail ref="dialogSendEmail"></LazyDocumentDialogSendEmail>
 
@@ -116,7 +143,7 @@
       v-if='dialogLoading'
       ref='spinnerLoadingImport'
     ></LazySpinnerLoading>
-  </div>
+  </v-row>
 </template>
 
 <script>
@@ -153,7 +180,15 @@ export default {
   },
 
   methods: {
-    getDataFromApi() {
+    checkDisable() {
+      return this.form.status === 'closed' || this.form.status === 'cancel';
+    },
+
+    arrowLink(status, type) {
+
+    },
+
+    getDataFromApi(copyFromId) {
       // this.dialogLoading = true
       this.showLoading = true
       const type = this.$route.query.type
@@ -161,13 +196,15 @@ export default {
         .get(this.url + '/' + this.$route.query.document, {
           params: {
             type,
+            copyFromId,
           },
         })
         .then((res) => {
           let form = ''
           if (res.data.data.count > 0) {
             form = res.data.data.rows
-            this.itemAction = this.$helper.itemAction(form.type)
+            this.itemAction = res.data.data.action
+            this.$refs.documentAction.setAction(this.itemAction)
             this.actionName = 'Update'
           } else {
             form = res.data.data.form
@@ -195,13 +232,68 @@ export default {
 
     actionDocument(action) {
       switch (action) {
-        case 'preview':
-          this.previewDocument()
+        case 'SQ':
+        case 'SO':
+        case 'PQ':
+        case 'PO':
+          const document = this.$route.query.document
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              document: 0,
+              type: action
+            }
+          })
+          setTimeout(() => {
+            this.actionName = 'Save'
+            this.getBreadcrumb(action, this.form, this.form.status)
+            this.$refs.formDocument.changeValue('type', action)
+            this.$refs.formDocument.changeValue('parent_id', document)
+          }, 300)
+          break;
+        case 'C':
+          this.$refs.formDocument.changeValue('status', 'cancel')
+          this.store()
           break;
         case 'sendEmail':
           this.openDialogEmail()
           break;
       }
+    },
+
+    deleteDocument(document) {
+      const vm = this
+      this.$swal({
+        title: 'Are you sure?',
+        text: 'The data will be deleted',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.value) {
+          this.$axios
+            .delete(this.url + '/' + document)
+            .then((res) => {
+              this.$swal({
+                type: 'success',
+                title: 'Success...',
+                text: 'Data Deleted!',
+              })
+              this.$router.push({
+                path: vm.$helper.mappingAction(vm.$route.query.type)
+              })
+            })
+            .catch((err) => {
+              this.$swal({
+                type: 'error',
+                title: 'Oops...',
+                text: err.response.data.message,
+              })
+            })
+        }
+      })
     },
 
     printAction(action) {
@@ -286,7 +378,7 @@ export default {
     store() {
       const method = (this.$route.query.document === '0') ? 'post' : 'patch'
       const url = (this.$route.query.document === '0') ? this.url : this.url + '/' + this.$route.query.document
-      let data = this.$refs.formDocument.returnData()
+      let data = this.$refs.formDocument.returnData(this.$route.query.document)
 
       this.dialogLoading = true
       this.$axios({method, url, data})

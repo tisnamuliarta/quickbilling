@@ -437,3 +437,36 @@ body {
   padding: 0 !important;
 }
 
+.v-application--is-ltr .v-timeline--dense:not(.v-timeline--reverse):before {
+  left: 0 !important;
+}
+
+.v-timeline-item__dot--small .v-timeline-item__inner-dot {
+  height: 15px !important;
+  margin: 1.678px !important;
+  width: 15px !important;
+}
+
+.v-timeline-item__dot--small {
+  height: 18px !important;
+  left: 0 !important;
+  width: 18px !important;
+}
+
+.v-timeline-item__divider {
+  position: relative;
+  min-width: 15px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.v-timeline--dense .v-timeline-item__body {
+  max-width: 100% !important;
+}
+
+.v-timeline {
+  padding-top: 0 !important;
+  position: relative;
+}
+

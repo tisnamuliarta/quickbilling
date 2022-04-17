@@ -34,7 +34,9 @@
             />
           </template>
           <template #[`item.document_number`]="{ item }">
-            <a @click="editItem(item)" v-text="item.document_number"></a>
+            <a @click="editItem(item)">
+              <strong v-text="item.document_number"></strong>
+            </a>
           </template>
 
           <template #[`item.status`]="{ item }">
@@ -94,7 +96,7 @@ export default {
         {text: 'Customer', value: 'contact_name'},
         {text: 'Date', value: 'issued_at'},
         {text: 'Due Date', value: 'due_at'},
-        {text: 'Status', value: 'status', align: 'center'},
+        {text: 'Status', value: 'status', align: 'left'},
         {text: 'Balance Due', value: 'balance_due', align: 'right'},
         {text: 'Total', value: 'amount', align: 'right'},
       ],
@@ -141,7 +143,11 @@ export default {
           return 'warning'
         case 'paid':
           return 'green'
+        case 'closed':
+          return 'green'
         case 'overdue':
+          return 'red'
+        case 'cancel':
           return 'red'
       }
     },

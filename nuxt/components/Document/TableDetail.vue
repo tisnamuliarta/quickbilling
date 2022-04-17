@@ -115,21 +115,23 @@ export default {
             renderer(instance, td, row, col, prop, value, cellProperties) {
               let button = null
               const vm = window.details
-              button = document.createElement('button')
-              button.type = 'button'
-              button.innerText = ">";
-              button.className = "btnNPB";
-              button.value = 'Details'
+              if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
+                button = document.createElement('button')
+                button.type = 'button'
+                button.innerText = ">";
+                button.className = "btnNPB";
+                button.value = 'Details'
 
-              Handsontable.dom.addEvent(button, 'mousedown', (event) => {
-                event.preventDefault()
-                vm.$refs.dialogItem.openDialog(row)
-                // vm.$refs.inv.open()
-              })
+                Handsontable.dom.addEvent(button, 'mousedown', (event) => {
+                  event.preventDefault()
+                  vm.$refs.dialogItem.openDialog(row)
+                  // vm.$refs.inv.open()
+                })
 
-              Handsontable.dom.empty(td)
-              td.appendChild(button)
-              return td
+                Handsontable.dom.empty(td)
+                td.appendChild(button)
+                return td
+              }
             },
           },
           {
@@ -150,13 +152,13 @@ export default {
           },
           {
             data: 'name',
-            width: '150px',
+            width: '120px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'description',
-            width: '230px',
+            width: '200px',
             wordWrap: false,
           },
           {
@@ -201,7 +203,7 @@ export default {
           },
           {
             data: 'tax_name',
-            width: '100px',
+            width: '80px',
             type: 'dropdown',
             height: 26,
             wordWrap: false,
@@ -230,19 +232,21 @@ export default {
             renderer(instance, td, row, col, prop, value, cellProperties) {
               let button = null
               const vm = window.details
-              button = document.createElement('button')
-              button.type = 'button'
-              button.innerText = "X";
-              button.className = "btnDelete";
-              button.value = 'Details'
+              if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
+                button = document.createElement('button')
+                button.type = 'button'
+                button.innerText = "X";
+                button.className = "btnDelete";
+                button.value = 'Details'
 
-              Handsontable.dom.addEvent(button, 'mousedown', (event) => {
-                event.preventDefault()
-                vm.removeRow(row)
-              })
+                Handsontable.dom.addEvent(button, 'mousedown', (event) => {
+                  event.preventDefault()
+                  vm.removeRow(row)
+                })
 
-              Handsontable.dom.empty(td)
-              td.appendChild(button)
+                Handsontable.dom.empty(td)
+                td.appendChild(button)
+              }
               return td
             }
           },
@@ -332,8 +336,8 @@ export default {
     },
 
     setDataToDetails(data, form) {
-      this.updateTableSettings()
       this.form = form
+      this.updateTableSettings()
       const vm = this
       const items = (form.items !== undefined) ? form.items : data
       vm.$refs.details.hotInstance.loadData(items)
@@ -343,7 +347,7 @@ export default {
       }
       // setTimeout(() => {
       //   vm.$refs.details.hotInstance.loadData(data)
-      // }, 10)
+      // }, 20)
     },
 
     calculateTotal() {
@@ -421,7 +425,13 @@ export default {
       return this.$refs.details.hotInstance.isEmptyRow(key)
     },
 
-    getAddData() {
+    getAddData(document) {
+      if (document === '0') {
+        const countRows = this.$refs.details.hotInstance.countRows()
+        for (let i = 0; i < countRows; i++) {
+          this.$refs.details.hotInstance.setDataAtRowProp(i, 'id', null)
+        }
+      }
       return this.$refs.details.hotInstance.getSourceData()
       // return this.$refs.details.hotInstance.getData()
     },

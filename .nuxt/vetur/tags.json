@@ -35,11 +35,8 @@
   "VideoCard": {
     "description": "Auto imported from components/VideoCard.vue"
   },
-  "DashboardCheck": {
-    "description": "Auto imported from components/Dashboard/Check.vue"
-  },
-  "DashboardForm": {
-    "description": "Auto imported from components/Dashboard/Form.vue"
+  "DocumentCardAction": {
+    "description": "Auto imported from components/Document/CardAction.vue"
   },
   "DocumentDialogFormDocument": {
     "description": "Auto imported from components/Document/DialogFormDocument.vue"
@@ -65,6 +62,12 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
+  "DashboardCheck": {
+    "description": "Auto imported from components/Dashboard/Check.vue"
+  },
+  "DashboardForm": {
+    "description": "Auto imported from components/Dashboard/Form.vue"
+  },
   "FinancialFormAccount": {
     "description": "Auto imported from components/Financial/FormAccount.vue"
   },
@@ -74,14 +77,14 @@
   "FinancialFormReportingPeriod": {
     "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
   },
+  "SettingEntity": {
+    "description": "Auto imported from components/Setting/Entity.vue"
+  },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
-  },
-  "SettingEntity": {
-    "description": "Auto imported from components/Setting/Entity.vue"
   },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
