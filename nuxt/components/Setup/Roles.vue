@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex sm12 md6 offset-md3>
+    <v-flex sm12 md12>
       <div class="mt-0">
         <v-data-table
           :mobile-breakpoint="0"

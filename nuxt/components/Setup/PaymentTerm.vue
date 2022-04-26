@@ -209,19 +209,15 @@ export default {
       const vm = this
       const form = this.form
       const status = this.statusProcessing
-      const data = {
-        form,
-        status,
-      }
 
       if (status === 'insert') {
-        this.store('post', this.url, data, 'insert', type)
+        this.store('post', this.url, form, 'insert', type)
         vm.submitLoad = false
       } else if (status === 'update') {
         this.store(
           'put',
           this.url + '/' + this.form.id,
-          data,
+          form,
           'update',
           type
         )

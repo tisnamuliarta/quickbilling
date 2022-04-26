@@ -40,16 +40,15 @@ class PaymentTermService
     }
 
     /**
-     * @param $form
      * @param $request
      * @param $type
      * @return array
      */
-    public function formData($form, $request, $type): array
+    public function formData($request, $type): array
     {
         return [
-            'name' => $form['name'],
-            'value' => (array_key_exists('value', $form)) ? $form['value'] : 0,
+            'name' => $request->name,
+            'value' => (isset($request->value)) ? $request->value : 0,
         ];
     }
 }

@@ -48,6 +48,8 @@ class TaxService
         $request->request->remove('created_at');
         $request->request->remove('deleted_at');
         $request->request->remove('destroyed_at');
+        $request->request->remove('account');
+        $request->request->remove('entity');
         $request->request->remove('id');
 
         return $request->all();

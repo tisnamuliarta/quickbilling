@@ -48,7 +48,7 @@ class PaymentMethodController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'form.name' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
@@ -97,7 +97,7 @@ class PaymentMethodController extends Controller
     public function update(Request $request, $id)
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'form.name' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);

@@ -184,14 +184,26 @@ class DocumentController extends Controller
                 'rows' => $data,
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
-                'action' => $this->service->mappingAction($type),
-                'audits' => $data->audits()->with('user')->get()
+                'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
+                'audits' => ($id != 0) ? $data->audits()->with('user')->get(): []
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
                 'trace' => $exception->getTrace()
             ]);
         }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAudit($id)
+    {
+        $data = Document::find($id);
+        return $this->success([
+           'audit' => $data->audits()->with('user')->get()
+        ]);
     }
 
     /**

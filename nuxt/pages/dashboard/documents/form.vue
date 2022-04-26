@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" md="10">
+    <v-col cols="12" :md="itemAction.length > 0 ? '10' : '12'">
       <DocumentFormWindow
         ref="formWindow"
         :breadcrumb="breadcrumb"
@@ -134,8 +134,8 @@
         </template>
       </DocumentFormWindow>
     </v-col>
-    <v-col cols="12" md="2">
-      <v-subheader>Action</v-subheader>
+    <v-col v-if="itemAction.length > 0" cols="12" md="2">
+      <v-subheader style="margin-top: -20px">Action</v-subheader>
       <DocumentCardAction ref="documentAction"/>
     </v-col>
 
@@ -235,15 +235,21 @@ export default {
           this.audits = res.data.data.audits
           if (res.data.data.count > 0) {
             form = res.data.data.rows
-            this.itemAction = res.data.data.action
-            this.$refs.documentAction.setAction(this.itemAction)
             this.actionName = 'Update'
           } else {
             form = res.data.data.form
             this.actionName = 'Save'
           }
+
           this.form = Object.assign({}, form)
           this.defaultItem = Object.assign({}, form)
+
+          if (res.data.data.count > 0) {
+            this.itemAction = res.data.data.action
+            setTimeout(() => {
+              this.$refs.documentAction.setAction(this.itemAction, this.checkDisable())
+            }, 50)
+          }
           this.getBreadcrumb(type, form, form.status)
 
           setTimeout(() => {
@@ -251,10 +257,11 @@ export default {
           }, 30)
         })
         .catch((err) => {
+          const message = (err.response !== undefined) ? err.response.data.message : err
           this.$swal({
             type: 'error',
             title: 'Error',
-            text: err.response.data.message,
+            text: message,
           })
         })
         .finally(res => {

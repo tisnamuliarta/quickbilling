@@ -60,12 +60,13 @@ trait ContactDetail
     {
         $usr = User::where('username', $form['email'])->first();
         $password = ($usr) ? $usr->password : null;
-        $user = User::updateOrCreate([
-            'name' => $form['name'],
-            'email' => $form['email'],
-            'password' => (array_key_exists('password', $form)) ? bcrypt($form['password']) : $password,
-            'username' => $form['email'],
-        ]);
+        $user = User::updateOrCreate(
+            ['email' => $form['email'], 'username' => $form['email']],
+            [
+                'name' => $form['name'],
+                'password' => (array_key_exists('password', $form)) ? bcrypt($form['password']) : $password,
+            ]
+        );
 
         $this->processUserRolePermission('Customer', $user);
     }

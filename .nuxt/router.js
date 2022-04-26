@@ -8,7 +8,6 @@ const _3565828e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\index
 const _ed3554be = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
 const _6d09e893 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
 const _b2935410 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
-const _0529d33e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
 const _6bb8a93d = () => interopDefault(import('..\\nuxt\\pages\\documents\\view.vue' /* webpackChunkName: "pages/documents/view" */))
 const _2af319fc = () => interopDefault(import('..\\nuxt\\pages\\pages\\about-us.vue' /* webpackChunkName: "pages/pages/about-us" */))
 const _388e5b36 = () => interopDefault(import('..\\nuxt\\pages\\pages\\booking.vue' /* webpackChunkName: "pages/pages/booking" */))
@@ -25,8 +24,15 @@ const _3f9018b8 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\docum
 const _73893f92 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\documents\\list.vue' /* webpackChunkName: "pages/dashboard/documents/list" */))
 const _6a90b190 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account.vue' /* webpackChunkName: "pages/dashboard/financial/account" */))
 const _4511b6ba = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\account-category.vue' /* webpackChunkName: "pages/dashboard/financial/account-category" */))
+const _e8af81dc = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-deposit.vue' /* webpackChunkName: "pages/dashboard/financial/bank-deposit" */))
+const _5ad723a7 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-transfer.vue' /* webpackChunkName: "pages/dashboard/financial/bank-transfer" */))
+const _3bc6cf46 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-withdraw.vue' /* webpackChunkName: "pages/dashboard/financial/bank-withdraw" */))
+const _bb641480 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\closing.vue' /* webpackChunkName: "pages/dashboard/financial/closing" */))
+const _3667d7e3 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\expense.vue' /* webpackChunkName: "pages/dashboard/financial/expense" */))
+const _7659f1a7 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\journal-entry.vue' /* webpackChunkName: "pages/dashboard/financial/journal-entry" */))
 const _694d1545 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\reporting-period.vue' /* webpackChunkName: "pages/dashboard/financial/reporting-period" */))
 const _7f19912b = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
+const _1c1f7d3a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\price-list.vue' /* webpackChunkName: "pages/dashboard/inventory/price-list" */))
 const _06a24466 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
 const _67758a88 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
 const _6c59cae9 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\order.vue' /* webpackChunkName: "pages/dashboard/purchase/order" */))
@@ -34,6 +40,9 @@ const _3f0664e1 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purch
 const _2b4c3b17 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\quote.vue' /* webpackChunkName: "pages/dashboard/purchase/quote" */))
 const _140d3c13 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\receipt.vue' /* webpackChunkName: "pages/dashboard/purchase/receipt" */))
 const _441df025 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\return.vue' /* webpackChunkName: "pages/dashboard/purchase/return" */))
+const _33e23177 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\reports\\bank.vue' /* webpackChunkName: "pages/dashboard/reports/bank" */))
+const _08c22b49 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\reports\\bp.vue' /* webpackChunkName: "pages/dashboard/reports/bp" */))
+const _2e3d3a64 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\reports\\item.vue' /* webpackChunkName: "pages/dashboard/reports/item" */))
 const _48c0873c = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\delivery.vue' /* webpackChunkName: "pages/dashboard/sales/delivery" */))
 const _f976a2d6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\invoice.vue' /* webpackChunkName: "pages/dashboard/sales/invoice" */))
 const _19cc8e36 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\order.vue' /* webpackChunkName: "pages/dashboard/sales/order" */))
@@ -41,8 +50,6 @@ const _5ad588ee = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales
 const _4e820338 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\quote.vue' /* webpackChunkName: "pages/dashboard/sales/quote" */))
 const _45039678 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\return.vue' /* webpackChunkName: "pages/dashboard/sales/return" */))
 const _62a240b6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\menu.vue' /* webpackChunkName: "pages/dashboard/settings/menu" */))
-const _0f458ffd = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\permissions.vue' /* webpackChunkName: "pages/dashboard/settings/permissions" */))
-const _64596276 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\roles.vue' /* webpackChunkName: "pages/dashboard/settings/roles" */))
 const _a7b1a394 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\setup.vue' /* webpackChunkName: "pages/dashboard/settings/setup" */))
 const _2437e9c7 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\show.vue' /* webpackChunkName: "pages/dashboard/tasks/show" */))
 const _74b8d765 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\current.vue' /* webpackChunkName: "pages/dashboard/users/current" */))
@@ -75,10 +82,6 @@ export const routerOptions = {
     path: "/dashboard/tasks",
     component: _b2935410,
     name: "dashboard-tasks"
-  }, {
-    path: "/dashboard/users",
-    component: _0529d33e,
-    name: "dashboard-users"
   }, {
     path: "/documents/view",
     component: _6bb8a93d,
@@ -144,6 +147,30 @@ export const routerOptions = {
     component: _4511b6ba,
     name: "dashboard-financial-account-category"
   }, {
+    path: "/dashboard/financial/bank-deposit",
+    component: _e8af81dc,
+    name: "dashboard-financial-bank-deposit"
+  }, {
+    path: "/dashboard/financial/bank-transfer",
+    component: _5ad723a7,
+    name: "dashboard-financial-bank-transfer"
+  }, {
+    path: "/dashboard/financial/bank-withdraw",
+    component: _3bc6cf46,
+    name: "dashboard-financial-bank-withdraw"
+  }, {
+    path: "/dashboard/financial/closing",
+    component: _bb641480,
+    name: "dashboard-financial-closing"
+  }, {
+    path: "/dashboard/financial/expense",
+    component: _3667d7e3,
+    name: "dashboard-financial-expense"
+  }, {
+    path: "/dashboard/financial/journal-entry",
+    component: _7659f1a7,
+    name: "dashboard-financial-journal-entry"
+  }, {
     path: "/dashboard/financial/reporting-period",
     component: _694d1545,
     name: "dashboard-financial-reporting-period"
@@ -151,6 +178,10 @@ export const routerOptions = {
     path: "/dashboard/inventory/item",
     component: _7f19912b,
     name: "dashboard-inventory-item"
+  }, {
+    path: "/dashboard/inventory/price-list",
+    component: _1c1f7d3a,
+    name: "dashboard-inventory-price-list"
   }, {
     path: "/dashboard/posts/category",
     component: _06a24466,
@@ -180,6 +211,18 @@ export const routerOptions = {
     component: _441df025,
     name: "dashboard-purchase-return"
   }, {
+    path: "/dashboard/reports/bank",
+    component: _33e23177,
+    name: "dashboard-reports-bank"
+  }, {
+    path: "/dashboard/reports/bp",
+    component: _08c22b49,
+    name: "dashboard-reports-bp"
+  }, {
+    path: "/dashboard/reports/item",
+    component: _2e3d3a64,
+    name: "dashboard-reports-item"
+  }, {
     path: "/dashboard/sales/delivery",
     component: _48c0873c,
     name: "dashboard-sales-delivery"
@@ -207,14 +250,6 @@ export const routerOptions = {
     path: "/dashboard/settings/menu",
     component: _62a240b6,
     name: "dashboard-settings-menu"
-  }, {
-    path: "/dashboard/settings/permissions",
-    component: _0f458ffd,
-    name: "dashboard-settings-permissions"
-  }, {
-    path: "/dashboard/settings/roles",
-    component: _64596276,
-    name: "dashboard-settings-roles"
   }, {
     path: "/dashboard/settings/setup",
     component: _a7b1a394,

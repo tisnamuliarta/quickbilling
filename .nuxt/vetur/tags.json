@@ -41,36 +41,6 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
-  "DocumentCardAction": {
-    "description": "Auto imported from components/Document/CardAction.vue"
-  },
-  "DocumentDialogAudit": {
-    "description": "Auto imported from components/Document/DialogAudit.vue"
-  },
-  "DocumentDialogFormDocument": {
-    "description": "Auto imported from components/Document/DialogFormDocument.vue"
-  },
-  "DocumentDialogSendEmail": {
-    "description": "Auto imported from components/Document/DialogSendEmail.vue"
-  },
-  "DocumentFieldUpload": {
-    "description": "Auto imported from components/Document/FieldUpload.vue"
-  },
-  "DocumentFormInput": {
-    "description": "Auto imported from components/Document/FormInput.vue"
-  },
-  "DocumentFormWindow": {
-    "description": "Auto imported from components/Document/FormWindow.vue"
-  },
-  "DocumentTableDetail": {
-    "description": "Auto imported from components/Document/TableDetail.vue"
-  },
-  "DocumentTableDocument": {
-    "description": "Auto imported from components/Document/TableDocument.vue"
-  },
-  "DocumentTableItem": {
-    "description": "Auto imported from components/Document/TableItem.vue"
-  },
   "FinancialFormAccount": {
     "description": "Auto imported from components/Financial/FormAccount.vue"
   },
@@ -103,6 +73,36 @@
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
+  },
+  "DocumentCardAction": {
+    "description": "Auto imported from components/Document/CardAction.vue"
+  },
+  "DocumentDialogAudit": {
+    "description": "Auto imported from components/Document/DialogAudit.vue"
+  },
+  "DocumentDialogFormDocument": {
+    "description": "Auto imported from components/Document/DialogFormDocument.vue"
+  },
+  "DocumentDialogSendEmail": {
+    "description": "Auto imported from components/Document/DialogSendEmail.vue"
+  },
+  "DocumentFieldUpload": {
+    "description": "Auto imported from components/Document/FieldUpload.vue"
+  },
+  "DocumentFormInput": {
+    "description": "Auto imported from components/Document/FormInput.vue"
+  },
+  "DocumentFormWindow": {
+    "description": "Auto imported from components/Document/FormWindow.vue"
+  },
+  "DocumentTableDetail": {
+    "description": "Auto imported from components/Document/TableDetail.vue"
+  },
+  "DocumentTableDocument": {
+    "description": "Auto imported from components/Document/TableDocument.vue"
+  },
+  "DocumentTableItem": {
+    "description": "Auto imported from components/Document/TableItem.vue"
   },
   "SettingEntity": {
     "description": "Auto imported from components/Setting/Entity.vue"
@@ -137,8 +137,23 @@
   "SetupPdf": {
     "description": "Auto imported from components/Setup/Pdf.vue"
   },
+  "SetupPermissions": {
+    "description": "Auto imported from components/Setup/Permissions.vue"
+  },
+  "SetupRoles": {
+    "description": "Auto imported from components/Setup/Roles.vue"
+  },
   "SetupTax": {
     "description": "Auto imported from components/Setup/Tax.vue"
+  },
+  "SetupUsers": {
+    "description": "Auto imported from components/Setup/Users.vue"
+  },
+  "SheetJSpreadSheet": {
+    "description": "Auto imported from components/Sheet/JSpreadSheet.vue"
+  },
+  "TasksFormTask": {
+    "description": "Auto imported from components/Tasks/FormTask.vue"
   },
   "StudentDataHelp": {
     "description": "Auto imported from components/Student/DataHelp.vue"
@@ -157,8 +172,5 @@
   },
   "StudentScoreInfo": {
     "description": "Auto imported from components/Student/ScoreInfo.vue"
-  },
-  "TasksFormTask": {
-    "description": "Auto imported from components/Tasks/FormTask.vue"
   }
 }

@@ -48,16 +48,15 @@ class PaymentTermController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'name' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
         }
 
         DB::beginTransaction();
-        $form = $request->form;
         try {
-            PaymentTerm::create($this->service->formData($form, $request, 'store'));
+            PaymentTerm::create($this->service->formData($request, 'store'));
 
             DB::commit();
             return $this->success([
@@ -97,15 +96,14 @@ class PaymentTermController extends Controller
     public function update(Request $request, $id)
     {
         $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
+            'name' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
         }
 
-        $form = $request->form;
         try {
-            PaymentTerm::where("id", "=", $id)->update($this->service->formData($form, $request, 'update'));
+            PaymentTerm::where("id", "=", $id)->update($this->service->formData($request, 'update'));
 
             return $this->success([
                 "errors" => false

@@ -28,13 +28,6 @@
     "_name": "_b2935410"
   },
   {
-    "name": "dashboard-users",
-    "path": "/dashboard/users",
-    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\index.vue",
-    "chunkName": "pages/dashboard/users/index",
-    "_name": "_0529d33e"
-  },
-  {
     "name": "documents-view",
     "path": "/documents/view",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\documents\\\\view.vue",
@@ -147,6 +140,48 @@
     "_name": "_4511b6ba"
   },
   {
+    "name": "dashboard-financial-bank-deposit",
+    "path": "/dashboard/financial/bank-deposit",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-deposit.vue",
+    "chunkName": "pages/dashboard/financial/bank-deposit",
+    "_name": "_e8af81dc"
+  },
+  {
+    "name": "dashboard-financial-bank-transfer",
+    "path": "/dashboard/financial/bank-transfer",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-transfer.vue",
+    "chunkName": "pages/dashboard/financial/bank-transfer",
+    "_name": "_5ad723a7"
+  },
+  {
+    "name": "dashboard-financial-bank-withdraw",
+    "path": "/dashboard/financial/bank-withdraw",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-withdraw.vue",
+    "chunkName": "pages/dashboard/financial/bank-withdraw",
+    "_name": "_3bc6cf46"
+  },
+  {
+    "name": "dashboard-financial-closing",
+    "path": "/dashboard/financial/closing",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\closing.vue",
+    "chunkName": "pages/dashboard/financial/closing",
+    "_name": "_bb641480"
+  },
+  {
+    "name": "dashboard-financial-expense",
+    "path": "/dashboard/financial/expense",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\expense.vue",
+    "chunkName": "pages/dashboard/financial/expense",
+    "_name": "_3667d7e3"
+  },
+  {
+    "name": "dashboard-financial-journal-entry",
+    "path": "/dashboard/financial/journal-entry",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\journal-entry.vue",
+    "chunkName": "pages/dashboard/financial/journal-entry",
+    "_name": "_7659f1a7"
+  },
+  {
     "name": "dashboard-financial-reporting-period",
     "path": "/dashboard/financial/reporting-period",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\reporting-period.vue",
@@ -159,6 +194,13 @@
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\item.vue",
     "chunkName": "pages/dashboard/inventory/item",
     "_name": "_7f19912b"
+  },
+  {
+    "name": "dashboard-inventory-price-list",
+    "path": "/dashboard/inventory/price-list",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\price-list.vue",
+    "chunkName": "pages/dashboard/inventory/price-list",
+    "_name": "_1c1f7d3a"
   },
   {
     "name": "dashboard-posts-category",
@@ -210,6 +252,27 @@
     "_name": "_441df025"
   },
   {
+    "name": "dashboard-reports-bank",
+    "path": "/dashboard/reports/bank",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\bank.vue",
+    "chunkName": "pages/dashboard/reports/bank",
+    "_name": "_33e23177"
+  },
+  {
+    "name": "dashboard-reports-bp",
+    "path": "/dashboard/reports/bp",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\bp.vue",
+    "chunkName": "pages/dashboard/reports/bp",
+    "_name": "_08c22b49"
+  },
+  {
+    "name": "dashboard-reports-item",
+    "path": "/dashboard/reports/item",
+    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\item.vue",
+    "chunkName": "pages/dashboard/reports/item",
+    "_name": "_2e3d3a64"
+  },
+  {
     "name": "dashboard-sales-delivery",
     "path": "/dashboard/sales/delivery",
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\delivery.vue",
@@ -257,20 +320,6 @@
     "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\menu.vue",
     "chunkName": "pages/dashboard/settings/menu",
     "_name": "_62a240b6"
-  },
-  {
-    "name": "dashboard-settings-permissions",
-    "path": "/dashboard/settings/permissions",
-    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\permissions.vue",
-    "chunkName": "pages/dashboard/settings/permissions",
-    "_name": "_0f458ffd"
-  },
-  {
-    "name": "dashboard-settings-roles",
-    "path": "/dashboard/settings/roles",
-    "component": "C:\\\\laragon\\\\www\\\\akacrm\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\roles.vue",
-    "chunkName": "pages/dashboard/settings/roles",
-    "_name": "_64596276"
   },
   {
     "name": "dashboard-settings-setup",

@@ -81,6 +81,7 @@
     "eslint": "^8.8.0",
     "frappe-gantt": "^0.6.0",
     "handsontable": "^11.1.0",
+    "jspreadsheet": "^8.6.6",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-precompress": "^0.5.9",
     "nuxt-seo-meta": "^2.3.1",

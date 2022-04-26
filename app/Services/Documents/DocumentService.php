@@ -284,17 +284,21 @@ class DocumentService
 
     /**
      * @param $type
+     * @param $parent_id
      * @return string[][]
      */
-    public function mappingAction($type): array
+    public function mappingAction($type, $parent_id): array
     {
         switch ($type) {
             case 'SQ':
+//                $order = $this->orderAction('Sales Order', 'SO', $parent_id, 'mdi-sale', 'orange', 'true');
                 return [
-                    ['title' => 'Sales Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
-                    ['title' => 'Sales Order', 'action' => 'SO', 'icon' => 'mdi-sale'],
-                    ['title' => 'Clone', 'action' => 'SQ', 'icon' => 'mdi-content-copy'],
-                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-printer']
+                    ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
+                    ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],
+                    ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
+                    ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
+                    ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
+                    ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true]
                 ];
             case 'SO':
                 return [
@@ -307,5 +311,30 @@ class DocumentService
                     ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
                 ];
         }
+    }
+
+    /**
+     * @param $title
+     * @param $action
+     * @param $parent_id
+     * @param $icon
+     * @param $color
+     * @param $button
+     * @return array
+     */
+    protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
+    {
+        $query = Document::where('type', $action)
+            ->whereIn('parent_id', (array)$parent_id);
+
+        return [
+            'title' => $title,
+            'action' => $action,
+            'color' => $color,
+            'button' => $button,
+            'icon' => $icon,
+            'items' => $query->get(),
+            'pluck' => $query->pluck('id')
+        ];
     }
 }

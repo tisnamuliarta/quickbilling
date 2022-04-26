@@ -2,7 +2,6 @@
   <v-app>
     <v-app-bar
       app
-      dense
       :color="dark ? undefined : 'white'"
       class="v-bar--underline v-toolbar-flat"
       flat
@@ -28,15 +27,25 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <span v-text="company.company_name"></span>
+      <span class="font-weight-bold hidden-sm-and-down" v-text="companyName.toUpperCase()"></span>
       <v-tooltip bottom>
         <template #activator="{ on }">
           <v-btn icon class="mr-0" v-on="on">
-            <v-icon size="25">mdi-bell</v-icon>
+            <v-icon>mdi-bell</v-icon>
           </v-btn
           >
         </template>
         <span>Notifications</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-btn icon class="mr-0" v-on="on" @click="$router.push('/dashboard/settings/setup')">
+            <v-icon>mdi-cog</v-icon>
+          </v-btn
+          >
+        </template>
+        <span>Settings</span>
       </v-tooltip>
 
       <v-menu offset-y left>
@@ -90,8 +99,8 @@
       id="nav"
       v-model="drawer"
       app
-      :clipped="$route.name !== 'dashboard-documents-form'"
-      :temporary="$route.name === 'dashboard-documents-form'"
+      :clipped="$route.name !== 'dashboard-settings-setup'"
+      :temporary="$route.name === 'dashboard-settings-setup'"
     >
       <v-list dense nav expand>
         <NuxtLink to="/dashboard" class="hidden-md-and-up">
@@ -109,6 +118,19 @@
           />
           <v-divider></v-divider>
         </NuxtLink>
+
+        <v-btn
+          outlined
+          block
+          small
+          rounded
+          color="primary"
+          class="mb-4"
+        >
+          <v-icon>mdi-plus</v-icon>
+          New
+        </v-btn>
+
         <v-list-group
           v-for="item in items"
           :key="item.menu"
@@ -211,6 +233,7 @@ export default {
       logo: '',
       rightDrawer: false,
       loadImage: false,
+      companyName: ''
     }
   },
 
@@ -259,6 +282,7 @@ export default {
         .then(res => {
           this.$auth.$storage.setState('company', res.data.data.form)
           this.company = this.$auth.$storage.getState('company')
+          this.companyName = res.data.data.form.company_name
         })
     },
 

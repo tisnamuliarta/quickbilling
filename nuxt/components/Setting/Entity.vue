@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <div>
     <v-skeleton-loader
       v-show="loading"
       type="card-heading, article, actions"
@@ -85,7 +85,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-  </v-layout>
+  </div>
 </template>
 
 <script>

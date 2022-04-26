@@ -1059,6 +1059,9 @@ export default {
     },
 
     changePaymentTerm() {
+      this.itemPaymentTerm
+      const issueAt = this.form.issue_at
+      const due_at = this.form.due_at
       this.$axios.get(`/api/financial/payment-terms/` + this.form.payment_term_id)
         .then(res => {
 

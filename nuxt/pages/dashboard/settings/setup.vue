@@ -2,50 +2,45 @@
   <v-layout>
     <v-flex sm12>
       <v-card>
-        <v-toolbar flat dense color="primary" dark>
-          <v-toolbar-title>Other Settings</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" md="3">
-                <v-navigation-drawer permanent>
-                  <v-list nav dense>
-                    <v-list-item-group v-model="selectedItem" color="primary">
-                      <v-list-item
-                        v-for="(item, i) in items"
-                        :key="i"
-                        @click="changeTabValue(item.alias, item.action)"
-                      >
-                        <v-list-item-icon>
-                          <v-icon v-text="item.icon"></v-icon>
-                        </v-list-item-icon>
+        <v-container fluid>
+          <v-row no-gutters>
+            <v-col cols="12" md="2">
+              <v-navigation-drawer permanent>
+                <v-list nav dense>
+                  <v-list-item-group v-model="selectedItem" color="primary">
+                    <v-list-item
+                      v-for="(item, i) in items"
+                      :key="i"
+                      @click="changeTabValue(item.alias, item.action)"
+                    >
+                      <v-list-item-icon>
+                        <v-icon v-text="item.icon"></v-icon>
+                      </v-list-item-icon>
 
-                        <v-list-item-content>
-                          <v-list-item-title
-                            v-text="item.text"
-                          ></v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-list-item-group>
-                  </v-list>
-                </v-navigation-drawer>
-              </v-col>
-              <v-col cols="12" md="9">
-                <v-card flat>
-                  <v-skeleton-loader
-                    v-if="loading"
-                    type="article, actions"
-                    class="mx-auto"
-                    :loading="loading"
-                  >
-                  </v-skeleton-loader>
-                  <SetupForm v-show="!loading" ref="setupForm"/>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="item.text"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-navigation-drawer>
+            </v-col>
+            <v-col cols="12" md="10">
+              <v-card flat>
+                <v-skeleton-loader
+                  v-if="loading"
+                  type="article, actions"
+                  class="mx-auto"
+                  :loading="loading"
+                >
+                </v-skeleton-loader>
+                <SetupForm v-show="!loading" ref="setupForm"/>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-divider v-if="showAction"></v-divider>
         <v-card-actions>
           <v-spacer />
@@ -88,6 +83,9 @@ export default {
         {text: 'Tags', icon: 'mdi-tag', alias: 'tags', action: false},
         {text: 'Item Units', icon: 'mdi-align-vertical-distribute', alias: 'units', action: false},
         {text: 'Item Category', icon: 'mdi-shape', alias: 'product_category', action: false},
+        {text: 'Permissions', icon: 'mdi-boom-gate', alias: 'permissions', action: false},
+        {text: 'Roles', icon: 'mdi-police-badge', alias: 'roles', action: false},
+        {text: 'Users', icon: 'mdi-account', alias: 'users', action: false},
         {text: 'Payment Method', icon: 'mdi-bank-transfer', alias: 'payment', action: false},
         {text: 'VAT', icon: 'mdi-content-cut', alias: 'taxes', action: false},
         {text: 'Terms', icon: 'mdi-file-document-outline', alias: 'term', action: false},

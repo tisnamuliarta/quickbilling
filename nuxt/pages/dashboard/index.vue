@@ -2,7 +2,7 @@
   <div id="home">
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="12">
           <LazySettingEntity ref="entity"></LazySettingEntity>
         </v-col>
 

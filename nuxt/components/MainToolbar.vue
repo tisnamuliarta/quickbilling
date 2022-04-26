@@ -29,6 +29,7 @@
     </v-dialog>
 
     <TableFilter
+      v-if="filter"
       class="hidden-sm-and-down"
       :document-status="documentStatus"
       :search-status="searchStatusData"
@@ -90,6 +91,10 @@ export default {
       },
     },
     showAdd: {
+      type: Boolean,
+      default: true
+    },
+    filter: {
       type: Boolean,
       default: true
     },

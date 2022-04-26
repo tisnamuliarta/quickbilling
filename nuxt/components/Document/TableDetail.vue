@@ -136,34 +136,34 @@ export default {
           },
           {
             data: 'id',
-            width: 100,
+            // width: 100,
             wordWrap: false,
           },
           {
             data: 'item_id',
-            width: '50px',
+            // width: '50px',
             wordWrap: false,
           },
           {
             data: 'sku',
-            width: '100px',
+            // width: '100px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'name',
-            width: '120px',
+            // width: '120px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'description',
-            width: '200px',
+            // width: '200px',
             wordWrap: false,
           },
           {
             data: 'quantity',
-            width: '100px',
+            // width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -172,20 +172,20 @@ export default {
           },
           {
             data: 'unit',
-            width: '100px',
+            // width: '100px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'default_currency_symbol',
-            width: '50px',
+            // width: '50px',
             readOnly: true,
             wordWrap: false,
             align: 'right',
           },
           {
             data: 'price',
-            width: '100px',
+            // width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -194,7 +194,7 @@ export default {
           },
           {
             data: 'discount_rate',
-            width: '100px',
+            // width: '100px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -203,7 +203,7 @@ export default {
           },
           {
             data: 'tax_name',
-            width: '80px',
+            // width: '80px',
             type: 'dropdown',
             height: 26,
             wordWrap: false,
@@ -218,7 +218,7 @@ export default {
           },
           {
             data: 'total',
-            width: '100px',
+            // width: '100px',
             wordWrap: false,
             type: 'numeric',
             readOnly: true,

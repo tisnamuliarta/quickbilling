@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::group(['prefix' => 'documents'], function () {
         Route::get('form/arrow', [DocumentController::class, 'arrowAction']);
+        Route::get('audit/{id}', [DocumentController::class, 'getAudit']);
         Route::apiResource('form', DocumentController::class);
         Route::get('print', [\App\Http\Controllers\Documents\DocumentExportController::class, 'print']);
         Route::post('email', [\App\Http\Controllers\Documents\DocumentExportController::class, 'email']);

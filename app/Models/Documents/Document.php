@@ -109,6 +109,12 @@ class Document extends Model implements Auditable
         return $this->hasMany(Document::class, 'parent_id');
     }
 
+    public function salesOrder()
+    {
+        return $this->hasMany(Document::class, 'parent_id', 'id')
+            ->where('type', '=', 'SO');
+    }
+
     public function getDefaultCurrencyCodeAttribute()
     {
         return $this->currency->code;

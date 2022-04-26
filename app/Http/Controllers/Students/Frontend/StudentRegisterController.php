@@ -276,7 +276,7 @@ class StudentRegisterController extends Controller
         $no_nisn = $request->no_nisn;
         $student = Student::where('no_nisn', "=", $no_nisn)->first();
         if ($student) {
-            $pdf_file = PDF::loadView('report.registration', [
+            $pdf_file = PDF::loadView('reports.registration', [
                 'student' => $student,
             ]);
             return $pdf_file->download("$no_nisn.pdf");

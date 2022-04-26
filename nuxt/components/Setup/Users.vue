@@ -28,6 +28,7 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
+              :filter="false"
               title="Users"
               title-button="User"
               class="has-border-bottom"

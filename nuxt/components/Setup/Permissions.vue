@@ -28,6 +28,7 @@
               :item-search="itemSearch"
               :search-item="searchItem"
               :search="search"
+              :filter="false"
               title="Master Permissions"
               @emitData="emitData"
               @newData="newData"
@@ -364,16 +365,16 @@ export default {
       headers: [
         { text: 'Name', value: 'menu_name' },
         { text: 'Parent Name', value: 'parent_name' },
-        { text: 'Icon', value: 'icon' },
+        // { text: 'Icon', value: 'icon' },
         { text: 'Route', value: 'route_name' },
         { text: 'Has Child', value: 'has_child' },
-        { text: 'Has Route', value: 'has_route' },
+        // { text: 'Has Route', value: 'has_route' },
         { text: 'Is CRUD', value: 'is_crud' },
         { text: 'Order Line', value: 'order_line' },
-        { text: 'Index', value: 'index', align: 'center' },
-        { text: 'Store', value: 'store', align: 'center' },
-        { text: 'Edits', value: 'edits', align: 'center' },
-        { text: 'Erase', value: 'erase', align: 'center' },
+        // { text: 'Index', value: 'index', align: 'center' },
+        // { text: 'Store', value: 'store', align: 'center' },
+        // { text: 'Edits', value: 'edits', align: 'center' },
+        // { text: 'Erase', value: 'erase', align: 'center' },
         { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }

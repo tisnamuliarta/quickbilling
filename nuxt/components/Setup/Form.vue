@@ -17,6 +17,9 @@ import PaymentMethod from './PaymentMethod'
 import PaymentTerm from './PaymentTerm'
 import Currency from './Currency'
 import AccountMapping from './AccountMapping'
+import Roles from './Roles'
+import Permissions from './Permissions'
+import Users from './Users'
 
 export default {
   name: 'FormSetup',
@@ -32,6 +35,9 @@ export default {
     payment: PaymentMethod,
     currency: Currency,
     account_mapping: AccountMapping,
+    roles: Roles,
+    permissions: Permissions,
+    users: Users,
   },
 
   data() {
