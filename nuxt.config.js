@@ -12,7 +12,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.APP_NAME,
+    titleTemplate: '%s',
     title: process.env.APP_NAME || '',
     meta: [
       { charset: 'utf-8' },
@@ -147,8 +147,8 @@ export default {
     },
     redirect: {
       login: '/auth/login',
-      logout: '/',
-      home: '/dashboard/',
+      logout: '/auth/login',
+      home: '/dashboard',
     },
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa

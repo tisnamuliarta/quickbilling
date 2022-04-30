@@ -5,162 +5,28 @@
       :color="dark ? undefined : 'white'"
       class="v-bar--underline v-toolbar-flat"
       flat
-      clipped-left
     >
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="changeDrawer()"></v-app-bar-nav-icon>
 
-      <v-toolbar-title style="width: 200px" class="ml-0 pl-3">
-        <NuxtLink to="/dashboard">
-          <v-skeleton-loader
-            v-show="loadImage"
-            type="avatar"
-            class="mx-auto logo"
-          >
-          </v-skeleton-loader>
-          <img
-            v-show="!loadImage"
-            :src="logo"
-            class="mt-1"
-            height="30"
-          />
-        </NuxtLink>
+      <v-toolbar-title class="ml-0 pl-0">
+        <span
+          class="font-weight-bold"
+          v-text="companyName.toUpperCase()"
+          @click="$router.push('/dashboard')"
+        ></span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <span class="font-weight-bold hidden-sm-and-down" v-text="companyName.toUpperCase()"></span>
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <v-btn icon class="mr-0" v-on="on">
-            <v-icon>mdi-bell</v-icon>
-          </v-btn
-          >
-        </template>
-        <span>Notifications</span>
-      </v-tooltip>
 
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <v-btn icon class="mr-0" v-on="on" @click="$router.push('/dashboard/settings/setup')">
-            <v-icon>mdi-cog</v-icon>
-          </v-btn
-          >
-        </template>
-        <span>Settings</span>
-      </v-tooltip>
+      <LazyLayoutToolBar ref="toolbar" @openDialog="openDialog()" />
 
-      <v-menu offset-y left>
-        <template #activator="{ on }">
-          <v-btn
-            x-small
-            color="primary"
-            depressed
-            fab
-            class="white--text"
-            v-on="on"
-          >
-            {{ $auth.user.name.substring(0, 1) }}
-          </v-btn>
-        </template>
-
-        <v-card>
-          <v-list nav dense>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                    $auth.user.email
-                  }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-
-          <v-divider></v-divider>
-
-          <v-list nav dense>
-            <v-list-item router to="/studio">
-              <v-list-item-icon>
-                <v-icon>mdi-youtube-studio</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Account Settings</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="logout">
-              <v-list-item-icon>
-                <v-icon>mdi-login-variant</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Sign out</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer
-      id="nav"
-      v-model="drawer"
-      app
-      :clipped="$route.name !== 'dashboard-settings-setup'"
-      :temporary="$route.name === 'dashboard-settings-setup'"
-    >
-      <v-list dense nav expand>
-        <NuxtLink to="/dashboard" class="hidden-md-and-up">
-          <v-skeleton-loader
-            v-show="loadImage"
-            type="avatar"
-            class="mx-auto logo"
-          >
-          </v-skeleton-loader>
-          <img
-            v-show="!loadImage"
-            :src="logo"
-            class="mt-1"
-            height="30"
-          />
-          <v-divider></v-divider>
-        </NuxtLink>
-
-        <v-btn
-          outlined
-          block
-          small
-          rounded
-          color="primary"
-          class="mb-4"
-        >
-          <v-icon>mdi-plus</v-icon>
-          New
-        </v-btn>
-
-        <v-list-group
-          v-for="item in items"
-          :key="item.menu"
-          active-class="border"
-          :prepend-icon="item.icon"
-          append-icon="mdi-menu-down"
-        >
-          <template #activator>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.menu"></v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="(child, i) in item.children"
-            :key="i"
-            link
-            :to="child.route_name"
-            style="padding-left: 64px"
-          >
-            <v-list-item-content>
-              <v-list-item-title v-text="child.menu"></v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-icon v-if="child.icon">
-              <v-icon v-text="child.icon"></v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-    </v-navigation-drawer>
+    <LazyLayoutNavigationDrawer
+      ref="navDrawer"
+      :drawer="drawer"
+      @openDialog="openDialog"
+    />
 
     <v-main class="grey lighten-4">
       <v-container fluid>
@@ -189,6 +55,10 @@
       </template>
     </v-snackbar>
 
+    <LazyFormNew ref="formNew" @openAction="openAction" />
+
+    <LazyFormCheckForm ref="checkForm" />
+
     <v-footer color="grey lighten-3" padless>
       <v-col
         class="text-center"
@@ -212,21 +82,7 @@ export default {
       fixed: false,
       dark: undefined,
       message: '',
-      items: [
-        {
-          menu: 'menu1',
-          icon: 'mdi-receipt',
-          children: [
-            {menu: 'Home', route_name: '/', icon: 'mdi-home'},
-            {menu: 'Trending', route_name: '/trending', icon: 'mdi-fire'},
-            {
-              menu: 'Subscriptions',
-              route_name: '#s',
-              icon: 'mdi-youtube-subscription',
-            },
-          ],
-        },
-      ],
+      items: [],
       company: [],
       miniVariant: false,
       right: true,
@@ -239,10 +95,11 @@ export default {
 
   mounted() {
     // enable using draggable dialogs
-    this.activateMultipleDraggableDialogs()
+    // this.activateMultipleDraggableDialogs()
 
     this.drawer = !this.$vuetify.breakpoint.mdAndDown
     this.drawer = this.$route.name === 'dashboard-documents-form' ? false : this.drawer
+    this.$refs.navDrawer.setDrawer(this.drawer)
   },
 
   created() {
@@ -264,11 +121,25 @@ export default {
       }
     },
 
+    openDialog() {
+      this.$refs.formNew.openDialog()
+    },
+
+    openAction(data) {
+      this.$refs.checkForm.openDialog(data, 0, null)
+    },
+
+    changeDrawer() {
+      this.drawer = !this.drawer
+      this.$refs.navDrawer.setDrawer(this.drawer)
+    },
+
     getLogo() {
       this.loadImage = true
       this.$axios.get(`/api/logo`)
         .then((res) => {
           this.logo = res.data.data.logo
+          this.$refs.navDrawer.setLogo(this.logo)
           this.loadImage = false
         })
     },
@@ -295,17 +166,6 @@ export default {
       })
     },
 
-    async logout() {
-      await this.$auth.logout()
-      this.$auth.$storage.removeLocalStorage('app.default_name')
-      this.$auth.$storage.removeLocalStorage('employee')
-      this.$auth.$storage.removeLocalStorage('country')
-
-      localStorage.removeItem('roles')
-      localStorage.removeItem('permissions')
-      this.$router.push('/auth/login')
-    },
-
     menus() {
       const appName = this.$auth.$storage.getLocalStorage('app.default_name')
       this.$axios.get(`/api/menus`, {
@@ -315,6 +175,7 @@ export default {
       })
         .then(res => {
           this.items = res.data.data.menus
+          this.$refs.navDrawer.setItems(this.items)
         })
         .catch((err) => {
           if (err.response.data.message === 'Call to a member function getAllPermissions() on null') {
@@ -326,10 +187,6 @@ export default {
             text: err.response.data.message,
           })
         })
-    },
-
-    changeDrawers(data) {
-      this.$refs.navDrawer.changeDrawer(data)
     },
   },
 }

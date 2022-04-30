@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 // List Sales routes
 Route::apiResources([
-    'transaction' => TransactionCOntroller::class,
+    'form' => TransactionCOntroller::class,
     'invoice' => InvoiceController::class,
     'bill' => BillController::class,
 ]);

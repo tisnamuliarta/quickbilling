@@ -14,15 +14,8 @@ class LogoController extends Controller
      */
     public function index(Request $request)
     {
-        $logo = Setting::where('key', '=', 'company_logo')->first();
-        if ($logo) {
-            return $this->success([
-               'logo' => url('/files/logo/'.$logo->value)
-            ]);
-        }
-
         return $this->success([
-            'logo' => url('/files/logo/tizapps.svg')
+            'logo' => url('/files/logo/quickbilling-circle.png')
         ]);
     }
 

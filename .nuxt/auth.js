@@ -18,8 +18,8 @@ export default function (ctx, inject) {
   "watchLoggedIn": true,
   "redirect": {
     "login": "/auth/login",
-    "logout": "/",
-    "home": "/dashboard/",
+    "logout": "/auth/login",
+    "home": "/dashboard",
     "callback": "/login"
   },
   "vuex": {

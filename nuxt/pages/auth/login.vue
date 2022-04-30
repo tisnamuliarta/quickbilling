@@ -11,11 +11,11 @@
         <v-card class="mt-3" outlined elevation="0">
           <v-card-text>
             <v-row no-gutters>
-              <v-col cols="8">
+              <v-col cols="7">
                 <span class="text-h6">Sign In to your account</span> <br>
                 <span>Enter details below</span>
               </v-col>
-              <v-col cols="4" class="text-right">
+              <v-col cols="5" class="text-right">
                 <img
                   :src="logo"
                   class="align-items-center justify-center logo"
@@ -154,7 +154,7 @@ export default {
         })
           .then((response) => {
             this.loading = false
-            this.$router.push('/dashboard')
+            // this.$router.push('/dashboard')
           })
           .catch((err) => {
             this.loading = false
@@ -172,7 +172,7 @@ export default {
 
 <style scoped>
 .logo {
-  width: 100px;
+  width: 150px;
   margin: 0 auto;
   text-align: center;
 }

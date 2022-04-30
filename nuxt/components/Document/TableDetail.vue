@@ -314,7 +314,7 @@ export default {
     selectItems(data) {
       let rowData = data.row;
       let selected = data.selected;
-      const type = this.$route.query.type
+      const type = this.form.type
       const vm = this;
       selected.forEach(function (item, index) {
         const price = (type.substr(0, 1) === 'S') ? item.sale_price : item.purchase_price
