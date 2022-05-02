@@ -64,7 +64,6 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn small color="red" text @click="clear">clear</v-btn>
             <v-btn
               color="primary"
               class="mr-2"

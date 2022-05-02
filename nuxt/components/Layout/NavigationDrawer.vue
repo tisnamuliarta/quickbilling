@@ -13,27 +13,30 @@
           class="mx-auto logo mb-3"
         >
         </v-skeleton-loader>
-        <img
-          v-show="!loadImage"
-          :src="logo"
-          class="mt-1 mb-3"
-          height="50"
-        />
+        <img v-show="!loadImage" :src="logo" class="mt-1 mb-3" height="50" />
         <v-divider></v-divider>
       </NuxtLink>
 
-      <v-btn
-        outlined
-        block
-        small
-        rounded
-        color="primary"
-        class="mb-4"
-        @click="openDialog()"
-      >
-        <v-icon>mdi-plus</v-icon>
-        New
-      </v-btn>
+      <v-menu offset-y left :nudge-width="700">
+        <template #activator="{ on }">
+          <v-btn
+            outlined
+            block
+            small
+            rounded
+            color="primary"
+            class="mb-4"
+            v-on="on"
+          >
+            <v-icon>mdi-plus</v-icon>
+            New
+          </v-btn>
+        </template>
+
+        <v-card>
+          <LazyFormNew ref="formNew" />
+        </v-card>
+      </v-menu>
 
       <v-list-group
         v-for="item in items"
@@ -69,13 +72,13 @@
 
 <script>
 export default {
-  name: "NavigationDrawer",
+  name: 'NavigationDrawer',
 
   props: {
     drawerData: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
@@ -83,7 +86,7 @@ export default {
       items: {},
       loadImage: true,
       logo: '',
-      drawer: this.drawerData
+      drawer: this.drawerData,
     }
   },
 
@@ -103,7 +106,7 @@ export default {
 
     openDialog() {
       this.$emit('openDialog')
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,20 +1,21 @@
 <template>
   <div>
-    <v-tooltip bottom>
+    <v-menu offset-y left :nudge-width="700">
       <template #activator="{ on }">
         <v-btn
           color="primary"
-          small icon
-          class="mr-2"
+          small
+          icon
           v-on="on"
-          @click="$emit('openDialog')"
         >
           <v-icon>mdi-plus-circle</v-icon>
-        </v-btn
-        >
+        </v-btn>
       </template>
-      <span>New</span>
-    </v-tooltip>
+
+      <v-card>
+        <LazyFormNew ref="formNew" />
+      </v-card>
+    </v-menu>
 
     <v-tooltip bottom>
       <template #activator="{ on }">
@@ -36,7 +37,7 @@
       <span>Settings</span>
     </v-tooltip>
 
-    <v-menu offset-y left>
+    <v-menu offset-y left :nudge-width="700">
       <template #activator="{ on }">
         <v-btn
           x-small
@@ -51,34 +52,7 @@
       </template>
 
       <v-card>
-        <v-list nav dense>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>{{ $auth.user.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                  $auth.user.email
-                }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-
-        <v-divider></v-divider>
-
-        <v-list nav dense>
-          <v-list-item router to="/studio">
-            <v-list-item-icon>
-              <v-icon>mdi-youtube-studio</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Account Settings</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="logout">
-            <v-list-item-icon>
-              <v-icon>mdi-login-variant</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Sign out</v-list-item-title>
-          </v-list-item>
-        </v-list>
+        <LazyFormSetting ref="formSetting" />
       </v-card>
     </v-menu>
   </div>
