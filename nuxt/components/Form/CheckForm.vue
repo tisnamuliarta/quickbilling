@@ -3,12 +3,19 @@
     <template #content>
       <LazyDocumentFormInput ref="formDocument" />
     </template>
+
+    <template #actions>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn color="primary" small @click="dialog = false"> Save </v-btn>
+      </v-card-actions>
+    </template>
   </LazyFormDialogFull>
 </template>
 
 <script>
 export default {
-  name: "Document",
+  name: 'Document',
 
   data() {
     return {
@@ -27,7 +34,8 @@ export default {
 
     getDataFromApi(action, type, id, copyFromId = null) {
       this.showLoading = true
-      const url = (action === 'document') ? '/api/documents/form' : '/api/transactions/form'
+      const url =
+        action === 'document' ? '/api/documents/form' : '/api/transactions/form'
       this.$axios
         .get(url + '/' + id, {
           params: {
@@ -36,7 +44,8 @@ export default {
           },
         })
         .then((res) => {
-          let form = (res.data.data.count > 0) ? res.data.data.rows : res.data.data.form
+          let form =
+            res.data.data.count > 0 ? res.data.data.rows : res.data.data.form
           this.audits = res.data.data.audits
 
           this.form = Object.assign({}, form)
@@ -47,17 +56,18 @@ export default {
           }, 30)
         })
         .catch((err) => {
-          const message = (err.response !== undefined) ? err.response.data.message : err
+          const message =
+            err.response !== undefined ? err.response.data.message : err
           this.$swal({
             type: 'error',
             title: 'Error',
             text: message,
           })
         })
-        .finally(res => {
+        .finally((res) => {
           this.showLoading = false
         })
     },
-  }
+  },
 }
 </script>

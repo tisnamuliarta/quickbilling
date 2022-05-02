@@ -34,7 +34,7 @@
         </template>
 
         <v-card>
-          <LazyFormNew ref="formNew" />
+          <LazyFormNew ref="formNew" @openAction="openAction" />
         </v-card>
       </v-menu>
 
@@ -104,8 +104,8 @@ export default {
       this.logo = logo
     },
 
-    openDialog() {
-      this.$emit('openDialog')
+    openAction(data) {
+      this.$emit('openAction', data)
     },
   },
 }

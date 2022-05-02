@@ -23,23 +23,25 @@
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
-                ref='menu'
-                v-model='menu'
-                :close-on-content-click='false'
-                transition='scale-transition'
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
                 offset-y
-                min-width='290px'
+                min-width="290px"
               >
-                <template #activator='{ on, attrs }'>
+                <template #activator="{ on, attrs }">
                   <v-text-field
                     v-model="form.issued_at"
                     label="Transaction Date"
-                    prepend-icon='mdi-calendar'
+                    prepend-icon="mdi-calendar"
                     readonly
                     persistent-hint
-                    outlined dense hide-details='auto'
-                    v-bind='attrs'
-                    v-on='on'
+                    outlined
+                    dense
+                    hide-details="auto"
+                    v-bind="attrs"
+                    v-on="on"
                   ></v-text-field>
                 </template>
 
@@ -47,7 +49,7 @@
                   v-model="form.issued_at"
                   :disabled="checkDisable()"
                   no-title
-                  @input='menu = false'
+                  @input="menu = false"
                 >
                 </v-date-picker>
               </v-menu>
@@ -55,24 +57,26 @@
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
-                ref='menu2'
-                v-model='menu2'
-                :close-on-content-click='false'
-                transition='scale-transition'
+                ref="menu2"
+                v-model="menu2"
+                :close-on-content-click="false"
+                transition="scale-transition"
                 offset-y
-                min-width='290px'
+                min-width="290px"
               >
-                <template #activator='{ on, attrs }'>
+                <template #activator="{ on, attrs }">
                   <v-text-field
                     v-show="form.shipping_info"
                     v-model="form.shipping_date"
                     label="Shipping Date"
-                    prepend-icon='mdi-calendar'
+                    prepend-icon="mdi-calendar"
                     readonly
                     persistent-hint
-                    outlined dense hide-details='auto'
-                    v-bind='attrs'
-                    v-on='on'
+                    outlined
+                    dense
+                    hide-details="auto"
+                    v-bind="attrs"
+                    v-on="on"
                   ></v-text-field>
                 </template>
 
@@ -80,7 +84,7 @@
                   v-model="form.shipping_date"
                   :disabled="checkDisable()"
                   no-title
-                  @input='menu2 = false'
+                  @input="menu2 = false"
                 >
                 </v-date-picker>
               </v-menu>
@@ -117,7 +121,8 @@
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
-                        No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+                        No results matching "<strong>{{ search }}</strong
+                        >". Press <kbd>enter</kbd> to create a new one
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -143,23 +148,25 @@
 
             <v-col cols="12" md="2" sm="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-menu
-                ref='menu3'
-                v-model='menu3'
-                :close-on-content-click='false'
-                transition='scale-transition'
+                ref="menu3"
+                v-model="menu3"
+                :close-on-content-click="false"
+                transition="scale-transition"
                 offset-y
-                min-width='290px'
+                min-width="290px"
               >
-                <template #activator='{ on, attrs }'>
+                <template #activator="{ on, attrs }">
                   <v-text-field
                     v-model="form.due_at"
                     label="Due Date"
-                    prepend-icon='mdi-calendar'
+                    prepend-icon="mdi-calendar"
                     readonly
                     persistent-hint
-                    outlined dense hide-details='auto'
-                    v-bind='attrs'
-                    v-on='on'
+                    outlined
+                    dense
+                    hide-details="auto"
+                    v-bind="attrs"
+                    v-on="on"
                   ></v-text-field>
                 </template>
 
@@ -167,7 +174,7 @@
                   v-model="form.due_at"
                   :disabled="checkDisable()"
                   no-title
-                  @input='menu3 = false'
+                  @input="menu3 = false"
                 >
                 </v-date-picker>
               </v-menu>
@@ -214,9 +221,7 @@
 
         <v-col cols="12">
           <v-row no-gutters>
-            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1">
-
-            </v-col>
+            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1"> </v-col>
 
             <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-select
@@ -354,25 +359,30 @@
             ></v-textarea>
           </v-col>
 
-          <v-col v-if="itemFiles.length > 0" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+          <v-col
+            v-if="itemFiles.length > 0"
+            cols="12"
+            md="12"
+            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+          >
             <v-list dense>
               <v-subheader>Files</v-subheader>
-              <v-list-item-group
-                v-model="selectedItem"
-                color="primary"
-              >
-                <v-list-item
-                  v-for="(item, i) in itemFiles"
-                  :key="i"
-                >
+              <v-list-item-group v-model="selectedItem" color="primary">
+                <v-list-item v-for="(item, i) in itemFiles" :key="i">
                   <v-list-item-content>
                     <v-list-item-title>
-                      <a :href="item.directory" target="_blank">{{ item.filename }}</a>
+                      <a :href="item.directory" target="_blank">{{
+                        item.filename
+                      }}</a>
                     </v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
                     <v-btn small dark icon>
-                      <v-icon color="red" @click="$refs.uploadField.deleteFile(item)">mdi-delete</v-icon>
+                      <v-icon
+                        color="red"
+                        @click="$refs.uploadField.deleteFile(item)"
+                        >mdi-delete</v-icon
+                      >
                     </v-btn>
                   </v-list-item-action>
                 </v-list-item>
@@ -383,7 +393,6 @@
 
         <v-col cols="12" md="6" lg="5" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-row no-gutters>
-
             <v-col cols="12" md="8"></v-col>
             <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <vuetify-money
@@ -480,7 +489,12 @@
             </v-col>
 
             <v-col v-show="form.shipping_info" cols="12" md="8"></v-col>
-            <v-col v-show="form.shipping_info" cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-col
+              v-show="form.shipping_info"
+              cols="12"
+              md="4"
+              class="pr-1 pl-1 pb-1 pt-1 mt-1"
+            >
               <vuetify-money
                 v-model="form.shipping_fee"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
@@ -563,7 +577,12 @@
                   ></vuetify-money>
                 </v-col>
 
-                <v-col v-show="form.withholding_info" cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                <v-col
+                  v-show="form.withholding_info"
+                  cols="12"
+                  md="12"
+                  class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                >
                   <v-select
                     v-model="form.withholding_account_id"
                     :disabled="checkDisable()"
@@ -650,7 +669,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'FormDocument',
 
@@ -705,46 +723,46 @@ export default {
       withholdingAmount: 0,
       discountAmount: 0,
       moneyOptions: {
-        locale: "en",
-        prefix: "",
+        locale: 'en',
+        prefix: '',
         length: 11,
-        precision: 0
+        precision: 0,
       },
 
       moneyOptionTotal: {
-        locale: "en",
-        prefix: "",
+        locale: 'en',
+        prefix: '',
         length: 14,
-        precision: 2
+        precision: 2,
       },
 
       moneyOptionTotalDiscount: {
-        locale: "en",
-        prefix: "",
+        locale: 'en',
+        prefix: '',
         length: 14,
-        precision: 0
+        precision: 0,
       },
     }
   },
 
   computed: {
     depositAmount() {
-      return this.form.deposit_amount;
+      return this.form.deposit_amount
     },
     discountRate() {
-      return this.form.discount_rate;
+      return this.form.discount_rate
     },
     discountType() {
-      return this.form.discount_type;
+      return this.form.discount_type
     },
     withholdingType() {
-      return this.form.withholding_type;
+      return this.form.withholding_type
     },
     withholdingRate() {
-      return this.form.withholding_rate;
+      return this.form.withholding_rate
     },
     shippingFee() {
-      return this.form.shipping_fee;
+      return this.form.shipping_fee
     },
   },
 
@@ -798,7 +816,7 @@ export default {
 
   methods: {
     checkDisable() {
-      return this.form.status === 'closed' || this.form.status === 'cancel';
+      return this.form.status === 'closed' || this.form.status === 'cancel'
     },
 
     calcTotal(data) {
@@ -808,7 +826,9 @@ export default {
       this.taxDetails = data.taxDetail
       this.form.amount = data.amount + this.tempTotalTax
       this.form.balance_due = this.form.amount
-      this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
+      this.subTotalMinDiscount =
+        parseFloat(this.form.sub_total) -
+        parseFloat(this.form.discount_per_line)
       // this.taxAmount = this.tempTotalTax
 
       if (this.form.sub_total === 0) {
@@ -825,11 +845,14 @@ export default {
       if (this.taxDetails.length > 0) {
         this.form.tax_details = this.reduceArrayTax(this.taxDetails)
       }
-      this.form.discount_amount = 0;
+      this.form.discount_amount = 0
       if (this.form.discount_type === 'Percent') {
         if (this.form.discount_rate > 0) {
-          this.subTotalMinDiscount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
-          this.form.discount_amount = (this.form.discount_rate / 100) * this.subTotalMinDiscount
+          this.subTotalMinDiscount =
+            parseFloat(this.form.sub_total) -
+            parseFloat(this.form.discount_per_line)
+          this.form.discount_amount =
+            (this.form.discount_rate / 100) * this.subTotalMinDiscount
           this.taxDiscount = (this.form.discount_rate / 100) * this.tempTotalTax
         }
       } else {
@@ -839,23 +862,32 @@ export default {
         }
       }
 
-      this.taxAmount = parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
+      this.taxAmount =
+        parseFloat(this.tempTotalTax) - parseFloat(this.taxDiscount)
 
-      this.taxAmount = (this.taxAmount === undefined) ? 0 : this.taxAmount
+      this.taxAmount = this.taxAmount === undefined ? 0 : this.taxAmount
 
       // calculate tax details
       // if (this.form.discount_rate > 0) {
       // }
-      if (this.taxDetails.length > 0 && parseFloat(this.form.discount_rate) > 0) {
-        this.form.tax_details = this.reduceArrayTaxAfterDiscount(this.taxDetails)
+      if (
+        this.taxDetails.length > 0 &&
+        parseFloat(this.form.discount_rate) > 0
+      ) {
+        this.form.tax_details = this.reduceArrayTaxAfterDiscount(
+          this.taxDetails
+        )
       }
 
       // calculate total amount
       // console.log(this.form.sub_total)
       // console.log(this.form.discount_per_line)
       // console.log(this.form.discount_amount)
-      this.form.amount = parseFloat(this.form.sub_total) - parseFloat(this.form.discount_per_line)
-        - parseFloat(this.form.discount_amount) + parseFloat(this.taxAmount);
+      this.form.amount =
+        parseFloat(this.form.sub_total) -
+        parseFloat(this.form.discount_per_line) -
+        parseFloat(this.form.discount_amount) +
+        parseFloat(this.taxAmount)
 
       // calculate amount before tax for tax withholding
       this.amountBeforeTax = this.form.amount - this.taxAmount
@@ -863,44 +895,52 @@ export default {
       // calculate tax withholding
       if (this.form.withholding_type === 'Percent') {
         if (this.form.withholding_rate > 0) {
-          this.form.withholding_amount = (this.form.withholding_rate / 100) * this.amountBeforeTax
+          this.form.withholding_amount =
+            (this.form.withholding_rate / 100) * this.amountBeforeTax
         }
       } else {
         this.form.withholding_amount = parseFloat(this.form.withholding_rate)
       }
 
-      this.form.balance_due = this.form.amount - this.form.deposit_amount - this.form.withholding_amount - parseFloat(this.form.shipping_fee)
+      this.form.balance_due =
+        this.form.amount -
+        this.form.deposit_amount -
+        this.form.withholding_amount -
+        parseFloat(this.form.shipping_fee)
     },
 
     reduceArrayTaxAfterDiscount(tax_details) {
-      const result = [];
+      const result = []
       const vm = this
       // console.log(tax_details)
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = {name: value.name, amount: 0};
+          res[value.name] = { name: value.name, amount: 0 }
           result.push(res[value.name])
         }
 
         if (parseFloat(vm.form.discount_rate) > 0) {
           let taxDiscountValue = 0
           if (vm.form.discount_type === 'Percent') {
-            taxDiscountValue = (parseFloat(vm.form.discount_rate) / 100) * parseFloat(value.amount)
+            taxDiscountValue =
+              (parseFloat(vm.form.discount_rate) / 100) *
+              parseFloat(value.amount)
           } else {
             taxDiscountValue = parseFloat(vm.form.discount_rate)
           }
-          res[value.name].amount = parseFloat(value.amount) - parseFloat(taxDiscountValue);
+          res[value.name].amount =
+            parseFloat(value.amount) - parseFloat(taxDiscountValue)
         }
-        return res;
-      }, {});
+        return res
+      }, {})
 
       return result
     },
 
     reduceArrayTax(tax_details) {
-      const result = [];
+      const result = []
       const vm = this
-      let totalTax = 0;
+      let totalTax = 0
       tax_details.forEach(function (item, index) {
         totalTax += parseFloat(item.amount)
       })
@@ -908,13 +948,13 @@ export default {
 
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = {name: value.name, amount: 0};
+          res[value.name] = { name: value.name, amount: 0 }
           result.push(res[value.name])
         }
-        res[value.name].amount += value.amount;
+        res[value.name].amount += value.amount
 
-        return res;
-      }, {});
+        return res
+      }, {})
 
       return result
     },
@@ -926,14 +966,17 @@ export default {
     setData(form) {
       this.showLoading = true
       setTimeout(() => {
-        this.$refs.childDetails.setDataToDetails([
-          {
-            item_number: null,
-            description: null,
-            qty: null,
-            unit: null,
-          }
-        ], form)
+        this.$refs.childDetails.setDataToDetails(
+          [
+            {
+              item_number: null,
+              description: null,
+              qty: null,
+              unit: null,
+            },
+          ],
+          form
+        )
       }, 500)
 
       this.form = Object.assign({}, form)
@@ -949,13 +992,15 @@ export default {
 
     getItemCategory() {
       //this.$refs.dialogSendEmail.openEmailDialog()
-      this.$axios.get(`/api/master/categories`, {
-        params: {
-          type: 'Item Category'
-        }
-      }).then((res) => {
-        this.itemCategory = res.data.data.simple
-      })
+      this.$axios
+        .get(`/api/master/categories`, {
+          params: {
+            type: 'Item Category',
+          },
+        })
+        .then((res) => {
+          this.itemCategory = res.data.data.simple
+        })
         .catch((err) => {
           this.$swal({
             type: 'error',
@@ -966,13 +1011,15 @@ export default {
     },
 
     getItemUnit() {
-      this.$axios.get(`/api/inventory/item-units`, {
-        params: {
-          type: 'Item Category'
-        }
-      }).then((res) => {
-        this.itemUnit = res.data.data.simple
-      })
+      this.$axios
+        .get(`/api/inventory/item-units`, {
+          params: {
+            type: 'Item Category',
+          },
+        })
+        .then((res) => {
+          this.itemUnit = res.data.data.simple
+        })
         .catch((err) => {
           this.$swal({
             type: 'error',
@@ -983,11 +1030,12 @@ export default {
     },
 
     getAccounts() {
-      this.$axios.get(`/api/financial/accounts`, {
-        params: {
-          type: "All"
-        }
-      })
+      this.$axios
+        .get(`/api/financial/accounts`, {
+          params: {
+            type: 'All',
+          },
+        })
         .then((res) => {
           this.itemAccounts = res.data.data.rows
         })
@@ -1002,11 +1050,12 @@ export default {
 
     getContact() {
       const vm = this
-      this.$axios.get(`/api/bp/contacts`, {
-        params: {
-          type: vm.$route.query.type
-        }
-      })
+      this.$axios
+        .get(`/api/bp/contacts`, {
+          params: {
+            type: vm.$route.query.type,
+          },
+        })
         .then((res) => {
           this.itemContact = res.data.data.rows
         })
@@ -1020,11 +1069,12 @@ export default {
     },
 
     getPaymentTerms() {
-      this.$axios.get(`/api/financial/payment-terms`, {
-        params: {
-          type: "All"
-        }
-      })
+      this.$axios
+        .get(`/api/financial/payment-terms`, {
+          params: {
+            type: 'All',
+          },
+        })
         .then((res) => {
           this.itemPaymentTerm = res.data.data.auto_complete
         })
@@ -1040,11 +1090,12 @@ export default {
     getTax() {
       this.$refs.uploadField.getFiles()
 
-      this.$axios.get(`/api/financial/taxes`, {
-        params: {
-          type: "All"
-        }
-      })
+      this.$axios
+        .get(`/api/financial/taxes`, {
+          params: {
+            type: 'All',
+          },
+        })
         .then((res) => {
           this.$auth.$storage.setLocalStorage('tax', res.data.data.simple)
           this.$auth.$storage.setLocalStorage('tax_row', res.data.data.rows)
@@ -1062,17 +1113,20 @@ export default {
       this.itemPaymentTerm
       const issueAt = this.form.issue_at
       const due_at = this.form.due_at
-      this.$axios.get(`/api/financial/payment-terms/` + this.form.payment_term_id)
-        .then(res => {
-
-        })
+      this.$axios
+        .get(`/api/financial/payment-terms/` + this.form.payment_term_id)
+        .then((res) => {})
     },
 
     changeContact() {
       let contact = this.form.contact_id
       this.form.contact_id = contact.id
-      this.form.contact_address = (this.form.contact_address) ? this.form.contact_address : contact.address
-      this.form.shipping_address = (this.form.shipping_address) ? this.form.shipping_address : contact.shipping_address
+      this.form.contact_address = this.form.contact_address
+        ? this.form.contact_address
+        : contact.address
+      this.form.shipping_address = this.form.shipping_address
+        ? this.form.shipping_address
+        : contact.shipping_address
     },
 
     checkDocument() {
@@ -1080,7 +1134,7 @@ export default {
       switch (routeType) {
         case 'SQ':
         case 'PQ':
-          return false;
+          return false
         default:
           return true
       }

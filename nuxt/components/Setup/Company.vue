@@ -1,218 +1,24 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="12" class="pr-md-3 pl-md-3" md="6">
-      <v-subheader>Company Settings</v-subheader>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-divider/>
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-file-input
-          accept="image/*"
-          label="Logo"
-          placeholder="Logo"
-          v-model="form.company_logo_temp"
-          outlined
-          dense
-          hide-details="auto"
-        ></v-file-input>
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-img
-          max-width="250"
-          max-height="150"
-          :src="logo"
-        ></v-img>
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Company Name"
-          placeholder="Company Name"
-          v-model="form.company_name"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Address"
-          v-model="form.company_address"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="City"
-          v-model="form.company_city"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="State"
-          v-model="form.company_state"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Country"
-          v-model="form.company_country"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Zip Code"
-          v-model="form.company_zip_code"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Phone"
-          v-model="form.company_phone"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Fax"
-          v-model="form.company_fax"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Tax Number"
-          v-model="form.company_tax_number"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Website"
-          v-model="form.company_website"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Email"
-          v-model="form.company_email"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
+  <v-row>
+    <v-col cols="12" md="12">
+      <LazySetupSectionCompanyName :form="form" :logo="logo" />
     </v-col>
-    <v-col cols="12" class="pr-md-3 pl-md-3" md="6">
-      <v-subheader>Bank Account Detail</v-subheader>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-divider/>
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Bank Name"
-          v-model="form.company_bank_name"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Bank Branch"
-          v-model="form.company_bank_branch"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Bank Address"
-          v-model="form.company_bank_address"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Bank Account Number"
-          v-model="form.company_bank_account_number"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Bank Account Name"
-          v-model="form.company_bank_account_name"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Swift Code"
-          v-model="form.company_bank_swift_code"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
+    <v-col cols="12" md="12"><hr></v-col>
 
-      <v-subheader>Additional Feature Settings</v-subheader>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-divider/>
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-autocomplete
-          label="Currency Code"
-          v-model="form.company_currency_code"
-          :items="itemCurrency"
-          return-object
-          item-value="code"
-          item-text="name"
-          @change="changeCurrency"
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
-      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-        <v-text-field
-          label="Currency Symbol"
-          v-model="form.company_currency_symbol"
-          readonly
-          outlined
-          dense
-          hide-details="auto"
-        />
-      </v-col>
+    <v-col cols="12" md="12">
+      <LazySetupSectionCompanyInfo :form="form" />
     </v-col>
+    <v-col cols="12" md="12"><hr></v-col>
+
+    <v-col cols="12" md="12">
+      <LazySetupSectionCompanyAddress :form="form" />
+    </v-col>
+    <v-col cols="12" md="12"><hr></v-col>
+
+    <v-col cols="12" md="12">
+      <LazySetupSectionCompanyBank :form="form" />
+    </v-col>
+    <v-col cols="12" md="12"><hr></v-col>
   </v-row>
 </template>
 
@@ -226,27 +32,33 @@ export default {
       default() {
         return {}
       },
-    }
+    },
   },
 
   data() {
     return {
       form: this.formData,
       logo: '',
-      itemCurrency: []
+      itemCurrency: [],
+      companyNameView: true,
+      companyNameEdit: false,
     }
   },
 
   mounted() {
     this.getCurrency()
+    this.companyNameView = true
   },
 
   methods: {
+    save() {
+      this.companyNameView = true
+    },
+
     getCurrency() {
-      this.$axios.get(`/api/financial/currency`)
-        .then(res => {
-          this.itemCurrency = res.data.data.rows
-        })
+      this.$axios.get(`/api/financial/currency`).then((res) => {
+        this.itemCurrency = res.data.data.rows
+      })
     },
 
     changeCurrency() {
@@ -257,7 +69,7 @@ export default {
 
     getForm() {
       let data = new FormData()
-      Object.entries(this.form).forEach(entry => {
+      Object.entries(this.form).forEach((entry) => {
         const [key, value] = entry
         data.append(key, value)
       })
@@ -268,6 +80,6 @@ export default {
       this.form = Object.assign({}, form)
       this.logo = url + '/files/logo/' + this.form.company_logo
     },
-  }
+  },
 }
 </script>

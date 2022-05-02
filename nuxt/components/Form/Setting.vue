@@ -44,34 +44,70 @@ export default {
     return {
       dialog: false,
       itemCompany: [
-        { text: 'Account and Settings', type: 'SETTING', action: 'document' },
-        { text: 'Manage User', type: 'USER', action: 'action' },
-        { text: 'Chart Of Account', type: 'COA', action: 'document' },
+        { text: 'Account and Settings', type: 'SETTING', action: 'setting' },
+        { text: 'Manage User', type: '/dashboard/users/list', action: 'page' },
+        {
+          text: 'Chart Of Account',
+          type: '/dashboard/financial/account',
+          action: 'page',
+        },
       ],
 
       itemList: [
-        { text: 'All List', type: 'LIST', action: 'document' },
-        { text: 'Product and Services', type: 'PRODUCT', action: 'document' },
+        {
+          text: 'All List',
+          type: '/dashboard/transactions/list',
+          action: 'page',
+        },
+        {
+          text: 'Product and Services',
+          type: '/dashboard/inventory/item',
+          action: 'page',
+        },
         {
           text: 'Recurring Transactions',
-          type: 'RECCURING',
-          action: 'document',
+          type: '/dashboard/transactions/recurring',
+          action: 'page',
         },
-        { text: 'Attachments', type: 'ATTACHMENT', action: 'document' },
-        { text: 'Currencies', type: 'CURRENCY', action: 'document' },
+        {
+          text: 'Attachments',
+          type: '/dashboard/transactions/attachment',
+          action: 'page',
+        },
+        {
+          text: 'Currencies',
+          type: '/dashboard/financial/currency',
+          action: 'page',
+        },
       ],
 
       itemProfile: [
-        { text: 'Account', type: 'ACCOUNT', action: 'action' },
-        { text: 'Sign Out', type: 'SIGNOUT', action: 'action' },
+        { text: 'Account', type: '/dashboard/users/currenct', action: 'page' },
+        { text: 'Sign Out', type: 'logout', action: 'function' },
       ],
 
       itemTool: [
-        { text: 'Import Data', type: 'IMPORT', action: 'transaction' },
-        { text: 'Export Data', type: 'EXPORT', action: 'transaction' },
-        { text: 'Reconcile', type: 'RECONCILE', action: 'transaction' },
-        { text: 'Budgeting', type: 'BUDGET', action: 'transaction' },
-        { text: 'Audit Log', type: 'AUDIT', action: 'transaction' },
+        {
+          text: 'Import Data',
+          type: '/dashboard/tools/import',
+          action: 'page',
+        },
+        {
+          text: 'Export Data',
+          type: '/dashboard/tools/export',
+          action: 'page',
+        },
+        {
+          text: 'Reconcile',
+          type: '/dashboard/financial/reconcile',
+          action: 'page',
+        },
+        {
+          text: 'Budgeting',
+          type: '/dashboard/financial/budgeting',
+          action: 'page',
+        },
+        { text: 'Audit Log', type: '/dashboard/tools/audit', action: 'page' },
       ],
     }
   },

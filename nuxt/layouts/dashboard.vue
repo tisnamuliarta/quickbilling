@@ -13,43 +13,31 @@
           class="font-weight-bold hidden-sm-and-down"
           v-text="companyName.toUpperCase()"
           @click="$router.push('/dashboard')"
+          style="cursor: pointer"
         ></span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <LazyLayoutToolBar ref="toolbar" @openDialog="openDialog()" />
-
+      <LazyLayoutToolBar ref="toolbar" @openAction="openAction" />
     </v-app-bar>
 
     <LazyLayoutNavigationDrawer
       ref="navDrawer"
       :drawer="drawer"
-      @openDialog="openDialog"
+      @openAction="openAction"
     />
 
     <v-main class="grey lighten-4">
       <v-container fluid>
-        <Nuxt/>
+        <Nuxt />
       </v-container>
     </v-main>
 
-    <v-snackbar
-      v-model="snackbar"
-      top
-      color="primary"
-      right
-      elevation="24"
-    >
+    <v-snackbar v-model="snackbar" top color="primary" right elevation="24">
       {{ message }}
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="pink"
-          small
-          icon
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
+        <v-btn color="pink" small icon v-bind="attrs" @click="snackbar = false">
           <v-icon>mdi-close-thick</v-icon>
         </v-btn>
       </template>
@@ -57,12 +45,12 @@
 
     <LazyFormCheckForm ref="checkForm" />
 
+    <LazySetupListSetting ref="settingForm" />
+
     <v-footer color="grey lighten-3" padless>
-      <v-col
-        class="text-center"
-        cols="12"
-      >
-        Copyright © {{ new Date().getFullYear() }} — <strong> {{ company.company_name }} </strong>
+      <v-col class="text-center" cols="12">
+        Copyright © {{ new Date().getFullYear() }} —
+        <strong> {{ company.company_name }} </strong>
       </v-col>
     </v-footer>
   </v-app>
@@ -87,7 +75,7 @@ export default {
       logo: '',
       rightDrawer: false,
       loadImage: false,
-      companyName: ''
+      companyName: '',
     }
   },
 
@@ -96,7 +84,8 @@ export default {
     // this.activateMultipleDraggableDialogs()
 
     this.drawer = !this.$vuetify.breakpoint.mdAndDown
-    this.drawer = this.$route.name === 'dashboard-documents-form' ? false : this.drawer
+    this.drawer =
+      this.$route.name === 'dashboard-documents-form' ? false : this.drawer
     this.$refs.navDrawer.setDrawer(this.drawer)
   },
 
@@ -119,12 +108,25 @@ export default {
       }
     },
 
-    openDialog() {
-      this.$refs.formNew.openDialog()
-    },
-
     openAction(data) {
-      this.$refs.checkForm.openDialog(data, 0, null)
+      switch (data.item.action) {
+        case 'page':
+          this.$route.push({ page: data.item.type })
+          break
+        case 'function':
+          this[data.item.type]()
+          break
+        case 'document':
+        case 'transaction':
+          this.$refs.checkForm.openDialog(data, 0, null)
+          break
+        case 'setting':
+          this.$refs.settingForm.openDialog(data, 0, null)
+          break
+
+        default:
+          break
+      }
     },
 
     changeDrawer() {
@@ -134,25 +136,35 @@ export default {
 
     getLogo() {
       this.loadImage = true
-      this.$axios.get(`/api/logo`)
-        .then((res) => {
-          this.logo = res.data.data.logo
-          this.$refs.navDrawer.setLogo(this.logo)
-          this.loadImage = false
-        })
+      this.$axios.get(`/api/logo`).then((res) => {
+        this.logo = res.data.data.logo
+        this.$refs.navDrawer.setLogo(this.logo)
+        this.loadImage = false
+      })
     },
 
     getCompany() {
-      this.$axios.get(`/api/settings`, {
-        params: {
-          page: 'company'
-        }
-      })
-        .then(res => {
+      this.$axios
+        .get(`/api/settings`, {
+          params: {
+            page: 'company',
+          },
+        })
+        .then((res) => {
           this.$auth.$storage.setState('company', res.data.data.form)
           this.company = this.$auth.$storage.getState('company')
           this.companyName = res.data.data.form.company_name
         })
+    },
+
+    async logout() {
+      await this.$auth.logout()
+      this.$auth.$storage.removeLocalStorage('app.default_name')
+      this.$auth.$storage.removeLocalStorage('employee')
+      this.$auth.$storage.removeLocalStorage('country')
+
+      localStorage.removeItem('roles')
+      localStorage.removeItem('permissions')
     },
 
     rolePermission() {
@@ -166,17 +178,21 @@ export default {
 
     menus() {
       const appName = this.$auth.$storage.getLocalStorage('app.default_name')
-      this.$axios.get(`/api/menus`, {
-        params: {
-          appName,
-        },
-      })
-        .then(res => {
+      this.$axios
+        .get(`/api/menus`, {
+          params: {
+            appName,
+          },
+        })
+        .then((res) => {
           this.items = res.data.data.menus
           this.$refs.navDrawer.setItems(this.items)
         })
         .catch((err) => {
-          if (err.response.data.message === 'Call to a member function getAllPermissions() on null') {
+          if (
+            err.response.data.message ===
+            'Call to a member function getAllPermissions() on null'
+          ) {
             this.logout()
           }
           this.$swal({
@@ -193,6 +209,6 @@ export default {
 <style scoped>
 .v-toolbar-flat {
   box-shadow: 0 1px 0 0 rgb(0 0 0 / 20%), 0 0 0 0 rgb(0 0 0 / 14%),
-  0 0 0 0 rgb(0 0 0 / 12%) !important;
+    0 0 0 0 rgb(0 0 0 / 12%) !important;
 }
 </style>

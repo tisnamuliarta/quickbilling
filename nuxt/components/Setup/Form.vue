@@ -1,9 +1,11 @@
 <template>
-  <v-form class="pt-2">
-    <v-container>
-    <component :is="selectComponent" ref="childComponent" :formData="form"></component>
-    </v-container>
-  </v-form>
+  <v-container fluid>
+    <component
+      :is="selectComponent"
+      ref="childComponent"
+      :formData="form"
+    ></component>
+  </v-container>
 </template>
 
 <script>
@@ -48,12 +50,12 @@ export default {
   },
 
   methods: {
-    changeTab(form, url) {
-      this.selectComponent = this.$route.query.page
+    changeTab(form, url, page) {
+      this.selectComponent = page
       this.form = Object.assign({}, form)
       setTimeout(() => {
         this.$refs.childComponent.setForm(this.form, url)
-      }, 300)
+      }, 800)
     },
 
     getForm() {

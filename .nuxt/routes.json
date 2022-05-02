@@ -3,306 +3,406 @@
     "name": "dashboard",
     "path": "/dashboard",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\index.vue",
-    "chunkName": "pages/dashboard/index"
+    "chunkName": "pages/dashboard/index",
+    "_name": "_0afc7872"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\auth\\\\login.vue",
-    "chunkName": "pages/auth/login"
-  },
-  {
-    "name": "dashboard-posts",
-    "path": "/dashboard/posts",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\index.vue",
-    "chunkName": "pages/dashboard/posts/index"
+    "chunkName": "pages/auth/login",
+    "_name": "_eedd1670"
   },
   {
     "name": "dashboard-tasks",
     "path": "/dashboard/tasks",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\index.vue",
-    "chunkName": "pages/dashboard/tasks/index"
+    "chunkName": "pages/dashboard/tasks/index",
+    "_name": "_77a1f29f"
   },
   {
     "name": "documents-view",
     "path": "/documents/view",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\documents\\\\view.vue",
-    "chunkName": "pages/documents/view"
+    "chunkName": "pages/documents/view",
+    "_name": "_a83a4638"
   },
   {
     "name": "pages-about-us",
     "path": "/pages/about-us",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\about-us.vue",
-    "chunkName": "pages/pages/about-us"
+    "chunkName": "pages/pages/about-us",
+    "_name": "_2ab0a6a9"
   },
   {
     "name": "pages-booking",
     "path": "/pages/booking",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\booking.vue",
-    "chunkName": "pages/pages/booking"
+    "chunkName": "pages/pages/booking",
+    "_name": "_d993e444"
   },
   {
     "name": "pages-category",
     "path": "/pages/category",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\category.vue",
-    "chunkName": "pages/pages/category"
+    "chunkName": "pages/pages/category",
+    "_name": "_7e7986c9"
   },
   {
     "name": "pages-contact-us",
     "path": "/pages/contact-us",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\contact-us.vue",
-    "chunkName": "pages/pages/contact-us"
+    "chunkName": "pages/pages/contact-us",
+    "_name": "_43f2a9f6"
   },
   {
     "name": "pages-faq",
     "path": "/pages/faq",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\faq.vue",
-    "chunkName": "pages/pages/faq"
+    "chunkName": "pages/pages/faq",
+    "_name": "_c2bcaeca"
   },
   {
     "name": "pages-privacy-policy",
     "path": "/pages/privacy-policy",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\privacy-policy.vue",
-    "chunkName": "pages/pages/privacy-policy"
+    "chunkName": "pages/pages/privacy-policy",
+    "_name": "_0ae673bc"
   },
   {
     "name": "pages-terms",
     "path": "/pages/terms",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\terms.vue",
-    "chunkName": "pages/pages/terms"
+    "chunkName": "pages/pages/terms",
+    "_name": "_4f8c0168"
   },
   {
     "name": "student-announcement",
     "path": "/student/announcement",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\announcement.vue",
-    "chunkName": "pages/student/announcement"
+    "chunkName": "pages/student/announcement",
+    "_name": "_49121c09"
   },
   {
     "name": "student-print",
     "path": "/student/print",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\print.vue",
-    "chunkName": "pages/student/print"
+    "chunkName": "pages/student/print",
+    "_name": "_6a91cb4a"
   },
   {
     "name": "student-register",
     "path": "/student/register",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\register.vue",
-    "chunkName": "pages/student/register"
+    "chunkName": "pages/student/register",
+    "_name": "_54df5736"
   },
   {
     "name": "dashboard-bp-contact",
     "path": "/dashboard/bp/contact",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\bp\\\\contact.vue",
-    "chunkName": "pages/dashboard/bp/contact"
+    "chunkName": "pages/dashboard/bp/contact",
+    "_name": "_0aeed547"
   },
   {
     "name": "dashboard-documents-form",
     "path": "/dashboard/documents/form",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\documents\\\\form.vue",
-    "chunkName": "pages/dashboard/documents/form"
+    "chunkName": "pages/dashboard/documents/form",
+    "_name": "_ec0a329e"
   },
   {
     "name": "dashboard-documents-list",
     "path": "/dashboard/documents/list",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\documents\\\\list.vue",
-    "chunkName": "pages/dashboard/documents/list"
+    "chunkName": "pages/dashboard/documents/list",
+    "_name": "_8417e4ea"
   },
   {
     "name": "dashboard-financial-account",
     "path": "/dashboard/financial/account",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\account.vue",
-    "chunkName": "pages/dashboard/financial/account"
+    "chunkName": "pages/dashboard/financial/account",
+    "_name": "_64a22ac2"
   },
   {
     "name": "dashboard-financial-account-category",
     "path": "/dashboard/financial/account-category",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\account-category.vue",
-    "chunkName": "pages/dashboard/financial/account-category"
+    "chunkName": "pages/dashboard/financial/account-category",
+    "_name": "_7af075c8"
   },
   {
     "name": "dashboard-financial-bank-deposit",
     "path": "/dashboard/financial/bank-deposit",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-deposit.vue",
-    "chunkName": "pages/dashboard/financial/bank-deposit"
+    "chunkName": "pages/dashboard/financial/bank-deposit",
+    "_name": "_60f3f7ea"
   },
   {
     "name": "dashboard-financial-bank-transfer",
     "path": "/dashboard/financial/bank-transfer",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-transfer.vue",
-    "chunkName": "pages/dashboard/financial/bank-transfer"
+    "chunkName": "pages/dashboard/financial/bank-transfer",
+    "_name": "_da9c0464"
   },
   {
     "name": "dashboard-financial-bank-withdraw",
     "path": "/dashboard/financial/bank-withdraw",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\bank-withdraw.vue",
-    "chunkName": "pages/dashboard/financial/bank-withdraw"
+    "chunkName": "pages/dashboard/financial/bank-withdraw",
+    "_name": "_73a1a96d"
+  },
+  {
+    "name": "dashboard-financial-budgeting",
+    "path": "/dashboard/financial/budgeting",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\budgeting.vue",
+    "chunkName": "pages/dashboard/financial/budgeting",
+    "_name": "_4ad21f22"
   },
   {
     "name": "dashboard-financial-closing",
     "path": "/dashboard/financial/closing",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\closing.vue",
-    "chunkName": "pages/dashboard/financial/closing"
+    "chunkName": "pages/dashboard/financial/closing",
+    "_name": "_b5758db2"
   },
   {
     "name": "dashboard-financial-expense",
     "path": "/dashboard/financial/expense",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\expense.vue",
-    "chunkName": "pages/dashboard/financial/expense"
+    "chunkName": "pages/dashboard/financial/expense",
+    "_name": "_395f1b4a"
   },
   {
     "name": "dashboard-financial-journal-entry",
     "path": "/dashboard/financial/journal-entry",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\journal-entry.vue",
-    "chunkName": "pages/dashboard/financial/journal-entry"
+    "chunkName": "pages/dashboard/financial/journal-entry",
+    "_name": "_a3966864"
+  },
+  {
+    "name": "dashboard-financial-reconcile",
+    "path": "/dashboard/financial/reconcile",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\reconcile.vue",
+    "chunkName": "pages/dashboard/financial/reconcile",
+    "_name": "_bbfc3680"
   },
   {
     "name": "dashboard-financial-reporting-period",
     "path": "/dashboard/financial/reporting-period",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\financial\\\\reporting-period.vue",
-    "chunkName": "pages/dashboard/financial/reporting-period"
+    "chunkName": "pages/dashboard/financial/reporting-period",
+    "_name": "_4e5db5be"
   },
   {
     "name": "dashboard-inventory-item",
     "path": "/dashboard/inventory/item",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\item.vue",
-    "chunkName": "pages/dashboard/inventory/item"
+    "chunkName": "pages/dashboard/inventory/item",
+    "_name": "_6cf741b8"
   },
   {
     "name": "dashboard-inventory-price-list",
     "path": "/dashboard/inventory/price-list",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\inventory\\\\price-list.vue",
-    "chunkName": "pages/dashboard/inventory/price-list"
-  },
-  {
-    "name": "dashboard-posts-category",
-    "path": "/dashboard/posts/category",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\posts\\\\category.vue",
-    "chunkName": "pages/dashboard/posts/category"
+    "chunkName": "pages/dashboard/inventory/price-list",
+    "_name": "_406c2c73"
   },
   {
     "name": "dashboard-purchase-invoice",
     "path": "/dashboard/purchase/invoice",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\invoice.vue",
-    "chunkName": "pages/dashboard/purchase/invoice"
+    "chunkName": "pages/dashboard/purchase/invoice",
+    "_name": "_7b36837e"
   },
   {
     "name": "dashboard-purchase-order",
     "path": "/dashboard/purchase/order",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\order.vue",
-    "chunkName": "pages/dashboard/purchase/order"
+    "chunkName": "pages/dashboard/purchase/order",
+    "_name": "_9276ce3c"
   },
   {
     "name": "dashboard-purchase-payment",
     "path": "/dashboard/purchase/payment",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\payment.vue",
-    "chunkName": "pages/dashboard/purchase/payment"
+    "chunkName": "pages/dashboard/purchase/payment",
+    "_name": "_cc14cecc"
   },
   {
     "name": "dashboard-purchase-quote",
     "path": "/dashboard/purchase/quote",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\quote.vue",
-    "chunkName": "pages/dashboard/purchase/quote"
+    "chunkName": "pages/dashboard/purchase/quote",
+    "_name": "_75b70910"
   },
   {
     "name": "dashboard-purchase-receipt",
     "path": "/dashboard/purchase/receipt",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\receipt.vue",
-    "chunkName": "pages/dashboard/purchase/receipt"
+    "chunkName": "pages/dashboard/purchase/receipt",
+    "_name": "_6efc6fcc"
   },
   {
     "name": "dashboard-purchase-return",
     "path": "/dashboard/purchase/return",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\purchase\\\\return.vue",
-    "chunkName": "pages/dashboard/purchase/return"
+    "chunkName": "pages/dashboard/purchase/return",
+    "_name": "_470ce14c"
   },
   {
     "name": "dashboard-reports-bank",
     "path": "/dashboard/reports/bank",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\bank.vue",
-    "chunkName": "pages/dashboard/reports/bank"
+    "chunkName": "pages/dashboard/reports/bank",
+    "_name": "_ff2baca0"
   },
   {
     "name": "dashboard-reports-bp",
     "path": "/dashboard/reports/bp",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\bp.vue",
-    "chunkName": "pages/dashboard/reports/bp"
+    "chunkName": "pages/dashboard/reports/bp",
+    "_name": "_75a6447c"
   },
   {
     "name": "dashboard-reports-item",
     "path": "/dashboard/reports/item",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\reports\\\\item.vue",
-    "chunkName": "pages/dashboard/reports/item"
+    "chunkName": "pages/dashboard/reports/item",
+    "_name": "_35695b07"
   },
   {
     "name": "dashboard-sales-delivery",
     "path": "/dashboard/sales/delivery",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\delivery.vue",
-    "chunkName": "pages/dashboard/sales/delivery"
+    "chunkName": "pages/dashboard/sales/delivery",
+    "_name": "_d9a95596"
   },
   {
     "name": "dashboard-sales-invoice",
     "path": "/dashboard/sales/invoice",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\invoice.vue",
-    "chunkName": "pages/dashboard/sales/invoice"
+    "chunkName": "pages/dashboard/sales/invoice",
+    "_name": "_70888508"
   },
   {
     "name": "dashboard-sales-order",
     "path": "/dashboard/sales/order",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\order.vue",
-    "chunkName": "pages/dashboard/sales/order"
+    "chunkName": "pages/dashboard/sales/order",
+    "_name": "_2a8faa46"
   },
   {
     "name": "dashboard-sales-payment",
     "path": "/dashboard/sales/payment",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\payment.vue",
-    "chunkName": "pages/dashboard/sales/payment"
+    "chunkName": "pages/dashboard/sales/payment",
+    "_name": "_c166d056"
   },
   {
     "name": "dashboard-sales-quote",
     "path": "/dashboard/sales/quote",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\quote.vue",
-    "chunkName": "pages/dashboard/sales/quote"
+    "chunkName": "pages/dashboard/sales/quote",
+    "_name": "_acaac9ea"
   },
   {
     "name": "dashboard-sales-return",
     "path": "/dashboard/sales/return",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\sales\\\\return.vue",
-    "chunkName": "pages/dashboard/sales/return"
+    "chunkName": "pages/dashboard/sales/return",
+    "_name": "_dce8e29e"
   },
   {
     "name": "dashboard-settings-menu",
     "path": "/dashboard/settings/menu",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\menu.vue",
-    "chunkName": "pages/dashboard/settings/menu"
+    "chunkName": "pages/dashboard/settings/menu",
+    "_name": "_b1cd60c6"
   },
   {
     "name": "dashboard-settings-setup",
     "path": "/dashboard/settings/setup",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\setup.vue",
-    "chunkName": "pages/dashboard/settings/setup"
+    "chunkName": "pages/dashboard/settings/setup",
+    "_name": "_12dc07a2"
   },
   {
     "name": "dashboard-tasks-show",
     "path": "/dashboard/tasks/show",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\tasks\\\\show.vue",
-    "chunkName": "pages/dashboard/tasks/show"
+    "chunkName": "pages/dashboard/tasks/show",
+    "_name": "_3ebac780"
+  },
+  {
+    "name": "dashboard-tools-audit",
+    "path": "/dashboard/tools/audit",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\tools\\\\audit.vue",
+    "chunkName": "pages/dashboard/tools/audit",
+    "_name": "_044d68bb"
+  },
+  {
+    "name": "dashboard-tools-export",
+    "path": "/dashboard/tools/export",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\tools\\\\export.vue",
+    "chunkName": "pages/dashboard/tools/export",
+    "_name": "_2f964584"
+  },
+  {
+    "name": "dashboard-tools-import",
+    "path": "/dashboard/tools/import",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\tools\\\\import.vue",
+    "chunkName": "pages/dashboard/tools/import",
+    "_name": "_bc697616"
+  },
+  {
+    "name": "dashboard-transactions-attachment",
+    "path": "/dashboard/transactions/attachment",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\transactions\\\\attachment.vue",
+    "chunkName": "pages/dashboard/transactions/attachment",
+    "_name": "_67f8e6da"
+  },
+  {
+    "name": "dashboard-transactions-list",
+    "path": "/dashboard/transactions/list",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\transactions\\\\list.vue",
+    "chunkName": "pages/dashboard/transactions/list",
+    "_name": "_e9c55ee4"
+  },
+  {
+    "name": "dashboard-transactions-recurring",
+    "path": "/dashboard/transactions/recurring",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\transactions\\\\recurring.vue",
+    "chunkName": "pages/dashboard/transactions/recurring",
+    "_name": "_5f6b14c6"
   },
   {
     "name": "dashboard-users-current",
     "path": "/dashboard/users/current",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\current.vue",
-    "chunkName": "pages/dashboard/users/current"
+    "chunkName": "pages/dashboard/users/current",
+    "_name": "_8da03368"
+  },
+  {
+    "name": "dashboard-users-list",
+    "path": "/dashboard/users/list",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\list.vue",
+    "chunkName": "pages/dashboard/users/list",
+    "_name": "_a9a3094a"
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_2c1039ce"
   },
   {
     "name": "__nuxt_laravel",
     "path": "/__nuxt_laravel",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_2c1039ce"
   }
 ]

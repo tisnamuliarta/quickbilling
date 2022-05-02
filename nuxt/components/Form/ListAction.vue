@@ -1,7 +1,7 @@
 <template>
   <v-list dense>
     <span class="font-weight-bold subtitle-2 ml-4" v-text="title"></span>
-    <v-divider class="ml-4" />
+    <v-divider class="ml-4 mb-2" />
     <v-list-item-group color="primary">
       <v-list-item
         v-for="(item, i) in items"

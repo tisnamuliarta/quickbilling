@@ -4,6 +4,7 @@
     fullscreen
     hide-overlay
     transition="dialog-top-transition"
+    scrollable
   >
     <v-card tile>
       <v-card-title>
@@ -25,18 +26,15 @@
       </v-card-title>
       <v-divider/>
 
-      <slot name="content"/>
+      <v-card-text class="pl-0 pr-0">
+        <slot name="content"/>
+      </v-card-text>
 
       <v-divider />
+
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          color="primary"
-          small
-          @click="dialog = false"
-        >
-          Save
-        </v-btn>
+        <slot name="actions"/>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -57,6 +55,10 @@ export default {
     openDialog(data) {
       this.dialog = true
       this.title = data.item.text
+    },
+
+    closeDialog() {
+      this.dialog = false
     }
   }
 }

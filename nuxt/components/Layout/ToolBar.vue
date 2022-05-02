@@ -13,7 +13,7 @@
       </template>
 
       <v-card>
-        <LazyFormNew ref="formNew" />
+        <LazyFormNew ref="formNew" @openAction="openAction" />
       </v-card>
     </v-menu>
 
@@ -27,7 +27,7 @@
       <span>Notifications</span>
     </v-tooltip>
 
-    <v-tooltip bottom>
+    <!-- <v-tooltip bottom>
       <template #activator="{ on }">
         <v-btn small icon class="mr-2" v-on="on" @click="$router.push('/dashboard/settings/setup')">
           <v-icon>mdi-cog</v-icon>
@@ -35,24 +35,21 @@
         >
       </template>
       <span>Settings</span>
-    </v-tooltip>
+    </v-tooltip> -->
 
     <v-menu offset-y left :nudge-width="700">
       <template #activator="{ on }">
         <v-btn
-          x-small
-          color="secondary"
-          depressed
-          fab
-          class="white--text"
+          small
+          icon
           v-on="on"
         >
-          {{ $auth.user.name.substring(0, 1) }}
+          <v-icon>mdi-cog</v-icon>
         </v-btn>
       </template>
 
       <v-card>
-        <LazyFormSetting ref="formSetting" />
+        <LazyFormSetting ref="formSetting" @openAction="openAction" />
       </v-card>
     </v-menu>
   </div>
@@ -62,16 +59,19 @@
 export default {
   name: "ToolBar",
 
-  methods: {
-    async logout() {
-      await this.$auth.logout()
-      this.$auth.$storage.removeLocalStorage('app.default_name')
-      this.$auth.$storage.removeLocalStorage('employee')
-      this.$auth.$storage.removeLocalStorage('country')
+  data() {
+    return {
+      username: ''
+    }
+  },
 
-      localStorage.removeItem('roles')
-      localStorage.removeItem('permissions')
-      this.$router.push('/auth/login')
+  mounted() {
+    this.username = this.$auth.user.name.substring(0, 1)
+  },
+
+  methods: {
+    openAction(data) {
+      this.$emit('openAction', data)
     },
   }
 }

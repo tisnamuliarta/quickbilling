@@ -6,7 +6,6 @@ import scrollBehavior from './router.scrollBehavior.js'
 
 const _0afc7872 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\index.vue' /* webpackChunkName: "pages/dashboard/index" */))
 const _eedd1670 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
-const _3df5853a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\index.vue' /* webpackChunkName: "pages/dashboard/posts/index" */))
 const _77a1f29f = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _a83a4638 = () => interopDefault(import('..\\nuxt\\pages\\documents\\view.vue' /* webpackChunkName: "pages/documents/view" */))
 const _2ab0a6a9 = () => interopDefault(import('..\\nuxt\\pages\\pages\\about-us.vue' /* webpackChunkName: "pages/pages/about-us" */))
@@ -27,13 +26,14 @@ const _7af075c8 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\finan
 const _60f3f7ea = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-deposit.vue' /* webpackChunkName: "pages/dashboard/financial/bank-deposit" */))
 const _da9c0464 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-transfer.vue' /* webpackChunkName: "pages/dashboard/financial/bank-transfer" */))
 const _73a1a96d = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\bank-withdraw.vue' /* webpackChunkName: "pages/dashboard/financial/bank-withdraw" */))
+const _4ad21f22 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\budgeting.vue' /* webpackChunkName: "pages/dashboard/financial/budgeting" */))
 const _b5758db2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\closing.vue' /* webpackChunkName: "pages/dashboard/financial/closing" */))
 const _395f1b4a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\expense.vue' /* webpackChunkName: "pages/dashboard/financial/expense" */))
 const _a3966864 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\journal-entry.vue' /* webpackChunkName: "pages/dashboard/financial/journal-entry" */))
+const _bbfc3680 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\reconcile.vue' /* webpackChunkName: "pages/dashboard/financial/reconcile" */))
 const _4e5db5be = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\financial\\reporting-period.vue' /* webpackChunkName: "pages/dashboard/financial/reporting-period" */))
 const _6cf741b8 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\item.vue' /* webpackChunkName: "pages/dashboard/inventory/item" */))
 const _406c2c73 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\inventory\\price-list.vue' /* webpackChunkName: "pages/dashboard/inventory/price-list" */))
-const _4719abc6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\posts\\category.vue' /* webpackChunkName: "pages/dashboard/posts/category" */))
 const _7b36837e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\invoice.vue' /* webpackChunkName: "pages/dashboard/purchase/invoice" */))
 const _9276ce3c = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\order.vue' /* webpackChunkName: "pages/dashboard/purchase/order" */))
 const _cc14cecc = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\purchase\\payment.vue' /* webpackChunkName: "pages/dashboard/purchase/payment" */))
@@ -52,7 +52,14 @@ const _dce8e29e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales
 const _b1cd60c6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\menu.vue' /* webpackChunkName: "pages/dashboard/settings/menu" */))
 const _12dc07a2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\setup.vue' /* webpackChunkName: "pages/dashboard/settings/setup" */))
 const _3ebac780 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\show.vue' /* webpackChunkName: "pages/dashboard/tasks/show" */))
+const _044d68bb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tools\\audit.vue' /* webpackChunkName: "pages/dashboard/tools/audit" */))
+const _2f964584 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tools\\export.vue' /* webpackChunkName: "pages/dashboard/tools/export" */))
+const _bc697616 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tools\\import.vue' /* webpackChunkName: "pages/dashboard/tools/import" */))
+const _67f8e6da = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\transactions\\attachment.vue' /* webpackChunkName: "pages/dashboard/transactions/attachment" */))
+const _e9c55ee4 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\transactions\\list.vue' /* webpackChunkName: "pages/dashboard/transactions/list" */))
+const _5f6b14c6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\transactions\\recurring.vue' /* webpackChunkName: "pages/dashboard/transactions/recurring" */))
 const _8da03368 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\current.vue' /* webpackChunkName: "pages/dashboard/users/current" */))
+const _a9a3094a = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\list.vue' /* webpackChunkName: "pages/dashboard/users/list" */))
 const _2c1039ce = () => interopDefault(import('..\\nuxt\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -74,10 +81,6 @@ export const routerOptions = {
     path: "/auth/login",
     component: _eedd1670,
     name: "auth-login"
-  }, {
-    path: "/dashboard/posts",
-    component: _3df5853a,
-    name: "dashboard-posts"
   }, {
     path: "/dashboard/tasks",
     component: _77a1f29f,
@@ -159,6 +162,10 @@ export const routerOptions = {
     component: _73a1a96d,
     name: "dashboard-financial-bank-withdraw"
   }, {
+    path: "/dashboard/financial/budgeting",
+    component: _4ad21f22,
+    name: "dashboard-financial-budgeting"
+  }, {
     path: "/dashboard/financial/closing",
     component: _b5758db2,
     name: "dashboard-financial-closing"
@@ -171,6 +178,10 @@ export const routerOptions = {
     component: _a3966864,
     name: "dashboard-financial-journal-entry"
   }, {
+    path: "/dashboard/financial/reconcile",
+    component: _bbfc3680,
+    name: "dashboard-financial-reconcile"
+  }, {
     path: "/dashboard/financial/reporting-period",
     component: _4e5db5be,
     name: "dashboard-financial-reporting-period"
@@ -182,10 +193,6 @@ export const routerOptions = {
     path: "/dashboard/inventory/price-list",
     component: _406c2c73,
     name: "dashboard-inventory-price-list"
-  }, {
-    path: "/dashboard/posts/category",
-    component: _4719abc6,
-    name: "dashboard-posts-category"
   }, {
     path: "/dashboard/purchase/invoice",
     component: _7b36837e,
@@ -259,9 +266,37 @@ export const routerOptions = {
     component: _3ebac780,
     name: "dashboard-tasks-show"
   }, {
+    path: "/dashboard/tools/audit",
+    component: _044d68bb,
+    name: "dashboard-tools-audit"
+  }, {
+    path: "/dashboard/tools/export",
+    component: _2f964584,
+    name: "dashboard-tools-export"
+  }, {
+    path: "/dashboard/tools/import",
+    component: _bc697616,
+    name: "dashboard-tools-import"
+  }, {
+    path: "/dashboard/transactions/attachment",
+    component: _67f8e6da,
+    name: "dashboard-transactions-attachment"
+  }, {
+    path: "/dashboard/transactions/list",
+    component: _e9c55ee4,
+    name: "dashboard-transactions-list"
+  }, {
+    path: "/dashboard/transactions/recurring",
+    component: _5f6b14c6,
+    name: "dashboard-transactions-recurring"
+  }, {
     path: "/dashboard/users/current",
     component: _8da03368,
     name: "dashboard-users-current"
+  }, {
+    path: "/dashboard/users/list",
+    component: _a9a3094a,
+    name: "dashboard-users-list"
   }, {
     path: "/",
     component: _2c1039ce,

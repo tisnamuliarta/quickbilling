@@ -41,15 +41,6 @@
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
   },
-  "FinancialFormAccount": {
-    "description": "Auto imported from components/Financial/FormAccount.vue"
-  },
-  "FinancialFormAccountCategory": {
-    "description": "Auto imported from components/Financial/FormAccountCategory.vue"
-  },
-  "FinancialFormReportingPeriod": {
-    "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
-  },
   "DocumentCardAction": {
     "description": "Auto imported from components/Document/CardAction.vue"
   },
@@ -83,6 +74,18 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
+  "FinancialFormAccount": {
+    "description": "Auto imported from components/Financial/FormAccount.vue"
+  },
+  "FinancialFormAccountCategory": {
+    "description": "Auto imported from components/Financial/FormAccountCategory.vue"
+  },
+  "FinancialFormReportingPeriod": {
+    "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
+  },
+  "GridAgGrid": {
+    "description": "Auto imported from components/Grid/AgGrid.vue"
+  },
   "FormCheckForm": {
     "description": "Auto imported from components/Form/CheckForm.vue"
   },
@@ -94,6 +97,12 @@
   },
   "FormNew": {
     "description": "Auto imported from components/Form/New.vue"
+  },
+  "FormSectionEdit": {
+    "description": "Auto imported from components/Form/SectionEdit.vue"
+  },
+  "FormSectionView": {
+    "description": "Auto imported from components/Form/SectionView.vue"
   },
   "FormSetting": {
     "description": "Auto imported from components/Form/Setting.vue"
@@ -115,9 +124,6 @@
   },
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
-  },
-  "GridAgGrid": {
-    "description": "Auto imported from components/Grid/AgGrid.vue"
   },
   "LayoutNavigationDrawer": {
     "description": "Auto imported from components/Layout/NavigationDrawer.vue"
@@ -154,6 +160,9 @@
   },
   "SetupGeneral": {
     "description": "Auto imported from components/Setup/General.vue"
+  },
+  "SetupListSetting": {
+    "description": "Auto imported from components/Setup/ListSetting.vue"
   },
   "SetupPaymentMethod": {
     "description": "Auto imported from components/Setup/PaymentMethod.vue"
@@ -199,5 +208,17 @@
   },
   "TasksFormTask": {
     "description": "Auto imported from components/Tasks/FormTask.vue"
+  },
+  "SetupSectionCompanyAddress": {
+    "description": "Auto imported from components/Setup/Section/CompanyAddress.vue"
+  },
+  "SetupSectionCompanyBank": {
+    "description": "Auto imported from components/Setup/Section/CompanyBank.vue"
+  },
+  "SetupSectionCompanyInfo": {
+    "description": "Auto imported from components/Setup/Section/CompanyInfo.vue"
+  },
+  "SetupSectionCompanyName": {
+    "description": "Auto imported from components/Setup/Section/CompanyName.vue"
   }
 }
