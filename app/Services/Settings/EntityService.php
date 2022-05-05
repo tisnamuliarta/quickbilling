@@ -12,11 +12,13 @@ class EntityService
      */
     public function index($request): array
     {
-        $query = Entity::first();
+        $query = Entity::all();
+        $simple = Entity::select('id', 'name')->get();
 
         return [
             "rows" => $query,
-            "status" => ($query) ? 'update' : 'insert'
+            "status" => ($query) ? 'update' : 'insert',
+            "simple" => $simple
         ];
     }
 

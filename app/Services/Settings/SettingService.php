@@ -48,6 +48,10 @@ class SettingService
             if ($setting != 'null' && $index != 'company_logo') {
                 $this->update($index, $setting);
             }
+
+            if ($setting == true) {
+                $this->update($index, $setting);
+            }
         }
     }
 

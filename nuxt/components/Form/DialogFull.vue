@@ -27,7 +27,9 @@
       <v-divider/>
 
       <v-card-text class="pl-0 pr-0">
-        <slot name="content"/>
+        <v-container fluid>
+          <slot name="content"/>
+        </v-container>
       </v-card-text>
 
       <v-divider />

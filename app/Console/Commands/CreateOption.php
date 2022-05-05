@@ -19,7 +19,7 @@ class CreateOption extends Command
      *
      * @var string
      */
-    protected $description = 'Create and setting options';
+    protected $description = 'Create an setting options';
 
     /**
      * Create a new command instance.
@@ -46,7 +46,7 @@ class CreateOption extends Command
             Setting::create([
                 'key' => $option_name,
                 'types' => $option_type,
-                'company_id' => 0
+                'entity_id' => 0
             ]);
             $this->info('Setting created successfully!');
         } else {

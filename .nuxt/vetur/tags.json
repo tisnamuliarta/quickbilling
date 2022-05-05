@@ -8,12 +8,6 @@
   "DialogMaster": {
     "description": "Auto imported from components/DialogMaster.vue"
   },
-  "Editor": {
-    "description": "Auto imported from components/Editor.vue"
-  },
-  "Footer": {
-    "description": "Auto imported from components/Footer.vue"
-  },
   "MainToolbar": {
     "description": "Auto imported from components/MainToolbar.vue"
   },
@@ -28,12 +22,6 @@
   },
   "TableSimple": {
     "description": "Auto imported from components/TableSimple.vue"
-  },
-  "ToolbarTitle": {
-    "description": "Auto imported from components/ToolbarTitle.vue"
-  },
-  "VideoCard": {
-    "description": "Auto imported from components/VideoCard.vue"
   },
   "DashboardCheck": {
     "description": "Auto imported from components/Dashboard/Check.vue"
@@ -83,9 +71,6 @@
   "FinancialFormReportingPeriod": {
     "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
   },
-  "GridAgGrid": {
-    "description": "Auto imported from components/Grid/AgGrid.vue"
-  },
   "FormCheckForm": {
     "description": "Auto imported from components/Form/CheckForm.vue"
   },
@@ -106,6 +91,9 @@
   },
   "FormSetting": {
     "description": "Auto imported from components/Form/Setting.vue"
+  },
+  "GridAgGrid": {
+    "description": "Auto imported from components/Grid/AgGrid.vue"
   },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
@@ -137,77 +125,89 @@
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
   },
+  "SettingAccountMapping": {
+    "description": "Auto imported from components/Setting/AccountMapping.vue"
+  },
+  "SettingCurrency": {
+    "description": "Auto imported from components/Setting/Currency.vue"
+  },
+  "SettingEmail": {
+    "description": "Auto imported from components/Setting/Email.vue"
+  },
   "SettingEntity": {
     "description": "Auto imported from components/Setting/Entity.vue"
   },
-  "SetupAccountMapping": {
-    "description": "Auto imported from components/Setup/AccountMapping.vue"
+  "SettingFinance": {
+    "description": "Auto imported from components/Setting/Finance.vue"
+  },
+  "SettingForm": {
+    "description": "Auto imported from components/Setting/Form.vue"
+  },
+  "SettingGeneral": {
+    "description": "Auto imported from components/Setting/General.vue"
+  },
+  "SettingPaymentMethod": {
+    "description": "Auto imported from components/Setting/PaymentMethod.vue"
+  },
+  "SettingPaymentTerm": {
+    "description": "Auto imported from components/Setting/PaymentTerm.vue"
+  },
+  "SettingPdf": {
+    "description": "Auto imported from components/Setting/Pdf.vue"
+  },
+  "SettingPermissions": {
+    "description": "Auto imported from components/Setting/Permissions.vue"
+  },
+  "SettingRoles": {
+    "description": "Auto imported from components/Setting/Roles.vue"
+  },
+  "SettingTax": {
+    "description": "Auto imported from components/Setting/Tax.vue"
+  },
+  "SettingUsers": {
+    "description": "Auto imported from components/Setting/Users.vue"
+  },
+  "SetupAdvanced": {
+    "description": "Auto imported from components/Setup/Advanced.vue"
   },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"
   },
-  "SetupCurrency": {
-    "description": "Auto imported from components/Setup/Currency.vue"
-  },
-  "SetupEmail": {
-    "description": "Auto imported from components/Setup/Email.vue"
-  },
-  "SetupFinance": {
-    "description": "Auto imported from components/Setup/Finance.vue"
+  "SetupExpenses": {
+    "description": "Auto imported from components/Setup/Expenses.vue"
   },
   "SetupForm": {
     "description": "Auto imported from components/Setup/Form.vue"
   },
-  "SetupGeneral": {
-    "description": "Auto imported from components/Setup/General.vue"
-  },
   "SetupListSetting": {
     "description": "Auto imported from components/Setup/ListSetting.vue"
   },
-  "SetupPaymentMethod": {
-    "description": "Auto imported from components/Setup/PaymentMethod.vue"
+  "SetupPayment": {
+    "description": "Auto imported from components/Setup/Payment.vue"
   },
-  "SetupPaymentTerm": {
-    "description": "Auto imported from components/Setup/PaymentTerm.vue"
+  "SetupSales": {
+    "description": "Auto imported from components/Setup/Sales.vue"
   },
-  "SetupPdf": {
-    "description": "Auto imported from components/Setup/Pdf.vue"
+  "SetupSectionAdvanceAccounting": {
+    "description": "Auto imported from components/Setup/Section/AdvanceAccounting.vue"
   },
-  "SetupPermissions": {
-    "description": "Auto imported from components/Setup/Permissions.vue"
+  "SetupSectionAdvancedCategory": {
+    "description": "Auto imported from components/Setup/Section/AdvancedCategory.vue"
   },
-  "SetupRoles": {
-    "description": "Auto imported from components/Setup/Roles.vue"
+  "SetupSectionAdvancedChartOfAccount": {
+    "description": "Auto imported from components/Setup/Section/AdvancedChartOfAccount.vue"
   },
-  "SetupTax": {
-    "description": "Auto imported from components/Setup/Tax.vue"
+  "SetupSectionAdvancedCurrency": {
+    "description": "Auto imported from components/Setup/Section/AdvancedCurrency.vue"
   },
-  "SetupUsers": {
-    "description": "Auto imported from components/Setup/Users.vue"
+  "SetupSectionAdvancedOther": {
+    "description": "Auto imported from components/Setup/Section/AdvancedOther.vue"
   },
-  "SheetJSpreadSheet": {
-    "description": "Auto imported from components/Sheet/JSpreadSheet.vue"
+  "SetupSectionAdvancedProject": {
+    "description": "Auto imported from components/Setup/Section/AdvancedProject.vue"
   },
-  "StudentDataHelp": {
-    "description": "Auto imported from components/Student/DataHelp.vue"
-  },
-  "StudentFormStudent": {
-    "description": "Auto imported from components/Student/FormStudent.vue"
-  },
-  "StudentListDocument": {
-    "description": "Auto imported from components/Student/ListDocument.vue"
-  },
-  "StudentParentInfo": {
-    "description": "Auto imported from components/Student/ParentInfo.vue"
-  },
-  "StudentPersonalInfo": {
-    "description": "Auto imported from components/Student/PersonalInfo.vue"
-  },
-  "StudentScoreInfo": {
-    "description": "Auto imported from components/Student/ScoreInfo.vue"
-  },
-  "TasksFormTask": {
-    "description": "Auto imported from components/Tasks/FormTask.vue"
+  "SetupSectionAdvancedTimeTracking": {
+    "description": "Auto imported from components/Setup/Section/AdvancedTimeTracking.vue"
   },
   "SetupSectionCompanyAddress": {
     "description": "Auto imported from components/Setup/Section/CompanyAddress.vue"
@@ -220,5 +220,35 @@
   },
   "SetupSectionCompanyName": {
     "description": "Auto imported from components/Setup/Section/CompanyName.vue"
+  },
+  "SetupSectionExpenseFormContent": {
+    "description": "Auto imported from components/Setup/Section/ExpenseFormContent.vue"
+  },
+  "SetupSectionExpensePurchaseOrder": {
+    "description": "Auto imported from components/Setup/Section/ExpensePurchaseOrder.vue"
+  },
+  "SetupSectionExpensesMessages": {
+    "description": "Auto imported from components/Setup/Section/ExpensesMessages.vue"
+  },
+  "SetupSectionSalesFormContent": {
+    "description": "Auto imported from components/Setup/Section/SalesFormContent.vue"
+  },
+  "SetupSectionSalesMessages": {
+    "description": "Auto imported from components/Setup/Section/SalesMessages.vue"
+  },
+  "SetupSectionSalesOnlineDelivery": {
+    "description": "Auto imported from components/Setup/Section/SalesOnlineDelivery.vue"
+  },
+  "SetupSectionSalesProductService": {
+    "description": "Auto imported from components/Setup/Section/SalesProductService.vue"
+  },
+  "SetupSectionSalesProgressInvoice": {
+    "description": "Auto imported from components/Setup/Section/SalesProgressInvoice.vue"
+  },
+  "SetupSectionSalesReminders": {
+    "description": "Auto imported from components/Setup/Section/SalesReminders.vue"
+  },
+  "SetupSectionSalesStatement": {
+    "description": "Auto imported from components/Setup/Section/SalesStatement.vue"
   }
 }

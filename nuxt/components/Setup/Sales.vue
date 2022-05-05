@@ -1,49 +1,37 @@
 <template>
   <v-row>
     <v-col cols="12" md="12">
-      <v-row no-gutters>
-        <v-col cols="12" md="2" class="pa-1">
-          <span class="text-subtitle-1">Company Logo</span>
-        </v-col>
-
-        <v-col cols="12" md="2" class="pa-1">
-          <v-img v-if="companyNameView" max-width="250" max-height="150" :src="logo"></v-img>
-          <DocumentFieldUpload
-            v-else
-            ref="uploadField"
-            form-type="company_logo"
-            :form-data="form"
-            @eventGetFiles="eventGetFiles"
-          ></DocumentFieldUpload>
-        </v-col>
-
-        <v-col v-if="companyNameView" cols="12" md="1" class="pa-1 text-right">
-          <v-btn icon small @click="companyNameView = false">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-
+      <LazySetupSectionSalesFormContent :form="form" :logo="logo" />
       <hr>
     </v-col>
 
     <v-col cols="12" md="12">
-      <LazySetupSectionCompanyName :form="form" :logo="logo" />
+      <LazySetupSectionSalesProductService :form="form" />
       <hr>
     </v-col>
 
     <v-col cols="12" md="12">
-      <LazySetupSectionCompanyInfo :form="form" />
+      <LazySetupSectionSalesProgressInvoice :form="form" />
       <hr>
     </v-col>
 
     <v-col cols="12" md="12">
-      <LazySetupSectionCompanyAddress :form="form" />
+      <LazySetupSectionSalesMessages :form="form" />
       <hr>
     </v-col>
 
     <v-col cols="12" md="12">
-      <LazySetupSectionCompanyBank :form="form" />
+      <LazySetupSectionSalesReminders :form="form" />
+      <hr>
+    </v-col>
+
+    <v-col cols="12" md="12">
+      <LazySetupSectionSalesOnlineDelivery :form="form" />
+      <hr>
+    </v-col>
+
+    <v-col cols="12" md="12">
+      <LazySetupSectionSalesStatement :form="form" />
       <hr>
     </v-col>
   </v-row>
@@ -51,7 +39,7 @@
 
 <script>
 export default {
-  name: 'CompanySetup',
+  name: 'SalesSetting',
 
   props: {
     formData: {
@@ -66,7 +54,6 @@ export default {
     return {
       form: this.formData,
       logo: '',
-      url: '',
       itemCurrency: [],
       companyNameView: true,
       companyNameEdit: false,
@@ -89,12 +76,6 @@ export default {
       })
     },
 
-    eventGetFiles(data) {
-      this.form.company_logo = data.row
-      this.logo = this.url + '/files/logo/' + this.form.company_logo
-      this.companyNameView = true
-    },
-
     changeCurrency() {
       const currency = this.form.company_currency_code
       this.form.company_currency_symbol = currency.symbol
@@ -112,7 +93,6 @@ export default {
 
     setForm(form, url) {
       this.form = Object.assign({}, form)
-      this.url = url
       this.logo = url + '/files/logo/' + this.form.company_logo
     },
   },

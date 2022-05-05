@@ -21,81 +21,18 @@
     "_name": "_77a1f29f"
   },
   {
+    "name": "dashboard-users",
+    "path": "/dashboard/users",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\index.vue",
+    "chunkName": "pages/dashboard/users/index",
+    "_name": "_53d52036"
+  },
+  {
     "name": "documents-view",
     "path": "/documents/view",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\documents\\\\view.vue",
     "chunkName": "pages/documents/view",
     "_name": "_a83a4638"
-  },
-  {
-    "name": "pages-about-us",
-    "path": "/pages/about-us",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\about-us.vue",
-    "chunkName": "pages/pages/about-us",
-    "_name": "_2ab0a6a9"
-  },
-  {
-    "name": "pages-booking",
-    "path": "/pages/booking",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\booking.vue",
-    "chunkName": "pages/pages/booking",
-    "_name": "_d993e444"
-  },
-  {
-    "name": "pages-category",
-    "path": "/pages/category",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\category.vue",
-    "chunkName": "pages/pages/category",
-    "_name": "_7e7986c9"
-  },
-  {
-    "name": "pages-contact-us",
-    "path": "/pages/contact-us",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\contact-us.vue",
-    "chunkName": "pages/pages/contact-us",
-    "_name": "_43f2a9f6"
-  },
-  {
-    "name": "pages-faq",
-    "path": "/pages/faq",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\faq.vue",
-    "chunkName": "pages/pages/faq",
-    "_name": "_c2bcaeca"
-  },
-  {
-    "name": "pages-privacy-policy",
-    "path": "/pages/privacy-policy",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\privacy-policy.vue",
-    "chunkName": "pages/pages/privacy-policy",
-    "_name": "_0ae673bc"
-  },
-  {
-    "name": "pages-terms",
-    "path": "/pages/terms",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\pages\\\\terms.vue",
-    "chunkName": "pages/pages/terms",
-    "_name": "_4f8c0168"
-  },
-  {
-    "name": "student-announcement",
-    "path": "/student/announcement",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\announcement.vue",
-    "chunkName": "pages/student/announcement",
-    "_name": "_49121c09"
-  },
-  {
-    "name": "student-print",
-    "path": "/student/print",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\print.vue",
-    "chunkName": "pages/student/print",
-    "_name": "_6a91cb4a"
-  },
-  {
-    "name": "student-register",
-    "path": "/student/register",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\student\\\\register.vue",
-    "chunkName": "pages/student/register",
-    "_name": "_54df5736"
   },
   {
     "name": "dashboard-bp-contact",
@@ -383,13 +320,6 @@
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\current.vue",
     "chunkName": "pages/dashboard/users/current",
     "_name": "_8da03368"
-  },
-  {
-    "name": "dashboard-users-list",
-    "path": "/dashboard/users/list",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\users\\\\list.vue",
-    "chunkName": "pages/dashboard/users/list",
-    "_name": "_a9a3094a"
   },
   {
     "name": "index",

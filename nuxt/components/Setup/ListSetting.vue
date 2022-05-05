@@ -9,7 +9,7 @@
               md="2"
               style="background-color: #f5f5f5 !important"
             >
-              <v-list nav dense style="background-color: #f5f5f5 !important">
+              <v-list style="background-color: #f5f5f5 !important">
                 <v-list-item-group v-model="selectedItem" color="primary">
                   <v-list-item
                     v-for="(item, i) in items"
@@ -40,7 +40,7 @@
                   :loading="loading"
                 >
                 </v-skeleton-loader>
-                <SetupForm v-show="!loading" ref="setupForm" />
+                <LazySetupForm v-show="!loading" ref="setupForm" />
               </v-card>
             </v-col>
           </v-row>
@@ -91,12 +91,12 @@ export default {
           alias: 'expenses',
           action: true,
         },
-        {
-          text: 'Payment',
-          icon: 'mdi-finance',
-          alias: 'payment',
-          action: true,
-        },
+        // {
+        //   text: 'Payment',
+        //   icon: 'mdi-finance',
+        //   alias: 'payment',
+        //   action: true,
+        // },
         {
           text: 'Advanced',
           icon: 'mdi-finance',
@@ -146,7 +146,7 @@ export default {
             this.loading = false
             this.showAction = action === undefined ? true : action
             this.$refs.setupForm.changeTab(this.form, res.data.data.url, page)
-          }, 300)
+          }, 800)
         })
     },
 

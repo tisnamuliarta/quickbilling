@@ -211,7 +211,7 @@ export default {
 
       allData: [],
       itemRole: [],
-      itemEntity: [],
+      itemEntity: {},
       itemSearch: [],
       documentStatus: [],
       options: {},
@@ -259,6 +259,10 @@ export default {
   },
 
   methods: {
+    changeEntity() {
+
+    },
+
     emitData(data) {
       this.documentStatus = data.documentStatus
       this.itemSearch = data.itemSearch
@@ -294,7 +298,7 @@ export default {
       this.$axios
         .get(`/api/entities`)
         .then((res) => {
-          this.itemEntity = res.data.data.rows
+          this.itemEntity = res.data.data.simple
         })
         .catch((err) => {
           this.$swal({

@@ -86,6 +86,7 @@ class UserService
         $request->request->remove('two_factor_secret');
         $request->request->remove('two_factor_recovery_codes');
         $request->request->remove('role');
+        $request->request->remove('entity');
         return $request->all();
     }
 }

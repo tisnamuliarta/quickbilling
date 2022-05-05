@@ -112,7 +112,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,vue}": "eslint"
+    "*.{js,vue}": "eslint --fix"
   },
   "husky": {
     "hooks": {

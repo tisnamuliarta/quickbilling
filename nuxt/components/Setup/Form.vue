@@ -10,36 +10,20 @@
 
 <script>
 import Company from './Company'
-import Email from './Email'
-import Tax from './Tax'
-import General from './General'
-import Finance from './Finance'
-import Pdf from './Pdf'
-import PaymentMethod from './PaymentMethod'
-import PaymentTerm from './PaymentTerm'
-import Currency from './Currency'
-import AccountMapping from './AccountMapping'
-import Roles from './Roles'
-import Permissions from './Permissions'
-import Users from './Users'
+import Advanced from './Advanced'
+import Expenses from './Expenses'
+import Payment from './Payment'
+import Sales from './Sales'
 
 export default {
   name: 'FormSetup',
 
   components: {
     company: Company,
-    email: Email,
-    general: General,
-    pdf: Pdf,
-    finance: Finance,
-    taxes: Tax,
-    term: PaymentTerm,
-    payment: PaymentMethod,
-    currency: Currency,
-    account_mapping: AccountMapping,
-    roles: Roles,
-    permissions: Permissions,
-    users: Users,
+    advanced: Advanced,
+    expenses: Expenses,
+    payment: Payment,
+    sales: Sales,
   },
 
   data() {

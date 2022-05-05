@@ -1,31 +1,24 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12" md="2" class="pa-1">
-      <span class="text-subtitle-1">Company Name</span>
+      <span class="text-subtitle-1">Online Delivery</span>
     </v-col>
     <v-col cols="12" md="8" class="pa-1">
       <FormSectionView v-if="companyNameView">
         <template #content>
           <v-row no-gutters @click="companyNameView = false">
-            <v-col cols="12" md="4" class="pa-2 font-weight-medium"
-            >Company Name</v-col
-            >
+            <v-col cols="12" md="4" class="pa-2 font-weight-medium">
+              Email Option for sales form
+            </v-col>
             <v-col cols="12" md="8" class="pa-2">
-              <span class="text-subtitle-2" v-text="form.company_name"></span>
+              <span class="text-subtitle-2" v-text="form.sales_email_details"></span>
             </v-col>
 
-            <v-col cols="12" md="4" class="pa-2 font-weight-medium"
-            >Legal Name</v-col
-            >
-            <v-col cols="12" md="8" class="pa-2">
-              <span class="text-subtitle-2" v-text="form.company_name"></span>
+            <v-col cols="12" md="4" class="pa-2 font-weight-medium">
+              PDF Attachment
             </v-col>
-
-            <v-col cols="12" md="4" class="pa-2 font-weight-medium"
-            >Tax Number</v-col
-            >
             <v-col cols="12" md="8" class="pa-2">
-              <span class="text-subtitle-2" v-text="form.company_tax_number"></span>
+              <span class="text-subtitle-2" v-text="$formatter.formatCheckBox(form.sales_email_attachment)"></span>
             </v-col>
           </v-row>
         </template>
@@ -37,44 +30,30 @@
             <v-col cols="12" md="5" class="pa-2">
               <v-list-item two-line class="pa-0">
                 <v-list-item-content>
-                  <v-list-item-title>Company Name</v-list-item-title>
-                  <v-list-item-subtitle
-                  >Show in sales order and purchase
-                    forms</v-list-item-subtitle
-                  >
+                  <v-list-item-title>Email Option for sales form</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-col>
             <v-col cols="12" md="7" class="pa-2">
-              <v-text-field
-                label="Company Name"
-                v-model="form.company_name"
+              <v-select
+                label="Email Option for sales form"
+                v-model="form.sales_email_details"
+                :items="itemDeliveryMethod"
                 filled
                 dense
                 hide-details="auto"
-              />
+              ></v-select>
             </v-col>
 
-            <v-col cols="12" md="5" class="pa-2">Legal Name</v-col>
-            <v-col cols="12" md="7" class="pa-2">
-              <v-text-field
-                label="Company Name"
-                v-model="form.company_name"
-                filled
-                dense
+            <v-col cols="12" md="5" class="pa-2">
+              <v-checkbox
+                v-model="form.sales_email_attachment"
+                label="PDF Attachment"
                 hide-details="auto"
-              />
+              ></v-checkbox>
             </v-col>
-
-            <v-col cols="12" md="5" class="pa-2">Tax Number</v-col>
             <v-col cols="12" md="7" class="pa-2">
-              <v-text-field
-                label="Tax Number"
-                v-model="form.company_tax_number"
-                filled
-                dense
-                hide-details="auto"
-              />
+              <span class="text-subtitle-2" v-text="$formatter.formatCheckBox(form.sales_email_attachment)"></span>
             </v-col>
           </v-row>
         </template>
@@ -95,18 +74,20 @@ export default {
       type: Object,
       default() {
         return {}
-      },
+      }
     },
 
     logo: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
 
   data() {
     return {
       companyNameView: true,
+      itemPaymentTerm: [],
+      itemDeliveryMethod: ['Show short summary in email', 'Show full details in email']
     }
   },
 
@@ -119,6 +100,6 @@ export default {
     cancel() {
       this.companyNameView = true
     },
-  },
+  }
 }
 </script>
