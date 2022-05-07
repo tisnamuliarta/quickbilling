@@ -8,7 +8,7 @@
       >
       </v-skeleton-loader>
       <v-form v-else @keyup.native.enter="login">
-        <v-card class="mt-3" outlined elevation="0">
+        <v-card class="mt-3" outlined elevation="4">
           <v-card-text>
             <v-row no-gutters>
               <v-col cols="7">

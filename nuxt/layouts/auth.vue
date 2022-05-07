@@ -5,6 +5,12 @@
         <router-view></router-view>
       </v-container>
     </v-main>
+    <v-footer color="grey lighten-2" padless>
+      <v-col class="text-center" cols="12">
+        Copyright © {{ new Date().getFullYear() }} —
+        <strong> Quickbilling </strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 

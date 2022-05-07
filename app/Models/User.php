@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Settings\Company;
 use IFRS\Interfaces\Recyclable;
 use IFRS\Traits\IFRSUser;
+use IFRS\Traits\ModelTablePrefix;
 use IFRS\Traits\Recycling;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,6 +24,9 @@ class User extends Authenticatable implements Recyclable
 
     use IFRSUser;
     use Recycling;
+    //use ModelTablePrefix;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.

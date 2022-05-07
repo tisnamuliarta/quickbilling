@@ -12,8 +12,8 @@ class EntityService
      */
     public function index($request): array
     {
-        $query = Entity::all();
-        $simple = Entity::select('id', 'name')->get();
+        $query = Entity::first();
+        $simple = Entity::select('id', 'name')->first();
 
         return [
             "rows" => $query,

@@ -44,11 +44,11 @@ export default {
     return {
       dialog: false,
       itemCompany: [
-        { text: 'Account and Settings', type: 'SETTING', action: 'setting' },
-        { text: 'Manage User', type: '/dashboard/users/list', action: 'page' },
+        {text: 'Account and Settings', type: 'SETTING', action: 'setting'},
+        {text: 'Manage User', route: '/dashboard/users', action: 'page'},
         {
           text: 'Chart Of Account',
-          type: '/dashboard/financial/account',
+          route: '/dashboard/financial/account',
           action: 'page',
         },
       ],
@@ -56,58 +56,58 @@ export default {
       itemList: [
         {
           text: 'All List',
-          type: '/dashboard/transactions/list',
+          route: '/dashboard/transactions/list',
           action: 'page',
         },
         {
           text: 'Product and Services',
-          type: '/dashboard/inventory/item',
+          route: '/dashboard/inventory/item',
           action: 'page',
         },
         {
           text: 'Recurring Transactions',
-          type: '/dashboard/transactions/recurring',
+          route: '/dashboard/transactions/recurring',
           action: 'page',
         },
         {
           text: 'Attachments',
-          type: '/dashboard/transactions/attachment',
+          route: '/dashboard/transactions/attachment',
           action: 'page',
         },
         {
           text: 'Currencies',
-          type: '/dashboard/financial/currency',
+          route: '/dashboard/financial/currency',
           action: 'page',
         },
       ],
 
       itemProfile: [
-        { text: 'Account', type: '/dashboard/users/currenct', action: 'page' },
-        { text: 'Sign Out', type: 'logout', action: 'function' },
+        {text: 'Account', route: '/dashboard/users/currenct', action: 'page'},
+        {text: 'Sign Out', type: 'function', action: 'logout'},
       ],
 
       itemTool: [
         {
           text: 'Import Data',
-          type: '/dashboard/tools/import',
+          route: '/dashboard/tools/import',
           action: 'page',
         },
         {
           text: 'Export Data',
-          type: '/dashboard/tools/export',
+          route: '/dashboard/tools/export',
           action: 'page',
         },
         {
           text: 'Reconcile',
-          type: '/dashboard/financial/reconcile',
+          route: '/dashboard/financial/reconcile',
           action: 'page',
         },
         {
           text: 'Budgeting',
-          type: '/dashboard/financial/budgeting',
+          route: '/dashboard/financial/budgeting',
           action: 'page',
         },
-        { text: 'Audit Log', type: '/dashboard/tools/audit', action: 'page' },
+        {text: 'Audit Log', route: '/dashboard/tools/audit', action: 'page'},
       ],
     }
   },

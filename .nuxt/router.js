@@ -5,6 +5,24 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _0afc7872 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\index.vue' /* webpackChunkName: "pages/dashboard/index" */))
+const _294c82b4 = () => interopDefault(import('..\\nuxt\\pages\\app\\deposit.vue' /* webpackChunkName: "pages/app/deposit" */))
+const _84efec7a = () => interopDefault(import('..\\nuxt\\pages\\app\\expenses.vue' /* webpackChunkName: "pages/app/expenses" */))
+const _718b0fe4 = () => interopDefault(import('..\\nuxt\\pages\\app\\goodsreturn.vue' /* webpackChunkName: "pages/app/goodsreturn" */))
+const _2f419390 = () => interopDefault(import('..\\nuxt\\pages\\app\\invtoryqtyadjustment.vue' /* webpackChunkName: "pages/app/invtoryqtyadjustment" */))
+const _0c113a82 = () => interopDefault(import('..\\nuxt\\pages\\app\\journal.vue' /* webpackChunkName: "pages/app/journal" */))
+const _cb469892 = () => interopDefault(import('..\\nuxt\\pages\\app\\outgoingpaymment.vue' /* webpackChunkName: "pages/app/outgoingpaymment" */))
+const _166f519c = () => interopDefault(import('..\\nuxt\\pages\\app\\purchasecreditmemo.vue' /* webpackChunkName: "pages/app/purchasecreditmemo" */))
+const _40921c14 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchaseinvoice.vue' /* webpackChunkName: "pages/app/purchaseinvoice" */))
+const _12454f75 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchaseorder.vue' /* webpackChunkName: "pages/app/purchaseorder" */))
+const _7683ba94 = () => interopDefault(import('..\\nuxt\\pages\\app\\quotation.vue' /* webpackChunkName: "pages/app/quotation" */))
+const _76ccc547 = () => interopDefault(import('..\\nuxt\\pages\\app\\salescreditmemo.vue' /* webpackChunkName: "pages/app/salescreditmemo" */))
+const _5f0d2c08 = () => interopDefault(import('..\\nuxt\\pages\\app\\salesdelivery.vue' /* webpackChunkName: "pages/app/salesdelivery" */))
+const _39aa4049 = () => interopDefault(import('..\\nuxt\\pages\\app\\salesinvoice.vue' /* webpackChunkName: "pages/app/salesinvoice" */))
+const _4812fcea = () => interopDefault(import('..\\nuxt\\pages\\app\\salesorder.vue' /* webpackChunkName: "pages/app/salesorder" */))
+const _113b1aa2 = () => interopDefault(import('..\\nuxt\\pages\\app\\salespayment.vue' /* webpackChunkName: "pages/app/salespayment" */))
+const _40ea0378 = () => interopDefault(import('..\\nuxt\\pages\\app\\salesreturn.vue' /* webpackChunkName: "pages/app/salesreturn" */))
+const _7f8cc9e8 = () => interopDefault(import('..\\nuxt\\pages\\app\\statements.vue' /* webpackChunkName: "pages/app/statements" */))
+const _1d54d2da = () => interopDefault(import('..\\nuxt\\pages\\app\\transfer.vue' /* webpackChunkName: "pages/app/transfer" */))
 const _eedd1670 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
 const _77a1f29f = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\index.vue' /* webpackChunkName: "pages/dashboard/tasks/index" */))
 const _53d52036 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\users\\index.vue' /* webpackChunkName: "pages/dashboard/users/index" */))
@@ -70,6 +88,78 @@ export const routerOptions = {
     path: "/dashboard",
     component: _0afc7872,
     name: "dashboard"
+  }, {
+    path: "/app/deposit",
+    component: _294c82b4,
+    name: "app-deposit"
+  }, {
+    path: "/app/expenses",
+    component: _84efec7a,
+    name: "app-expenses"
+  }, {
+    path: "/app/goodsreturn",
+    component: _718b0fe4,
+    name: "app-goodsreturn"
+  }, {
+    path: "/app/invtoryqtyadjustment",
+    component: _2f419390,
+    name: "app-invtoryqtyadjustment"
+  }, {
+    path: "/app/journal",
+    component: _0c113a82,
+    name: "app-journal"
+  }, {
+    path: "/app/outgoingpaymment",
+    component: _cb469892,
+    name: "app-outgoingpaymment"
+  }, {
+    path: "/app/purchasecreditmemo",
+    component: _166f519c,
+    name: "app-purchasecreditmemo"
+  }, {
+    path: "/app/purchaseinvoice",
+    component: _40921c14,
+    name: "app-purchaseinvoice"
+  }, {
+    path: "/app/purchaseorder",
+    component: _12454f75,
+    name: "app-purchaseorder"
+  }, {
+    path: "/app/quotation",
+    component: _7683ba94,
+    name: "app-quotation"
+  }, {
+    path: "/app/salescreditmemo",
+    component: _76ccc547,
+    name: "app-salescreditmemo"
+  }, {
+    path: "/app/salesdelivery",
+    component: _5f0d2c08,
+    name: "app-salesdelivery"
+  }, {
+    path: "/app/salesinvoice",
+    component: _39aa4049,
+    name: "app-salesinvoice"
+  }, {
+    path: "/app/salesorder",
+    component: _4812fcea,
+    name: "app-salesorder"
+  }, {
+    path: "/app/salespayment",
+    component: _113b1aa2,
+    name: "app-salespayment"
+  }, {
+    path: "/app/salesreturn",
+    component: _40ea0378,
+    name: "app-salesreturn"
+  }, {
+    path: "/app/statements",
+    component: _7f8cc9e8,
+    name: "app-statements"
+  }, {
+    path: "/app/transfer",
+    component: _1d54d2da,
+    name: "app-transfer"
   }, {
     path: "/auth/login",
     component: _eedd1670,

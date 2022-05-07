@@ -4,6 +4,8 @@ namespace App\Services\Settings;
 
 use App\Models\Settings\Setting;
 use App\Traits\FileUpload;
+use IFRS\Models\Currency;
+use IFRS\Models\Entity;
 
 class SettingService
 {
@@ -47,6 +49,25 @@ class SettingService
         foreach ($settings as $index => $setting) {
             if ($setting != 'null' && $index != 'company_logo') {
                 $this->update($index, $setting);
+            }
+
+            $entity = Entity::find($request->user()->entity_id);
+            if ($index == 'advanced_currency') {
+                $currency = Currency::where('currency_code', $setting)->first();
+                if ($currency) {
+                    $entity->currency_id = $currency->id;
+                    $entity->save();
+                }
+            }
+
+            if ($index == 'advanced_multi_currency') {
+                $entity->multi_currency = (int) $setting;
+                $entity->save();
+            }
+
+            if ($index == 'advanced_first_month_fiscal_year') {
+                $entity->year_start = (int) $setting;
+                $entity->save();
             }
 
             if ($setting == true) {

@@ -109,24 +109,35 @@ export default {
     },
 
     openAction(data) {
-      switch (data.item.action) {
-        case 'page':
-          this.$route.push({ page: data.item.type })
-          break
-        case 'function':
-          this[data.item.type]()
-          break
-        case 'document':
-        case 'transaction':
-          this.$refs.checkForm.openDialog(data, 0, null)
-          break
-        case 'setting':
+      if (data.item.route) {
+        this.$router.push({
+          path: data.item.route
+        })
+      } else {
+        if (data.item.type === 'function') {
+          this[data.item.action]()
+        } else {
           this.$refs.settingForm.openDialog(data, 0, null)
-          break
-
-        default:
-          break
+        }
       }
+      // switch (data.item.action) {
+      //   case 'page':
+      //     this.$route.push({ page: data.item.type })
+      //     break
+      //   case 'function':
+      //     this[data.item.type]()
+      //     break
+      //   case 'document':
+      //   case 'transaction':
+      //     this.$refs.checkForm.openDialog(data, 0, null)
+      //     break
+      //   case 'setting':
+      //     this.$refs.settingForm.openDialog(data, 0, null)
+      //     break
+      //
+      //   default:
+      //     break
+      // }
     },
 
     changeDrawer() {

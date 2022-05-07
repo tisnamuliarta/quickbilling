@@ -54,6 +54,8 @@
                 label="First month of fiscal year"
                 v-model="form.advanced_first_month_fiscal_year"
                 :items="itemMonth"
+                item-text="text"
+                item-value="value"
                 filled
                 dense
                 hide-details="auto"
@@ -204,8 +206,21 @@ export default {
       show: false,
       companyNameView: true,
       itemPaymentTerm: [],
-      itemMonth: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      itemFiscalYear: ['Same as fiscal year'],
+      itemMonth: [
+        {text: 'January', value: 1},
+        {text: 'February', value: 2},
+        {text: 'March', value: 3},
+        {text: 'April', value: 4},
+        {text: 'May', value: 5},
+        {text: 'June', value: 6},
+        {text: 'July', value: 7},
+        {text: 'August', value: 8},
+        {text: 'September', value: 9},
+        {text: 'October', value: 10},
+        {text: 'November', value: 11},
+        {text: 'December', value: 12},
+      ],
+      itemFiscalYear: ['Same as fiscal year', 'January'],
       itemAccountingMethod: ['Accrual', 'Cash'],
       itemCloseBook: ['Allow changes after viewing a warning', 'Allow changes after viewing a warning and entering password']
     }
