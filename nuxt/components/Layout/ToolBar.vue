@@ -1,21 +1,31 @@
 <template>
   <div>
-    <v-menu offset-y left :nudge-width="700">
-      <template #activator="{ on }">
-        <v-btn
-          color="primary"
-          small
-          icon
-          v-on="on"
-        >
-          <v-icon>mdi-plus-circle</v-icon>
-        </v-btn>
-      </template>
+<!--    <v-menu offset-y left :nudge-width="700">-->
+<!--      <template #activator="{ on }">-->
+<!--        <v-btn-->
+<!--          color="primary"-->
+<!--          small-->
+<!--          icon-->
+<!--          v-on="on"-->
+<!--        >-->
+<!--          <v-icon>mdi-plus-circle</v-icon>-->
+<!--        </v-btn>-->
+<!--      </template>-->
 
-      <v-card>
-        <LazyFormNew ref="formNew" @openAction="openAction" />
-      </v-card>
-    </v-menu>
+<!--      <v-card>-->
+<!--        <LazyFormNew ref="formNew" @openAction="openAction" />-->
+<!--      </v-card>-->
+<!--    </v-menu>-->
+
+    <v-tooltip bottom>
+      <template #activator="{ on }">
+        <v-btn small icon class="mr-2" v-on="on">
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn
+        >
+      </template>
+      <span>Search</span>
+    </v-tooltip>
 
     <v-tooltip bottom>
       <template #activator="{ on }">

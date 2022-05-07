@@ -40,7 +40,10 @@ const _2a8faa46 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales
 const _c166d056 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\payment.vue' /* webpackChunkName: "pages/dashboard/sales/payment" */))
 const _acaac9ea = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\quote.vue' /* webpackChunkName: "pages/dashboard/sales/quote" */))
 const _dce8e29e = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\sales\\return.vue' /* webpackChunkName: "pages/dashboard/sales/return" */))
+const _1514ffaf = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\company.vue' /* webpackChunkName: "pages/dashboard/settings/company" */))
 const _b1cd60c6 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\menu.vue' /* webpackChunkName: "pages/dashboard/settings/menu" */))
+const _33923f36 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\permissions.vue' /* webpackChunkName: "pages/dashboard/settings/permissions" */))
+const _a2779f22 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\roles.vue' /* webpackChunkName: "pages/dashboard/settings/roles" */))
 const _12dc07a2 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\settings\\setup.vue' /* webpackChunkName: "pages/dashboard/settings/setup" */))
 const _3ebac780 = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tasks\\show.vue' /* webpackChunkName: "pages/dashboard/tasks/show" */))
 const _044d68bb = () => interopDefault(import('..\\nuxt\\pages\\dashboard\\tools\\audit.vue' /* webpackChunkName: "pages/dashboard/tools/audit" */))
@@ -208,9 +211,21 @@ export const routerOptions = {
     component: _dce8e29e,
     name: "dashboard-sales-return"
   }, {
+    path: "/dashboard/settings/company",
+    component: _1514ffaf,
+    name: "dashboard-settings-company"
+  }, {
     path: "/dashboard/settings/menu",
     component: _b1cd60c6,
     name: "dashboard-settings-menu"
+  }, {
+    path: "/dashboard/settings/permissions",
+    component: _33923f36,
+    name: "dashboard-settings-permissions"
+  }, {
+    path: "/dashboard/settings/roles",
+    component: _a2779f22,
+    name: "dashboard-settings-roles"
   }, {
     path: "/dashboard/settings/setup",
     component: _12dc07a2,

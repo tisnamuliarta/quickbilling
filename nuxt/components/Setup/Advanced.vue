@@ -26,6 +26,11 @@
     </v-col>
 
     <v-col cols="12" md="12">
+      <LazySetupSectionAdvancedCurrency :form="form" />
+      <hr>
+    </v-col>
+
+    <v-col cols="12" md="12">
       <LazySetupSectionAdvancedOther :form="form" />
       <hr>
     </v-col>

@@ -252,11 +252,32 @@
     "_name": "_dce8e29e"
   },
   {
+    "name": "dashboard-settings-company",
+    "path": "/dashboard/settings/company",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\company.vue",
+    "chunkName": "pages/dashboard/settings/company",
+    "_name": "_1514ffaf"
+  },
+  {
     "name": "dashboard-settings-menu",
     "path": "/dashboard/settings/menu",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\menu.vue",
     "chunkName": "pages/dashboard/settings/menu",
     "_name": "_b1cd60c6"
+  },
+  {
+    "name": "dashboard-settings-permissions",
+    "path": "/dashboard/settings/permissions",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\permissions.vue",
+    "chunkName": "pages/dashboard/settings/permissions",
+    "_name": "_33923f36"
+  },
+  {
+    "name": "dashboard-settings-roles",
+    "path": "/dashboard/settings/roles",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\dashboard\\\\settings\\\\roles.vue",
+    "chunkName": "pages/dashboard/settings/roles",
+    "_name": "_a2779f22"
   },
   {
     "name": "dashboard-settings-setup",

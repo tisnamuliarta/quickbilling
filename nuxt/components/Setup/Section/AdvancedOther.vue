@@ -8,10 +8,10 @@
         <template #content>
           <v-row no-gutters @click="companyNameView = false">
             <v-col cols="12" md="4" class="pa-2 font-weight-medium">
-              Create multiple partial invoices from single estimate
+              Date Format
             </v-col>
             <v-col cols="12" md="8" class="pa-2">
-              <span class="text-subtitle-2" v-text="$formatter.formatCheckBox(form.sales_progress_inv)"></span>
+              <span class="text-subtitle-2" v-text="form.advanced_date_format"></span>
             </v-col>
           </v-row>
         </template>
@@ -21,14 +21,21 @@
         <template #content>
           <v-row no-gutters>
             <v-col cols="12" md="5" class="pa-2">
-              <v-checkbox
-                v-model="form.sales_progress_inv"
-                label="Create multiple partial invoices from single estimate"
-                hide-details="auto"
-              ></v-checkbox>
+              <v-list-item two-line class="pa-0">
+                <v-list-item-content>
+                  <v-list-item-title>Date Format</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
             </v-col>
             <v-col cols="12" md="7" class="pa-2">
-              <span class="text-subtitle-2" v-text="$formatter.formatCheckBox(form.sales_progress_inv)"></span>
+              <v-select
+                label="Date Format"
+                v-model="form.advanced_date_format"
+                :items="itemDateFormate"
+                filled
+                dense
+                hide-details="auto"
+              ></v-select>
             </v-col>
           </v-row>
         </template>
@@ -62,7 +69,7 @@ export default {
     return {
       companyNameView: true,
       itemPaymentTerm: [],
-      itemDeliveryMethod: ['Print Later', 'Send Later', 'None']
+      itemDateFormate: ['Y-m-d', 'm/d/Y']
     }
   },
 

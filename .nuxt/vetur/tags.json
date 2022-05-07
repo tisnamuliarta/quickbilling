@@ -71,27 +71,6 @@
   "FinancialFormReportingPeriod": {
     "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
   },
-  "FormCheckForm": {
-    "description": "Auto imported from components/Form/CheckForm.vue"
-  },
-  "FormDialogFull": {
-    "description": "Auto imported from components/Form/DialogFull.vue"
-  },
-  "FormListAction": {
-    "description": "Auto imported from components/Form/ListAction.vue"
-  },
-  "FormNew": {
-    "description": "Auto imported from components/Form/New.vue"
-  },
-  "FormSectionEdit": {
-    "description": "Auto imported from components/Form/SectionEdit.vue"
-  },
-  "FormSectionView": {
-    "description": "Auto imported from components/Form/SectionView.vue"
-  },
-  "FormSetting": {
-    "description": "Auto imported from components/Form/Setting.vue"
-  },
   "GridAgGrid": {
     "description": "Auto imported from components/Grid/AgGrid.vue"
   },
@@ -112,6 +91,27 @@
   },
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
+  },
+  "FormCheckForm": {
+    "description": "Auto imported from components/Form/CheckForm.vue"
+  },
+  "FormDialogFull": {
+    "description": "Auto imported from components/Form/DialogFull.vue"
+  },
+  "FormListAction": {
+    "description": "Auto imported from components/Form/ListAction.vue"
+  },
+  "FormNew": {
+    "description": "Auto imported from components/Form/New.vue"
+  },
+  "FormSectionEdit": {
+    "description": "Auto imported from components/Form/SectionEdit.vue"
+  },
+  "FormSectionView": {
+    "description": "Auto imported from components/Form/SectionView.vue"
+  },
+  "FormSetting": {
+    "description": "Auto imported from components/Form/Setting.vue"
   },
   "LayoutNavigationDrawer": {
     "description": "Auto imported from components/Layout/NavigationDrawer.vue"

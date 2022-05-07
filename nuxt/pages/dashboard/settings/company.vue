@@ -51,20 +51,12 @@
 
 <script>
 export default {
-  name: 'CompanySetup',
-
-  props: {
-    formData: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-  },
+  name: "CompanyPage",
+  layout: 'dialog',
 
   data() {
     return {
-      form: this.formData,
+      form: {},
       logo: '',
       url: '',
       itemCurrency: [],
@@ -82,22 +74,10 @@ export default {
       this.companyNameView = true
     },
 
-    getCurrency() {
-      this.$axios.get(`/api/financial/currency`).then((res) => {
-        this.itemCurrency = res.data.data.rows
-      })
-    },
-
     eventGetFiles(data) {
       this.form.company_logo = data.row
       this.logo = this.url + '/files/logo/' + this.form.company_logo
       this.companyNameView = true
-    },
-
-    changeCurrency() {
-      const currency = this.form.company_currency_code
-      this.form.company_currency_symbol = currency.symbol
-      this.form.company_currency_code = currency.code
     },
 
     getForm() {

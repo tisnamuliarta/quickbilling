@@ -37,7 +37,7 @@ class MasterPermissionController extends Controller
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
         $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "order_line";
-        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'asc' : 'desc') : "asc";
+        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'desc' : 'asc') : "asc";
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
@@ -83,15 +83,15 @@ class MasterPermissionController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $validation = $this->validation($request, [
-            'form.menu_name' => 'Menu Name is required!',
-            'form.order_line' => 'Order line field is required!',
-            'form.role' => 'Role field is required!',
+            'menu_name' => 'required',
+            'order_line' => 'required',
+            'role' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
         }
 
-        $form = $request->form;
+        $form = $request->all();
         DB::beginTransaction();
         try {
             $this->processPermission($form, 'store');
@@ -215,15 +215,15 @@ class MasterPermissionController extends Controller
     public function update(Request $request, $id)
     {
         $validation = $this->validation($request, [
-            'form.menu_name' => 'Menu Name is required!',
-            'form.order_line' => 'Order line field is required!',
-            'form.role' => 'Role field is required!',
+            'menu_name' => 'required',
+            'order_line' => 'required',
+            'role' => 'required',
         ]);
         if ($validation) {
             return $this->error($validation);
         }
 
-        $form = $request->form;
+        $form = $request->all();
         DB::beginTransaction();
         try {
             $this->processPermission($form, 'update');
@@ -247,21 +247,14 @@ class MasterPermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Permission::where("id", "=", $id)->first();
-        if ($details) {
-            Permission::where("id", "=", $id)->delete();
-            return $this->success([
-                "errors" => false
-            ], 'Row deleted!');
-        }
-
-        return $this->error('Row not found', 422, [
-            "errors" => true
-        ]);
+        Permission::where("menu_name", "=", $id)->delete();
+        return $this->success([
+            "errors" => false
+        ], 'Row deleted!');
     }
 }

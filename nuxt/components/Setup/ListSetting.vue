@@ -107,12 +107,6 @@ export default {
     }
   },
 
-  head() {
-    return {
-      title: 'Account and Settings',
-    }
-  },
-
   mounted() {
     this.selectedItem = 0
     this.changeTabValue('company', true)
@@ -145,7 +139,9 @@ export default {
           setTimeout(() => {
             this.loading = false
             this.showAction = action === undefined ? true : action
-            this.$refs.setupForm.changeTab(this.form, res.data.data.url, page)
+            if (this.$refs.setupForm) {
+              this.$refs.setupForm.changeTab(this.form, res.data.data.url, page)
+            }
           }, 800)
         })
     },
