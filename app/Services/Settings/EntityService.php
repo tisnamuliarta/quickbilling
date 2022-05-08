@@ -2,6 +2,7 @@
 
 namespace App\Services\Settings;
 
+use App\Models\Settings\Setting;
 use IFRS\Models\Entity;
 
 class EntityService
@@ -14,11 +15,14 @@ class EntityService
     {
         $query = Entity::first();
         $simple = Entity::select('id', 'name')->first();
+        $logo = Setting::where('key', 'company_logo')->first();
 
         return [
             "rows" => $query,
             "status" => ($query) ? 'update' : 'insert',
-            "simple" => $simple
+            "simple" => $simple,
+            "logo" => $logo,
+            'url' => url('/')
         ];
     }
 

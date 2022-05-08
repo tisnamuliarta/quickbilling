@@ -2,130 +2,92 @@
   <div id="home">
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="12">
-          <LazySettingEntity ref="entity"></LazySettingEntity>
+        <v-col cols="12" md="12" xl="10">
+          <v-app-bar
+            color="transparent"
+            elevation="0"
+          >
+            <v-img  max-width="120" max-height="120" :src="logo"></v-img>
+            <v-app-bar-title class="text-h5 ml-4">{{ companyName }}</v-app-bar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-btn text color="secondary" @click="openSetting">Resume Setup</v-btn>
+          </v-app-bar>
         </v-col>
 
-        <v-col cols="12" md="4">
-          <v-card
-            class="mx-auto text-center"
-            color="green"
-            dark
-          >
-            <v-card-text>
-              <v-sheet color="rgba(0, 0, 0, .12)">
-                <v-sparkline
-                  :value="value"
-                  color="rgba(255, 255, 255, .7)"
-                  height="100"
-                  padding="24"
-                  stroke-linecap="round"
-                  smooth
-                >
-                  <template v-slot:label="item">
-                    ${{ item.value }}
-                  </template>
-                </v-sparkline>
-              </v-sheet>
-            </v-card-text>
+        <v-col cols="12" md="12" xl="10">
+          <v-row>
+            <v-col cols="12" md="9">
+              <v-row>
+                <v-col cols="12" md="4">
+                  <v-card
+                    class="mx-auto"
+                  >
+                    <v-card-text>
+                      <div class="subtitle-1">
+                        INVOICES
+                      </div>
+                    </v-card-text>
+                    <v-card-text></v-card-text>
+                  </v-card>
+                </v-col>
 
-            <v-card-text>
-              <div class="text-h6">
-                Sales Last 24h
-              </div>
-            </v-card-text>
+                <v-col cols="12" md="4">
+                  <v-card
+                    class="mx-auto"
+                  >
+                    <v-card-text>
+                      <div class="subtitle-1">
+                        EXPENSES
+                      </div>
+                    </v-card-text>
+                    <v-card-text></v-card-text>
+                  </v-card>
+                </v-col>
 
-            <v-divider></v-divider>
+                <v-col cols="12" md="4">
+                  <v-card
+                    class="mx-auto"
+                  >
+                    <v-card-text>
+                      <div class="subtitle-1">
+                        PROFIT AND LOSS
+                      </div>
+                    </v-card-text>
+                    <v-card-text></v-card-text>
+                  </v-card>
+                </v-col>
 
-            <v-card-actions class="justify-center">
-              <v-btn
-                block
-                text
+                <v-col cols="12" md="4">
+                  <v-card
+                    class="mx-auto"
+                  >
+                    <v-card-text>
+                      <div class="subtitle-1">
+                        SALES
+                      </div>
+                    </v-card-text>
+                    <v-card-text></v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-col>
+
+            <v-col cols="12" md="3">
+              <v-card
+                class="mx-auto"
               >
-                Go to Report
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
+                <v-card-text>
+                  <div class="subtitle-1">
+                    BANK ACCOUNTS
+                  </div>
+                </v-card-text>
+                <v-card-text></v-card-text>
+              </v-card>
+            </v-col>
 
-        <v-col cols="12" md="4">
-          <v-card
-            class="mx-auto text-center"
-            color="primary"
-            dark
-          >
-            <v-card-text>
-              <v-sheet color="rgba(0, 0, 0, .12)">
-                <v-sparkline
-                  :value="value"
-                  color="rgba(255, 255, 255, .7)"
-                  height="100"
-                  padding="24"
-                  stroke-linecap="round"
-                  smooth
-                >
-                  <template v-slot:label="item">
-                    ${{ item.value }}
-                  </template>
-                </v-sparkline>
-              </v-sheet>
-            </v-card-text>
-
-            <v-card-text>
-              <div class="text-h6">
-                Sales Last 24h
-              </div>
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions class="justify-center">
-              <v-btn
-                block
-                text
-              >
-                Go to Report
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-card
-            class="mt-4 mx-auto"
-          >
-            <v-sheet
-              class="v-sheet--offset mx-auto"
-              color="cyan"
-              elevation="12"
-              max-width="calc(100% - 32px)"
-            >
-              <v-sparkline
-                :labels="labels"
-                :value="value"
-                color="white"
-                line-width="2"
-                padding="24"
-              ></v-sparkline>
-            </v-sheet>
-
-            <v-card-text class="pt-0">
-              <div class="text-h6 font-weight-light mb-2">
-                User Registrations
-              </div>
-              <div class="subheading font-weight-light grey--text">
-                Last Campaign Performance
-              </div>
-              <v-divider class="my-2"></v-divider>
-              <v-icon
-                class="mr-2"
-                small
-              >
-                mdi-clock
-              </v-icon>
-              <span class="text-caption grey--text font-weight-light">last registration 26 minutes ago</span>
-            </v-card-text>
-          </v-card>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -147,6 +109,10 @@ export default {
   layout: 'dashboard',
   data() {
     return {
+      logo: null,
+      companyName: '',
+      form: {},
+      url: '/api/entities',
       loading: true,
       width: 2,
       radius: 10,
@@ -171,5 +137,45 @@ export default {
       autoLineWidth: false,
     }
   },
+
+  mounted() {
+    this.getDataFromApi()
+  },
+
+  methods: {
+    openSetting() {
+      this.$nuxt.$emit('openSetting', {
+        item: {
+          text: 'Account and Settings'
+        }
+      })
+    },
+
+    getDataFromApi() {
+      this.loading = true
+      const vm = this
+      this.$axios
+        .get(this.url, {
+          params: {
+            options: vm.options,
+          },
+        })
+        .then((res) => {
+          this.loading = false
+          this.form = Object.assign({}, res.data.data.rows)
+          const url = res.data.data.url
+          this.logo = url + '/files/logo/' + res.data.data.logo.value
+          this.companyName = this.form.name
+        })
+        .catch((err) => {
+          this.loading = false
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+  }
 }
 </script>

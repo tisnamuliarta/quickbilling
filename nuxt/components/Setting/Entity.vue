@@ -1,91 +1,15 @@
 <template>
-  <div>
-    <v-skeleton-loader
-      v-show="loading"
-      type="card-heading, article, actions"
-      max-width="100%"
-      class="mx-auto"
-    >
-    </v-skeleton-loader>
-    <v-card v-show="!loading">
-      <v-card-title>
-        Company
-        <v-spacer/>
-        <v-btn :loading="loading" icon @click="refreshData">
-          <v-icon>mdi-refresh</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-divider />
-      <v-container>
-        <v-row no-gutters>
-          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-            <v-text-field
-              v-model="form.name"
-              label="Name"
-              outlined
-              dense
-              hide-details="auto"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-            <v-select
-              v-model="form.currency_id"
-              :items="itemCurrency"
-              item-value="id"
-              item-text="name"
-              clearable
-              label="Currency"
-              outlined
-              dense
-              hide-details="auto"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-            <v-checkbox
-              v-model="form.multi_currency"
-              dense
-              hide-details
-              label="Multi Currency"
-              class="mt-0"
-            ></v-checkbox>
-          </v-col>
-          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-            <v-checkbox
-              v-model="form.mid_year_balances"
-              dense
-              hide-details
-              label="Mid Year Balances"
-              class="mt-0"
-            ></v-checkbox>
-          </v-col>
-          <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-            <v-text-field
-              v-model="form.year_start"
-              dense
-              hide-details
-              outlined
-              label="Year Start"
-              class="mt-0"
-              type="number"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-divider />
-      <v-card-actions>
-        <v-spacer/>
-        <v-btn
-          color="green darken-1"
-          dark
-          small
-          :loading="submitLoad"
-          @click="save()"
-        >
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
+  <v-app-bar
+    color="transparent"
+    elevation="0"
+  >
+    <v-img  max-width="120" max-height="120" :src="logo"></v-img>
+    <v-app-bar-title class="text-h5 ml-4">{{ companyName }}</v-app-bar-title>
+
+    <v-spacer></v-spacer>
+
+    <v-btn text small>Setup</v-btn>
+  </v-app-bar>
 </template>
 
 <script>
@@ -101,8 +25,10 @@ export default {
       loading: true,
       insert: true,
       url: '/api/entities',
+      companyName: '',
 
       itemCurrency: [],
+      logo: null,
       allData: [],
       form: {},
       defaultItem: {},
@@ -129,7 +55,6 @@ export default {
   methods: {
     refreshData() {
       this.getDataFromApi()
-      this.getCurrency()
     },
 
     getCurrency() {
@@ -162,6 +87,9 @@ export default {
           this.statusProcessing = res.data.data.status
           this.form = Object.assign({}, res.data.data.rows)
           this.defaultForm = Object.assign({}, res.data.data.form)
+          const url = res.data.data.url
+          this.logo = url + '/files/logo/' + res.data.data.logo.value
+          this.companyName = this.form.name
         })
         .catch((err) => {
           this.loading = false

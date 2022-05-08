@@ -11,7 +11,7 @@
       <v-toolbar-title class="ml-0 pl-0">
         <span
           class="font-weight-bold hidden-sm-and-down"
-          v-text="companyName.toUpperCase()"
+          v-text="companyName"
           @click="$router.push('/dashboard')"
           style="cursor: pointer"
         ></span>
@@ -97,6 +97,7 @@ export default {
     this.$nuxt.$on('getLogo', ($event) => this.getLogo($event))
     this.$nuxt.$on('getCompany', ($event) => this.getCompany($event))
     this.$nuxt.$on('snackbar', ($event) => this.openSnackbar($event))
+    this.$nuxt.$on('openSetting', ($event) => this.openSetting($event))
     this.getLogo()
   },
 
@@ -106,6 +107,10 @@ export default {
         this.snackbar = true
         this.message = data
       }
+    },
+
+    openSetting(data) {
+      this.$refs.settingForm.openDialog(data, 0, null)
     },
 
     openAction(data) {
