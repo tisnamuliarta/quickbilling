@@ -14,8 +14,9 @@ import _2d217e9e from '..\\nuxt\\layouts\\auth.vue'
 import _5fa3735e from '..\\nuxt\\layouts\\dashboard.vue'
 import _6f6c098b from '..\\nuxt\\layouts\\default.vue'
 import _6f2938be from '..\\nuxt\\layouts\\dialog.vue'
+import _2d265194 from '..\\nuxt\\layouts\\list.vue'
 
-const layouts = { "_auth": sanitizeComponent(_2d217e9e),"_dashboard": sanitizeComponent(_5fa3735e),"_default": sanitizeComponent(_6f6c098b),"_dialog": sanitizeComponent(_6f2938be) }
+const layouts = { "_auth": sanitizeComponent(_2d217e9e),"_dashboard": sanitizeComponent(_5fa3735e),"_default": sanitizeComponent(_6f6c098b),"_dialog": sanitizeComponent(_6f2938be),"_list": sanitizeComponent(_2d265194) }
 
 export default {
   render (h, props) {

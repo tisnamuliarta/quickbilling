@@ -15,6 +15,17 @@
         >
           <template v-slot:top>
             <v-toolbar flat color="white" dense>
+              <v-chip
+                link
+                class="ma-2"
+                color="primary"
+                label
+                small
+                @click="$router.push({path: '/dashboard/list'})"
+              >
+                <v-icon left> mdi-arrow-left</v-icon>
+                All list
+              </v-chip>
               <v-toolbar-title class="hidden-xs-only">Master Roles</v-toolbar-title>
               <v-divider class="mx-2" inset vertical></v-divider>
               <v-spacer></v-spacer>

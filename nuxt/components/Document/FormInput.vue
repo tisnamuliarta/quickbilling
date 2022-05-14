@@ -276,11 +276,8 @@
 
         <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-card>
-            <div class="scroll-container-min">
-              <LazyDocumentTableDetail
-                ref="childDetails"
-                @calcTotal="calcTotal"
-              ></LazyDocumentTableDetail>
+            <div>
+              <LazyFormAgGrid ref="documentGrid"></LazyFormAgGrid>
             </div>
             <v-card-actions>
               <v-btn
@@ -289,7 +286,7 @@
                 small
                 depressed
                 :disabled="checkDisable()"
-                @click="$refs.childDetails.addLine()"
+                @click="$refs.documentGrid.addItems()"
               >
                 Add Line
                 <v-icon>mdi-plus</v-icon>

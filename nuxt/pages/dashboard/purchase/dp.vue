@@ -1,17 +1,17 @@
 <template>
   <div>
-    <DocumentTableDocument type-document="SD"></DocumentTableDocument>
+    <DocumentTableDocument type-document="SDP"></DocumentTableDocument>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SalesDelivery',
+  name: 'SalesReturn',
   layout: 'dashboard',
 
   head() {
     return {
-      title: 'Sales Delivery',
+      title: 'A/R Down Payment',
     }
   },
 }

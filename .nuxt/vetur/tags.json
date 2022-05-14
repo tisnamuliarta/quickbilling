@@ -23,11 +23,20 @@
   "TableSimple": {
     "description": "Auto imported from components/TableSimple.vue"
   },
+  "DashboardBusinessOverview": {
+    "description": "Auto imported from components/Dashboard/BusinessOverview.vue"
+  },
   "DashboardCheck": {
     "description": "Auto imported from components/Dashboard/Check.vue"
   },
   "DashboardForm": {
     "description": "Auto imported from components/Dashboard/Form.vue"
+  },
+  "DashboardGetThingDone": {
+    "description": "Auto imported from components/Dashboard/GetThingDone.vue"
+  },
+  "DashboardHome": {
+    "description": "Auto imported from components/Dashboard/Home.vue"
   },
   "DocumentCardAction": {
     "description": "Auto imported from components/Document/CardAction.vue"
@@ -71,8 +80,35 @@
   "FinancialFormReportingPeriod": {
     "description": "Auto imported from components/Financial/FormReportingPeriod.vue"
   },
-  "GridAgGrid": {
-    "description": "Auto imported from components/Grid/AgGrid.vue"
+  "FormAgGrid": {
+    "description": "Auto imported from components/Form/AgGrid.vue"
+  },
+  "FormCheckForm": {
+    "description": "Auto imported from components/Form/CheckForm.vue"
+  },
+  "FormDialogFull": {
+    "description": "Auto imported from components/Form/DialogFull.vue"
+  },
+  "FormDocumentGrid": {
+    "description": "Auto imported from components/Form/DocumentGrid.vue"
+  },
+  "FormListAction": {
+    "description": "Auto imported from components/Form/ListAction.vue"
+  },
+  "FormListItem": {
+    "description": "Auto imported from components/Form/ListItem.vue"
+  },
+  "FormNew": {
+    "description": "Auto imported from components/Form/New.vue"
+  },
+  "FormSectionEdit": {
+    "description": "Auto imported from components/Form/SectionEdit.vue"
+  },
+  "FormSectionView": {
+    "description": "Auto imported from components/Form/SectionView.vue"
+  },
+  "FormSetting": {
+    "description": "Auto imported from components/Form/Setting.vue"
   },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
@@ -92,27 +128,6 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
-  "FormCheckForm": {
-    "description": "Auto imported from components/Form/CheckForm.vue"
-  },
-  "FormDialogFull": {
-    "description": "Auto imported from components/Form/DialogFull.vue"
-  },
-  "FormListAction": {
-    "description": "Auto imported from components/Form/ListAction.vue"
-  },
-  "FormNew": {
-    "description": "Auto imported from components/Form/New.vue"
-  },
-  "FormSectionEdit": {
-    "description": "Auto imported from components/Form/SectionEdit.vue"
-  },
-  "FormSectionView": {
-    "description": "Auto imported from components/Form/SectionView.vue"
-  },
-  "FormSetting": {
-    "description": "Auto imported from components/Form/Setting.vue"
-  },
   "LayoutNavigationDrawer": {
     "description": "Auto imported from components/Layout/NavigationDrawer.vue"
   },
@@ -124,12 +139,6 @@
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
-  },
-  "SettingAccountMapping": {
-    "description": "Auto imported from components/Setting/AccountMapping.vue"
-  },
-  "SettingCurrency": {
-    "description": "Auto imported from components/Setting/Currency.vue"
   },
   "SettingEmail": {
     "description": "Auto imported from components/Setting/Email.vue"
@@ -146,12 +155,6 @@
   "SettingGeneral": {
     "description": "Auto imported from components/Setting/General.vue"
   },
-  "SettingPaymentMethod": {
-    "description": "Auto imported from components/Setting/PaymentMethod.vue"
-  },
-  "SettingPaymentTerm": {
-    "description": "Auto imported from components/Setting/PaymentTerm.vue"
-  },
   "SettingPdf": {
     "description": "Auto imported from components/Setting/Pdf.vue"
   },
@@ -160,9 +163,6 @@
   },
   "SettingRoles": {
     "description": "Auto imported from components/Setting/Roles.vue"
-  },
-  "SettingTax": {
-    "description": "Auto imported from components/Setting/Tax.vue"
   },
   "SettingUsers": {
     "description": "Auto imported from components/Setting/Users.vue"
@@ -187,6 +187,18 @@
   },
   "SetupSales": {
     "description": "Auto imported from components/Setup/Sales.vue"
+  },
+  "FormRendererAutoComp": {
+    "description": "Auto imported from components/Form/Renderer/AutoComp.js"
+  },
+  "FormRendererAutoComplete": {
+    "description": "Auto imported from components/Form/Renderer/AutoComplete.vue"
+  },
+  "FormRendererButtonDelete": {
+    "description": "Auto imported from components/Form/Renderer/ButtonDelete.vue"
+  },
+  "FormRendererSelectProduct": {
+    "description": "Auto imported from components/Form/Renderer/SelectProduct.vue"
   },
   "SetupSectionAdvanceAccounting": {
     "description": "Auto imported from components/Setup/Section/AdvanceAccounting.vue"

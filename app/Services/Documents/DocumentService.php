@@ -35,6 +35,7 @@ class DocumentService
         $result = array();
         $query = Document::selectRaw(
             " documents.*,
+               'actions' as actions,
               CONVERT(issued_at, date) as issued_at,
               CONVERT(due_at, date) as due_at"
         )

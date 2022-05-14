@@ -10,14 +10,9 @@
 
 <script>
 import Email from './Email'
-import Tax from './Tax'
 import General from './General'
 import Finance from './Finance'
 import Pdf from './Pdf'
-import PaymentMethod from './PaymentMethod'
-import PaymentTerm from './PaymentTerm'
-import Currency from './Currency'
-import AccountMapping from './AccountMapping'
 import Roles from './Roles'
 import Permissions from './Permissions'
 import Users from './Users'
@@ -30,11 +25,6 @@ export default {
     general: General,
     pdf: Pdf,
     finance: Finance,
-    taxes: Tax,
-    term: PaymentTerm,
-    payment: PaymentMethod,
-    currency: Currency,
-    account_mapping: AccountMapping,
     roles: Roles,
     permissions: Permissions,
     users: Users,

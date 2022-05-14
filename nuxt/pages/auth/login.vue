@@ -8,7 +8,13 @@
       >
       </v-skeleton-loader>
       <v-form v-else @keyup.native.enter="login">
-        <v-card class="mt-3" outlined elevation="4">
+        <v-card
+          class="mt-3"
+          outlined
+          elevation="1"
+          outlined
+          tile
+        >
           <v-card-text>
             <v-row no-gutters>
               <v-col cols="7">
@@ -71,8 +77,7 @@
               :loading="loading"
               @click="login"
             >
-              Login
-              <v-icon right dark> mdi-login-variant</v-icon>
+              Sign In
             </v-btn>
           </v-card-actions>
         </v-card>

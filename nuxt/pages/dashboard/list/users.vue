@@ -22,6 +22,17 @@
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
           <template v-slot:top>
+            <v-chip
+              link
+              class="ma-2"
+              color="primary"
+              label
+              small
+              @click="$router.push({path: '/dashboard/list'})"
+            >
+              <v-icon left> mdi-arrow-left</v-icon>
+              All list
+            </v-chip>
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"

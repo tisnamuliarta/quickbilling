@@ -91,9 +91,9 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
     'nuxt-sweetalert2',
-    'nuxt-seo-meta',
-    '@luxdamore/nuxt-prune-html',
-    'nuxt-precompress',
+    // 'nuxt-seo-meta',
+    // '@luxdamore/nuxt-prune-html',
+    // 'nuxt-precompress',
   ],
 
   auth: {
@@ -211,14 +211,6 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    postcss: {
-      plugins: {
-        'postcss-url': false,
-      },
-      preset: {
-        autoprefixer: {},
-      },
-    },
     transpile: ['vuetify/lib', 'tiptap-vuetify'],
   },
 }

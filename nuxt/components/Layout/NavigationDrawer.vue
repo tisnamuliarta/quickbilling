@@ -5,7 +5,7 @@
     app
     :temporary="$route.name === 'dashboard-settings-setup'"
   >
-    <v-list dense nav expand>
+    <v-list dense nav>
       <NuxtLink to="/dashboard">
         <v-skeleton-loader
           v-show="loadImage"

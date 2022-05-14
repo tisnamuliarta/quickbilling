@@ -10,7 +10,7 @@
 
       <v-toolbar-title class="ml-0 pl-0">
         <span
-          class="font-weight-bold hidden-sm-and-down"
+          class="font-weight-bold"
           v-text="companyName"
           @click="$router.push('/dashboard')"
           style="cursor: pointer"
@@ -42,8 +42,6 @@
         </v-btn>
       </template>
     </v-snackbar>
-
-    <LazyFormCheckForm ref="checkForm" />
 
     <LazySetupListSetting ref="settingForm" />
 

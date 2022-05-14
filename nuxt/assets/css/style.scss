@@ -417,7 +417,7 @@ body {
 }
 
 .v-data-table-header {
-  background-color: #c8dff1;
+  background-color: #EEEEEE;
 }
 
 .form-table > .v-data-table__wrapper > table {
@@ -476,5 +476,9 @@ body {
 
 .item-baseline > .v-data-table__wrapper > table > tbody > tr {
   vertical-align: baseline !important;
+}
+
+.disable-wrap {
+  white-space: nowrap !important;
 }
 

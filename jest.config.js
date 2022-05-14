@@ -1,5 +1,5 @@
 module.exports = {
-  rootDir: 'resources/nuxt',
+  rootDir: 'nuxt',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',

@@ -56,7 +56,7 @@ export default {
       itemList: [
         {
           text: 'All List',
-          route: '/dashboard/transactions/list',
+          route: '/dashboard/list',
           action: 'page',
         },
         {
@@ -66,12 +66,12 @@ export default {
         },
         {
           text: 'Recurring Transactions',
-          route: '/dashboard/transactions/recurring',
+          route: '/dashboard/list/recurring',
           action: 'page',
         },
         {
           text: 'Attachments',
-          route: '/dashboard/transactions/attachment',
+          route: '/dashboard/list/attachment',
           action: 'page',
         },
         {

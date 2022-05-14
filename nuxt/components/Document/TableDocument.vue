@@ -2,14 +2,13 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
+        <!--        <v-skeleton-loader-->
+        <!--          v-show="loading"-->
+        <!--          type="table"-->
+        <!--          class="mx-auto"-->
+        <!--        >-->
+        <!--        </v-skeleton-loader>-->
         <v-data-table
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -29,6 +28,7 @@
               :search-item="searchItem"
               :search="search"
               :title="toolbarTitle"
+              :button-title="btnTitle"
               @emitData="emitData"
               @newData="newData"
             />
@@ -52,11 +52,44 @@
           </template>
 
           <template #[`item.balance_due`]="{ item }">
-            {{ form.default_currency_symbol + ' '+ $formatter.formatPrice(item.balance_due) }}
+            {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.balance_due) }}
           </template>
 
           <template #[`item.amount`]="{ item }">
-            {{ form.default_currency_symbol + ' '+ $formatter.formatPrice(item.amount) }}
+            {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.amount) }}
+          </template>
+
+          <template #[`item.actions`]="{ item }">
+            <v-btn color="secondary" class="font-weight-bold text-right" text small @click="actions(itemAction, item)">
+              {{ itemText }}
+            </v-btn>
+            <v-menu
+              transition="slide-y-transition"
+              bottom
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="black"
+                  dark
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </template>
         </v-data-table>
       </div>
@@ -73,6 +106,19 @@ export default {
       type: String,
       default: '',
     },
+    btnTitle: {
+      type: String,
+      default: 'New Transaction',
+    },
+    items: {
+      type: Array,
+      default() {
+        return [
+          {text: 'Edit', action: 'edit'},
+          {text: 'Delete', action: 'delete'},
+        ]
+      }
+    }
   },
 
   data() {
@@ -91,14 +137,17 @@ export default {
       form: {},
       defaultItem: {},
       options: {},
+      itemText: '',
+      itemAction: '',
       headers: [
-        {text: 'Number', value: 'document_number'},
-        {text: 'Customer', value: 'contact_name'},
-        {text: 'Date', value: 'issued_at'},
-        {text: 'Due Date', value: 'due_at'},
-        {text: 'Status', value: 'status', align: 'left'},
-        {text: 'Balance Due', value: 'balance_due', align: 'right'},
-        {text: 'Total', value: 'amount', align: 'right'},
+        {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
+        {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
+        {text: 'Date', value: 'issued_at', cellClass: 'disable-wrap'},
+        {text: 'Due Date', value: 'due_at', cellClass: 'disable-wrap'},
+        {text: 'Status', value: 'status', align: 'left', cellClass: 'disable-wrap'},
+        {text: 'Balance Due', value: 'balance_due', align: 'right', cellClass: 'disable-wrap'},
+        {text: 'Total', value: 'amount', align: 'right',cellClass: 'disable-wrap'},
+        {text: 'Actions', value: 'actions', align: 'center', cellClass: 'disable-wrap'},
       ],
     }
   },
@@ -123,6 +172,11 @@ export default {
 
   created() {
     this.mappingDocument()
+  },
+
+  mounted() {
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
   },
 
   methods: {
@@ -160,6 +214,22 @@ export default {
           type: this.typeDocument
         }
       })
+    },
+
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else {
+        this.deleteItem(item)
+      }
+    },
+
+    deleteItem(item) {
+      this.$axios.delete(`/api/master/permissions/` + item.menu_name)
+        .then(res => {
+          this.getDataFromApi()
+          this.$nuxt.$emit('getMenu', 'nice payload')
+        })
     },
 
     mappingDocument() {

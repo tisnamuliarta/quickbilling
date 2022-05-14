@@ -4,6 +4,7 @@
       v-model="dialog"
       fullscreen
       hide-overlay
+      persistent
       transition="dialog-top-transition"
       scrollable
     >
@@ -41,10 +42,36 @@
             color="green darken-1"
             class="mr-3"
             dark
-            small
+            rounded
             @click="close"
           >
-            Done
+            Save
+
+            <v-menu
+              transition="slide-y-transition"
+              bottom
+            >
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  dark
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -59,7 +86,13 @@ export default {
   data() {
     return {
       dialog: true,
-      title: ''
+      title: '',
+      items: [
+        {text: 'Edit', action: 'edit'},
+        {text: 'Delete', action: 'delete'},
+      ],
+      itemText: '',
+      itemAction: '',
     }
   },
 

@@ -5,32 +5,31 @@
     }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <v-dialog v-model="dialogFilter" persistent max-width="400px">
-      <v-card>
-        <v-card-title>Filter Form</v-card-title>
-        <v-card-text>
-          <TableFilter
-            class="hidden-md-and-up"
-            :document-status="documentStatus"
-            :search-status="searchStatusData"
-            :item-search="itemSearch"
-            :search-item="searchItemData"
-            :search="searchData"
-            @passDataToToolbar="passDataToToolbar"
-          ></TableFilter>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text small @click="dialogFilter = false">
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+<!--    <v-dialog v-model="dialogFilter" persistent max-width="400px">-->
+<!--      <v-card>-->
+<!--        <v-card-title>Filter Form</v-card-title>-->
+<!--        <v-card-text>-->
+<!--          <TableFilter-->
+<!--            class="hidden-md-and-up"-->
+<!--            :document-status="documentStatus"-->
+<!--            :search-status="searchStatusData"-->
+<!--            :item-search="itemSearch"-->
+<!--            :search-item="searchItemData"-->
+<!--            :search="searchData"-->
+<!--            @passDataToToolbar="passDataToToolbar"-->
+<!--          ></TableFilter>-->
+<!--        </v-card-text>-->
+<!--        <v-card-actions>-->
+<!--          <v-spacer></v-spacer>-->
+<!--          <v-btn color="red darken-1" text small @click="dialogFilter = false">-->
+<!--            Close-->
+<!--          </v-btn>-->
+<!--        </v-card-actions>-->
+<!--      </v-card>-->
+<!--    </v-dialog>-->
 
     <TableFilter
-      v-if="filter"
-      class="hidden-sm-and-down"
+      class="mr-2"
       :document-status="documentStatus"
       :search-status="searchStatusData"
       :item-search="itemSearch"
@@ -40,8 +39,7 @@
     ></TableFilter>
 
     <v-btn v-if="showAdd" small color="green" dark @click="newData()">
-      <v-icon>mdi-plus-circle</v-icon>
-      New
+      {{ buttonTitle }}
     </v-btn>
 
     <v-btn :loading="loading" icon @click="passDataToToolbar">
@@ -89,6 +87,10 @@ export default {
       default() {
         return []
       },
+    },
+    buttonTitle: {
+      type: String,
+      default: '',
     },
     showAdd: {
       type: Boolean,
