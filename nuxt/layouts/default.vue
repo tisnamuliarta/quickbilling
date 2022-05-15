@@ -107,8 +107,6 @@
     <v-main class="grey lighten-4">
       <Nuxt />
     </v-main>
-
-    <LazyFooter></LazyFooter>
   </v-app>
 </template>
 

@@ -3,6 +3,7 @@
     v-model="dialog"
     fullscreen
     hide-overlay
+    persistent
     transition="dialog-top-transition"
     scrollable
   >
@@ -19,7 +20,7 @@
           icon
           dark
           color="red"
-          @click="dialog = false"
+          @click="closeDialog"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -60,6 +61,7 @@ export default {
     },
 
     closeDialog() {
+      this.$emit('close')
       this.dialog = false
     }
   }

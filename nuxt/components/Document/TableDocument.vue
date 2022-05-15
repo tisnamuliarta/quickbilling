@@ -120,6 +120,10 @@ export default {
       type: String,
       default: '',
     },
+    formUrl: {
+      type: String,
+      default: '',
+    },
     btnTitle: {
       type: String,
       default: 'New Transaction',
@@ -193,7 +197,7 @@ export default {
   methods: {
     newData() {
       this.$router.push({
-        path: '/dashboard/documents/form',
+        path: this.formUrl,
         query: {
           document: this.form.id,
           type: this.form.type

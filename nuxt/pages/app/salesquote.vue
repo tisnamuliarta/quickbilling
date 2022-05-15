@@ -1,7 +1,9 @@
 <template>
   <div>
     <DocumentTableDocument
+      ref="tableDocument"
       type-document="SQ"
+      form-url="/app/salesquote/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
@@ -27,6 +29,7 @@
         },
       ]"
     ></DocumentTableDocument>
+    <NuxtChild keep-alive :keep-alive-props="{include: ['form']}"></NuxtChild>
   </div>
 </template>
 
@@ -40,5 +43,17 @@ export default {
       title: 'Sales Quotation',
     }
   },
+
+  created() {
+    this.$nuxt.$on('getDataFromApi', ($event) => this.getDataFromApi($event))
+  },
+
+  methods: {
+    getDataFromApi() {
+      if (this.$refs.tableDocument) {
+        this.$refs.tableDocument.getDataFromApi()
+      }
+    }
+  }
 }
 </script>
