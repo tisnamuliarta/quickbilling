@@ -12,7 +12,7 @@
         <span
           class="font-weight-bold"
           v-text="companyName"
-          @click="$router.push('/dashboard')"
+          @click="$router.push('/')"
           style="cursor: pointer"
         ></span>
       </v-toolbar-title>

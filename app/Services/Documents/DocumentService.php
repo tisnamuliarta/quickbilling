@@ -33,11 +33,17 @@ class DocumentService
         $offset = ($pages - 1) * $row_data;
 
         $result = array();
-        $query = Document::selectRaw(
-            " documents.*,
-               'actions' as actions,
-              CONVERT(issued_at, date) as issued_at,
-              CONVERT(due_at, date) as due_at"
+        $query = Document::select(
+            "documents.*",
+            DB::raw("'actions' as actions"),
+            DB::raw("CONVERT(issued_at, date) as issued_at"),
+            DB::raw("CONVERT(due_at, date) as due_at"),
+            DB::raw("
+                CASE
+                    WHEN documents.due_at < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
+                    ELSE documents.status
+                END as status
+            ")
         )
             ->with(['items', 'taxDetails', 'entity'])
             ->where('type', $type);

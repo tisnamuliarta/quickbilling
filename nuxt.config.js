@@ -148,7 +148,7 @@ export default {
     redirect: {
       login: '/auth/login',
       logout: '/auth/login',
-      home: '/dashboard',
+      home: '/',
     },
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -210,7 +210,5 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {
-    transpile: ['vuetify/lib', 'tiptap-vuetify'],
-  },
+  build: {},
 }

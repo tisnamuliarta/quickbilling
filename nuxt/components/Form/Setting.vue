@@ -45,10 +45,10 @@ export default {
       dialog: false,
       itemCompany: [
         {text: 'Account and Settings', type: 'SETTING', action: 'setting'},
-        {text: 'Manage User', route: '/dashboard/users', action: 'page'},
+        {text: 'Manage User', route: '/users', action: 'page'},
         {
           text: 'Chart Of Account',
-          route: '/dashboard/financial/account',
+          route: '/financial/account',
           action: 'page',
         },
       ],
@@ -56,58 +56,58 @@ export default {
       itemList: [
         {
           text: 'All List',
-          route: '/dashboard/list',
+          route: '/list',
           action: 'page',
         },
         {
           text: 'Product and Services',
-          route: '/dashboard/inventory/item',
+          route: '/inventory/item',
           action: 'page',
         },
         {
           text: 'Recurring Transactions',
-          route: '/dashboard/list/recurring',
+          route: '/list/recurring',
           action: 'page',
         },
         {
           text: 'Attachments',
-          route: '/dashboard/list/attachment',
+          route: '/list/attachment',
           action: 'page',
         },
         {
           text: 'Currencies',
-          route: '/dashboard/financial/currency',
+          route: '/financial/currency',
           action: 'page',
         },
       ],
 
       itemProfile: [
-        {text: 'Account', route: '/dashboard/users/currenct', action: 'page'},
+        {text: 'Account', route: '/users/currenct', action: 'page'},
         {text: 'Sign Out', type: 'function', action: 'logout'},
       ],
 
       itemTool: [
         {
           text: 'Import Data',
-          route: '/dashboard/tools/import',
+          route: '/tools/import',
           action: 'page',
         },
         {
           text: 'Export Data',
-          route: '/dashboard/tools/export',
+          route: '/tools/export',
           action: 'page',
         },
         {
           text: 'Reconcile',
-          route: '/dashboard/financial/reconcile',
+          route: '/financial/reconcile',
           action: 'page',
         },
         {
           text: 'Budgeting',
-          route: '/dashboard/financial/budgeting',
+          route: '/financial/budgeting',
           action: 'page',
         },
-        {text: 'Audit Log', route: '/dashboard/tools/audit', action: 'page'},
+        {text: 'Audit Log', route: '/tools/audit', action: 'page'},
       ],
     }
   },

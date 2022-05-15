@@ -2,14 +2,13 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
+<!--        <v-skeleton-loader-->
+<!--          v-show="loading"-->
+<!--          type="table"-->
+<!--          class="mx-auto"-->
+<!--        >-->
+<!--        </v-skeleton-loader>-->
         <v-data-table
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -22,17 +21,7 @@
           dense
         >
           <template v-slot:top>
-            <v-chip
-              link
-              class="ma-2"
-              color="primary"
-              label
-              small
-              @click="$router.push({path: '/dashboard/list'})"
-            >
-              <v-icon left> mdi-arrow-left</v-icon>
-              All list
-            </v-chip>
+            <LazySetupBackList></LazySetupBackList>
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"
@@ -85,7 +74,7 @@
       v-model="dialog"
       persistent
       max-width="600px"
-      transition="dialog-bottom-transition"
+      transition="dialog-top-transition"
     >
       <v-card>
         <v-card-title>
@@ -99,12 +88,6 @@
         <v-card-text>
           <v-form>
             <v-layout wrap>
-              <v-flex v-if="message" xs12>
-                <div class="red darken-2 text-xs-center">
-                  <span class="white--text">{{ message }}</span>
-                </div>
-              </v-flex>
-
               <v-flex md12 class="d-flex">
                 <v-layout wrap>
                   <v-flex xs12 class="pa-1 mt-1">
@@ -269,7 +252,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="blue darken-1"
+            color="primary"
             dark
             small
             :loading="submitLoad"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <DocumentTableDocument
-      type-document="SO"
+      type-document="SQ"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
@@ -32,12 +32,12 @@
 
 <script>
 export default {
-  name: 'SalesOrder',
+  name: 'SalesQuote',
   layout: 'dashboard',
 
   head() {
     return {
-      title: 'Sales Order',
+      title: 'Sales Quotation',
     }
   },
 }

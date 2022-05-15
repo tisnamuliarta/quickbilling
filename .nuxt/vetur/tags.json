@@ -38,39 +38,6 @@
   "DashboardHome": {
     "description": "Auto imported from components/Dashboard/Home.vue"
   },
-  "DocumentCardAction": {
-    "description": "Auto imported from components/Document/CardAction.vue"
-  },
-  "DocumentDialogAudit": {
-    "description": "Auto imported from components/Document/DialogAudit.vue"
-  },
-  "DocumentDialogFormDocument": {
-    "description": "Auto imported from components/Document/DialogFormDocument.vue"
-  },
-  "DocumentDialogSendEmail": {
-    "description": "Auto imported from components/Document/DialogSendEmail.vue"
-  },
-  "DocumentFieldUpload": {
-    "description": "Auto imported from components/Document/FieldUpload.vue"
-  },
-  "DocumentFormDocument": {
-    "description": "Auto imported from components/Document/FormDocument.vue"
-  },
-  "DocumentFormInput": {
-    "description": "Auto imported from components/Document/FormInput.vue"
-  },
-  "DocumentFormWindow": {
-    "description": "Auto imported from components/Document/FormWindow.vue"
-  },
-  "DocumentTableDetail": {
-    "description": "Auto imported from components/Document/TableDetail.vue"
-  },
-  "DocumentTableDocument": {
-    "description": "Auto imported from components/Document/TableDocument.vue"
-  },
-  "DocumentTableItem": {
-    "description": "Auto imported from components/Document/TableItem.vue"
-  },
   "FinancialFormAccount": {
     "description": "Auto imported from components/Financial/FormAccount.vue"
   },
@@ -128,12 +95,6 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
-  "LayoutNavigationDrawer": {
-    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
-  },
-  "LayoutToolBar": {
-    "description": "Auto imported from components/Layout/ToolBar.vue"
-  },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
   },
@@ -167,8 +128,17 @@
   "SettingUsers": {
     "description": "Auto imported from components/Setting/Users.vue"
   },
+  "LayoutNavigationDrawer": {
+    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
+  },
+  "LayoutToolBar": {
+    "description": "Auto imported from components/Layout/ToolBar.vue"
+  },
   "SetupAdvanced": {
     "description": "Auto imported from components/Setup/Advanced.vue"
+  },
+  "SetupBackList": {
+    "description": "Auto imported from components/Setup/BackList.vue"
   },
   "SetupCompany": {
     "description": "Auto imported from components/Setup/Company.vue"
@@ -187,6 +157,39 @@
   },
   "SetupSales": {
     "description": "Auto imported from components/Setup/Sales.vue"
+  },
+  "DocumentCardAction": {
+    "description": "Auto imported from components/Document/CardAction.vue"
+  },
+  "DocumentDialogAudit": {
+    "description": "Auto imported from components/Document/DialogAudit.vue"
+  },
+  "DocumentDialogFormDocument": {
+    "description": "Auto imported from components/Document/DialogFormDocument.vue"
+  },
+  "DocumentDialogSendEmail": {
+    "description": "Auto imported from components/Document/DialogSendEmail.vue"
+  },
+  "DocumentFieldUpload": {
+    "description": "Auto imported from components/Document/FieldUpload.vue"
+  },
+  "DocumentFormDocument": {
+    "description": "Auto imported from components/Document/FormDocument.vue"
+  },
+  "DocumentFormInput": {
+    "description": "Auto imported from components/Document/FormInput.vue"
+  },
+  "DocumentFormWindow": {
+    "description": "Auto imported from components/Document/FormWindow.vue"
+  },
+  "DocumentTableDetail": {
+    "description": "Auto imported from components/Document/TableDetail.vue"
+  },
+  "DocumentTableDocument": {
+    "description": "Auto imported from components/Document/TableDocument.vue"
+  },
+  "DocumentTableItem": {
+    "description": "Auto imported from components/Document/TableItem.vue"
   },
   "FormRendererAutoComp": {
     "description": "Auto imported from components/Form/Renderer/AutoComp.js"

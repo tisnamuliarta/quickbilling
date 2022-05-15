@@ -6,7 +6,7 @@
     :temporary="$route.name === 'dashboard-settings-setup'"
   >
     <v-list dense nav>
-      <NuxtLink to="/dashboard">
+      <NuxtLink to="/">
         <v-skeleton-loader
           v-show="loadImage"
           type="avatar"

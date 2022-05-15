@@ -19,8 +19,8 @@ class MasterPermissionController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['direct_permission:Permissions-index'])->only(['index', 'show']);
-        $this->middleware(['direct_permission:Permissions-store'])->only('store');
+        // $this->middleware(['direct_permission:Permissions-index'])->only(['index', 'show']);
+        $this->middleware(['direct_permission:Permissions-store'])->only(['index', 'show', 'store']);
         $this->middleware(['direct_permission:Permissions-edits'])->only('update');
         $this->middleware(['direct_permission:Permissions-erase'])->only('destroy');
     }

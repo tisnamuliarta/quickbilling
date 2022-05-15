@@ -129,7 +129,8 @@ class AuthController extends Controller
         try {
             $permissions = $request->user()
                 ->getAllPermissions()
-                ->where('parent_id', '=', '0');
+                ->where('parent_id', '=', '0')
+                ->where('route_name', '=', 'N');
 
             $array = [];
             foreach ($permissions as $permission) {

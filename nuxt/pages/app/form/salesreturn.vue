@@ -6,12 +6,12 @@
 
 <script>
 export default {
-  name: "quotation",
+  name: "SalesOrder",
   layout: 'dialog',
 
   data() {
     return {
-      title: 'Sales Quotations'
+      title: 'Sales Return'
     }
   },
 

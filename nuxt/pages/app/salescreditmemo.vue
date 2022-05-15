@@ -1,28 +1,18 @@
 <template>
   <div>
-    <LazyDocumentFormInput ref="formDocument" />
+    <DocumentTableDocument type-document="SCM"></DocumentTableDocument>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SalesOrder",
-  layout: 'dialog',
-
-  data() {
-    return {
-      title: 'A/R Credit Memo'
-    }
-  },
+  name: 'SalesReturn',
+  layout: 'dashboard',
 
   head() {
     return {
-      title: this.title,
+      title: 'Credit Memo',
     }
-  },
-
-  mounted() {
-    this.$nuxt.$emit('setTitle', this.title)
   },
 }
 </script>

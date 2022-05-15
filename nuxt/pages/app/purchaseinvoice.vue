@@ -1,28 +1,18 @@
 <template>
   <div>
-    <LazyDocumentFormInput ref="formDocument" />
+    <DocumentTableDocument type-document="PI"></DocumentTableDocument>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SalesOrder",
-  layout: 'dialog',
-
-  data() {
-    return {
-      title: 'A/P Invoice'
-    }
-  },
+  name: 'PurchaseInvoice',
+  layout: 'dashboard',
 
   head() {
     return {
-      title: this.title,
+      title: 'A/P Invoice',
     }
-  },
-
-  mounted() {
-    this.$nuxt.$emit('setTitle', this.title)
   },
 }
 </script>

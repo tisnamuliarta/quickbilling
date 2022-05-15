@@ -2,96 +2,110 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <!--        <v-skeleton-loader-->
-        <!--          v-show="loading"-->
-        <!--          type="table"-->
-        <!--          class="mx-auto"-->
-        <!--        >-->
-        <!--        </v-skeleton-loader>-->
-        <v-data-table
-          :mobile-breakpoint="0"
-          :headers="headers"
-          :items="allData"
-          :items-per-page="20"
-          :options.sync="options"
-          :server-items-length="totalData"
-          :loading="loading"
-          class="elevation-1"
-          dense
-          :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
+        <v-alert
+          border="top"
+          elevation="1"
+          class="pr-0 pl-0"
+          colored-border
+          color="green lighten-2"
         >
-          <template v-slot:top>
-            <LazyMainToolbar
-              :document-status="documentStatus"
-              :search-status="searchStatus"
-              :item-search="itemSearch"
-              :search-item="searchItem"
-              :search="search"
-              :title="toolbarTitle"
-              :button-title="btnTitle"
-              @emitData="emitData"
-              @newData="newData"
-            />
-          </template>
-          <template #[`item.document_number`]="{ item }">
-            <a @click="editItem(item)">
-              <strong v-text="item.document_number"></strong>
-            </a>
-          </template>
+          <!--        <v-skeleton-loader-->
+          <!--          v-show="loading"-->
+          <!--          type="table"-->
+          <!--          class="mx-auto"-->
+          <!--        >-->
+          <!--        </v-skeleton-loader>-->
+          <v-data-table
+            :mobile-breakpoint="0"
+            :headers="headers"
+            :items="allData"
+            :items-per-page="20"
+            :options.sync="options"
+            :server-items-length="totalData"
+            :loading="loading"
+            class="elevation-0"
+            dense
+            :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
+          >
+            <template v-slot:top>
+              <LazyMainToolbar
+                :document-status="documentStatus"
+                :search-status="searchStatus"
+                :item-search="itemSearch"
+                :search-item="searchItem"
+                :search="search"
+                :title="toolbarTitle"
+                :button-title="btnTitle"
+                @emitData="emitData"
+                @newData="newData"
+              />
+            </template>
+            <template #[`item.document_number`]="{ item }">
+              <a @click="editItem(item)">
+                <strong v-text="item.document_number"></strong>
+              </a>
+            </template>
 
-          <template #[`item.status`]="{ item }">
-            <v-btn
-              text
-              small
-            >
-              <v-icon :color="statusColor(item)" left>
-                mdi-circle
-              </v-icon>
-              {{ item.status }}
-            </v-btn>
-          </template>
+            <template #[`item.status`]="{ item }">
+              <v-btn
+                text
+                small
+              >
+                <v-icon :color="statusColor(item)" left>
+                  mdi-circle
+                </v-icon>
+                {{ item.status }}
+              </v-btn>
+            </template>
 
-          <template #[`item.balance_due`]="{ item }">
-            {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.balance_due) }}
-          </template>
+            <template #[`item.balance_due`]="{ item }">
+              {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.balance_due) }}
+            </template>
 
-          <template #[`item.amount`]="{ item }">
-            {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.amount) }}
-          </template>
+            <template #[`item.amount`]="{ item }">
+              {{ form.default_currency_symbol + ' ' + $formatter.formatPrice(item.amount) }}
+            </template>
 
-          <template #[`item.actions`]="{ item }">
-            <v-btn color="secondary" class="font-weight-bold text-right" text small @click="actions(itemAction, item)">
-              {{ itemText }}
-            </v-btn>
-            <v-menu
-              transition="slide-y-transition"
-              bottom
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="black"
-                  dark
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-menu-down</v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item
-                  v-for="(value, i) in items"
-                  :key="i"
-                  @click="actions(value.action, item)"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title>{{ value.text }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
-        </v-data-table>
+            <template #[`item.actions`]="{ item }">
+              <v-btn
+                color="secondary"
+                class="font-weight-bold text-right pr-0"
+                text
+                small
+                @click="actions(itemAction, item)"
+              >
+                {{ itemText }}
+              </v-btn>
+              <v-menu
+                transition="slide-y-transition"
+                bottom
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="black"
+                    dark
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-menu-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(value, i) in items"
+                    :key="i"
+                    @click="actions(value.action, item)"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>{{ value.text }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-data-table>
+        </v-alert>
       </div>
     </v-flex>
   </v-layout>
@@ -118,7 +132,13 @@ export default {
           {text: 'Delete', action: 'delete'},
         ]
       }
-    }
+    },
+    headerTable: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
   },
 
   data() {
@@ -139,16 +159,7 @@ export default {
       options: {},
       itemText: '',
       itemAction: '',
-      headers: [
-        {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
-        {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
-        {text: 'Date', value: 'issued_at', cellClass: 'disable-wrap'},
-        {text: 'Due Date', value: 'due_at', cellClass: 'disable-wrap'},
-        {text: 'Status', value: 'status', align: 'left', cellClass: 'disable-wrap'},
-        {text: 'Balance Due', value: 'balance_due', align: 'right', cellClass: 'disable-wrap'},
-        {text: 'Total', value: 'amount', align: 'right',cellClass: 'disable-wrap'},
-        {text: 'Actions', value: 'actions', align: 'center', cellClass: 'disable-wrap'},
-      ],
+      headers: this.headerTable,
     }
   },
 

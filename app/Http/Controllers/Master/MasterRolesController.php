@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Traits\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
 class MasterRolesController extends Controller
@@ -19,8 +18,10 @@ class MasterRolesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
-        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+        //$this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+        $this->middleware(['direct_permission:Roles-store'])->only([
+            'store', 'storePermissionRole', 'index', 'show', 'permissionRole'
+        ]);
         $this->middleware(['direct_permission:Roles-edits'])->only('update');
         $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
     }

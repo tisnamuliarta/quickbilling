@@ -1,6 +1,6 @@
 <template>
   <v-toolbar flat color="white" class="rounded" dense elevation="0">
-    <v-toolbar-title class="hidden-xs-only subtitle-2">{{
+    <v-toolbar-title class="hidden-xs-only subtitle-1 font-weight-bold">{{
       title
     }}</v-toolbar-title>
     <v-spacer></v-spacer>
@@ -90,7 +90,7 @@ export default {
     },
     buttonTitle: {
       type: String,
-      default: '',
+      default: 'New',
     },
     showAdd: {
       type: Boolean,
