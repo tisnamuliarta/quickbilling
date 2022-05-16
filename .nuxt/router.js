@@ -397,6 +397,26 @@ export const routerOptions = {
     path: "/__nuxt_laravel",
     component: _2c1039ce,
     name: "__nuxt_laravel"
+  }, {
+    path: "/__nuxt_laravel",
+    component: _2c1039ce,
+    name: "__nuxt_laravel"
+  }, {
+    path: "/__nuxt_laravel",
+    component: _2c1039ce,
+    name: "__nuxt_laravel"
+  }, {
+    path: "/__nuxt_laravel",
+    component: _2c1039ce,
+    name: "__nuxt_laravel"
+  }, {
+    path: "/__nuxt_laravel",
+    component: _2c1039ce,
+    name: "__nuxt_laravel"
+  }, {
+    path: "/__nuxt_laravel",
+    component: _2c1039ce,
+    name: "__nuxt_laravel"
   }],
 
   fallback: false

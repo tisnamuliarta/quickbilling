@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class DocumentController extends Controller
 {
-    public $service;
+    public DocumentService $service;
 
     /**
      * MasterUserController constructor.

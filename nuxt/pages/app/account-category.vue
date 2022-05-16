@@ -2,14 +2,13 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
+<!--        <v-skeleton-loader-->
+<!--          v-show="loading"-->
+<!--          type="table"-->
+<!--          class="mx-auto"-->
+<!--        >-->
+<!--        </v-skeleton-loader>-->
         <v-data-table
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -17,6 +16,7 @@
           :options.sync="options"
           :server-items-length="totalData"
           :loading="loading"
+          hide-default-footer
           class="elevation-1"
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
@@ -34,22 +34,26 @@
             />
           </template>
           <template #[`item.id`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
+            <v-btn
+              text
+              small
+              @click="editItem(item)"
+              color="secondary"
+              class="font-weight-bold text-right"
+            >Edit</v-btn>
           </template>
         </v-data-table>
       </div>
     </v-flex>
 
-    <LazyFinancialFormAccountCategory
+    <LazyAccountingFormAccountCategory
       ref="forms"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       :url="url"
       @getDataFromApi="getDataFromApi"
-    ></LazyFinancialFormAccountCategory>
+    ></LazyAccountingFormAccountCategory>
   </v-layout>
 </template>
 
@@ -65,6 +69,7 @@ export default {
       allData: [],
       documentStatus: [],
       itemSearch: [],
+      itemCategoryType: [],
       searchStatus: '',
       searchItem: '',
       search: '',
@@ -107,12 +112,12 @@ export default {
   methods: {
     newData() {
       this.editedIndex = -1
-      this.$refs.forms.newData(this.form)
+      this.$refs.forms.newData(this.form, this.itemCategoryType)
     },
 
     editItem(item) {
       this.editedIndex = this.allData.indexOf(item)
-      this.$refs.forms.editItem(item)
+      this.$refs.forms.editItem(item, this.itemCategoryType)
     },
 
     emitData(data) {
@@ -145,6 +150,7 @@ export default {
           this.itemSearch = res.data.filter
           this.form = Object.assign({}, res.data.data.form)
           this.defaultItem = Object.assign({}, res.data.data.form)
+          this.itemCategoryType = res.data.data.category_type_list
         })
         .catch((err) => {
           this.loading = false

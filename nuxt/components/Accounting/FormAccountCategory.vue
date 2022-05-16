@@ -92,18 +92,18 @@ export default {
   },
 
   methods: {
-    newData(item) {
+    newData(item, categoryType) {
       this.$refs.dialogForm.openDialog()
       this.statusProcessing = 'insert'
       this.form = Object.assign({}, item)
-      this.itemCategory = this.form.category_type_list
+      this.itemCategory = categoryType
     },
 
-    editItem(item) {
+    editItem(item, categoryType) {
       this.form = Object.assign({}, item)
       this.statusProcessing = 'update'
       this.$refs.dialogForm.openDialog()
-      this.itemCategory = this.form.category_type_list
+      this.itemCategory = categoryType
     },
 
     returnData(data) {

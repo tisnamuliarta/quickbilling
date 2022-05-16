@@ -5,7 +5,7 @@
     persistent
     :origin="original"
     :max-width="maxWidth"
-    transition="dialog-bottom-transition"
+    transition="dialog-top-transition"
   >
     <v-card>
       <v-card-title>

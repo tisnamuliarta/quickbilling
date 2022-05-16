@@ -43,14 +43,14 @@
       </div>
     </v-flex>
 
-    <LazyFinancialFormReportingPeriod
+    <LazyAccountingFormReportingPeriod
       ref="forms"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       :url="url"
       @getDataFromApi="getDataFromApi"
-    ></LazyFinancialFormReportingPeriod>
+    ></LazyAccountingFormReportingPeriod>
   </v-layout>
 </template>
 

@@ -20,6 +20,12 @@
       <v-spacer></v-spacer>
 
       <LazyLayoutToolBar ref="toolbar" @openAction="openAction" />
+
+      <template v-if="showExtension" #extension>
+        <v-tabs align-with-title>
+          <v-tab> {{ extensionText }}</v-tab>
+        </v-tabs>
+      </template>
     </v-app-bar>
 
     <LazyLayoutNavigationDrawer
@@ -74,6 +80,8 @@ export default {
       rightDrawer: false,
       loadImage: false,
       companyName: '',
+      showExtension: false,
+      extensionText: '',
     }
   },
 
@@ -96,6 +104,7 @@ export default {
     this.$nuxt.$on('getCompany', ($event) => this.getCompany($event))
     this.$nuxt.$on('snackbar', ($event) => this.openSnackbar($event))
     this.$nuxt.$on('openSetting', ($event) => this.openSetting($event))
+    this.$nuxt.$on('extensionSetting', ($event) => this.extensionSetting($event))
     this.getLogo()
   },
 
@@ -141,6 +150,11 @@ export default {
       //   default:
       //     break
       // }
+    },
+
+    extensionSetting(data) {
+      this.showExtension = true
+      this.extensionText = data
     },
 
     changeDrawer() {

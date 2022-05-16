@@ -9,18 +9,22 @@
       <template #content>
         <v-form class="pt-2">
           <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
-                  label="Name"
+            <v-row dense>
+              <v-col cols="12">
+                <v-autocomplete
+                  v-model="form.account_type"
+                  :items="itemAccountType"
+                  label="Account Type"
                   outlined
+                  persistent-hint
                   dense
                   hide-details="auto"
-                ></v-text-field>
+                  @change="changeAccountType"
+                >
+                </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col cols="12">
                 <v-autocomplete
                   v-model="form.category_id"
                   :items="itemCategory"
@@ -35,45 +39,42 @@
                 </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.currency_id"
-                  :items="itemCurrency"
-                  label="Currency"
-                  item-text="currency_code"
-                  item-value="id"
+              <v-col cols="12">
+                <v-text-field
+                  v-model="form.name"
+                  label="Name"
                   outlined
-                  persistent-hint
                   dense
                   hide-details="auto"
-                >
-                </v-autocomplete>
+                ></v-text-field>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.account_type"
-                  :items="itemAccountType"
-                  label="Account Type"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                </v-autocomplete>
-              </v-col>
-
-<!--              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
-<!--                <v-text-field-->
-<!--                  v-model="form.code"-->
-<!--                  label="Number"-->
+<!--              <v-col cols="12">-->
+<!--                <v-autocomplete-->
+<!--                  v-model="form.currency_id"-->
+<!--                  :items="itemCurrency"-->
+<!--                  label="Currency"-->
+<!--                  item-text="currency_code"-->
+<!--                  item-value="id"-->
 <!--                  outlined-->
+<!--                  persistent-hint-->
 <!--                  dense-->
 <!--                  hide-details="auto"-->
-<!--                ></v-text-field>-->
+<!--                >-->
+<!--                </v-autocomplete>-->
 <!--              </v-col>-->
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <!--              <v-col cols="12" >-->
+              <!--                <v-text-field-->
+              <!--                  v-model="form.code"-->
+              <!--                  label="Number"-->
+              <!--                  outlined-->
+              <!--                  dense-->
+              <!--                  hide-details="auto"-->
+              <!--                ></v-text-field>-->
+              <!--              </v-col>-->
+
+              <v-col cols="12">
                 <v-textarea
                   rows="3"
                   v-model="form.description"
@@ -134,6 +135,7 @@ export default {
       submitLoad: false,
       form: this.formData,
       itemCategory: [],
+      itemAllCurrency: [],
       itemCurrency: [],
       itemAccountType: [],
       itemBank: [],
@@ -162,13 +164,23 @@ export default {
       this.itemAccountType = form.account_type_list
     },
 
+    changeAccountType() {
+      this.itemCategory = this.itemAllCurrency.filter(this.filterTransType)
+    },
+
+    filterTransType(item) {
+      if (item.category_type === this.form.account_type) {
+        return true
+      }
+    },
+
     getCategory() {
       this.$axios.get(`/api/financial/account-category`, {
         params: {
           type: 'Account Category'
         }
       }).then((res) => {
-        this.itemCategory = res.data.data.rows
+        this.itemAllCurrency = res.data.data.rows
       })
         .catch((err) => {
           this.$swal({

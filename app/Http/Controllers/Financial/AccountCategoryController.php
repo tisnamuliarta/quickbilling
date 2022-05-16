@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountCategoryController extends Controller
 {
-    public $service;
+    public AccountCategoryService $service;
 
     /**
      * MasterUserController constructor.
@@ -35,7 +35,7 @@ class AccountCategoryController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('ifrs_categories');
-        $result['form']['category_type_list'] = $this->getEnumValues('ifrs_categories', 'category_type');
+        $result['category_type_list'] = $this->getEnumValues('ifrs_categories', 'category_type');
         $result = array_merge($result, $this->service->index($request));
         return $this->success($result);
     }

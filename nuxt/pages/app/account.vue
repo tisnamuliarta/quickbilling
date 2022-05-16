@@ -2,14 +2,13 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
+        <!--        <v-skeleton-loader-->
+        <!--          v-show="loading"-->
+        <!--          type="table"-->
+        <!--          class="mx-auto"-->
+        <!--        >-->
+        <!--        </v-skeleton-loader>-->
         <v-data-table
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -17,7 +16,9 @@
           :options.sync="options"
           :server-items-length="totalData"
           :loading="loading"
+          hide-default-footer
           class="elevation-1"
+          show-select
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
@@ -34,30 +35,49 @@
             />
           </template>
           <template #[`item.id`]="{ item }">
-            <v-btn icon class="mr-2">
-              <v-icon small color="green" @click="editItem(item)">
-                mdi-pencil-circle
-              </v-icon>
+            <v-btn color="secondary" class="font-weight-bold text-right" text small @click="actions(itemAction, item)">
+              {{ itemText }}
             </v-btn>
-
-            <v-btn icon class="mr-2">
-              <v-icon small color="red" @click="deleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </v-btn>
+            <v-menu
+              transition="slide-y-transition"
+              bottom
+            >
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  color="black"
+                  dark
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </template>
         </v-data-table>
       </div>
     </v-flex>
 
-    <LazyFinancialFormAccount
+    <LazyAccountingFormAccount
       ref="forms"
       :form-data="form"
       :form-title="formTitle"
       :button-title="buttonTitle"
       :url="url"
       @getDataFromApi="getDataFromApi"
-    ></LazyFinancialFormAccount>
+    ></LazyAccountingFormAccount>
   </v-layout>
 </template>
 
@@ -79,21 +99,34 @@ export default {
       form: {},
       defaultItem: {},
       options: {},
+      items: [
+        {text: 'Edit', action: 'edit'},
+        {text: 'Delete', action: 'delete'},
+      ],
+      itemText: '',
+      itemAction: '',
       url: '/api/financial/accounts',
       headers: [
-        { text: 'Account Code', value: 'code' },
-        { text: 'Account Name', value: 'name' },
-        { text: 'Category', value: 'category.name' },
-        { text: 'Account Type', value: 'account_type' },
-        { text: 'Currency', value: 'currency.currency_code' },
-        { text: 'Actions', value: 'id' },
+        {text: 'Account Code', value: 'code', cellClass: 'disable-wrap'},
+        {text: 'Account Name', value: 'name', cellClass: 'disable-wrap'},
+        {text: 'Account Type', value: 'account_type', cellClass: 'disable-wrap'},
+        {text: 'Category', value: 'category.name', cellClass: 'disable-wrap'},
+        {
+          text: 'Currency',
+          value: 'currency.currency_code',
+          cellClass: 'disable-wrap',
+          sortable: false,
+          filterable: false
+        },
+        {text: 'Actions', value: 'id', align: 'right', cellClass: 'disable-wrap', sortable: false, filterable: false},
       ],
+      title: 'Chart Of Accounts',
     }
   },
 
   head() {
     return {
-      title: 'Chart Of Accounts',
+      title: this.title,
     }
   },
 
@@ -115,10 +148,24 @@ export default {
     },
   },
 
+  mounted() {
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
+    this.$nuxt.$emit('extensionSetting', this.title)
+  },
+
   methods: {
     newData() {
       this.editedIndex = -1
       this.$refs.forms.newData(this.form)
+    },
+
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else {
+        this.deleteItem(item)
+      }
     },
 
     editItem(item) {

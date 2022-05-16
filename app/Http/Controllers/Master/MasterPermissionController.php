@@ -55,9 +55,9 @@ class MasterPermissionController extends Controller
             $data_parent[] = $parent->menu_name;
         }
 
-        $all_data = $query->offset($offset)
-            ->orderBy($sorts, $order)
-            ->limit($row_data)
+        $all_data = $query->orderBy($sorts, $order)
+//            ->offset($offset)
+//            ->limit($row_data)
             ->get();
 
         $all_rows = Permission::groupBy(['menu_name'])->select('menu_name')->get();
