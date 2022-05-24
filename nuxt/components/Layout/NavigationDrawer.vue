@@ -2,6 +2,8 @@
   <v-navigation-drawer
     id="nav"
     v-model="drawer"
+    class="blue-grey darken-4"
+    dark
     app
     :temporary="$route.name === 'dashboard-settings-setup'"
   >

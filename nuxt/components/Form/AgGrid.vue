@@ -40,7 +40,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import {AgGridVue} from "ag-grid-vue";
 import ButtonDelete from "./Renderer/ButtonDelete";
-import AutoComplete from '../Form/Renderer/AutoComp.js'
+import AutoComplete from '../Form/Renderer/AutoComplete'
 
 window.currencyFormatter = function currencyFormatter(params) {
   return formatNumber(params.value);

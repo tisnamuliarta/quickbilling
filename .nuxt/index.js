@@ -23,7 +23,6 @@ import nuxt_plugin_axios_6eb253ac from 'nuxt_plugin_axios_6eb253ac' // Source: .
 import nuxt_plugin_vuegates_72bed74b from 'nuxt_plugin_vuegates_72bed74b' // Source: ..\\nuxt\\plugins\\vue-gates (mode: 'all')
 import nuxt_plugin_dragable_7e1b63f8 from 'nuxt_plugin_dragable_7e1b63f8' // Source: ..\\nuxt\\plugins\\dragable (mode: 'all')
 import nuxt_plugin_vuetifymoney_56b8af0b from 'nuxt_plugin_vuetifymoney_56b8af0b' // Source: ..\\nuxt\\plugins\\vuetify-money (mode: 'all')
-import nuxt_plugin_vuecookie_41e86efe from 'nuxt_plugin_vuecookie_41e86efe' // Source: ..\\nuxt\\plugins\\vue-cookie (mode: 'all')
 import nuxt_plugin_formatter_4867cbd8 from 'nuxt_plugin_formatter_4867cbd8' // Source: ..\\nuxt\\plugins\\formatter (mode: 'all')
 import nuxt_plugin_helper_619f8ab8 from 'nuxt_plugin_helper_619f8ab8' // Source: ..\\nuxt\\plugins\\helper (mode: 'all')
 import nuxt_plugin_auth_43fb9ff8 from 'nuxt_plugin_auth_43fb9ff8' // Source: .\\auth.js (mode: 'all')
@@ -91,7 +90,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"titleTemplate":"%s","title":"Quick Billing","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Quick Billing"},{"hid":"charset","charset":"utf-8"},{"hid":"mobile-web-app-capable","name":"mobile-web-app-capable","content":"yes"},{"hid":"og:type","name":"og:type","property":"og:type","content":"website"},{"hid":"og:description","name":"og:description","property":"og:description","content":"\u003Cp align=\"center\"\u003E\u003Ca href=\"https:\u002F\u002Flaravel.com\" target=\"_blank\"\u003E\u003Cimg src=\"https:\u002F\u002Fraw.githubusercontent.com\u002Flaravel\u002Fart\u002Fmaster\u002Flogo-lockup\u002F5%20SVG\u002F2%20CMYK\u002F1%20Full%20Color\u002Flaravel-logolockup-cmyk-red.svg\" width=\"400\"\u003E\u003C\u002Fa\u003E\u003C\u002Fp\u003E"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss?family=Roboto:100,300,400,500,700,900&display=swap"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Fcdn.jsdelivr.net\u002Fnpm\u002F@mdi\u002Ffont@latest\u002Fcss\u002Fmaterialdesignicons.min.css"},{"hid":"shortcut-icon","rel":"shortcut icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_64x64.ce3f9f.png"},{"hid":"apple-touch-icon","rel":"apple-touch-icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_512x512.ce3f9f.png","sizes":"512x512"},{"rel":"manifest","href":"\u002F_nuxt\u002Fmanifest.072a91ca.json","hid":"manifest"}],"style":[],"script":[],"htmlAttrs":{"lang":"en"}},
+    head: {"titleTemplate":"%s","title":"Quick Billing","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Quick Billing"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ficon.png"}],"style":[],"script":[]},
 
     store,
     router,
@@ -258,10 +257,6 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_vuetifymoney_56b8af0b === 'function') {
     await nuxt_plugin_vuetifymoney_56b8af0b(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_vuecookie_41e86efe === 'function') {
-    await nuxt_plugin_vuecookie_41e86efe(app.context, inject)
   }
 
   if (typeof nuxt_plugin_formatter_4867cbd8 === 'function') {

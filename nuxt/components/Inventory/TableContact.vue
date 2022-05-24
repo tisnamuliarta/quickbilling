@@ -2,49 +2,57 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
+        <v-alert
+          border="top"
+          elevation="1"
+          class="pr-0 pl-0"
+          colored-border
+          color="green lighten-2"
+          dense
+        >
+          <!-- <v-skeleton-loader
           v-show="loading"
           type="table"
           class="mx-auto"
         >
-        </v-skeleton-loader>
-        <v-data-table
-          v-model="selected"
-          v-show="!loading"
-          :mobile-breakpoint="0"
-          :headers="headers"
-          :items="allData"
-          :items-per-page="20"
-          :options.sync="options"
-          :server-items-length="totalData"
-          :loading="loading"
-          class="elevation-1"
-          item-key="id"
-          show-select
-          dense
-          :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
-        >
-          <template v-slot:top>
-            <LazyMainToolbar
-              :document-status="documentStatus"
-              :search-status="searchStatus"
-              :item-search="itemSearch"
-              :search-item="searchItem"
-              :search="search"
-              title="Contacts"
-              @emitData="emitData"
-              @newData="newData"
-            />
-          </template>
-          <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
-          </template>
-          <template #[`item.balance`]="{ item }">
-            {{ $formatter.formatPrice(item.balance) }}
-          </template>
-        </v-data-table>
+        </v-skeleton-loader> -->
+          <v-data-table
+            v-model="selected"
+            :mobile-breakpoint="0"
+            :headers="headers"
+            :items="allData"
+            :items-per-page="20"
+            :options.sync="options"
+            :server-items-length="totalData"
+            :loading="loading"
+            class="elevation-0"
+            item-key="id"
+            show-select
+            dense
+            :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
+          >
+            <template v-slot:top>
+              <LazyMainToolbar
+                :document-status="documentStatus"
+                :search-status="searchStatus"
+                :item-search="itemSearch"
+                :search-item="searchItem"
+                :search="search"
+                title="Contacts"
+                @emitData="emitData"
+                @newData="newData"
+              />
+            </template>
+            <template #[`item.ACTIONS`]="{ item }">
+              <v-icon small class="mr-2" color="orange" @click="editItem(item)">
+                mdi-pencil-circle
+              </v-icon>
+            </template>
+            <template #[`item.balance`]="{ item }">
+              {{ $formatter.formatPrice(item.balance) }}
+            </template>
+          </v-data-table>
+        </v-alert>
       </div>
     </v-flex>
 
@@ -60,7 +68,7 @@
 
 <script>
 export default {
-  name: "TableContact",
+  name: 'TableContact',
   data() {
     return {
       selected: [],

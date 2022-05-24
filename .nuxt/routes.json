@@ -3,64 +3,13 @@
     "name": "list",
     "path": "/list",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\index.vue",
-    "chunkName": "pages/list/index",
-    "_name": "_72c2a8fb"
-  },
-  {
-    "name": "app-account",
-    "path": "/app/account",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\account.vue",
-    "chunkName": "pages/app/account",
-    "_name": "_2ef3d2b5"
-  },
-  {
-    "name": "app-account-category",
-    "path": "/app/account-category",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\account-category.vue",
-    "chunkName": "pages/app/account-category",
-    "_name": "_1a9795c6"
-  },
-  {
-    "name": "app-bank-deposit",
-    "path": "/app/bank-deposit",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank-deposit.vue",
-    "chunkName": "pages/app/bank-deposit",
-    "_name": "_bac68c96"
-  },
-  {
-    "name": "app-bank-transfer",
-    "path": "/app/bank-transfer",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank-transfer.vue",
-    "chunkName": "pages/app/bank-transfer",
-    "_name": "_2271fd64"
-  },
-  {
-    "name": "app-bank-withdraw",
-    "path": "/app/bank-withdraw",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank-withdraw.vue",
-    "chunkName": "pages/app/bank-withdraw",
-    "_name": "_0361a903"
-  },
-  {
-    "name": "app-budgeting",
-    "path": "/app/budgeting",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\budgeting.vue",
-    "chunkName": "pages/app/budgeting",
-    "_name": "_037ba9f6"
-  },
-  {
-    "name": "app-closing",
-    "path": "/app/closing",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\closing.vue",
-    "chunkName": "pages/app/closing",
-    "_name": "_068a213d"
+    "chunkName": "pages/list/index"
   },
   {
     "name": "app-contact",
     "path": "/app/contact",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact.vue",
-    "chunkName": "pages/app/contact",
-    "_name": "_047989b0"
+    "chunkName": "pages/app/contact"
   },
   {
     "name": "app-expense",
@@ -72,511 +21,454 @@
         "name": "app-expense-form",
         "path": "form",
         "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\expense\\\\form.vue",
-        "chunkName": "pages/app/expense/form",
-        "_name": "_3256e3a4"
+        "chunkName": "pages/app/expense/form"
       }
-    ],
-    "_name": "_cab7f940"
+    ]
   },
   {
     "name": "app-item",
     "path": "/app/item",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item.vue",
-    "chunkName": "pages/app/item",
-    "_name": "_6a18648a"
-  },
-  {
-    "name": "app-journal-entry",
-    "path": "/app/journal-entry",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\journal-entry.vue",
-    "chunkName": "pages/app/journal-entry",
-    "_name": "_3df4cb64"
-  },
-  {
-    "name": "app-price-list",
-    "path": "/app/price-list",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\price-list.vue",
-    "chunkName": "pages/app/price-list",
-    "_name": "_53de0dca"
-  },
-  {
-    "name": "app-purchasecreditmemo",
-    "path": "/app/purchasecreditmemo",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasecreditmemo.vue",
-    "chunkName": "pages/app/purchasecreditmemo",
-    "children": [
-      {
-        "name": "app-purchasecreditmemo-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasecreditmemo\\\\form.vue",
-        "chunkName": "pages/app/purchasecreditmemo/form",
-        "_name": "_1434d640"
-      }
-    ],
-    "_name": "_166f519c"
-  },
-  {
-    "name": "app-purchasedp",
-    "path": "/app/purchasedp",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasedp.vue",
-    "chunkName": "pages/app/purchasedp",
-    "children": [
-      {
-        "name": "app-purchasedp-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasedp\\\\form.vue",
-        "chunkName": "pages/app/purchasedp/form",
-        "_name": "_61262b79"
-      }
-    ],
-    "_name": "_49270ef5"
-  },
-  {
-    "name": "app-purchaseinvoice",
-    "path": "/app/purchaseinvoice",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchaseinvoice.vue",
-    "chunkName": "pages/app/purchaseinvoice",
-    "children": [
-      {
-        "name": "app-purchaseinvoice-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchaseinvoice\\\\form.vue",
-        "chunkName": "pages/app/purchaseinvoice/form",
-        "_name": "_1596b550"
-      }
-    ],
-    "_name": "_40921c14"
-  },
-  {
-    "name": "app-purchaseorder",
-    "path": "/app/purchaseorder",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchaseorder.vue",
-    "chunkName": "pages/app/purchaseorder",
-    "children": [
-      {
-        "name": "app-purchaseorder-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchaseorder\\\\form.vue",
-        "chunkName": "pages/app/purchaseorder/form",
-        "_name": "_5db20bf9"
-      }
-    ],
-    "_name": "_12454f75"
-  },
-  {
-    "name": "app-purchasepayment",
-    "path": "/app/purchasepayment",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasepayment.vue",
-    "chunkName": "pages/app/purchasepayment",
-    "children": [
-      {
-        "name": "app-purchasepayment-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasepayment\\\\form.vue",
-        "chunkName": "pages/app/purchasepayment/form",
-        "_name": "_534498f1"
-      }
-    ],
-    "_name": "_1822f66d"
-  },
-  {
-    "name": "app-purchasequote",
-    "path": "/app/purchasequote",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasequote.vue",
-    "chunkName": "pages/app/purchasequote",
-    "children": [
-      {
-        "name": "app-purchasequote-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasequote\\\\form.vue",
-        "chunkName": "pages/app/purchasequote/form",
-        "_name": "_4b21bcb2"
-      }
-    ],
-    "_name": "_5d9080ba"
-  },
-  {
-    "name": "app-purchasereceipt",
-    "path": "/app/purchasereceipt",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasereceipt.vue",
-    "chunkName": "pages/app/purchasereceipt",
-    "children": [
-      {
-        "name": "app-purchasereceipt-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasereceipt\\\\form.vue",
-        "chunkName": "pages/app/purchasereceipt/form",
-        "_name": "_7c85c2a3"
-      }
-    ],
-    "_name": "_25ac64c2"
-  },
-  {
-    "name": "app-purchasereturn",
-    "path": "/app/purchasereturn",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasereturn.vue",
-    "chunkName": "pages/app/purchasereturn",
-    "children": [
-      {
-        "name": "app-purchasereturn-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchasereturn\\\\form.vue",
-        "chunkName": "pages/app/purchasereturn/form",
-        "_name": "_325022c6"
-      }
-    ],
-    "_name": "_5ba2fd19"
-  },
-  {
-    "name": "app-reconcile",
-    "path": "/app/reconcile",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\reconcile.vue",
-    "chunkName": "pages/app/reconcile",
-    "_name": "_74a5c154"
-  },
-  {
-    "name": "app-reporting-period",
-    "path": "/app/reporting-period",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\reporting-period.vue",
-    "chunkName": "pages/app/reporting-period",
-    "_name": "_b324f330"
-  },
-  {
-    "name": "app-salescreditmemo",
-    "path": "/app/salescreditmemo",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salescreditmemo.vue",
-    "chunkName": "pages/app/salescreditmemo",
-    "children": [
-      {
-        "name": "app-salescreditmemo-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salescreditmemo\\\\form.vue",
-        "chunkName": "pages/app/salescreditmemo/form",
-        "_name": "_c22b476a"
-      }
-    ],
-    "_name": "_76ccc547"
-  },
-  {
-    "name": "app-salesdelivery",
-    "path": "/app/salesdelivery",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesdelivery.vue",
-    "chunkName": "pages/app/salesdelivery",
-    "children": [
-      {
-        "name": "app-salesdelivery-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesdelivery\\\\form.vue",
-        "chunkName": "pages/app/salesdelivery/form",
-        "_name": "_174e2368"
-      }
-    ],
-    "_name": "_5f0d2c08"
-  },
-  {
-    "name": "app-salesdp",
-    "path": "/app/salesdp",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesdp.vue",
-    "chunkName": "pages/app/salesdp",
-    "children": [
-      {
-        "name": "app-salesdp-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesdp\\\\form.vue",
-        "chunkName": "pages/app/salesdp/form",
-        "_name": "_e9dae438"
-      }
-    ],
-    "_name": "_6afc5da0"
-  },
-  {
-    "name": "app-salesinvoice",
-    "path": "/app/salesinvoice",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesinvoice.vue",
-    "chunkName": "pages/app/salesinvoice",
-    "children": [
-      {
-        "name": "app-salesinvoice-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesinvoice\\\\form.vue",
-        "chunkName": "pages/app/salesinvoice/form",
-        "_name": "_104c0dcd"
-      }
-    ],
-    "_name": "_39aa4049"
-  },
-  {
-    "name": "app-salesorder",
-    "path": "/app/salesorder",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesorder.vue",
-    "chunkName": "pages/app/salesorder",
-    "children": [
-      {
-        "name": "app-salesorder-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesorder\\\\form.vue",
-        "chunkName": "pages/app/salesorder/form",
-        "_name": "_09030dae"
-      }
-    ],
-    "_name": "_4812fcea"
-  },
-  {
-    "name": "app-salespayment",
-    "path": "/app/salespayment",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salespayment.vue",
-    "chunkName": "pages/app/salespayment",
-    "children": [
-      {
-        "name": "app-salespayment-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salespayment\\\\form.vue",
-        "chunkName": "pages/app/salespayment/form",
-        "_name": "_6e5c0166"
-      }
-    ],
-    "_name": "_113b1aa2"
-  },
-  {
-    "name": "app-salesquote",
-    "path": "/app/salesquote",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesquote.vue",
-    "chunkName": "pages/app/salesquote",
-    "children": [
-      {
-        "name": "app-salesquote-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesquote\\\\form.vue",
-        "chunkName": "pages/app/salesquote/form",
-        "_name": "_f47fb948"
-      }
-    ],
-    "_name": "_07056d18"
-  },
-  {
-    "name": "app-salesreturn",
-    "path": "/app/salesreturn",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesreturn.vue",
-    "chunkName": "pages/app/salesreturn",
-    "children": [
-      {
-        "name": "app-salesreturn-form",
-        "path": "form",
-        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\salesreturn\\\\form.vue",
-        "chunkName": "pages/app/salesreturn/form",
-        "_name": "_b4b1b8f0"
-      }
-    ],
-    "_name": "_40ea0378"
+    "chunkName": "pages/app/item"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\auth\\\\login.vue",
-    "chunkName": "pages/auth/login",
-    "_name": "_eedd1670"
+    "chunkName": "pages/auth/login"
   },
   {
     "name": "documents-form",
     "path": "/documents/form",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\documents\\\\form.vue",
-    "chunkName": "pages/documents/form",
-    "_name": "_fe50f0fa"
+    "chunkName": "pages/documents/form"
   },
   {
     "name": "documents-list",
     "path": "/documents/list",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\documents\\\\list.vue",
-    "chunkName": "pages/documents/list",
-    "_name": "_965ea346"
+    "chunkName": "pages/documents/list"
   },
   {
     "name": "documents-view",
     "path": "/documents/view",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\documents\\\\view.vue",
-    "chunkName": "pages/documents/view",
-    "_name": "_a83a4638"
+    "chunkName": "pages/documents/view"
   },
   {
     "name": "list-accountmapping",
     "path": "/list/accountmapping",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\accountmapping.vue",
-    "chunkName": "pages/list/accountmapping",
-    "_name": "_7ab448a8"
+    "chunkName": "pages/list/accountmapping"
   },
   {
     "name": "list-attachment",
     "path": "/list/attachment",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\attachment.vue",
-    "chunkName": "pages/list/attachment",
-    "_name": "_a2b8a36c"
+    "chunkName": "pages/list/attachment"
   },
   {
     "name": "list-company",
     "path": "/list/company",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\company.vue",
-    "chunkName": "pages/list/company",
-    "_name": "_c560e234"
+    "chunkName": "pages/list/company"
   },
   {
     "name": "list-currency",
     "path": "/list/currency",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\currency.vue",
-    "chunkName": "pages/list/currency",
-    "_name": "_141e5410"
+    "chunkName": "pages/list/currency"
   },
   {
     "name": "list-menu",
     "path": "/list/menu",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\menu.vue",
-    "chunkName": "pages/list/menu",
-    "_name": "_75d8e3c6"
+    "chunkName": "pages/list/menu"
   },
   {
     "name": "list-paymentmethod",
     "path": "/list/paymentmethod",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\paymentmethod.vue",
-    "chunkName": "pages/list/paymentmethod",
-    "_name": "_73e919e0"
+    "chunkName": "pages/list/paymentmethod"
   },
   {
     "name": "list-paymentterm",
     "path": "/list/paymentterm",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\paymentterm.vue",
-    "chunkName": "pages/list/paymentterm",
-    "_name": "_52fb7a4a"
+    "chunkName": "pages/list/paymentterm"
   },
   {
     "name": "list-permissions",
     "path": "/list/permissions",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\permissions.vue",
-    "chunkName": "pages/list/permissions",
-    "_name": "_1e174a26"
+    "chunkName": "pages/list/permissions"
   },
   {
     "name": "list-recurring",
     "path": "/list/recurring",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\recurring.vue",
-    "chunkName": "pages/list/recurring",
-    "_name": "_82587df4"
+    "chunkName": "pages/list/recurring"
   },
   {
     "name": "list-roles",
     "path": "/list/roles",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\roles.vue",
-    "chunkName": "pages/list/roles",
-    "_name": "_9011bd34"
+    "chunkName": "pages/list/roles"
   },
   {
     "name": "list-setup",
     "path": "/list/setup",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\setup.vue",
-    "chunkName": "pages/list/setup",
-    "_name": "_007625b4"
+    "chunkName": "pages/list/setup"
   },
   {
     "name": "list-tax",
     "path": "/list/tax",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\tax.vue",
-    "chunkName": "pages/list/tax",
-    "_name": "_2da29b94"
+    "chunkName": "pages/list/tax"
   },
   {
     "name": "list-users",
     "path": "/list/users",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\list\\\\users.vue",
-    "chunkName": "pages/list/users",
-    "_name": "_8fa6f99e"
+    "chunkName": "pages/list/users"
   },
   {
     "name": "reports-bank",
     "path": "/reports/bank",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\reports\\\\bank.vue",
-    "chunkName": "pages/reports/bank",
-    "_name": "_613cd702"
+    "chunkName": "pages/reports/bank"
   },
   {
     "name": "reports-bp",
     "path": "/reports/bp",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\reports\\\\bp.vue",
-    "chunkName": "pages/reports/bp",
-    "_name": "_d1e290d8"
+    "chunkName": "pages/reports/bp"
   },
   {
     "name": "reports-item",
     "path": "/reports/item",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\reports\\\\item.vue",
-    "chunkName": "pages/reports/item",
-    "_name": "_163c0859"
+    "chunkName": "pages/reports/item"
   },
   {
     "name": "tools-audit",
     "path": "/tools/audit",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\tools\\\\audit.vue",
-    "chunkName": "pages/tools/audit",
-    "_name": "_6ea6c929"
+    "chunkName": "pages/tools/audit"
   },
   {
     "name": "tools-export",
     "path": "/tools/export",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\tools\\\\export.vue",
-    "chunkName": "pages/tools/export",
-    "_name": "_1068f2d6"
+    "chunkName": "pages/tools/export"
   },
   {
     "name": "tools-import",
     "path": "/tools/import",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\tools\\\\import.vue",
-    "chunkName": "pages/tools/import",
-    "_name": "_fac41b72"
+    "chunkName": "pages/tools/import"
+  },
+  {
+    "name": "app-accounting-account",
+    "path": "/app/accounting/account",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\account.vue",
+    "chunkName": "pages/app/accounting/account"
+  },
+  {
+    "name": "app-accounting-account-category",
+    "path": "/app/accounting/account-category",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\account-category.vue",
+    "chunkName": "pages/app/accounting/account-category"
+  },
+  {
+    "name": "app-accounting-budgeting",
+    "path": "/app/accounting/budgeting",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\budgeting.vue",
+    "chunkName": "pages/app/accounting/budgeting"
+  },
+  {
+    "name": "app-accounting-closing",
+    "path": "/app/accounting/closing",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\closing.vue",
+    "chunkName": "pages/app/accounting/closing"
+  },
+  {
+    "name": "app-accounting-journal-entry",
+    "path": "/app/accounting/journal-entry",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\journal-entry.vue",
+    "chunkName": "pages/app/accounting/journal-entry"
+  },
+  {
+    "name": "app-accounting-price-list",
+    "path": "/app/accounting/price-list",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\price-list.vue",
+    "chunkName": "pages/app/accounting/price-list"
+  },
+  {
+    "name": "app-accounting-reporting-period",
+    "path": "/app/accounting/reporting-period",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\accounting\\\\reporting-period.vue",
+    "chunkName": "pages/app/accounting/reporting-period"
+  },
+  {
+    "name": "app-bank-deposit",
+    "path": "/app/bank/deposit",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank\\\\deposit.vue",
+    "chunkName": "pages/app/bank/deposit"
+  },
+  {
+    "name": "app-bank-reconcile",
+    "path": "/app/bank/reconcile",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank\\\\reconcile.vue",
+    "chunkName": "pages/app/bank/reconcile"
+  },
+  {
+    "name": "app-bank-transfer",
+    "path": "/app/bank/transfer",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank\\\\transfer.vue",
+    "chunkName": "pages/app/bank/transfer"
+  },
+  {
+    "name": "app-bank-withdraw",
+    "path": "/app/bank/withdraw",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank\\\\withdraw.vue",
+    "chunkName": "pages/app/bank/withdraw"
+  },
+  {
+    "name": "app-purchase-creditmemo",
+    "path": "/app/purchase/creditmemo",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\creditmemo.vue",
+    "chunkName": "pages/app/purchase/creditmemo",
+    "children": [
+      {
+        "name": "app-purchase-creditmemo-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\creditmemo\\\\form.vue",
+        "chunkName": "pages/app/purchase/creditmemo/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-dp",
+    "path": "/app/purchase/dp",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\dp.vue",
+    "chunkName": "pages/app/purchase/dp",
+    "children": [
+      {
+        "name": "app-purchase-dp-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\dp\\\\form.vue",
+        "chunkName": "pages/app/purchase/dp/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-invoice",
+    "path": "/app/purchase/invoice",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\invoice.vue",
+    "chunkName": "pages/app/purchase/invoice",
+    "children": [
+      {
+        "name": "app-purchase-invoice-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\invoice\\\\form.vue",
+        "chunkName": "pages/app/purchase/invoice/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-order",
+    "path": "/app/purchase/order",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\order.vue",
+    "chunkName": "pages/app/purchase/order",
+    "children": [
+      {
+        "name": "app-purchase-order-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\order\\\\form.vue",
+        "chunkName": "pages/app/purchase/order/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-payment",
+    "path": "/app/purchase/payment",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\payment.vue",
+    "chunkName": "pages/app/purchase/payment",
+    "children": [
+      {
+        "name": "app-purchase-payment-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\payment\\\\form.vue",
+        "chunkName": "pages/app/purchase/payment/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-quote",
+    "path": "/app/purchase/quote",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\quote.vue",
+    "chunkName": "pages/app/purchase/quote",
+    "children": [
+      {
+        "name": "app-purchase-quote-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\quote\\\\form.vue",
+        "chunkName": "pages/app/purchase/quote/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-receipt",
+    "path": "/app/purchase/receipt",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\receipt.vue",
+    "chunkName": "pages/app/purchase/receipt",
+    "children": [
+      {
+        "name": "app-purchase-receipt-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\receipt\\\\form.vue",
+        "chunkName": "pages/app/purchase/receipt/form"
+      }
+    ]
+  },
+  {
+    "name": "app-purchase-return",
+    "path": "/app/purchase/return",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\return.vue",
+    "chunkName": "pages/app/purchase/return",
+    "children": [
+      {
+        "name": "app-purchase-return-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\purchase\\\\return\\\\form.vue",
+        "chunkName": "pages/app/purchase/return/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-creditmemo",
+    "path": "/app/sales/creditmemo",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\creditmemo.vue",
+    "chunkName": "pages/app/sales/creditmemo",
+    "children": [
+      {
+        "name": "app-sales-creditmemo-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\creditmemo\\\\form.vue",
+        "chunkName": "pages/app/sales/creditmemo/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-delivery",
+    "path": "/app/sales/delivery",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\delivery.vue",
+    "chunkName": "pages/app/sales/delivery",
+    "children": [
+      {
+        "name": "app-sales-delivery-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\delivery\\\\form.vue",
+        "chunkName": "pages/app/sales/delivery/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-dp",
+    "path": "/app/sales/dp",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\dp.vue",
+    "chunkName": "pages/app/sales/dp",
+    "children": [
+      {
+        "name": "app-sales-dp-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\dp\\\\form.vue",
+        "chunkName": "pages/app/sales/dp/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-invoice",
+    "path": "/app/sales/invoice",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\invoice.vue",
+    "chunkName": "pages/app/sales/invoice",
+    "children": [
+      {
+        "name": "app-sales-invoice-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\invoice\\\\form.vue",
+        "chunkName": "pages/app/sales/invoice/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-order",
+    "path": "/app/sales/order",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\order.vue",
+    "chunkName": "pages/app/sales/order",
+    "children": [
+      {
+        "name": "app-sales-order-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\order\\\\form.vue",
+        "chunkName": "pages/app/sales/order/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-payment",
+    "path": "/app/sales/payment",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\payment.vue",
+    "chunkName": "pages/app/sales/payment",
+    "children": [
+      {
+        "name": "app-sales-payment-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\payment\\\\form.vue",
+        "chunkName": "pages/app/sales/payment/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-quote",
+    "path": "/app/sales/quote",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\quote.vue",
+    "chunkName": "pages/app/sales/quote",
+    "children": [
+      {
+        "name": "app-sales-quote-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\quote\\\\form.vue",
+        "chunkName": "pages/app/sales/quote/form"
+      }
+    ]
+  },
+  {
+    "name": "app-sales-return",
+    "path": "/app/sales/return",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\return.vue",
+    "chunkName": "pages/app/sales/return",
+    "children": [
+      {
+        "name": "app-sales-return-form",
+        "path": "form",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales\\\\return\\\\form.vue",
+        "chunkName": "pages/app/sales/return/form"
+      }
+    ]
   },
   {
     "name": "index",
     "path": "/",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
+    "chunkName": "pages/index"
   },
   {
     "name": "__nuxt_laravel",
     "path": "/__nuxt_laravel",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
-  },
-  {
-    "name": "__nuxt_laravel",
-    "path": "/__nuxt_laravel",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
-  },
-  {
-    "name": "__nuxt_laravel",
-    "path": "/__nuxt_laravel",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
-  },
-  {
-    "name": "__nuxt_laravel",
-    "path": "/__nuxt_laravel",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
-  },
-  {
-    "name": "__nuxt_laravel",
-    "path": "/__nuxt_laravel",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
-  },
-  {
-    "name": "__nuxt_laravel",
-    "path": "/__nuxt_laravel",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\index.vue",
-    "chunkName": "pages/index",
-    "_name": "_2c1039ce"
+    "chunkName": "pages/index"
   }
 ]

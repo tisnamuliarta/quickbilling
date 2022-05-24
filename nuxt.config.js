@@ -26,7 +26,7 @@ export default {
         content: process.env.APP_NAME || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/icon.png' }],
   },
   /*
    ** Customize the progress-bar color
@@ -47,7 +47,7 @@ export default {
     '~/plugins/vue-gates',
     '~/plugins/dragable',
     '~/plugins/vuetify-money',
-    '~/plugins/vue-cookie',
+    // '~/plugins/vue-cookie',
     '~/plugins/formatter',
     '~/plugins/helper',
   ],
@@ -173,12 +173,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
-    defaultAssets: {
-      font: {
-        family: 'Roboto',
-      },
-      icons: 'mdi',
-    },
+    defaultAssets: false,
     theme: {
       dark: false,
       themes: {
@@ -210,5 +205,7 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    'nuxt-webpack-optimisations'
+  },
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Settings\Setting;
 use Illuminate\Http\Request;
 
 class LogoController extends Controller
@@ -15,7 +14,8 @@ class LogoController extends Controller
     public function index(Request $request)
     {
         return $this->success([
-            'logo' => url('/files/logo/quickbilling-circle.png')
+            'logo' => url('/files/logo/quickbilling-white.png'),
+            'default' => url('/files/logo/quickbilling-circle.png'),
         ]);
     }
 

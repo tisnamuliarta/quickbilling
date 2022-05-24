@@ -10,9 +10,7 @@
       <v-form v-else @keyup.native.enter="login">
         <v-card
           class="mt-3"
-          outlined
           elevation="1"
-          outlined
           tile
         >
           <v-card-text>
@@ -26,7 +24,6 @@
                   :src="logo"
                   class="align-items-center justify-center logo"
                   alt="Logo"
-                  @click="$router.push('/')"
                 />
               </v-col>
 
@@ -62,6 +59,8 @@
                   v-model="form.remember"
                   label="Remember Me"
                   color="success"
+                  off-icon="mdi-checkbox-blank-outline"
+                  on-icon="mdi-checkbox-marked"
                   hide-details
                 ></v-checkbox>
               </v-col>
@@ -141,7 +140,7 @@ export default {
       this.loadImage = true
       this.$axios.get(`/api/logo`)
         .then((res) => {
-          this.logo = res.data.data.logo
+          this.logo = res.data.data.default
           this.loadImage = false
         })
     },

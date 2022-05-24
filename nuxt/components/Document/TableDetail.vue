@@ -1,7 +1,10 @@
 <template>
   <div>
-    <hot-table ref="details" :root="detailsRoot" :settings="settings"></hot-table>
-
+    <hot-table
+      ref="details"
+      :root="detailsRoot"
+      :settings="settings"
+    ></hot-table>
     <LazyInventoryDialogItem
       ref="dialogItem"
       :view-data="true"
@@ -10,13 +13,17 @@
     ></LazyInventoryDialogItem>
   </div>
 </template>
-
 <script>
-import {HotTable} from '@handsontable/vue'
+import { HotTable } from '@handsontable/vue'
 // import the base only
-import Handsontable from 'handsontable';
+import Handsontable from 'handsontable'
 // choose cell types you want to use and import them
-import { registerCellType, DropdownCellType, NumericCellType, CheckboxCellType } from 'handsontable/cellTypes';
+import {
+  registerCellType,
+  DropdownCellType,
+  NumericCellType,
+  CheckboxCellType,
+} from 'handsontable/cellTypes'
 // choose plugins you want to use and import them
 import {
   registerPlugin,
@@ -29,23 +36,74 @@ import {
   ContextMenu,
   DropdownMenu,
   HiddenRows,
-} from 'handsontable/plugins';
+} from 'handsontable/plugins'
 
 // register imported cell types and plugins
-registerCellType(DropdownCellType);
-registerCellType(NumericCellType);
-registerCellType(CheckboxCellType);
-registerPlugin(AutoColumnSize);
-registerPlugin(ManualColumnResize);
-registerPlugin(CopyPaste);
-registerPlugin(Filters);
-registerPlugin(PersistentState);
-registerPlugin(HiddenColumns);
-registerPlugin(HiddenRows);
-registerPlugin(ContextMenu);
-registerPlugin(DropdownMenu);
+registerCellType(DropdownCellType)
+registerCellType(NumericCellType)
+registerCellType(CheckboxCellType)
+registerPlugin(AutoColumnSize)
+registerPlugin(ManualColumnResize)
+registerPlugin(CopyPaste)
+registerPlugin(Filters)
+registerPlugin(PersistentState)
+registerPlugin(HiddenColumns)
+registerPlugin(HiddenRows)
+registerPlugin(ContextMenu)
+registerPlugin(DropdownMenu)
 
 import 'handsontable/dist/handsontable.full.css'
+
+Handsontable.renderers.registerRenderer(
+  'ButtonAddRederer',
+  function (hotInstance, td, row, column, prop, value, cellProperties) {
+    let button = null
+    const vm = window.details
+    if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
+      button = document.createElement('button')
+      button.type = 'button'
+      // button.innerText = '>'
+      button.innerHTML = '<span class="mdi mdi-arrow-right-bold"></span>'
+      button.className = 'btnNPB'
+      button.value = 'Details'
+
+      Handsontable.dom.addEvent(button, 'mousedown', (event) => {
+        event.preventDefault()
+        vm.$refs.dialogItem.openDialog(row)
+        // vm.$refs.inv.open()
+      })
+
+      Handsontable.dom.empty(td)
+      td.appendChild(button)
+      return td
+    }
+  }
+)
+
+Handsontable.renderers.registerRenderer(
+  'ButtonDeleteRenderer',
+  function (hotInstance, td, row, column, prop, value, cellProperties) {
+    let button = null
+    const vm = window.details
+    if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
+      button = document.createElement('button')
+      button.type = 'button'
+      // button.innerText = '-'
+      button.innerHTML = '<span class="mdi mdi-delete"></span>'
+      button.className = 'btnDelete'
+      button.value = 'Details2'
+
+      Handsontable.dom.addEvent(button, 'mousedown', (event) => {
+        event.preventDefault()
+        vm.removeRow(row)
+      })
+
+      Handsontable.dom.empty(td)
+      td.appendChild(button)
+    }
+    return td
+  }
+)
 
 export default {
   name: 'TableDetail',
@@ -58,33 +116,6 @@ export default {
     return {
       settings: {
         licenseKey: 'non-commercial-and-evaluation',
-      },
-      detailsRoot: 'detailsRoot',
-      colHeaders: [],
-      form: {},
-    }
-  },
-
-  created() {
-    this.setInstance()
-  },
-
-  methods: {
-    setInstance() {
-      window.details = this
-    },
-
-    removeRow(row) {
-      this.$refs.details.hotInstance.alter('remove_row', row)
-    },
-
-    addLine() {
-      const totalRow = this.$refs.details.hotInstance.countRows()
-      this.$refs.details.hotInstance.alter('insert_row', totalRow + 1)
-    },
-
-    updateTableSettings(header) {
-      this.$refs.details.hotInstance.updateSettings({
         currentRowClassName: 'currentRow',
         currentColClassName: 'currentCol',
         startRows: 2,
@@ -99,40 +130,34 @@ export default {
         persistentState: true,
         width: '100%',
         stretchH: 'all',
+        preventOverflow: 'horizontal',
         hiddenColumns: {
           copyPasteEnabled: false,
           indicator: false,
           columns: [1, 2, 3],
         },
         colHeaders: [
-          '', 'Id', 'Item ID', 'Item Code', 'Item Name', 'Description', 'Qty', 'Units', 'Curency', 'Unit Price', 'Discount', 'Tax', 'Amount', '',
+          '',
+          'Id',
+          'Item ID',
+          'Item Code',
+          'Item Name',
+          'Description',
+          'Qty',
+          'Units',
+          'Curency',
+          'Unit Price',
+          'Discount',
+          'Tax',
+          'Amount',
+          '',
         ],
         columns: [
           // TODO
           {
             width: '24px',
             wordWrap: false,
-            renderer(instance, td, row, col, prop, value, cellProperties) {
-              let button = null
-              const vm = window.details
-              if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
-                button = document.createElement('button')
-                button.type = 'button'
-                button.innerText = ">";
-                button.className = "btnNPB";
-                button.value = 'Details'
-
-                Handsontable.dom.addEvent(button, 'mousedown', (event) => {
-                  event.preventDefault()
-                  vm.$refs.dialogItem.openDialog(row)
-                  // vm.$refs.inv.open()
-                })
-
-                Handsontable.dom.empty(td)
-                td.appendChild(button)
-                return td
-              }
-            },
+            renderer: 'ButtonAddRederer'
           },
           {
             data: 'id',
@@ -229,28 +254,37 @@ export default {
           {
             width: '24px',
             wordWrap: false,
-            renderer(instance, td, row, col, prop, value, cellProperties) {
-              let button = null
-              const vm = window.details
-              if (vm.form.status !== 'closed' && vm.form.status !== 'cancel') {
-                button = document.createElement('button')
-                button.type = 'button'
-                button.innerText = "X";
-                button.className = "btnDelete";
-                button.value = 'Details'
-
-                Handsontable.dom.addEvent(button, 'mousedown', (event) => {
-                  event.preventDefault()
-                  vm.removeRow(row)
-                })
-
-                Handsontable.dom.empty(td)
-                td.appendChild(button)
-              }
-              return td
-            }
+            renderer: 'ButtonDeleteRenderer'
           },
         ],
+      },
+      detailsRoot: 'detailsRoot',
+      colHeaders: [],
+      form: {},
+    }
+  },
+
+  created() {
+    this.setInstance()
+  },
+
+  methods: {
+    setInstance() {
+      window.details = this
+    },
+
+    removeRow(row) {
+      this.$refs.details.hotInstance.alter('remove_row', row)
+    },
+
+    addLine() {
+      const totalRow = this.$refs.details.hotInstance.countRows()
+      this.$refs.details.hotInstance.alter('insert_row', totalRow + 1)
+    },
+
+    updateTableSettings(header) {
+      this.$refs.details.hotInstance.updateSettings({
+        licenseKey: 'non-commercial-and-evaluation',
         contextMenu: {
           callback(key, options) {
             // eslint-disable-next-line no-unused-vars
@@ -282,7 +316,7 @@ export default {
               subTotal: 0,
               amount: 0,
               discountAmount: 0,
-              taxDetail: []
+              taxDetail: [],
             })
           }
 
@@ -300,7 +334,12 @@ export default {
             let propNew = 0
             changes.forEach(([row, prop, oldValue, newValue]) => {
               propNew = prop
-              if (propNew === 'quantity' || propNew === 'price' || propNew === 'discount_rate' || propNew === 'tax_name') {
+              if (
+                propNew === 'quantity' ||
+                propNew === 'price' ||
+                propNew === 'discount_rate' ||
+                propNew === 'tax_name'
+              ) {
                 if (oldValue !== newValue) {
                   vm.calculateTotal()
                 }
@@ -312,13 +351,15 @@ export default {
     },
 
     selectItems(data) {
-      let rowData = data.row;
-      let selected = data.selected;
+      let rowData = data.row
+      let selected = data.selected
       const type = this.form.type
-      const vm = this;
+      const vm = this
       selected.forEach(function (item, index) {
-        const price = (type.substr(0, 1) === 'S') ? item.sale_price : item.purchase_price
-        const tax_name = (type.substr(0, 1) === 'S') ? item.sell_tax_name : item.buy_tax_name
+        const price =
+          type.substr(0, 1) === 'S' ? item.sale_price : item.purchase_price
+        const tax_name =
+          type.substr(0, 1) === 'S' ? item.sell_tax_name : item.buy_tax_name
 
         vm.$refs.details.hotInstance.setDataAtRowProp([
           [rowData, 'name', item.name],
@@ -330,7 +371,7 @@ export default {
           [rowData, 'price', price],
           [rowData, 'tax_name', tax_name],
           [rowData, 'quantity', 1],
-        ]);
+        ])
         rowData++
       })
     },
@@ -339,11 +380,15 @@ export default {
       this.form = form
       this.updateTableSettings()
       const vm = this
-      const items = (form.items !== undefined) ? form.items : data
+      const items = form.items !== undefined ? form.items : data
       vm.$refs.details.hotInstance.loadData(items)
       const countRows = this.$refs.details.hotInstance.countRows()
       for (let i = 0; i < countRows; i++) {
-        this.$refs.details.hotInstance.setDataAtRowProp(i, 'default_currency_symbol', vm.form.default_currency_symbol)
+        this.$refs.details.hotInstance.setDataAtRowProp(
+          i,
+          'default_currency_symbol',
+          vm.form.default_currency_symbol
+        )
       }
       // setTimeout(() => {
       //   vm.$refs.details.hotInstance.loadData(data)
@@ -352,63 +397,76 @@ export default {
 
     calculateTotal() {
       const countRows = this.$refs.details.hotInstance.countRows()
-      let subTotal = 0;
-      let discountAmount = 0;
-      let taxDetail = [];
-      let amount = 0;
-      let amountRow = 0;
+      let subTotal = 0
+      let discountAmount = 0
+      let taxDetail = []
+      let amount = 0
+      let amountRow = 0
       if (countRows > 0) {
         for (let i = 0; i < countRows; i++) {
-          const qty = this.$refs.details.hotInstance.getDataAtRowProp(i, 'quantity')
-          const unitPrice = this.$refs.details.hotInstance.getDataAtRowProp(i, 'price')
-          const discount = this.$refs.details.hotInstance.getDataAtRowProp(i, 'discount_rate')
-          const tax = this.$refs.details.hotInstance.getDataAtRowProp(i, 'tax_name')
+          const qty = this.$refs.details.hotInstance.getDataAtRowProp(
+            i,
+            'quantity'
+          )
+          const unitPrice = this.$refs.details.hotInstance.getDataAtRowProp(
+            i,
+            'price'
+          )
+          const discount = this.$refs.details.hotInstance.getDataAtRowProp(
+            i,
+            'discount_rate'
+          )
+          const tax = this.$refs.details.hotInstance.getDataAtRowProp(
+            i,
+            'tax_name'
+          )
 
-          const subTotalRow = (qty * unitPrice)
-          subTotal = subTotal + (qty * unitPrice)
+          const subTotalRow = qty * unitPrice
+          subTotal = subTotal + qty * unitPrice
 
-          const discountPerLine = parseFloat((discount / 100) * subTotalRow).toFixed(2)
-          discountAmount = parseFloat(discountAmount) + parseFloat(discountPerLine)
+          const discountPerLine = parseFloat(
+            (discount / 100) * subTotalRow
+          ).toFixed(2)
+          discountAmount =
+            parseFloat(discountAmount) + parseFloat(discountPerLine)
 
-          amountRow = (subTotalRow - discountPerLine )
+          amountRow = subTotalRow - discountPerLine
 
           if (tax) {
             let taxRate = 0
-            this.$auth.$storage.getLocalStorage('tax_row').forEach(function (item, index) {
-              if (item.name === tax) {
-                taxRate = parseFloat(item.rate)
-              }
-            })
+            this.$auth.$storage
+              .getLocalStorage('tax_row')
+              .forEach(function (item, index) {
+                if (item.name === tax) {
+                  taxRate = parseFloat(item.rate)
+                }
+              })
 
             const taxRow = (parseFloat(taxRate) / 100) * amountRow
             taxDetail.push({
               name: tax,
-              amount: taxRow
+              amount: taxRow,
             })
           }
 
-          amount = amount +  (subTotalRow - discountPerLine )
+          amount = amount + (subTotalRow - discountPerLine)
 
-          this.$refs.details.hotInstance.setDataAtRowProp(
-            i,
-            'total',
-            amountRow
-          )
+          this.$refs.details.hotInstance.setDataAtRowProp(i, 'total', amountRow)
         }
       }
       this.$emit('calcTotal', {
         subTotal,
         amount,
         discountAmount,
-        taxDetail
+        taxDetail,
       })
     },
 
     async getTaxRate(tax) {
       const taxRate = await this.$axios.get(`/api/financial/taxes/0`, {
         params: {
-          name: tax
-        }
+          name: tax,
+        },
       })
       return taxRate.data.data.rows
     },

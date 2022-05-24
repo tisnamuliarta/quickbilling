@@ -122,7 +122,7 @@
                     <v-list-item-content>
                       <v-list-item-title>
                         No results matching "<strong>{{ search }}</strong
-                        >". Press <kbd>enter</kbd> to create a new one
+                      >". Press <kbd>enter</kbd> to create a new one
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -221,7 +221,7 @@
 
         <v-col cols="12">
           <v-row no-gutters>
-            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1"> </v-col>
+            <v-col cols="12" md="3" sm="6" class="pr-1 pl-1 pb-1"></v-col>
 
             <v-col cols="12" md="2" sm="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-select
@@ -276,9 +276,16 @@
 
         <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
           <v-card>
-            <div>
-              <LazyFormAgGrid ref="documentGrid"></LazyFormAgGrid>
+            <div class="scroll-container-min">
+              <LazyDocumentTableDetail
+                ref="childDetails"
+                @calcTotal="calcTotal"
+              ></LazyDocumentTableDetail>
             </div>
+            <!-- <div> -->
+              <!-- <LazyFormAgGrid ref="documentGrid"></LazyFormAgGrid> -->
+              <!-- <LazyFormDxDataGrid ref="docGrid"></LazyFormDxDataGrid> -->
+            <!-- </div> -->
             <v-card-actions>
               <v-btn
                 color="blue darken-1"
@@ -369,8 +376,8 @@
                   <v-list-item-content>
                     <v-list-item-title>
                       <a :href="item.directory" target="_blank">{{
-                        item.filename
-                      }}</a>
+                          item.filename
+                        }}</a>
                     </v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
@@ -378,7 +385,8 @@
                       <v-icon
                         color="red"
                         @click="$refs.uploadField.deleteFile(item)"
-                        >mdi-delete</v-icon
+                      >mdi-delete
+                      </v-icon
                       >
                     </v-btn>
                   </v-list-item-action>
@@ -912,7 +920,7 @@ export default {
       // console.log(tax_details)
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = { name: value.name, amount: 0 }
+          res[value.name] = {name: value.name, amount: 0}
           result.push(res[value.name])
         }
 
@@ -945,7 +953,7 @@ export default {
 
       tax_details.reduce(function (res, value) {
         if (!res[value.name]) {
-          res[value.name] = { name: value.name, amount: 0 }
+          res[value.name] = {name: value.name, amount: 0}
           result.push(res[value.name])
         }
         res[value.name].amount += value.amount
@@ -1112,7 +1120,8 @@ export default {
       const due_at = this.form.due_at
       this.$axios
         .get(`/api/financial/payment-terms/` + this.form.payment_term_id)
-        .then((res) => {})
+        .then((res) => {
+        })
     },
 
     changeContact() {

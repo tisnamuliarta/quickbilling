@@ -1,11 +1,5 @@
 <template>
-  <v-app-bar
-    flat
-    color="white"
-    class="rounded"
-    dense
-    elevation="0"
-  >
+  <v-app-bar flat color="white" class="rounded" dense elevation="0">
     <!--    <v-toolbar-title class="hidden-xs-only subtitle-1 font-weight-bold">{{-->
     <!--      title-->
     <!--    }}</v-toolbar-title>-->
@@ -38,19 +32,19 @@
       <v-icon>mdi-arrow-down-left</v-icon>
     </v-btn>
 
-    <v-btn v-if="showBatchAction" small rounded color="green" class="ml-0 mr-2" dark @click="newData()">
+    <v-btn
+      v-if="showBatchAction"
+      small
+      rounded
+      color="green"
+      class="ml-0 mr-2"
+      dark
+      elevation="0"
+    >
       Batch Action
-      <v-menu
-        transition="slide-y-transition"
-        bottom
-      >
+      <v-menu transition="slide-y-transition" bottom>
         <template #activator="{ on, attrs }">
-          <v-btn
-            dark
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn dark icon v-bind="attrs" v-on="on">
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </template>
@@ -68,7 +62,14 @@
       </v-menu>
     </v-btn>
 
-    <v-btn small rounded color="green" dark @click="newData()">
+    <v-btn
+      v-if="showFilter"
+      small
+      rounded
+      color="green"
+      dark
+      @click="newData()"
+    >
       Filter
 
       <v-menu
@@ -79,13 +80,7 @@
         offset-x
       >
         <template #activator="{ on, attrs }">
-          <v-btn
-            dark
-            small
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn dark small icon v-bind="attrs" v-on="on">
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </template>
@@ -101,8 +96,7 @@
                   hide-details="auto"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
-              </v-col>
+              <v-col cols="12" md="6"> </v-col>
 
               <v-col cols="12" md="6">
                 <v-text-field
@@ -151,18 +145,9 @@
             </v-row>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              text
-            >
-              Cancel
-            </v-btn>
+            <v-btn text> Cancel </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              rounded
-            >
-              Apply
-            </v-btn>
+            <v-btn color="primary" rounded> Apply </v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
@@ -178,23 +163,30 @@
       @passDataToToolbar="passDataToToolbar"
     ></TableFilter>
 
-    <v-spacer/>
+    <v-spacer />
 
-    <v-btn v-if="showAdd" small color="green" dark @click="newData()">
+    <v-btn
+      v-if="showAdd"
+      elevation="0"
+      small
+      color="green"
+      dark
+      @click="newData()"
+    >
       {{ buttonTitle }}
     </v-btn>
 
-    <v-btn :loading="loading" icon @click="passDataToToolbar">
+    <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-refresh</v-icon>
     </v-btn>
 
-    <v-btn :loading="loading" icon @click="passDataToToolbar">
+    <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-printer-outline</v-icon>
     </v-btn>
-    <v-btn :loading="loading" icon @click="passDataToToolbar">
+    <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-microsoft-excel</v-icon>
     </v-btn>
-    <v-btn :loading="loading" icon @click="passDataToToolbar">
+    <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-cog-outline</v-icon>
     </v-btn>
   </v-app-bar>
@@ -251,15 +243,19 @@ export default {
     },
     showAdd: {
       type: Boolean,
-      default: true
+      default: true,
     },
     filter: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showBatchAction: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    showFilter: {
+      type: Boolean,
+      default: false,
     },
     itemSearch: {
       type: Array,
@@ -277,8 +273,8 @@ export default {
       searchItemData: this.searchItem,
       searchData: this.search,
       items: [
-        {text: 'Edit', action: 'edit'},
-        {text: 'Delete', action: 'delete'},
+        { text: 'Edit', action: 'edit' },
+        { text: 'Delete', action: 'delete' },
       ],
     }
   },
@@ -298,9 +294,7 @@ export default {
       })
     },
 
-    makeInActive() {
-
-    }
+    makeInActive() {},
   },
 }
 </script>

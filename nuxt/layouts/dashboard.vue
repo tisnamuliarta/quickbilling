@@ -25,14 +25,90 @@
         <v-tabs align-with-title>
           <v-tab> {{ extensionText }}</v-tab>
         </v-tabs>
+
+        <v-spacer />
+
+        <v-btn>btn</v-btn>
       </template>
     </v-app-bar>
 
-    <LazyLayoutNavigationDrawer
+    <!-- <LazyLayoutNavigationDrawer
       ref="navDrawer"
       :drawer="drawer"
       @openAction="openAction"
-    />
+    /> -->
+
+    <v-navigation-drawer
+      id="nav"
+      v-model="drawer"
+      class="blue-grey darken-4"
+      dark
+      app
+      :temporary="$route.name === 'dashboard-settings-setup'"
+    >
+      <v-list dense nav>
+        <NuxtLink to="/">
+          <v-skeleton-loader
+            v-show="loadImage"
+            type="avatar"
+            class="mx-auto logo mb-3"
+          >
+          </v-skeleton-loader>
+          <img v-show="!loadImage" :src="logo" class="mt-1 mb-3" height="50" />
+          <v-divider></v-divider>
+        </NuxtLink>
+
+        <v-menu offset-y left :nudge-width="700">
+          <template #activator="{ on }">
+            <v-btn
+              outlined
+              block
+              small
+              rounded
+              color="primary"
+              class="mb-4"
+              v-on="on"
+            >
+              <v-icon>mdi-plus</v-icon>
+              New
+            </v-btn>
+          </template>
+
+          <v-card>
+            <LazyFormNew ref="formNew" @openAction="openAction" />
+          </v-card>
+        </v-menu>
+
+        <v-list-group
+          v-for="item in items"
+          :key="item.menu"
+          active-class="border"
+          :prepend-icon="item.icon"
+          append-icon="mdi-menu-down"
+        >
+          <template #activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.menu"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="(child, i) in item.children"
+            :key="i"
+            link
+            :to="child.route_name"
+            style="padding-left: 64px"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="child.menu"></v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon v-if="child.icon">
+              <v-icon v-text="child.icon"></v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+    </v-navigation-drawer>
 
     <v-main class="grey lighten-4">
       <v-container fluid>
@@ -92,7 +168,7 @@ export default {
     this.drawer = !this.$vuetify.breakpoint.mdAndDown
     this.drawer =
       this.$route.name === 'dashboard-documents-form' ? false : this.drawer
-    this.$refs.navDrawer.setDrawer(this.drawer)
+    // this.changeDrawer()
   },
 
   created() {
@@ -104,7 +180,9 @@ export default {
     this.$nuxt.$on('getCompany', ($event) => this.getCompany($event))
     this.$nuxt.$on('snackbar', ($event) => this.openSnackbar($event))
     this.$nuxt.$on('openSetting', ($event) => this.openSetting($event))
-    this.$nuxt.$on('extensionSetting', ($event) => this.extensionSetting($event))
+    this.$nuxt.$on('extensionSetting', ($event) =>
+      this.extensionSetting($event)
+    )
     this.getLogo()
   },
 
@@ -123,7 +201,11 @@ export default {
     openAction(data) {
       if (data.item.route) {
         this.$router.push({
-          path: data.item.route
+          path: data.item.route,
+          query: {
+            document: 0,
+            type: data.item.type,
+          },
         })
       } else {
         if (data.item.type === 'function') {
@@ -132,41 +214,23 @@ export default {
           this.$refs.settingForm.openDialog(data, 0, null)
         }
       }
-      // switch (data.item.action) {
-      //   case 'page':
-      //     this.$route.push({ page: data.item.type })
-      //     break
-      //   case 'function':
-      //     this[data.item.type]()
-      //     break
-      //   case 'document':
-      //   case 'transaction':
-      //     this.$refs.checkForm.openDialog(data, 0, null)
-      //     break
-      //   case 'setting':
-      //     this.$refs.settingForm.openDialog(data, 0, null)
-      //     break
-      //
-      //   default:
-      //     break
-      // }
     },
 
     extensionSetting(data) {
-      this.showExtension = true
-      this.extensionText = data
+      this.showExtension = data.show
+      this.extensionText = data.title
     },
 
     changeDrawer() {
       this.drawer = !this.drawer
-      this.$refs.navDrawer.setDrawer(this.drawer)
+      // this.$refs.navDrawer.setDrawer(this.drawer)
     },
 
     getLogo() {
       this.loadImage = true
       this.$axios.get(`/api/logo`).then((res) => {
         this.logo = res.data.data.logo
-        this.$refs.navDrawer.setLogo(this.logo)
+        // this.$refs.navDrawer.setLogo(this.logo)
         this.loadImage = false
       })
     },
@@ -214,7 +278,7 @@ export default {
         })
         .then((res) => {
           this.items = res.data.data.menus
-          this.$refs.navDrawer.setItems(this.items)
+          // this.$refs.navDrawer.setItems(this.items)
         })
         .catch((err) => {
           if (
