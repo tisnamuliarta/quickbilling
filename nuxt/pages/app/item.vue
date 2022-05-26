@@ -2,7 +2,7 @@
   <div>
     <NuxtChild
       keep-alive
-      :keep-alive-props="{ exclude: ['pages/item/form/fitem.vue'] }"
+      :keep-alive-props="{ exclude: ['pages/form/item/item.vue'] }"
     />
   </div>
 </template>
@@ -22,8 +22,8 @@ export default {
         },
       ],
       item: [
-        { text: 'Item Master Data', type: 'SQ', route: '/app/item/form/fitem' },
-        { text: 'Price List', type: 'SO', route: '/app/item/form/fprice-list' },
+        { text: 'Item Master Data', type: '', route: '/app/form/item/item' },
+        { text: 'Price List', type: '', route: '/app/form/item/price-list' },
       ],
       show: true,
       showBtn: true

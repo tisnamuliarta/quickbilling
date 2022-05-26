@@ -5,30 +5,30 @@ import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
 const _72c2a8fb = () => interopDefault(import('..\\nuxt\\pages\\list\\index.vue' /* webpackChunkName: "pages/list/index" */))
+const _0a81983d = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting.vue' /* webpackChunkName: "pages/app/accounting" */))
+const _3e4c7280 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\account.vue' /* webpackChunkName: "pages/app/accounting/account" */))
 const _047989b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact.vue' /* webpackChunkName: "pages/app/contact" */))
 const _2eaaf386 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
 const _604dc4b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
-const _b3ca9862 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\form-customer.vue' /* webpackChunkName: "pages/app/contact/form-customer" */))
-const _16415679 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\form-vendor.vue' /* webpackChunkName: "pages/app/contact/form-vendor" */))
 const _7b07d020 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\vendor.vue' /* webpackChunkName: "pages/app/contact/vendor" */))
 const _2c740dfe = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\vendor-detail.vue' /* webpackChunkName: "pages/app/contact/vendor-detail" */))
-const _cab7f940 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense.vue' /* webpackChunkName: "pages/app/expense" */))
-const _3256e3a4 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense\\form.vue' /* webpackChunkName: "pages/app/expense/form" */))
 const _6a18648a = () => interopDefault(import('..\\nuxt\\pages\\app\\item.vue' /* webpackChunkName: "pages/app/item" */))
 const _57f76499 = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\list.vue' /* webpackChunkName: "pages/app/item/list" */))
 const _95defb46 = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\price-list.vue' /* webpackChunkName: "pages/app/item/price-list" */))
 const _924913ec = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\form\\fitem.vue' /* webpackChunkName: "pages/app/item/form/fitem" */))
 const _3f18024e = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\form\\fprice-list.vue' /* webpackChunkName: "pages/app/item/form/fprice-list" */))
+const _97e6aca6 = () => interopDefault(import('..\\nuxt\\pages\\app\\payroll.vue' /* webpackChunkName: "pages/app/payroll" */))
+const _2c1c7da2 = () => interopDefault(import('..\\nuxt\\pages\\app\\payroll\\contractor.vue' /* webpackChunkName: "pages/app/payroll/contractor" */))
+const _60a53e9b = () => interopDefault(import('..\\nuxt\\pages\\app\\payroll\\employee.vue' /* webpackChunkName: "pages/app/payroll/employee" */))
+const _6dd4e7e6 = () => interopDefault(import('..\\nuxt\\pages\\app\\payroll\\overview.vue' /* webpackChunkName: "pages/app/payroll/overview" */))
 const _796384be = () => interopDefault(import('..\\nuxt\\pages\\app\\project.vue' /* webpackChunkName: "pages/app/project" */))
 const _032d68a9 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase.vue' /* webpackChunkName: "pages/app/purchase" */))
 const _671c2e58 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\invoice.vue' /* webpackChunkName: "pages/app/purchase/invoice" */))
 const _6f209507 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\list.vue' /* webpackChunkName: "pages/app/purchase/list" */))
-const _ad9d6796 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\order.vue' /* webpackChunkName: "pages/app/purchase/order" */))
 const _ba7fc83c = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\overview.vue' /* webpackChunkName: "pages/app/purchase/overview" */))
 const _10cc6614 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales.vue' /* webpackChunkName: "pages/app/sales" */))
 const _3fdc586e = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\invoice.vue' /* webpackChunkName: "pages/app/sales/invoice" */))
 const _19eed39c = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\list.vue' /* webpackChunkName: "pages/app/sales/list" */))
-const _bb6d1f2c = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\order.vue' /* webpackChunkName: "pages/app/sales/order" */))
 const _031d8f8d = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\overview.vue' /* webpackChunkName: "pages/app/sales/overview" */))
 const _6c51ff2d = () => interopDefault(import('..\\nuxt\\pages\\app\\task.vue' /* webpackChunkName: "pages/app/task" */))
 const _eedd1670 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
@@ -37,15 +37,21 @@ const _965ea346 = () => interopDefault(import('..\\nuxt\\pages\\documents\\list.
 const _a83a4638 = () => interopDefault(import('..\\nuxt\\pages\\documents\\view.vue' /* webpackChunkName: "pages/documents/view" */))
 const _d91e1fa4 = () => interopDefault(import('..\\nuxt\\pages\\home\\business-overview.vue' /* webpackChunkName: "pages/home/business-overview" */))
 const _317dc2c2 = () => interopDefault(import('..\\nuxt\\pages\\home\\getthingdone.vue' /* webpackChunkName: "pages/home/getthingdone" */))
+const _18317105 = () => interopDefault(import('..\\nuxt\\pages\\list\\account-category.vue' /* webpackChunkName: "pages/list/account-category" */))
 const _7ab448a8 = () => interopDefault(import('..\\nuxt\\pages\\list\\accountmapping.vue' /* webpackChunkName: "pages/list/accountmapping" */))
 const _a2b8a36c = () => interopDefault(import('..\\nuxt\\pages\\list\\attachment.vue' /* webpackChunkName: "pages/list/attachment" */))
+const _5a322eb4 = () => interopDefault(import('..\\nuxt\\pages\\list\\budgeting.vue' /* webpackChunkName: "pages/list/budgeting" */))
+const _725859c4 = () => interopDefault(import('..\\nuxt\\pages\\list\\closing.vue' /* webpackChunkName: "pages/list/closing" */))
 const _c560e234 = () => interopDefault(import('..\\nuxt\\pages\\list\\company.vue' /* webpackChunkName: "pages/list/company" */))
 const _141e5410 = () => interopDefault(import('..\\nuxt\\pages\\list\\currency.vue' /* webpackChunkName: "pages/list/currency" */))
+const _de605ef6 = () => interopDefault(import('..\\nuxt\\pages\\list\\journal-entry.vue' /* webpackChunkName: "pages/list/journal-entry" */))
 const _75d8e3c6 = () => interopDefault(import('..\\nuxt\\pages\\list\\menu.vue' /* webpackChunkName: "pages/list/menu" */))
 const _73e919e0 = () => interopDefault(import('..\\nuxt\\pages\\list\\paymentmethod.vue' /* webpackChunkName: "pages/list/paymentmethod" */))
 const _52fb7a4a = () => interopDefault(import('..\\nuxt\\pages\\list\\paymentterm.vue' /* webpackChunkName: "pages/list/paymentterm" */))
 const _1e174a26 = () => interopDefault(import('..\\nuxt\\pages\\list\\permissions.vue' /* webpackChunkName: "pages/list/permissions" */))
+const _13d10449 = () => interopDefault(import('..\\nuxt\\pages\\list\\price-list.vue' /* webpackChunkName: "pages/list/price-list" */))
 const _82587df4 = () => interopDefault(import('..\\nuxt\\pages\\list\\recurring.vue' /* webpackChunkName: "pages/list/recurring" */))
+const _b7f13cb2 = () => interopDefault(import('..\\nuxt\\pages\\list\\reporting-period.vue' /* webpackChunkName: "pages/list/reporting-period" */))
 const _9011bd34 = () => interopDefault(import('..\\nuxt\\pages\\list\\roles.vue' /* webpackChunkName: "pages/list/roles" */))
 const _007625b4 = () => interopDefault(import('..\\nuxt\\pages\\list\\setup.vue' /* webpackChunkName: "pages/list/setup" */))
 const _2da29b94 = () => interopDefault(import('..\\nuxt\\pages\\list\\tax.vue' /* webpackChunkName: "pages/list/tax" */))
@@ -56,18 +62,19 @@ const _163c0859 = () => interopDefault(import('..\\nuxt\\pages\\reports\\item.vu
 const _6ea6c929 = () => interopDefault(import('..\\nuxt\\pages\\tools\\audit.vue' /* webpackChunkName: "pages/tools/audit" */))
 const _1068f2d6 = () => interopDefault(import('..\\nuxt\\pages\\tools\\export.vue' /* webpackChunkName: "pages/tools/export" */))
 const _fac41b72 = () => interopDefault(import('..\\nuxt\\pages\\tools\\import.vue' /* webpackChunkName: "pages/tools/import" */))
-const _3e4c7280 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\account.vue' /* webpackChunkName: "pages/app/accounting/account" */))
-const _394bfe1b = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\account-category.vue' /* webpackChunkName: "pages/app/accounting/account-category" */))
-const _63096f60 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\budgeting.vue' /* webpackChunkName: "pages/app/accounting/budgeting" */))
-const _8f1fd570 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\closing.vue' /* webpackChunkName: "pages/app/accounting/closing" */))
-const _330f69a2 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\journal-entry.vue' /* webpackChunkName: "pages/app/accounting/journal-entry" */))
-const _ea6ecc42 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\price-list.vue' /* webpackChunkName: "pages/app/accounting/price-list" */))
-const _75bc2286 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\reporting-period.vue' /* webpackChunkName: "pages/app/accounting/reporting-period" */))
 const _20216a6a = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\deposit.vue' /* webpackChunkName: "pages/app/bank/deposit" */))
 const _318e2bcc = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\reconcile.vue' /* webpackChunkName: "pages/app/bank/reconcile" */))
 const _5583634f = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
 const _36730eee = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
-const _63ced4ff = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\item.vue' /* webpackChunkName: "pages/app/form/item" */))
+const _3256e3a4 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense\\form.vue' /* webpackChunkName: "pages/app/expense/form" */))
+const _03226208 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\accounting\\account.vue' /* webpackChunkName: "pages/app/form/accounting/account" */))
+const _bb4bb446 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\accounting\\reconcile.vue' /* webpackChunkName: "pages/app/form/accounting/reconcile" */))
+const _211cdac2 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\contact\\customer.vue' /* webpackChunkName: "pages/app/form/contact/customer" */))
+const _ed12c3a8 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\contact\\vendor.vue' /* webpackChunkName: "pages/app/form/contact/vendor" */))
+const _21591e5c = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\item\\item.vue' /* webpackChunkName: "pages/app/form/item/item" */))
+const _653278be = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\item\\price-list.vue' /* webpackChunkName: "pages/app/form/item/price-list" */))
+const _49b185de = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\payroll\\contractor.vue' /* webpackChunkName: "pages/app/form/payroll/contractor" */))
+const _531725d7 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\payroll\\employee.vue' /* webpackChunkName: "pages/app/form/payroll/employee" */))
 const _076167c0 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\creditmemo.vue' /* webpackChunkName: "pages/app/form/purchase/creditmemo" */))
 const _fdf4d5be = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\delivery.vue' /* webpackChunkName: "pages/app/form/purchase/delivery" */))
 const _655bcd79 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\dp.vue' /* webpackChunkName: "pages/app/form/purchase/dp" */))
@@ -102,6 +109,15 @@ export const routerOptions = {
     component: _72c2a8fb,
     name: "list"
   }, {
+    path: "/app/accounting",
+    component: _0a81983d,
+    name: "app-accounting",
+    children: [{
+      path: "account",
+      component: _3e4c7280,
+      name: "app-accounting-account"
+    }]
+  }, {
     path: "/app/contact",
     component: _047989b0,
     name: "app-contact",
@@ -114,14 +130,6 @@ export const routerOptions = {
       component: _604dc4b0,
       name: "app-contact-customer-detail"
     }, {
-      path: "form-customer",
-      component: _b3ca9862,
-      name: "app-contact-form-customer"
-    }, {
-      path: "form-vendor",
-      component: _16415679,
-      name: "app-contact-form-vendor"
-    }, {
       path: "vendor",
       component: _7b07d020,
       name: "app-contact-vendor"
@@ -129,15 +137,6 @@ export const routerOptions = {
       path: "vendor-detail",
       component: _2c740dfe,
       name: "app-contact-vendor-detail"
-    }]
-  }, {
-    path: "/app/expense",
-    component: _cab7f940,
-    name: "app-expense",
-    children: [{
-      path: "form",
-      component: _3256e3a4,
-      name: "app-expense-form"
     }]
   }, {
     path: "/app/item",
@@ -161,6 +160,23 @@ export const routerOptions = {
       name: "app-item-form-fprice-list"
     }]
   }, {
+    path: "/app/payroll",
+    component: _97e6aca6,
+    name: "app-payroll",
+    children: [{
+      path: "contractor",
+      component: _2c1c7da2,
+      name: "app-payroll-contractor"
+    }, {
+      path: "employee",
+      component: _60a53e9b,
+      name: "app-payroll-employee"
+    }, {
+      path: "overview",
+      component: _6dd4e7e6,
+      name: "app-payroll-overview"
+    }]
+  }, {
     path: "/app/project",
     component: _796384be,
     name: "app-project"
@@ -176,10 +192,6 @@ export const routerOptions = {
       path: "list",
       component: _6f209507,
       name: "app-purchase-list"
-    }, {
-      path: "order",
-      component: _ad9d6796,
-      name: "app-purchase-order"
     }, {
       path: "overview",
       component: _ba7fc83c,
@@ -197,10 +209,6 @@ export const routerOptions = {
       path: "list",
       component: _19eed39c,
       name: "app-sales-list"
-    }, {
-      path: "order",
-      component: _bb6d1f2c,
-      name: "app-sales-order"
     }, {
       path: "overview",
       component: _031d8f8d,
@@ -235,6 +243,10 @@ export const routerOptions = {
     component: _317dc2c2,
     name: "home-getthingdone"
   }, {
+    path: "/list/account-category",
+    component: _18317105,
+    name: "list-account-category"
+  }, {
     path: "/list/accountmapping",
     component: _7ab448a8,
     name: "list-accountmapping"
@@ -243,6 +255,14 @@ export const routerOptions = {
     component: _a2b8a36c,
     name: "list-attachment"
   }, {
+    path: "/list/budgeting",
+    component: _5a322eb4,
+    name: "list-budgeting"
+  }, {
+    path: "/list/closing",
+    component: _725859c4,
+    name: "list-closing"
+  }, {
     path: "/list/company",
     component: _c560e234,
     name: "list-company"
@@ -250,6 +270,10 @@ export const routerOptions = {
     path: "/list/currency",
     component: _141e5410,
     name: "list-currency"
+  }, {
+    path: "/list/journal-entry",
+    component: _de605ef6,
+    name: "list-journal-entry"
   }, {
     path: "/list/menu",
     component: _75d8e3c6,
@@ -267,9 +291,17 @@ export const routerOptions = {
     component: _1e174a26,
     name: "list-permissions"
   }, {
+    path: "/list/price-list",
+    component: _13d10449,
+    name: "list-price-list"
+  }, {
     path: "/list/recurring",
     component: _82587df4,
     name: "list-recurring"
+  }, {
+    path: "/list/reporting-period",
+    component: _b7f13cb2,
+    name: "list-reporting-period"
   }, {
     path: "/list/roles",
     component: _9011bd34,
@@ -311,34 +343,6 @@ export const routerOptions = {
     component: _fac41b72,
     name: "tools-import"
   }, {
-    path: "/app/accounting/account",
-    component: _3e4c7280,
-    name: "app-accounting-account"
-  }, {
-    path: "/app/accounting/account-category",
-    component: _394bfe1b,
-    name: "app-accounting-account-category"
-  }, {
-    path: "/app/accounting/budgeting",
-    component: _63096f60,
-    name: "app-accounting-budgeting"
-  }, {
-    path: "/app/accounting/closing",
-    component: _8f1fd570,
-    name: "app-accounting-closing"
-  }, {
-    path: "/app/accounting/journal-entry",
-    component: _330f69a2,
-    name: "app-accounting-journal-entry"
-  }, {
-    path: "/app/accounting/price-list",
-    component: _ea6ecc42,
-    name: "app-accounting-price-list"
-  }, {
-    path: "/app/accounting/reporting-period",
-    component: _75bc2286,
-    name: "app-accounting-reporting-period"
-  }, {
     path: "/app/bank/deposit",
     component: _20216a6a,
     name: "app-bank-deposit"
@@ -355,9 +359,41 @@ export const routerOptions = {
     component: _36730eee,
     name: "app-bank-withdraw"
   }, {
-    path: "/app/form/item",
-    component: _63ced4ff,
-    name: "app-form-item"
+    path: "/app/expense/form",
+    component: _3256e3a4,
+    name: "app-expense-form"
+  }, {
+    path: "/app/form/accounting/account",
+    component: _03226208,
+    name: "app-form-accounting-account"
+  }, {
+    path: "/app/form/accounting/reconcile",
+    component: _bb4bb446,
+    name: "app-form-accounting-reconcile"
+  }, {
+    path: "/app/form/contact/customer",
+    component: _211cdac2,
+    name: "app-form-contact-customer"
+  }, {
+    path: "/app/form/contact/vendor",
+    component: _ed12c3a8,
+    name: "app-form-contact-vendor"
+  }, {
+    path: "/app/form/item/item",
+    component: _21591e5c,
+    name: "app-form-item-item"
+  }, {
+    path: "/app/form/item/price-list",
+    component: _653278be,
+    name: "app-form-item-price-list"
+  }, {
+    path: "/app/form/payroll/contractor",
+    component: _49b185de,
+    name: "app-form-payroll-contractor"
+  }, {
+    path: "/app/form/payroll/employee",
+    component: _531725d7,
+    name: "app-form-payroll-employee"
   }, {
     path: "/app/form/purchase/creditmemo",
     component: _076167c0,

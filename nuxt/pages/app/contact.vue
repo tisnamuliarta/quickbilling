@@ -2,7 +2,7 @@
   <div>
     <NuxtChild
       keep-alive
-      :keep-alive-props="{ exclude: ['pages/app/contact/form-customer.vue', 'pages/app/contact/form-vendor.vue'] }"
+      :keep-alive-props="{ exclude: ['pages/app/form/contact/customer.vue', 'pages/app/form/contact/vendor.vue'] }"
     />
   </div>
 </template>
@@ -30,8 +30,8 @@ export default {
         },
       ],
       item: [
-        {text: 'Customer', type: '', route: '/app/contact/form-customer'},
-        {text: 'Vendor', type: '', route: '/app/contact/form-vendor'},
+        {text: 'Customer', type: '', route: '/app/form/contact/customer'},
+        {text: 'Vendor', type: '', route: '/app/form/contact/vendor'},
       ],
       show: true,
       showBtn: true

@@ -24,6 +24,21 @@
         <v-container>
           <v-row no-gutters>
             <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-select
+                v-model="form.item_group_id"
+                :items="itemGroup"
+                label="Type"
+                item-text="name"
+                item-value="id"
+                outlined
+                persistent-hint
+                dense
+                hide-details="auto"
+              >
+              </v-select>
+            </v-col>
+
+            <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
               <v-text-field
                 v-model="form.name"
                 label="Name"
@@ -51,10 +66,8 @@
                 label="Category"
                 placeholder="Category"
                 outlined
-                multiple
                 persistent-hint
                 dense
-                hint="Exp. Component, Services, Design"
                 hide-details="auto"
               >
               </v-select>
@@ -94,7 +107,7 @@
                 v-model="form.purchase_price"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptions"
-                label="Buy Unit Price"
+                label="Cost"
                 outlined
                 dense
                 hide-details="auto"
@@ -106,7 +119,7 @@
                 :items="itemAccounts"
                 item-text="name"
                 item-value="id"
-                label="Buy Account"
+                label="Expense Account"
                 outlined
                 dense
                 hide-details="auto"
@@ -126,7 +139,7 @@
             </v-col>
 
             <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-              <span>Sell Price</span>
+              <span>Sales Price</span>
               <hr />
             </v-col>
             <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -134,7 +147,7 @@
                 v-model="form.sale_price"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptions"
-                label="Buy Unit Price"
+                label="Sales Price"
                 outlined
                 dense
                 hide-details="auto"
@@ -146,7 +159,7 @@
                 :items="itemAccounts"
                 item-text="name"
                 item-value="id"
-                label="Sell Account"
+                label="Income Account"
                 outlined
                 dense
                 hide-details="auto"
@@ -247,6 +260,7 @@ export default {
       form: this.formData,
       selectedItem: 1,
       itemCategory: [],
+      itemGroup: [],
       itemUnit: [],
       itemAccounts: [],
       itemTax: [],
@@ -286,6 +300,7 @@ export default {
     this.getItemUnit()
     this.getAccounts()
     this.getTaxes()
+    this.getItemGroups()
   },
 
   methods: {
@@ -338,6 +353,25 @@ export default {
         })
         .then((res) => {
           this.itemTax = res.data.data.row_simple
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    getItemGroups() {
+      this.$axios
+        .get(`/api/inventory/item-groups`, {
+          params: {
+            type: 'Item Category',
+          },
+        })
+        .then((res) => {
+          this.itemGroup = res.data.data.rows
         })
         .catch((err) => {
           this.$swal({

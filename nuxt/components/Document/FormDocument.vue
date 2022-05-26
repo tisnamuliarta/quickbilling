@@ -17,7 +17,7 @@
           ></v-autocomplete>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-combobox
             v-model="form.tags"
             :items="itemTag"
@@ -54,18 +54,9 @@
             hide-details="auto"
           ></v-text-field>
         </v-col>
-      </v-row>
-    </v-col>
 
-    <v-col cols="12" md="3" sm="4" class="text-right">
-      <p class="mb-0">Amount Due</p>
-      <span class="text-right font-weight-bold text-h4">
-            {{ $formatter.formatPrice(form.balance_due) }}
-          </span>
-    </v-col>
+        <v-col cols="12" md="3"></v-col>
 
-    <v-col cols="12">
-      <v-row dense>
         <v-col cols="12" md="3">
           <v-textarea
             rows="3"
@@ -156,11 +147,7 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-      </v-row>
-    </v-col>
 
-    <v-col cols="12">
-      <v-row dense>
         <v-col cols="12" md="3">
           <v-combobox
             v-model="form.tags"
@@ -188,6 +175,13 @@
           </v-combobox>
         </v-col>
       </v-row>
+    </v-col>
+
+    <v-col cols="12" md="3" sm="4" class="text-right">
+      <p class="mb-0">Amount Due</p>
+      <span class="text-right font-weight-bold text-h4">
+            {{ $formatter.formatPrice(form.balance_due) }}
+          </span>
     </v-col>
 
     <v-col cols="12">

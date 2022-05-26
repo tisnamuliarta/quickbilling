@@ -1,30 +1,29 @@
 <template>
   <div>
-    <DialogForm
-      ref="dialogForm"
+    <v-dialog
+      v-model="dialog"
       max-width="700px"
-      :dialog-title="formTitle"
-      button-title="Save"
+      persistent
+      transition="dialog-top-transition"
+      scrollable
     >
-      <template #content>
-        <v-form>
+      <v-card tile>
+        <v-card-title>
+          <v-toolbar-title>
+            <v-btn icon>
+              <v-icon>mdi-progress-pencil</v-icon>
+            </v-btn>
+            <span>Item Master Data</span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon dark color="red" @click="close">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
           <v-container>
             <v-row no-gutters>
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.item_group_id"
-                  :items="itemGroup"
-                  label="Type"
-                  item-text="name"
-                  item-value="id"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                </v-select>
-              </v-col>
-
               <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
                 <v-text-field
                   v-model="form.name"
@@ -53,10 +52,30 @@
                   label="Category"
                   placeholder="Category"
                   outlined
+                  multiple
                   persistent-hint
                   dense
+                  hint="Exp. Component, Services, Design"
                   hide-details="auto"
                 >
+                  <template #prepend>
+                    <v-btn small icon>
+                      <v-icon
+                        small
+                        color="orange"
+                        @click="
+                          $refs.formMaster.openForm(
+                            '/api/master/categories',
+                            'Item Category',
+                            'Item Category',
+                            '400px'
+                          )
+                        "
+                      >
+                        mdi-arrow-right-bold
+                      </v-icon>
+                    </v-btn>
+                  </template>
                 </v-select>
               </v-col>
 
@@ -71,6 +90,24 @@
                   dense
                   hide-details="auto"
                 >
+                  <template #prepend>
+                    <v-btn small icon>
+                      <v-icon
+                        small
+                        color="orange"
+                        @click="
+                          $refs.formMaster.openForm(
+                            '/api/inventory/item-units',
+                            'Item Unit',
+                            'Item Unit',
+                            '400px'
+                          )
+                        "
+                      >
+                        mdi-arrow-right-bold
+                      </v-icon>
+                    </v-btn>
+                  </template>
                 </v-select>
               </v-col>
 
@@ -94,7 +131,7 @@
                   v-model="form.purchase_price"
                   v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                   v-bind:options="moneyOptions"
-                  label="Cost"
+                  label="Buy Unit Price"
                   outlined
                   dense
                   hide-details="auto"
@@ -106,7 +143,7 @@
                   :items="itemAccounts"
                   item-text="name"
                   item-value="id"
-                  label="Expense Account"
+                  label="Buy Account"
                   outlined
                   dense
                   hide-details="auto"
@@ -126,7 +163,7 @@
               </v-col>
 
               <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Sales Price</span>
+                <span>Sell Price</span>
                 <hr />
               </v-col>
               <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
@@ -134,7 +171,7 @@
                   v-model="form.sale_price"
                   v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                   v-bind:options="moneyOptions"
-                  label="Sales Price"
+                  label="Buy Unit Price"
                   outlined
                   dense
                   hide-details="auto"
@@ -146,7 +183,7 @@
                   :items="itemAccounts"
                   item-text="name"
                   item-value="id"
-                  label="Income Account"
+                  label="Sell Account"
                   outlined
                   dense
                   hide-details="auto"
@@ -194,20 +231,23 @@
               </v-col>
             </v-row>
           </v-container>
-        </v-form>
-      </template>
-      <template #saveData>
-        <v-btn
-          color="green darken-1"
-          dark
-          small
-          :loading="submitLoad"
-          @click="save()"
-        >
-          {{ buttonTitle }}
-        </v-btn>
-      </template>
-    </DialogForm>
+        </v-card-text>
+
+        <v-divider />
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green darken-1"
+            dark
+            small
+            :loading="submitLoad"
+            @click="save()"
+          >
+            {{ buttonTitle }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <LazyInventoryFormMaster
       ref="formMaster"
@@ -245,14 +285,13 @@ export default {
   data() {
     return {
       logo: '',
-      dialog: false,
+      dialog: true,
       submitLoad: false,
       form: this.formData,
       selectedItem: 1,
       itemCategory: [],
       itemUnit: [],
       itemAccounts: [],
-      itemGroup: [],
       itemTax: [],
       images: [],
       statusProcessing: 'insert',
@@ -294,6 +333,11 @@ export default {
       this.statusProcessing = 'insert'
       this.form = Object.assign({}, form)
       this.getFiles()
+    },
+
+    close() {
+      this.$router.back()
+      this.$nuxt.$emit('getDataFromApi')
     },
 
     editItem(item, url) {
@@ -453,14 +497,6 @@ export default {
       } else if (data.type === 'Item Unit') {
         this.itemUnit = data.item
       }
-    },
-
-    close() {
-      this.$refs.dialogForm.closeDialog()
-      this.statusProcessing = 'insert'
-      setTimeout(() => {
-        this.form = Object.assign({}, this.defaultItem)
-      }, 300)
     },
 
     save() {
