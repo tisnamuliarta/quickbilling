@@ -34,36 +34,48 @@
 
         <v-spacer />
 
-        <v-btn v-if="showExtensionButon" color="primary" small elevation="0">
-          New Transactions
-          <v-menu transition="slide-y-transition" offset-y bottom>
-            <template #activator="{ on, attrs }">
-              <v-btn small dark icon v-bind="attrs" v-on="on">
+        <v-menu
+          v-if="showExtensionButon"
+          transition="slide-y-transition"
+          offset-y
+          bottom
+        >
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              color="primary"
+              small
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+            >
+              New Transactions
+              <v-btn dark small icon>
                 <v-icon>mdi-menu-down</v-icon>
               </v-btn>
-            </template>
-            <v-list dense>
-              <v-list-item
-                v-for="(value, i) in extensionMenu"
-                :key="i"
-                dense
-                @click="
-                  $router.push({
-                    path: value.route,
-                    query: {
-                      document: 0,
-                      type: value.type,
-                    },
-                  })
-                "
-              >
-                <v-list-item-content>
-                  <v-list-item-title>{{ value.text }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-btn>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item
+              v-for="(value, i) in extensionMenu"
+              :key="i"
+              dense
+              @click="
+                $router.push({
+                  path: value.route,
+                  query: {
+                    document: 0,
+                    type: value.type,
+                  },
+                })
+              "
+            >
+              <v-list-item-content>
+                <v-list-item-title>{{ value.text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
     </v-app-bar>
 

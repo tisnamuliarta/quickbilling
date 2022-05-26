@@ -6,9 +6,19 @@ import scrollBehavior from './router.scrollBehavior.js'
 
 const _72c2a8fb = () => interopDefault(import('..\\nuxt\\pages\\list\\index.vue' /* webpackChunkName: "pages/list/index" */))
 const _047989b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact.vue' /* webpackChunkName: "pages/app/contact" */))
+const _2eaaf386 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
+const _604dc4b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
+const _b3ca9862 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\form-customer.vue' /* webpackChunkName: "pages/app/contact/form-customer" */))
+const _16415679 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\form-vendor.vue' /* webpackChunkName: "pages/app/contact/form-vendor" */))
+const _7b07d020 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\vendor.vue' /* webpackChunkName: "pages/app/contact/vendor" */))
+const _2c740dfe = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\vendor-detail.vue' /* webpackChunkName: "pages/app/contact/vendor-detail" */))
 const _cab7f940 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense.vue' /* webpackChunkName: "pages/app/expense" */))
 const _3256e3a4 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense\\form.vue' /* webpackChunkName: "pages/app/expense/form" */))
 const _6a18648a = () => interopDefault(import('..\\nuxt\\pages\\app\\item.vue' /* webpackChunkName: "pages/app/item" */))
+const _57f76499 = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\list.vue' /* webpackChunkName: "pages/app/item/list" */))
+const _95defb46 = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\price-list.vue' /* webpackChunkName: "pages/app/item/price-list" */))
+const _924913ec = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\form\\fitem.vue' /* webpackChunkName: "pages/app/item/form/fitem" */))
+const _3f18024e = () => interopDefault(import('..\\nuxt\\pages\\app\\item\\form\\fprice-list.vue' /* webpackChunkName: "pages/app/item/form/fprice-list" */))
 const _796384be = () => interopDefault(import('..\\nuxt\\pages\\app\\project.vue' /* webpackChunkName: "pages/app/project" */))
 const _032d68a9 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase.vue' /* webpackChunkName: "pages/app/purchase" */))
 const _671c2e58 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\invoice.vue' /* webpackChunkName: "pages/app/purchase/invoice" */))
@@ -73,6 +83,7 @@ const _20216a6a = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\depos
 const _318e2bcc = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\reconcile.vue' /* webpackChunkName: "pages/app/bank/reconcile" */))
 const _5583634f = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
 const _36730eee = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
+const _63ced4ff = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\item.vue' /* webpackChunkName: "pages/app/form/item" */))
 const _2c1039ce = () => interopDefault(import('..\\nuxt\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -93,7 +104,32 @@ export const routerOptions = {
   }, {
     path: "/app/contact",
     component: _047989b0,
-    name: "app-contact"
+    name: "app-contact",
+    children: [{
+      path: "customer",
+      component: _2eaaf386,
+      name: "app-contact-customer"
+    }, {
+      path: "customer-detail",
+      component: _604dc4b0,
+      name: "app-contact-customer-detail"
+    }, {
+      path: "form-customer",
+      component: _b3ca9862,
+      name: "app-contact-form-customer"
+    }, {
+      path: "form-vendor",
+      component: _16415679,
+      name: "app-contact-form-vendor"
+    }, {
+      path: "vendor",
+      component: _7b07d020,
+      name: "app-contact-vendor"
+    }, {
+      path: "vendor-detail",
+      component: _2c740dfe,
+      name: "app-contact-vendor-detail"
+    }]
   }, {
     path: "/app/expense",
     component: _cab7f940,
@@ -106,7 +142,24 @@ export const routerOptions = {
   }, {
     path: "/app/item",
     component: _6a18648a,
-    name: "app-item"
+    name: "app-item",
+    children: [{
+      path: "list",
+      component: _57f76499,
+      name: "app-item-list"
+    }, {
+      path: "price-list",
+      component: _95defb46,
+      name: "app-item-price-list"
+    }, {
+      path: "form/fitem",
+      component: _924913ec,
+      name: "app-item-form-fitem"
+    }, {
+      path: "form/fprice-list",
+      component: _3f18024e,
+      name: "app-item-form-fprice-list"
+    }]
   }, {
     path: "/app/project",
     component: _796384be,
@@ -365,6 +418,10 @@ export const routerOptions = {
     path: "/app/bank/withdraw",
     component: _36730eee,
     name: "app-bank-withdraw"
+  }, {
+    path: "/app/form/item",
+    component: _63ced4ff,
+    name: "app-form-item"
   }, {
     path: "/",
     component: _2c1039ce,

@@ -82,7 +82,6 @@
 <script>
 export default {
   name: 'Account',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

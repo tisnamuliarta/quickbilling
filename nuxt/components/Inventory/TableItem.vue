@@ -2,15 +2,8 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader>
         <v-data-table
           v-model="selected"
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -39,9 +32,33 @@
             />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
+            <v-btn
+              color="secondary"
+              class="font-weight-bold text-right"
+              text
+              small
+              @click="actions(itemAction, item)"
+            >
+              {{ itemText }}
+            </v-btn>
+            <v-menu transition="slide-y-transition" bottom>
+              <template #activator="{ on, attrs }">
+                <v-btn color="black" dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </template>
 
           <template #[`item.categories`]="{ item }">
@@ -84,16 +101,16 @@
 
 <script>
 export default {
-  name: "TableItem",
+  name: 'TableItem',
 
   props: {
     viewData: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showAddBtn: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
 
@@ -115,6 +132,12 @@ export default {
       defaultItem: {},
       options: {},
       headers: [],
+      items: [
+        { text: 'Edit', action: 'edit' },
+        { text: 'Delete', action: 'delete' },
+      ],
+      itemText: '',
+      itemAction: '',
     }
   },
 
@@ -138,12 +161,14 @@ export default {
 
   mounted() {
     this.mappingHeader()
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
   },
 
   methods: {
     formatPrice(value) {
-      let val = (value/1).toFixed(2).replace('.', ',')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      let val = (value / 1).toFixed(2).replace('.', ',')
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     },
 
     setEmptyToSelected() {
@@ -160,6 +185,14 @@ export default {
         return JSON.parse(category).toString()
       } else {
         return category
+      }
+    },
+
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else {
+        this.deleteItem(item)
       }
     },
 
@@ -227,16 +260,38 @@ export default {
           { text: 'Item Code', value: 'code', width: '120px' },
           { text: 'Item Name', value: 'name', width: '150px' },
           { text: 'Item Category', value: 'categories', width: '120px' },
-          { text: 'Minimum Stock', value: 'minimum_stock', align: 'right', sortable: false, filterable: false  },
+          {
+            text: 'Minimum Stock',
+            value: 'minimum_stock',
+            align: 'right',
+            sortable: false,
+            filterable: false,
+          },
           { text: 'Unit', value: 'unit', sortable: false, filterable: false },
-          { text: 'Average Price', value: 'average_price', align: 'right', sortable: false, filterable: false },
-          { text: 'Last Buy Price', value: 'last_buy_price', align: 'right', sortable: false, filterable: false },
-          { text: 'Buy Price', value: 'purchase_price', align: 'right', sortable: false, filterable: false },
-          { text: 'Sell Price', value: 'sale_price', align: 'right', sortable: false, filterable: false },
-          { text: 'Action', value: 'ACTIONS', align: 'center', sortable: false, filterable: false },
+          {
+            text: 'Buy Price',
+            value: 'purchase_price',
+            align: 'right',
+            sortable: false,
+            filterable: false,
+          },
+          {
+            text: 'Sell Price',
+            value: 'sale_price',
+            align: 'right',
+            sortable: false,
+            filterable: false,
+          },
+          {
+            text: 'Action',
+            value: 'ACTIONS',
+            align: 'center',
+            sortable: false,
+            filterable: false,
+          },
         ]
       }
-    }
+    },
   },
 }
 </script>

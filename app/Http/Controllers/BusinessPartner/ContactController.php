@@ -103,10 +103,28 @@ class ContactController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Contact::where("id", "=", $id)->get();
+        $data = Contact::where("id", "=", $id)->first();
+        $extra_list['emails'] = [
+            [
+                'email' => null
+            ]
+        ];
+        $extra_list['password'] = null;
+        $extra_list['banks'] = [
+            [
+                'name' => null,
+                'branch' => null,
+                'contact_account_name' => null,
+                'contact_account_number' => null,
+            ]
+        ];
+        $form = array_merge($this->form('contacts'), $extra_list);
+
 
         return $this->success([
-            'rows' => $data
+            "rows" => $data,
+            "form" => $form,
+            "count" => ($data) ? 1 : 0
         ]);
     }
 

@@ -2,57 +2,67 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-alert
-          border="top"
-          elevation="1"
-          class="pr-0 pl-0"
-          colored-border
-          color="green lighten-2"
+        <v-data-table
+          v-model="selected"
+          :mobile-breakpoint="0"
+          :headers="headers"
+          :items="allData"
+          :items-per-page="20"
+          :options.sync="options"
+          :server-items-length="totalData"
+          :loading="loading"
+          class="elevation-0"
+          item-key="id"
+          show-select
           dense
+          :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
-          <!-- <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
-        </v-skeleton-loader> -->
-          <v-data-table
-            v-model="selected"
-            :mobile-breakpoint="0"
-            :headers="headers"
-            :items="allData"
-            :items-per-page="20"
-            :options.sync="options"
-            :server-items-length="totalData"
-            :loading="loading"
-            class="elevation-0"
-            item-key="id"
-            show-select
-            dense
-            :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
-          >
-            <template v-slot:top>
-              <LazyMainToolbar
-                :document-status="documentStatus"
-                :search-status="searchStatus"
-                :item-search="itemSearch"
-                :search-item="searchItem"
-                :search="search"
-                title="Contacts"
-                @emitData="emitData"
-                @newData="newData"
-              />
-            </template>
-            <template #[`item.ACTIONS`]="{ item }">
-              <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-                mdi-pencil-circle
-              </v-icon>
-            </template>
-            <template #[`item.balance`]="{ item }">
-              {{ $formatter.formatPrice(item.balance) }}
-            </template>
-          </v-data-table>
-        </v-alert>
+          <template v-slot:top>
+            <LazyMainToolbar
+              :document-status="documentStatus"
+              :search-status="searchStatus"
+              :item-search="itemSearch"
+              :search-item="searchItem"
+              :search="search"
+              title="Contacts"
+              show-batch-action
+              @emitData="emitData"
+              @newData="newData"
+            />
+          </template>
+          <template #[`item.ACTIONS`]="{ item }">
+            <v-btn
+              color="secondary"
+              class="font-weight-bold text-right"
+              text
+              small
+              @click="actions(itemAction, item)"
+            >
+              {{ itemText }}
+            </v-btn>
+            <v-menu transition="slide-y-transition" bottom>
+              <template #activator="{ on, attrs }">
+                <v-btn color="black" dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+          <template #[`item.balance`]="{ item }">
+            {{ $formatter.formatPrice(item.balance) }}
+          </template>
+        </v-data-table>
       </div>
     </v-flex>
 
@@ -69,6 +79,12 @@
 <script>
 export default {
   name: 'TableContact',
+  props: {
+    contactType: {
+      type: String,
+      default: 'Customer',
+    },
+  },
   data() {
     return {
       selected: [],
@@ -85,15 +101,37 @@ export default {
       defaultItem: {},
       options: {},
       headers: [
-        { text: 'Name', value: 'name' },
-        { text: 'Type', value: 'type' },
-        { text: 'Company', value: 'company_name' },
-        { text: 'Address', value: 'address' },
-        { text: 'Email', value: 'email' },
-        { text: 'Phone', value: 'phone' },
-        { text: 'Balance', value: 'balance' },
-        { text: 'Action', value: 'ACTIONS', align: 'center' },
+        {text: 'Name', value: 'name'},
+        {text: 'Type', value: 'type'},
+        {text: 'Company', value: 'company_name'},
+        {
+          text: 'Email', value: 'email',
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: 'Phone', value: 'phone',
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: 'Balance', value: 'balance',
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: 'Action', value: 'ACTIONS',
+          align: 'center',
+          sortable: false,
+          filterable: false,
+        },
       ],
+      items: [
+        {text: 'Edit', action: 'edit'},
+        {text: 'Delete', action: 'delete'},
+      ],
+      itemText: '',
+      itemAction: '',
     }
   },
 
@@ -115,15 +153,31 @@ export default {
     },
   },
 
+  mounted() {
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
+  },
+
   methods: {
     newData() {
       this.editedIndex = -1
       this.$refs.formData.newData(this.form, this.defaultItem)
     },
 
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else {
+        this.deleteItem(item)
+      }
+    },
     editItem(item) {
-      this.editedIndex = this.allData.indexOf(item)
-      this.$refs.formData.editItem(item)
+      this.$router.push({
+        path: '/app/contact/form-customer',
+        query: {
+          document: item.id
+        },
+      })
     },
 
     emitData(data) {
@@ -147,6 +201,7 @@ export default {
             documentStatus: vm.documentStatus,
             searchStatus: vm.searchStatus,
             search: vm.search,
+            contactType: vm.contactType
           },
         })
         .then((res) => {

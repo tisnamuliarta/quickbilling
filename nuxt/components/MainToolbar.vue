@@ -32,35 +32,41 @@
       <v-icon>mdi-arrow-down-left</v-icon>
     </v-btn>
 
-    <v-btn
+    <v-menu
       v-if="showBatchAction"
-      small
-      color="green"
-      class="ml-0 mr-2"
-      dark
-      elevation="0"
+      transition="slide-y-transition"
+      offset-y
+      bottom
     >
-      Batch Action
-      <v-menu transition="slide-y-transition" offset-y bottom>
-        <template #activator="{ on, attrs }">
-          <v-btn dark small icon v-bind="attrs" v-on="on">
+      <template #activator="{ on, attrs }">
+        <v-btn
+          small
+          color="green"
+          class="ml-0 mr-2"
+          dark
+          elevation="0"
+          v-bind="attrs"
+          v-on="on"
+        >
+          Batch Action
+          <v-btn dark small icon>
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
-        </template>
-        <v-list dense>
-          <v-list-item
-            v-for="(value, i) in ['Make Inactive']"
-            :key="i"
-            dense
-            @click="makeInActive(value, doctype)"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ value }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
+        </v-btn>
+      </template>
+      <v-list dense>
+        <v-list-item
+          v-for="(value, i) in ['Make Inactive']"
+          :key="i"
+          dense
+          @click="makeInActive(value, doctype)"
+        >
+          <v-list-item-content>
+            <v-list-item-title>{{ value }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 
     <v-btn
       v-if="showFilter"

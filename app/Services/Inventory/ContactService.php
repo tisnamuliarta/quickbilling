@@ -29,6 +29,7 @@ class ContactService
             $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 0;
             $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
             $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+            $type = $request->contactType;
             $offset = ($pages - 1) * $row_data;
 
             $result = array();
@@ -41,6 +42,7 @@ class ContactService
             )
                 ->leftJoin('accounts as sell', 'sell.id', 'contacts.receivable_account_id')
                 ->leftJoin('accounts as buy', 'buy.id', 'contacts.payable_account_id')
+                ->where('contacts.type', $type)
                 ->with(['banks', 'emails']);
 
             $result["total"] = $query->count();

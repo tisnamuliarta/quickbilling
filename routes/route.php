@@ -5,6 +5,7 @@ use App\Http\Controllers\BusinessPartner\ContactController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\File\FileController;
 use App\Http\Controllers\Inventory\ItemController;
+use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
 use App\Http\Controllers\Settings\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResources([
             'items' => ItemController::class,
             'item-units' => ItemUnitController::class,
+            'item-groups' => ItemGroupController::class,
         ]);
     });
 
@@ -37,10 +39,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             'contacts' => ContactController::class,
         ]);
     });
-
-    // Student registration routes
-//    Route::prefix('student')
-//        ->group(__DIR__ . '/student.php');
 
     // List all master routes
     Route::prefix('master')

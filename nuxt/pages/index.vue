@@ -14,12 +14,12 @@ export default {
     this.$nuxt.$emit('extensionSetting', {
       tabs: [
         {
-          title: 'Get Thing Done',
-          route: '/app/getthingdone',
+          title: 'Business Overview',
+          route: '/home/business-overview',
         },
         {
-          title: 'Business Overview',
-          route: '/app/business-overview',
+          title: 'Get Thing Done',
+          route: '/home/getthingdone',
         },
       ],
       show: true,

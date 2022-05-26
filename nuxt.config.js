@@ -149,7 +149,7 @@ export default {
     redirect: {
       login: '/auth/login',
       logout: '/auth/login',
-      home: '/',
+      home: '/home/business-overview',
     },
   },
   // PWA module configuration: https://go.nuxtjs.dev/pwa

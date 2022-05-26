@@ -65,6 +65,36 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
+  "InventoryDialogItem": {
+    "description": "Auto imported from components/Inventory/DialogItem.vue"
+  },
+  "InventoryFormContact": {
+    "description": "Auto imported from components/Inventory/FormContact.vue"
+  },
+  "InventoryFormItem": {
+    "description": "Auto imported from components/Inventory/FormItem.vue"
+  },
+  "InventoryFormMaster": {
+    "description": "Auto imported from components/Inventory/FormMaster.vue"
+  },
+  "InventoryTableContact": {
+    "description": "Auto imported from components/Inventory/TableContact.vue"
+  },
+  "InventoryTableItem": {
+    "description": "Auto imported from components/Inventory/TableItem.vue"
+  },
+  "LayoutNavigationDrawer": {
+    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
+  },
+  "LayoutToolBar": {
+    "description": "Auto imported from components/Layout/ToolBar.vue"
+  },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
   "FormAgGrid": {
     "description": "Auto imported from components/Form/AgGrid.vue"
   },
@@ -97,36 +127,6 @@
   },
   "FormSetting": {
     "description": "Auto imported from components/Form/Setting.vue"
-  },
-  "InventoryDialogItem": {
-    "description": "Auto imported from components/Inventory/DialogItem.vue"
-  },
-  "InventoryFormContact": {
-    "description": "Auto imported from components/Inventory/FormContact.vue"
-  },
-  "InventoryFormItem": {
-    "description": "Auto imported from components/Inventory/FormItem.vue"
-  },
-  "InventoryFormMaster": {
-    "description": "Auto imported from components/Inventory/FormMaster.vue"
-  },
-  "InventoryTableContact": {
-    "description": "Auto imported from components/Inventory/TableContact.vue"
-  },
-  "InventoryTableItem": {
-    "description": "Auto imported from components/Inventory/TableItem.vue"
-  },
-  "LayoutNavigationDrawer": {
-    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
-  },
-  "LayoutToolBar": {
-    "description": "Auto imported from components/Layout/ToolBar.vue"
-  },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "SettingEmail": {
     "description": "Auto imported from components/Setting/Email.vue"

@@ -11,6 +11,50 @@
     "path": "/app/contact",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact.vue",
     "chunkName": "pages/app/contact",
+    "children": [
+      {
+        "name": "app-contact-customer",
+        "path": "customer",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\customer.vue",
+        "chunkName": "pages/app/contact/customer",
+        "_name": "_2eaaf386"
+      },
+      {
+        "name": "app-contact-customer-detail",
+        "path": "customer-detail",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\customer-detail.vue",
+        "chunkName": "pages/app/contact/customer-detail",
+        "_name": "_604dc4b0"
+      },
+      {
+        "name": "app-contact-form-customer",
+        "path": "form-customer",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\form-customer.vue",
+        "chunkName": "pages/app/contact/form-customer",
+        "_name": "_b3ca9862"
+      },
+      {
+        "name": "app-contact-form-vendor",
+        "path": "form-vendor",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\form-vendor.vue",
+        "chunkName": "pages/app/contact/form-vendor",
+        "_name": "_16415679"
+      },
+      {
+        "name": "app-contact-vendor",
+        "path": "vendor",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\vendor.vue",
+        "chunkName": "pages/app/contact/vendor",
+        "_name": "_7b07d020"
+      },
+      {
+        "name": "app-contact-vendor-detail",
+        "path": "vendor-detail",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\contact\\\\vendor-detail.vue",
+        "chunkName": "pages/app/contact/vendor-detail",
+        "_name": "_2c740dfe"
+      }
+    ],
     "_name": "_047989b0"
   },
   {
@@ -34,6 +78,36 @@
     "path": "/app/item",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item.vue",
     "chunkName": "pages/app/item",
+    "children": [
+      {
+        "name": "app-item-list",
+        "path": "list",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item\\\\list.vue",
+        "chunkName": "pages/app/item/list",
+        "_name": "_57f76499"
+      },
+      {
+        "name": "app-item-price-list",
+        "path": "price-list",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item\\\\price-list.vue",
+        "chunkName": "pages/app/item/price-list",
+        "_name": "_95defb46"
+      },
+      {
+        "name": "app-item-form-fitem",
+        "path": "form/fitem",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item\\\\form\\\\fitem.vue",
+        "chunkName": "pages/app/item/form/fitem",
+        "_name": "_924913ec"
+      },
+      {
+        "name": "app-item-form-fprice-list",
+        "path": "form/fprice-list",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\item\\\\form\\\\fprice-list.vue",
+        "chunkName": "pages/app/item/form/fprice-list",
+        "_name": "_3f18024e"
+      }
+    ],
     "_name": "_6a18648a"
   },
   {
@@ -487,6 +561,13 @@
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\bank\\\\withdraw.vue",
     "chunkName": "pages/app/bank/withdraw",
     "_name": "_36730eee"
+  },
+  {
+    "name": "app-form-item",
+    "path": "/app/form/item",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\item.vue",
+    "chunkName": "pages/app/form/item",
+    "_name": "_63ced4ff"
   },
   {
     "name": "index",
