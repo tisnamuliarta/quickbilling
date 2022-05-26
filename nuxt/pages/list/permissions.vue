@@ -312,7 +312,6 @@
 <script>
 export default {
   name: 'MasterPermission',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

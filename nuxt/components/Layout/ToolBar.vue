@@ -47,7 +47,7 @@
 
     <v-menu offset-y left :nudge-width="700">
       <template #activator="{ on }">
-        <v-btn small icon v-on="on">
+        <v-btn small icon class="mr-2" v-on="on">
           <v-icon>mdi-cog</v-icon>
         </v-btn>
       </template>

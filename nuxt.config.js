@@ -63,6 +63,7 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
+    'nuxt-webpack-optimisations',
     // '@nuxtjs/web-vitals',
     // '@nuxt/image',
     // '@nuxtjs/google-fonts',
@@ -205,7 +206,5 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {
-    'nuxt-webpack-optimisations'
-  },
+  build: {},
 }

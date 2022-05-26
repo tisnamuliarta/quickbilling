@@ -28,7 +28,7 @@
 
         <v-spacer />
 
-        <v-btn>btn</v-btn>
+        <v-btn color="primary" small elevation="0">btn</v-btn>
       </template>
     </v-app-bar>
 
@@ -112,7 +112,7 @@
 
     <v-main class="grey lighten-4">
       <v-container fluid>
-        <Nuxt />
+        <Nuxt keep-alive />
       </v-container>
     </v-main>
 

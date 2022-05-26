@@ -8,12 +8,6 @@
             elevation="0"
             style="border-bottom: thin solid rgba(0, 0, 0, 0.12) !important;"
           >
-            <v-img  max-width="90" max-height="90" :src="logo"></v-img>
-            <v-app-bar-title class="text-h5 ml-4">{{ companyName }}</v-app-bar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-btn text color="secondary" @click="openSetting">Resume Setup</v-btn>
             <template #extension>
               <v-tabs align-with-title>
                 <v-tab @click="selectComponent = 'done'">Get things done</v-tab>

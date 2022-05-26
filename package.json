@@ -71,9 +71,12 @@
     "nuxt-webpack-optimisations": "^2.2.0",
     "v-currency-field": "^3.1.1",
     "vue-chartjs": "^4.0.7",
+    "vue-class-component": "^7.2.6",
+    "vue-cookies": "^1.8.1",
     "vue-gates": "^2.1.2",
     "vuetify": "^2.6.3",
-    "vuetify-money": "^1.2.0"
+    "vuetify-money": "^1.2.0",
+    "vuetify-multiple-draggable-dialogs": "^1.1.4"
   },
   "config": {
     "commitizen": {
@@ -86,7 +89,9 @@
     ]
   },
   "lint-staged": {
-    "*.{js,vue}": "eslint --fix"
+    "*.{js,vue}": "eslint --cache",
+    "*.{css,scss,sass,html,vue}": "stylelint",
+    "*.**": "prettier --check --ignore-unknown"
   },
   "husky": {
     "hooks": {

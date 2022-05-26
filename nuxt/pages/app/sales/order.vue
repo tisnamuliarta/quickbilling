@@ -36,7 +36,6 @@
 <script>
 export default {
   name: 'SalesOrder',
-  layout: 'dashboard',
 
   head() {
     return {

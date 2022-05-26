@@ -6,7 +6,6 @@
           <v-autocomplete
             v-model="form.contact_id"
             :items="itemContact"
-            :disabled="checkDisable()"
             @change="changeContact"
             label="Customer/Vendor"
             return-object
@@ -45,7 +44,6 @@
 
             <v-date-picker
               v-model="form.issued_at"
-              :disabled="checkDisable()"
               no-title
               @input="menu = false"
             >
@@ -80,7 +78,6 @@
 
             <v-date-picker
               v-model="form.shipping_date"
-              :disabled="checkDisable()"
               no-title
               @input="menu2 = false"
             >
@@ -91,7 +88,6 @@
         <v-col cols="12" md="2" sm="4">
           <v-text-field
             v-model="form.document_number"
-            :disabled="checkDisable()"
             readonly
             label="Transaction Number"
             outlined
@@ -105,7 +101,6 @@
             v-model="form.tags"
             :items="itemTag"
             :search-input.sync="search"
-            :disabled="checkDisable()"
             hide-selected
             label="Tags"
             hide-details
@@ -135,7 +130,6 @@
         <v-col cols="12" md="3" sm="12">
           <v-text-field
             v-model="form.status"
-            :disabled="checkDisable()"
             readonly
             label="Status"
             outlined
@@ -170,7 +164,6 @@
 
             <v-date-picker
               v-model="form.due_at"
-              :disabled="checkDisable()"
               no-title
               @input="menu3 = false"
             >
@@ -182,7 +175,6 @@
           <v-text-field
             v-show="form.shipping_info"
             v-model="form.shipping_via"
-            :disabled="checkDisable()"
             label="Ship Via"
             outlined
             dense
@@ -193,7 +185,6 @@
         <v-col cols="12" md="2" sm="4">
           <v-text-field
             v-model="form.reference_no"
-            :disabled="checkDisable()"
             label="Reference No"
             outlined
             dense
@@ -205,7 +196,6 @@
           <v-select
             v-model="form.warehouse_id"
             :items="itemWarehouse"
-            :disabled="checkDisable()"
             item-text="name"
             item-value="id"
             label="Warehouse"
@@ -225,7 +215,6 @@
           <v-select
             v-model="form.payment_term_id"
             :items="itemPaymentTerm"
-            :disabled="checkDisable()"
             item-value="id"
             item-text="name"
             label="Payment Term"
@@ -240,7 +229,6 @@
           <v-text-field
             v-show="form.shipping_info"
             v-model="form.tracking_code"
-            :disabled="checkDisable()"
             label="Tracking No"
             outlined
             dense
@@ -251,7 +239,6 @@
         <v-col cols="12" md="2" sm="6">
           <v-checkbox
             v-model="form.shipping_info"
-            :disabled="checkDisable()"
             dense
             hide-details
             label="Shipping Info"
@@ -262,7 +249,6 @@
         <v-col cols="12" md="3" sm="6">
           <v-checkbox
             v-model="form.price_include_tax"
-            :disabled="checkDisable()"
             dense
             hide-details
             label="Price Include Tax"
@@ -286,7 +272,6 @@
             class="white--text"
             small
             depressed
-            :disabled="checkDisable()"
             @click="$refs.childDetails.addLine()"
           >
             Add Line
@@ -300,7 +285,6 @@
       <v-col cols="12" md="12">
         <v-textarea
           v-model="form.footer"
-          :disabled="checkDisable()"
           rows="2"
           label="Message"
           outlined
@@ -312,7 +296,6 @@
       <v-col cols="12" md="12">
         <v-textarea
           v-model="form.notes"
-          :disabled="checkDisable()"
           rows="2"
           label="Memo"
           outlined
@@ -321,15 +304,15 @@
         ></v-textarea>
       </v-col>
 
-      <v-col cols="12" md="12">
-        <DocumentFieldUpload
-          v-if="!checkDisable()"
-          ref="uploadField"
-          :form-data="form"
-          form-type="document"
-          @eventGetFiles="eventGetFiles"
-        ></DocumentFieldUpload>
-      </v-col>
+      // <v-col cols="12" md="12">
+      //   <DocumentFieldUpload
+      //     v-if="!checkDisable()"
+      //     ref="uploadField"
+      //     :form-data="form"
+      //     form-type="document"
+      //     @eventGetFiles="eventGetFiles"
+      //   ></DocumentFieldUpload>
+      // </v-col>
     </v-col>
 
     <v-col cols="12" md="2" lg="3">
@@ -337,7 +320,6 @@
         <v-textarea
           rows="2"
           v-model="form.contact_address"
-          :disabled="checkDisable()"
           label="Billing Address"
           outlined
           dense
@@ -348,7 +330,6 @@
         <v-textarea
           v-show="form.shipping_info"
           v-model="form.shipping_address"
-          :disabled="checkDisable()"
           rows="2"
           label="Shipping Address"
           outlined
@@ -427,7 +408,6 @@
           <v-select
             v-model="form.discount_type"
             :items="['Amount', 'Percent']"
-            :disabled="checkDisable()"
             label="Discount Type"
             outlined
             dense
@@ -525,7 +505,6 @@
             <v-col cols="12" md="2">
               <v-checkbox
                 v-model="form.withholding_info"
-                :disabled="checkDisable()"
                 dense
                 hide-details
                 label="Withholding"
@@ -537,7 +516,6 @@
               <v-select
                 v-show="form.withholding_info"
                 v-model="form.withholding_type"
-                :disabled="checkDisable()"
                 :items="['Amount', 'Percent']"
                 label="Type"
                 outlined
@@ -583,7 +561,6 @@
             >
               <v-select
                 v-model="form.withholding_account_id"
-                :disabled="checkDisable()"
                 :items="itemAccounts"
                 item-value="id"
                 item-text="name"
@@ -601,7 +578,6 @@
             <v-col cols="12" md="3">
               <v-checkbox
                 v-model="form.deposit_info"
-                :disabled="checkDisable()"
                 dense
                 hide-details
                 label="Deposit"
@@ -613,7 +589,6 @@
               <v-select
                 v-show="form.deposit_info"
                 v-model="form.deposit_account_id"
-                :disabled="checkDisable()"
                 :items="itemAccounts"
                 item-text="name"
                 item-value="id"
@@ -628,7 +603,6 @@
               <vuetify-money
                 v-show="form.deposit_info"
                 v-model="form.deposit_amount"
-                :disabled="checkDisable()"
                 v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                 v-bind:options="moneyOptionTotal"
                 label="Amount"
@@ -1084,7 +1058,7 @@ export default {
     },
 
     getTax() {
-      this.$refs.uploadField.getFiles()
+      // this.$refs.uploadField.getFiles()
 
       this.$axios
         .get(`/api/financial/taxes`, {

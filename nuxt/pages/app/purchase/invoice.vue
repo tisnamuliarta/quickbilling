@@ -36,7 +36,6 @@
 <script>
 export default {
   name: 'PurchaseInvoice',
-  layout: 'dashboard',
 
   head() {
     return {

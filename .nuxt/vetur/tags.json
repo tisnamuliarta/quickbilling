@@ -47,36 +47,6 @@
   "DashboardHome": {
     "description": "Auto imported from components/Dashboard/Home.vue"
   },
-  "FormAgGrid": {
-    "description": "Auto imported from components/Form/AgGrid.vue"
-  },
-  "FormCheckForm": {
-    "description": "Auto imported from components/Form/CheckForm.vue"
-  },
-  "FormDialogFull": {
-    "description": "Auto imported from components/Form/DialogFull.vue"
-  },
-  "FormDocumentGrid": {
-    "description": "Auto imported from components/Form/DocumentGrid.vue"
-  },
-  "FormListAction": {
-    "description": "Auto imported from components/Form/ListAction.vue"
-  },
-  "FormListItem": {
-    "description": "Auto imported from components/Form/ListItem.vue"
-  },
-  "FormNew": {
-    "description": "Auto imported from components/Form/New.vue"
-  },
-  "FormSectionEdit": {
-    "description": "Auto imported from components/Form/SectionEdit.vue"
-  },
-  "FormSectionView": {
-    "description": "Auto imported from components/Form/SectionView.vue"
-  },
-  "FormSetting": {
-    "description": "Auto imported from components/Form/Setting.vue"
-  },
   "DocumentCardAction": {
     "description": "Auto imported from components/Document/CardAction.vue"
   },
@@ -109,6 +79,36 @@
   },
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
+  },
+  "FormAgGrid": {
+    "description": "Auto imported from components/Form/AgGrid.vue"
+  },
+  "FormCheckForm": {
+    "description": "Auto imported from components/Form/CheckForm.vue"
+  },
+  "FormDialogFull": {
+    "description": "Auto imported from components/Form/DialogFull.vue"
+  },
+  "FormDocumentGrid": {
+    "description": "Auto imported from components/Form/DocumentGrid.vue"
+  },
+  "FormListAction": {
+    "description": "Auto imported from components/Form/ListAction.vue"
+  },
+  "FormListItem": {
+    "description": "Auto imported from components/Form/ListItem.vue"
+  },
+  "FormNew": {
+    "description": "Auto imported from components/Form/New.vue"
+  },
+  "FormSectionEdit": {
+    "description": "Auto imported from components/Form/SectionEdit.vue"
+  },
+  "FormSectionView": {
+    "description": "Auto imported from components/Form/SectionView.vue"
+  },
+  "FormSetting": {
+    "description": "Auto imported from components/Form/Setting.vue"
   },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"

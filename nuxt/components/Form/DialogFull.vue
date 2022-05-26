@@ -63,6 +63,7 @@ export default {
     closeDialog() {
       this.$emit('close')
       this.dialog = false
+      this.$destroy()
     }
   }
 }

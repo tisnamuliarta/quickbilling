@@ -1,10 +1,23 @@
 <template>
   <dropzone
-    id='attachment'
-    ref='attachment'
-    :options='options'
-    :destroy-dropzone='true'
-    @vdropzone-sending="(file, xhr, formData) => sendingParams(file, xhr, formData)"
+    id="attachment"
+    ref="attachment"
+    :options="{
+        url: '/api/document-files',
+        timeout: 9000000000,
+        addRemoveLinks: true,
+        withCredentials: true,
+        thumbnailWidth: 50,
+        thumbnailHeight: 50,
+        acceptedFiles: 'image/*',
+        headers: {
+          'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN'),
+        },
+      }"
+    :destroy-dropzone="true"
+    @vdropzone-sending="
+      (file, xhr, formData) => sendingParams(file, xhr, formData)
+    "
     @vdropzone-success="(file, response) => reloadAttachment(file, response)"
     @vdropzone-error="(file, message, xhr) => handleError(file, message, xhr)"
   ></dropzone>
@@ -15,9 +28,9 @@ import Dropzone from 'nuxt-dropzone'
 import 'nuxt-dropzone/dropzone.css'
 
 export default {
-  name: "FieldUpload",
+  name: 'FieldUpload',
 
-  components: {Dropzone},
+  components: { Dropzone },
 
   props: {
     formType: {
@@ -44,17 +57,18 @@ export default {
         thumbnailWidth: 50,
         thumbnailHeight: 50,
         acceptedFiles: 'image/*',
-        dictDefaultMessage: '<span class=\'mdi mdi-cloud-upload\'></span> UPLOAD HERE',
+        dictDefaultMessage:
+          "<span class='mdi mdi-cloud-upload'></span> UPLOAD HERE",
         headers: {
-          'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN')
-        }
+          'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN'),
+        },
       },
     }
   },
 
   methods: {
     sendingParams(file, xhr, formData) {
-      const temp_id = (this.form.id !== 0) ? this.form.id : this.form.temp_id;
+      const temp_id = this.form.id !== 0 ? this.form.id : this.form.temp_id
       formData.append('temp_id', temp_id)
       formData.append('type', this.formType)
     },
@@ -90,22 +104,23 @@ export default {
     getFiles() {
       this.showLoadingAttachment = true
       const vm = this
-      const temp_id = (this.form.id) ? this.form.id : this.form.temp_id;
+      const temp_id = this.form.id ? this.form.id : this.form.temp_id
 
-      this.$axios.get(vm.options.url, {
-        params: {
-          type: this.formType,
-          temp_id
-        }
-      })
-        .then(res => {
+      this.$axios
+        .get(vm.options.url, {
+          params: {
+            type: this.formType,
+            temp_id,
+          },
+        })
+        .then((res) => {
           this.$emit('eventGetFiles', {
             total: res.data.data.total,
-            row: res.data.data.rows
+            row: res.data.data.rows,
           })
           vm.showLoadingAttachment = false
         })
-        .catch(err => {
+        .catch((err) => {
           this.showLoadingAttachment = false
           this.$swal({
             type: 'error',
@@ -151,6 +166,6 @@ export default {
         }
       })
     },
-  }
+  },
 }
 </script>

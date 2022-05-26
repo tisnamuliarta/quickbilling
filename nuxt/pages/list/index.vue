@@ -89,7 +89,6 @@
 <script>
 export default {
   name: 'SalesDelivery',
-  layout: 'dashboard',
 
   head() {
     return {

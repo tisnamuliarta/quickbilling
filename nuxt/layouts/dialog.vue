@@ -17,27 +17,22 @@
             <span v-text="title"></span>
           </v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn
-            icon
-            dark
-            color="red"
-            @click="close"
-          >
+          <v-btn icon dark color="red" @click="close">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
-        <v-divider/>
+        <v-divider />
 
         <v-card-text class="pl-0 pr-0">
           <v-container fluid>
-            <Nuxt/>
+            <Nuxt keep-alive />
           </v-container>
         </v-card-text>
 
-        <v-divider/>
+        <v-divider />
 
         <v-card-actions>
-          <v-spacer/>
+          <v-spacer />
           <v-btn
             color="green darken-1"
             class="mr-3"
@@ -47,25 +42,14 @@
           >
             Save
 
-            <v-menu
-              transition="slide-y-transition"
-              bottom
-            >
+            <v-menu transition="slide-y-transition" bottom>
               <template #activator="{ on, attrs }">
-                <v-btn
-                  dark
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
+                <v-btn dark icon v-bind="attrs" v-on="on">
                   <v-icon>mdi-menu-down</v-icon>
                 </v-btn>
               </template>
               <v-list>
-                <v-list-item
-                  v-for="(value, i) in items"
-                  :key="i"
-                >
+                <v-list-item v-for="(value, i) in items" :key="i">
                   <v-list-item-content>
                     <v-list-item-title>{{ value.text }}</v-list-item-title>
                   </v-list-item-content>
@@ -88,8 +72,8 @@ export default {
       dialog: true,
       title: '',
       items: [
-        {text: 'Edit', action: 'edit'},
-        {text: 'Delete', action: 'delete'},
+        { text: 'Edit', action: 'edit' },
+        { text: 'Delete', action: 'delete' },
       ],
       itemText: '',
       itemAction: '',
