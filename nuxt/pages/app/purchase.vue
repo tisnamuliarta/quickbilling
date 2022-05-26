@@ -27,11 +27,11 @@ export default {
       ],
       item: [
         { text: 'Expense', type: 'EXPENSE', route: '/app/expense' },
-        { text: 'Purchase Order', type: 'PO', route: '/app/purchase/form/order' },
-        { text: 'A/P Invoice', type: 'PI', route: '/app/purchase/form/invoice' },
-        { text: 'Outgoing Payment', type: 'PP', route: '/app/purchase/form/payment' },
-        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/purchase/form/creditmemo' },
-        { text: 'Goods Return', type: 'GR', route: '/app/purchase/form/return' },
+        { text: 'Purchase Order', type: 'PO', route: '/app/form/purchase/order' },
+        { text: 'A/P Invoice', type: 'PI', route: '/app/form/purchase/invoice' },
+        { text: 'Outgoing Payment', type: 'PP', route: '/app/form/purchase/payment' },
+        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/form/purchase/creditmemo' },
+        { text: 'Goods Return', type: 'GR', route: '/app/form/purchase/return' },
       ],
       show: true,
       showBtn: true

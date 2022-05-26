@@ -25,27 +25,11 @@ const _671c2e58 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\i
 const _6f209507 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\list.vue' /* webpackChunkName: "pages/app/purchase/list" */))
 const _ad9d6796 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\order.vue' /* webpackChunkName: "pages/app/purchase/order" */))
 const _ba7fc83c = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\overview.vue' /* webpackChunkName: "pages/app/purchase/overview" */))
-const _02ed2c60 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\creditmemo.vue' /* webpackChunkName: "pages/app/purchase/form/creditmemo" */))
-const _e204248e = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\dp.vue' /* webpackChunkName: "pages/app/purchase/form/dp" */))
-const _52cbd7d0 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\invoice.vue' /* webpackChunkName: "pages/app/purchase/form/invoice" */))
-const _59f2ca31 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\order.vue' /* webpackChunkName: "pages/app/purchase/form/order" */))
-const _2a5cb229 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\payment.vue' /* webpackChunkName: "pages/app/purchase/form/payment" */))
-const _18e53a5f = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\quote.vue' /* webpackChunkName: "pages/app/purchase/form/quote" */))
-const _0138ed4a = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\receipt.vue' /* webpackChunkName: "pages/app/purchase/form/receipt" */))
-const _09a4d9dd = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\form\\return.vue' /* webpackChunkName: "pages/app/purchase/form/return" */))
 const _10cc6614 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales.vue' /* webpackChunkName: "pages/app/sales" */))
 const _3fdc586e = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\invoice.vue' /* webpackChunkName: "pages/app/sales/invoice" */))
 const _19eed39c = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\list.vue' /* webpackChunkName: "pages/app/sales/list" */))
 const _bb6d1f2c = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\order.vue' /* webpackChunkName: "pages/app/sales/order" */))
 const _031d8f8d = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\overview.vue' /* webpackChunkName: "pages/app/sales/overview" */))
-const _7dddc50b = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\creditmemo.vue' /* webpackChunkName: "pages/app/sales/form/creditmemo" */))
-const _13234ccc = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\delivery.vue' /* webpackChunkName: "pages/app/sales/form/delivery" */))
-const _21493d38 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\dp.vue' /* webpackChunkName: "pages/app/sales/form/dp" */))
-const _05aaf705 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\invoice.vue' /* webpackChunkName: "pages/app/sales/form/invoice" */))
-const _750a32a6 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\order.vue' /* webpackChunkName: "pages/app/sales/form/order" */))
-const _45885d44 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\payment.vue' /* webpackChunkName: "pages/app/sales/form/payment" */))
-const _33fca2d4 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\quote.vue' /* webpackChunkName: "pages/app/sales/form/quote" */))
-const _517a8008 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\form\\return.vue' /* webpackChunkName: "pages/app/sales/form/return" */))
 const _6c51ff2d = () => interopDefault(import('..\\nuxt\\pages\\app\\task.vue' /* webpackChunkName: "pages/app/task" */))
 const _eedd1670 = () => interopDefault(import('..\\nuxt\\pages\\auth\\login.vue' /* webpackChunkName: "pages/auth/login" */))
 const _fe50f0fa = () => interopDefault(import('..\\nuxt\\pages\\documents\\form.vue' /* webpackChunkName: "pages/documents/form" */))
@@ -84,6 +68,22 @@ const _318e2bcc = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\recon
 const _5583634f = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
 const _36730eee = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
 const _63ced4ff = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\item.vue' /* webpackChunkName: "pages/app/form/item" */))
+const _076167c0 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\creditmemo.vue' /* webpackChunkName: "pages/app/form/purchase/creditmemo" */))
+const _fdf4d5be = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\delivery.vue' /* webpackChunkName: "pages/app/form/purchase/delivery" */))
+const _655bcd79 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\dp.vue' /* webpackChunkName: "pages/app/form/purchase/dp" */))
+const _82385fe0 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\invoice.vue' /* webpackChunkName: "pages/app/form/purchase/invoice" */))
+const _702bd271 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\order.vue' /* webpackChunkName: "pages/app/form/purchase/order" */))
+const _d316ab2e = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\payment.vue' /* webpackChunkName: "pages/app/form/purchase/payment" */))
+const _2f1e429f = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\quote.vue' /* webpackChunkName: "pages/app/form/purchase/quote" */))
+const _8ae64cc6 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\purchase\\return.vue' /* webpackChunkName: "pages/app/form/purchase/return" */))
+const _18846903 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\creditmemo.vue' /* webpackChunkName: "pages/app/form/sales/creditmemo" */))
+const _4c928ec4 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\delivery.vue' /* webpackChunkName: "pages/app/form/sales/delivery" */))
+const _93fd0548 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\dp.vue' /* webpackChunkName: "pages/app/form/sales/dp" */))
+const _30cf960d = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\invoice.vue' /* webpackChunkName: "pages/app/form/sales/invoice" */))
+const _715af3ae = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\order.vue' /* webpackChunkName: "pages/app/form/sales/order" */))
+const _08607066 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\payment.vue' /* webpackChunkName: "pages/app/form/sales/payment" */))
+const _304d63dc = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\quote.vue' /* webpackChunkName: "pages/app/form/sales/quote" */))
+const _417c4000 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\sales\\return.vue' /* webpackChunkName: "pages/app/form/sales/return" */))
 const _2c1039ce = () => interopDefault(import('..\\nuxt\\pages\\index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
@@ -184,38 +184,6 @@ export const routerOptions = {
       path: "overview",
       component: _ba7fc83c,
       name: "app-purchase-overview"
-    }, {
-      path: "form/creditmemo",
-      component: _02ed2c60,
-      name: "app-purchase-form-creditmemo"
-    }, {
-      path: "form/dp",
-      component: _e204248e,
-      name: "app-purchase-form-dp"
-    }, {
-      path: "form/invoice",
-      component: _52cbd7d0,
-      name: "app-purchase-form-invoice"
-    }, {
-      path: "form/order",
-      component: _59f2ca31,
-      name: "app-purchase-form-order"
-    }, {
-      path: "form/payment",
-      component: _2a5cb229,
-      name: "app-purchase-form-payment"
-    }, {
-      path: "form/quote",
-      component: _18e53a5f,
-      name: "app-purchase-form-quote"
-    }, {
-      path: "form/receipt",
-      component: _0138ed4a,
-      name: "app-purchase-form-receipt"
-    }, {
-      path: "form/return",
-      component: _09a4d9dd,
-      name: "app-purchase-form-return"
     }]
   }, {
     path: "/app/sales",
@@ -237,38 +205,6 @@ export const routerOptions = {
       path: "overview",
       component: _031d8f8d,
       name: "app-sales-overview"
-    }, {
-      path: "form/creditmemo",
-      component: _7dddc50b,
-      name: "app-sales-form-creditmemo"
-    }, {
-      path: "form/delivery",
-      component: _13234ccc,
-      name: "app-sales-form-delivery"
-    }, {
-      path: "form/dp",
-      component: _21493d38,
-      name: "app-sales-form-dp"
-    }, {
-      path: "form/invoice",
-      component: _05aaf705,
-      name: "app-sales-form-invoice"
-    }, {
-      path: "form/order",
-      component: _750a32a6,
-      name: "app-sales-form-order"
-    }, {
-      path: "form/payment",
-      component: _45885d44,
-      name: "app-sales-form-payment"
-    }, {
-      path: "form/quote",
-      component: _33fca2d4,
-      name: "app-sales-form-quote"
-    }, {
-      path: "form/return",
-      component: _517a8008,
-      name: "app-sales-form-return"
     }]
   }, {
     path: "/app/task",
@@ -422,6 +358,70 @@ export const routerOptions = {
     path: "/app/form/item",
     component: _63ced4ff,
     name: "app-form-item"
+  }, {
+    path: "/app/form/purchase/creditmemo",
+    component: _076167c0,
+    name: "app-form-purchase-creditmemo"
+  }, {
+    path: "/app/form/purchase/delivery",
+    component: _fdf4d5be,
+    name: "app-form-purchase-delivery"
+  }, {
+    path: "/app/form/purchase/dp",
+    component: _655bcd79,
+    name: "app-form-purchase-dp"
+  }, {
+    path: "/app/form/purchase/invoice",
+    component: _82385fe0,
+    name: "app-form-purchase-invoice"
+  }, {
+    path: "/app/form/purchase/order",
+    component: _702bd271,
+    name: "app-form-purchase-order"
+  }, {
+    path: "/app/form/purchase/payment",
+    component: _d316ab2e,
+    name: "app-form-purchase-payment"
+  }, {
+    path: "/app/form/purchase/quote",
+    component: _2f1e429f,
+    name: "app-form-purchase-quote"
+  }, {
+    path: "/app/form/purchase/return",
+    component: _8ae64cc6,
+    name: "app-form-purchase-return"
+  }, {
+    path: "/app/form/sales/creditmemo",
+    component: _18846903,
+    name: "app-form-sales-creditmemo"
+  }, {
+    path: "/app/form/sales/delivery",
+    component: _4c928ec4,
+    name: "app-form-sales-delivery"
+  }, {
+    path: "/app/form/sales/dp",
+    component: _93fd0548,
+    name: "app-form-sales-dp"
+  }, {
+    path: "/app/form/sales/invoice",
+    component: _30cf960d,
+    name: "app-form-sales-invoice"
+  }, {
+    path: "/app/form/sales/order",
+    component: _715af3ae,
+    name: "app-form-sales-order"
+  }, {
+    path: "/app/form/sales/payment",
+    component: _08607066,
+    name: "app-form-sales-payment"
+  }, {
+    path: "/app/form/sales/quote",
+    component: _304d63dc,
+    name: "app-form-sales-quote"
+  }, {
+    path: "/app/form/sales/return",
+    component: _417c4000,
+    name: "app-form-sales-return"
   }, {
     path: "/",
     component: _2c1039ce,

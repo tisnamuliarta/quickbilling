@@ -218,29 +218,29 @@ export default {
     mappingAction(type) {
       switch (type) {
         case 'SQ':
-          return '/app/sales/form/quote'
+          return '/app/form/sales/quote'
         case 'SO':
-          return '/app/sales/form/order'
+          return '/app/form/sales/order'
         case 'SD':
-          return '/app/sales/form/delivery'
+          return '/app/form/sales/delivery'
         case 'SI':
-          return '/app/sales/form/invoice'
+          return '/app/form/sales/invoice'
         case 'SP':
-          return '/app/sales/form/payment'
+          return '/app/form/sales/payment'
         case 'ARCM':
-          return '/app/sales/form/creditmemo'
+          return '/app/form/sales/creditmemo'
         case 'SR':
-          return '/app/sales/form/return'
+          return '/app/form/sales/return'
         case 'PO':
-          return '/app/purchase/form/order'
+          return '/app/form/purchase/order'
         case 'PI':
-          return  '/app/purchase/form/invoice'
+          return  '/app/form/purchase/invoice'
         case 'PP':
-          return '/app/purchase/form/payment'
+          return '/app/form/purchase/payment'
         case 'APCM':
-          return '/app/purchase/form/creditmemo'
+          return '/app/form/purchase/creditmemo'
         case 'GR':
-          return  '/app/purchase/form/return'
+          return  '/app/form/purchase/return'
       }
     },
 

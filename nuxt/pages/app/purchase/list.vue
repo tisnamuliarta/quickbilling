@@ -2,7 +2,7 @@
   <div>
     <DocumentTableDocument
       ref="tableDocument"
-      type-document="PN"
+      type-document="P"
       form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},

@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'AP Invoice',
+      title: 'Sales Order',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
@@ -81,12 +81,10 @@ export default {
     }
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
 
   activated() {
     this.dialog = true
+    this.getDataFromApi()
   },
 
   methods: {

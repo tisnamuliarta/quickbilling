@@ -2,6 +2,7 @@
   <div>
     <DocumentTableDocument
       ref="tableDocument"
+      type-document="S"
       form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
@@ -34,7 +35,7 @@
 
 <script>
 export default {
-  name: 'All Sales',
+  name: 'AllSales',
 
   head() {
     return {

@@ -1,6 +1,6 @@
 <template>
   <v-row dense>
-    <v-col cols="12">
+    <v-col cols="12" md="9" sm="8">
       <v-row dense>
         <v-col cols="12" md="3" sm="12">
           <v-autocomplete
@@ -13,9 +13,82 @@
             item-text="name"
             outlined
             dense
-            clearable
             hide-details="auto"
           ></v-autocomplete>
+        </v-col>
+
+        <v-col cols="12" md="3">
+          <v-combobox
+            v-model="form.tags"
+            :items="itemTag"
+            :search-input.sync="search"
+            hide-selected
+            label="Customer Email"
+            hide-details
+            dense
+            multiple
+            persistent-hint
+            small-chips
+            outlined
+          >
+            <template v-slot:no-data>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    No results matching "<strong>{{ search }}</strong
+                  >". Press <kbd>enter</kbd> to create a new one
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-combobox>
+        </v-col>
+
+        <v-col cols="12" md="2">
+          <v-text-field
+            v-model="form.document_number"
+            readonly
+            label="Transaction Number"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-col>
+
+    <v-col cols="12" md="3" sm="4" class="text-right">
+      <p class="mb-0">Amount Due</p>
+      <span class="text-right font-weight-bold text-h4">
+            {{ $formatter.formatPrice(form.balance_due) }}
+          </span>
+    </v-col>
+
+    <v-col cols="12">
+      <v-row dense>
+        <v-col cols="12" md="3">
+          <v-textarea
+            rows="3"
+            v-model="form.contact_address"
+            label="Billing Address"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-textarea>
+        </v-col>
+
+        <v-col cols="12" md="2" sm="6">
+          <v-select
+            v-model="form.payment_term_id"
+            :items="itemPaymentTerm"
+            item-value="id"
+            item-text="name"
+            label="Payment Term"
+            outlined
+            dense
+            hide-details="auto"
+            @change="changePaymentTerm"
+          ></v-select>
         </v-col>
 
         <v-col cols="12" md="2" sm="4">
@@ -53,93 +126,6 @@
 
         <v-col cols="12" md="2" sm="4">
           <v-menu
-            ref="menu2"
-            v-model="menu2"
-            :close-on-content-click="false"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template #activator="{ on, attrs }">
-              <v-text-field
-                v-show="form.shipping_info"
-                v-model="form.shipping_date"
-                label="Shipping Date"
-                prepend-icon="mdi-calendar"
-                readonly
-                persistent-hint
-                outlined
-                dense
-                hide-details="auto"
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-
-            <v-date-picker
-              v-model="form.shipping_date"
-              no-title
-              @input="menu2 = false"
-            >
-            </v-date-picker>
-          </v-menu>
-        </v-col>
-
-        <v-col cols="12" md="2" sm="4">
-          <v-text-field
-            v-model="form.document_number"
-            readonly
-            label="Transaction Number"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="3">
-          <v-combobox
-            v-model="form.tags"
-            :items="itemTag"
-            :search-input.sync="search"
-            hide-selected
-            label="Tags"
-            hide-details
-            dense
-            multiple
-            persistent-hint
-            small-chips
-            outlined
-          >
-            <template v-slot:no-data>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    No results matching "<strong>{{ search }}</strong
-                    >". Press <kbd>enter</kbd> to create a new one
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </v-combobox>
-        </v-col>
-      </v-row>
-    </v-col>
-
-    <v-col cols="12">
-      <v-row dense>
-        <v-col cols="12" md="3" sm="12">
-          <v-text-field
-            v-model="form.status"
-            readonly
-            label="Status"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="2" sm="4">
-          <v-menu
             ref="menu3"
             v-model="menu3"
             :close-on-content-click="false"
@@ -170,90 +156,36 @@
             </v-date-picker>
           </v-menu>
         </v-col>
-
-        <v-col cols="12" md="2" sm="4">
-          <v-text-field
-            v-show="form.shipping_info"
-            v-model="form.shipping_via"
-            label="Ship Via"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="2" sm="4">
-          <v-text-field
-            v-model="form.reference_no"
-            label="Reference No"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="3" sm="12">
-          <v-select
-            v-model="form.warehouse_id"
-            :items="itemWarehouse"
-            item-text="name"
-            item-value="id"
-            label="Warehouse"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-select>
-        </v-col>
       </v-row>
     </v-col>
 
     <v-col cols="12">
       <v-row dense>
-        <v-col cols="12" md="3" sm="6"> </v-col>
-
-        <v-col cols="12" md="2" sm="6">
-          <v-select
-            v-model="form.payment_term_id"
-            :items="itemPaymentTerm"
-            item-value="id"
-            item-text="name"
-            label="Payment Term"
-            outlined
-            dense
-            hide-details="auto"
-            @change="changePaymentTerm"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="12" md="2" sm="6">
-          <v-text-field
-            v-show="form.shipping_info"
-            v-model="form.tracking_code"
-            label="Tracking No"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-
-        <v-col cols="12" md="2" sm="6">
-          <v-checkbox
-            v-model="form.shipping_info"
-            dense
+        <v-col cols="12" md="3">
+          <v-combobox
+            v-model="form.tags"
+            :items="itemTag"
+            :search-input.sync="search"
+            hide-selected
+            label="Tags"
             hide-details
-            label="Shipping Info"
-            class="mt-0"
-          ></v-checkbox>
-        </v-col>
-
-        <v-col cols="12" md="3" sm="6">
-          <v-checkbox
-            v-model="form.price_include_tax"
             dense
-            hide-details
-            label="Price Include Tax"
-            class="mt-0"
-          ></v-checkbox>
+            multiple
+            persistent-hint
+            small-chips
+            outlined
+          >
+            <template v-slot:no-data>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    No results matching "<strong>{{ search }}</strong
+                  >". Press <kbd>enter</kbd> to create a new one
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-combobox>
         </v-col>
       </v-row>
     </v-col>
@@ -304,70 +236,18 @@
         ></v-textarea>
       </v-col>
 
-      // <v-col cols="12" md="12">
-      //   <DocumentFieldUpload
-      //     v-if="!checkDisable()"
-      //     ref="uploadField"
-      //     :form-data="form"
-      //     form-type="document"
-      //     @eventGetFiles="eventGetFiles"
-      //   ></DocumentFieldUpload>
-      // </v-col>
+<!--      <v-col cols="12" md="12">-->
+<!--         <DocumentFieldUpload-->
+<!--           v-if="!checkDisable()"-->
+<!--           ref="uploadField"-->
+<!--           :form-data="form"-->
+<!--           form-type="document"-->
+<!--           @eventGetFiles="eventGetFiles"-->
+<!--         ></DocumentFieldUpload>-->
+<!--       </v-col>-->
     </v-col>
 
     <v-col cols="12" md="2" lg="3">
-      <v-col cols="12" md="12">
-        <v-textarea
-          rows="2"
-          v-model="form.contact_address"
-          label="Billing Address"
-          outlined
-          dense
-          hide-details="auto"
-        ></v-textarea>
-      </v-col>
-      <v-col cols="12" md="12">
-        <v-textarea
-          v-show="form.shipping_info"
-          v-model="form.shipping_address"
-          rows="2"
-          label="Shipping Address"
-          outlined
-          dense
-          hide-details="auto"
-        ></v-textarea>
-      </v-col>
-
-      <v-col
-        v-if="itemFiles.length > 0"
-        cols="12"
-        md="12"
-
-      >
-        <v-list dense>
-          <v-subheader>Files</v-subheader>
-          <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(item, i) in itemFiles" :key="i">
-              <v-list-item-content>
-                <v-list-item-title>
-                  <a :href="item.directory" target="_blank">{{
-                    item.filename
-                  }}</a>
-                </v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-btn small dark icon>
-                  <v-icon
-                    color="red"
-                    @click="$refs.uploadField.deleteFile(item)"
-                    >mdi-delete</v-icon
-                  >
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-col>
     </v-col>
 
     <v-col cols="12" md="6" lg="5">

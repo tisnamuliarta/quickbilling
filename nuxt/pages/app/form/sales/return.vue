@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'Goods Return',
+      title: 'Sales Return',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
@@ -81,12 +81,9 @@ export default {
     }
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
-
   activated() {
     this.dialog = true
+    this.getDataFromApi()
   },
 
   methods: {
