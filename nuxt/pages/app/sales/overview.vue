@@ -34,11 +34,11 @@
 
 <script>
 export default {
-  name: 'PurchaseReturn',
+  name: 'SalesOverview',
 
   head() {
     return {
-      title: 'Goods Return',
+      title: 'Sales Overview',
     }
   },
 

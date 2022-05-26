@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'Sales Quotations',
+      title: 'Sales Order',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
@@ -153,7 +153,6 @@ export default {
 
           this.form = Object.assign({}, form)
           this.defaultItem = Object.assign({}, form)
-          this.getBreadcrumb(type, form, form.status)
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
@@ -189,7 +188,6 @@ export default {
           })
           setTimeout(() => {
             this.actionName = 'Save'
-            this.getBreadcrumb(action, this.form, this.form.status)
             this.$refs.formDocument.changeValue('type', action)
             this.$refs.formDocument.changeValue('parent_id', document)
           }, 300)
@@ -283,43 +281,6 @@ export default {
             text: err.response.data.message,
           })
         })
-    },
-
-    getBreadcrumb(type, form, status) {
-      const text =
-        this.$route.query.document !== '0'
-          ? form.document_number
-          : 'Create Document'
-      this.breadcrumb = [
-        {
-          text: 'Dashboard',
-          disabled: false,
-          to: {
-            path: '/dashboard',
-          },
-        },
-        {
-          text: this.$helper.mapping(type),
-          disabled: false,
-          to: {
-            path: this.$helper.mappingAction(type),
-          },
-        },
-        {
-          text: text,
-          disabled: true,
-          to: {
-            path: '/dashboard/documents/form',
-          },
-        },
-      ]
-    },
-
-    mappingType(type) {
-      switch (type) {
-        case 'SQ':
-          return '/dashboard/sales/quote'
-      }
     },
 
     store() {

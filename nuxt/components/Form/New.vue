@@ -36,22 +36,22 @@ export default {
     return {
       dialog: false,
       itemSales: [
-        { text: 'Sales Quotations', type: 'SQ', route: '/app/sales/quote' },
-        { text: 'Sales Order', type: 'SO', route: '/app/sales/order' },
-        { text: 'Sales Delivery', type: 'SD', route: '/app/sales/delivery' },
-        { text: 'A/R Invoice', type: 'SI', route: '/app/sales/invoice' },
-        { text: 'Incoming Payment', type: 'SP', route: '/app/sales/payment' },
-        { text: 'A/R Credit Memo', type: 'ARCM', route: '/app/sales/creditmemo' },
-        { text: 'Sales Return', type: 'SR', route: '/app/sales/return' },
+        { text: 'Sales Quotations', type: 'SQ', route: '/app/sales/form/quote' },
+        { text: 'Sales Order', type: 'SO', route: '/app/sales/form/order' },
+        { text: 'Sales Delivery', type: 'SD', route: '/app/sales/form/delivery' },
+        { text: 'A/R Invoice', type: 'SI', route: '/app/sales/form/invoice' },
+        { text: 'Incoming Payment', type: 'SP', route: '/app/sales/form/payment' },
+        { text: 'A/R Credit Memo', type: 'ARCM', route: '/app/sales/form/creditmemo' },
+        { text: 'Sales Return', type: 'SR', route: '/app/sales/form/return' },
       ],
 
       itemPurchase: [
         { text: 'Expense', type: 'EXPENSE', route: '/app/expense' },
-        { text: 'Purchase Order', type: 'PO', route: '/app/purchase/order' },
-        { text: 'A/P Invoice', type: 'PI', route: '/app/purchase/invoice' },
-        { text: 'Outgoing Payment', type: 'PP', route: '/app/purchase/payment' },
-        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/purchase/creditmemo' },
-        { text: 'Goods Return', type: 'GR', route: '/app/purchase/return' },
+        { text: 'Purchase Order', type: 'PO', route: '/app/purchase/form/order' },
+        { text: 'A/P Invoice', type: 'PI', route: '/app/purchase/form/invoice' },
+        { text: 'Outgoing Payment', type: 'PP', route: '/app/purchase/form/payment' },
+        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/purchase/form/creditmemo' },
+        { text: 'Goods Return', type: 'GR', route: '/app/purchase/form/return' },
       ],
 
       itemOther: [

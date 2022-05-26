@@ -29,18 +29,16 @@
         },
       ]"
     ></DocumentTableDocument>
-    <NuxtChild keep-alive :keep-alive-props="{include: ['form']}"></NuxtChild>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PurchaseReturn',
-  layout: 'dashboard',
+  name: 'SalesOverview',
 
   head() {
     return {
-      title: 'Goods Return',
+      title: 'Sales Overview',
     }
   },
 

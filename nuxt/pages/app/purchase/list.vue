@@ -2,8 +2,8 @@
   <div>
     <DocumentTableDocument
       ref="tableDocument"
-      type-document="PD"
-      form-url="/app/purchasereceipt/form"
+      type-document="PN"
+      form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
@@ -29,18 +29,16 @@
         },
       ]"
     ></DocumentTableDocument>
-    <NuxtChild keep-alive :keep-alive-props="{include: ['form']}"></NuxtChild>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PurchaseReceipt',
-  layout: 'dashboard',
+  name: 'All Sales',
 
   head() {
     return {
-      title: 'Purchase Receipt',
+      title: 'All Sales',
     }
   },
 

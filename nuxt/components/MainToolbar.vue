@@ -35,23 +35,23 @@
     <v-btn
       v-if="showBatchAction"
       small
-      rounded
       color="green"
       class="ml-0 mr-2"
       dark
       elevation="0"
     >
       Batch Action
-      <v-menu transition="slide-y-transition" bottom>
+      <v-menu transition="slide-y-transition" offset-y bottom>
         <template #activator="{ on, attrs }">
-          <v-btn dark icon v-bind="attrs" v-on="on">
+          <v-btn dark small icon v-bind="attrs" v-on="on">
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </template>
-        <v-list>
+        <v-list dense>
           <v-list-item
             v-for="(value, i) in ['Make Inactive']"
             :key="i"
+            dense
             @click="makeInActive(value, doctype)"
           >
             <v-list-item-content>
@@ -164,18 +164,6 @@
     ></TableFilter>
 
     <v-spacer />
-
-    <v-btn
-      v-if="showAdd"
-      elevation="0"
-      small
-      color="green"
-      dark
-      @click="newData()"
-    >
-      {{ buttonTitle }}
-    </v-btn>
-
     <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-refresh</v-icon>
     </v-btn>

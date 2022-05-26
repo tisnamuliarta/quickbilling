@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'Sales Quotations',
+      title: 'Sales Return',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },

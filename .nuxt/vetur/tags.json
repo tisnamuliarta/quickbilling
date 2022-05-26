@@ -32,21 +32,6 @@
   "AccountingFormReportingPeriod": {
     "description": "Auto imported from components/Accounting/FormReportingPeriod.vue"
   },
-  "DashboardBusinessOverview": {
-    "description": "Auto imported from components/Dashboard/BusinessOverview.vue"
-  },
-  "DashboardCheck": {
-    "description": "Auto imported from components/Dashboard/Check.vue"
-  },
-  "DashboardForm": {
-    "description": "Auto imported from components/Dashboard/Form.vue"
-  },
-  "DashboardGetThingDone": {
-    "description": "Auto imported from components/Dashboard/GetThingDone.vue"
-  },
-  "DashboardHome": {
-    "description": "Auto imported from components/Dashboard/Home.vue"
-  },
   "DocumentCardAction": {
     "description": "Auto imported from components/Document/CardAction.vue"
   },
@@ -82,6 +67,9 @@
   },
   "FormAgGrid": {
     "description": "Auto imported from components/Form/AgGrid.vue"
+  },
+  "FormButtonAction": {
+    "description": "Auto imported from components/Form/ButtonAction.vue"
   },
   "FormCheckForm": {
     "description": "Auto imported from components/Form/CheckForm.vue"

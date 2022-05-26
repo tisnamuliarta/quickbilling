@@ -12,7 +12,7 @@
         <span
           class="font-weight-bold"
           v-text="companyName"
-          @click="$router.push('/')"
+          @click="$router.push('/home/business-overview')"
           style="cursor: pointer"
         ></span>
       </v-toolbar-title>
@@ -23,12 +23,47 @@
 
       <template v-if="showExtension" #extension>
         <v-tabs align-with-title>
-          <v-tab> {{ extensionText }}</v-tab>
+          <v-tab
+            v-for="(item, key) in extensionTabs"
+            :key="key"
+            @click="$router.push(item.route)"
+          >
+            {{ item.title }}</v-tab
+          >
         </v-tabs>
 
         <v-spacer />
 
-        <v-btn color="primary" small elevation="0">btn</v-btn>
+        <v-btn v-if="showExtensionButon" color="primary" small elevation="0">
+          New Transactions
+          <v-menu transition="slide-y-transition" offset-y bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn small dark icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item
+                v-for="(value, i) in extensionMenu"
+                :key="i"
+                dense
+                @click="
+                  $router.push({
+                    path: value.route,
+                    query: {
+                      document: 0,
+                      type: value.type,
+                    },
+                  })
+                "
+              >
+                <v-list-item-content>
+                  <v-list-item-title>{{ value.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
       </template>
     </v-app-bar>
 
@@ -47,7 +82,7 @@
       :temporary="$route.name === 'dashboard-settings-setup'"
     >
       <v-list dense nav>
-        <NuxtLink to="/">
+        <NuxtLink to="/home/business-overview">
           <v-skeleton-loader
             v-show="loadImage"
             type="avatar"
@@ -60,15 +95,7 @@
 
         <v-menu offset-y left :nudge-width="700">
           <template #activator="{ on }">
-            <v-btn
-              outlined
-              block
-              small
-              rounded
-              color="primary"
-              class="mb-4"
-              v-on="on"
-            >
+            <v-btn outlined block small color="primary" class="mb-4" v-on="on">
               <v-icon>mdi-plus</v-icon>
               New
             </v-btn>
@@ -112,7 +139,10 @@
 
     <v-main class="grey lighten-4">
       <v-container fluid>
-        <Nuxt keep-alive :keep-alive-props="{exclude: ['pages/sales/quote.vue']}" />
+        <Nuxt
+          keep-alive
+          :keep-alive-props="{ exclude: ['pages/sales/quote.vue'] }"
+        />
       </v-container>
     </v-main>
 
@@ -157,7 +187,9 @@ export default {
       loadImage: false,
       companyName: '',
       showExtension: false,
-      extensionText: '',
+      showExtensionButon: false,
+      extensionMenu: [],
+      extensionTabs: '',
     }
   },
 
@@ -218,7 +250,9 @@ export default {
 
     extensionSetting(data) {
       this.showExtension = data.show
-      this.extensionText = data.title
+      this.showExtensionButon = data.showBtn
+      this.extensionTabs = data.tabs
+      this.extensionMenu = data.item
     },
 
     changeDrawer() {

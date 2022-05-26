@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'Sales Quotations',
+      title: 'AP Credit Memo',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
