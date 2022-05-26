@@ -81,12 +81,10 @@ export default {
     }
   },
 
-  mounted() {
-    this.getDataFromApi()
-  },
 
   activated() {
     this.dialog = true
+    this.getDataFromApi()
   },
 
   methods: {

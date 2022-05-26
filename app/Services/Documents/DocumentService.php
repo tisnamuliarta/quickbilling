@@ -24,7 +24,7 @@ class DocumentService
      */
     public function index($request): array
     {
-        $type = (isset($request->type)) ? $request->type : 'NO';
+        $type = (isset($request->type)) ? $request->type : '';
         $options = $request->options;
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
@@ -46,7 +46,7 @@ class DocumentService
             ")
         )
             ->with(['items', 'taxDetails', 'entity'])
-            ->where('type', $type);
+            ->where('type', 'LIKE', '%' . $type . '%');
 
         $result["total"] = $query->count();
 

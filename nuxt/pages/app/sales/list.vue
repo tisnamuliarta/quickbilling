@@ -2,11 +2,11 @@
   <div>
     <DocumentTableDocument
       ref="tableDocument"
-      type-document="PN"
       form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
+        {text: 'Type', value: 'type', cellClass: 'disable-wrap'},
         {text: 'Date', value: 'issued_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
         {text: 'Due Date', value: 'due_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
         {text: 'Status', value: 'status', align: 'left', cellClass: 'disable-wrap', sortable: false, filterable: false},

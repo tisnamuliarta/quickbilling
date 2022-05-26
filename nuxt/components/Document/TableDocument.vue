@@ -207,12 +207,41 @@ export default {
 
     editItem(item) {
       this.$router.push({
-        path: '/app/salesquote/form',
+        path: this.mappingAction(item.type),
         query: {
           document: item.id,
-          type: this.typeDocument,
+          type: item.type,
         },
       })
+    },
+
+    mappingAction(type) {
+      switch (type) {
+        case 'SQ':
+          return '/app/sales/form/quote'
+        case 'SO':
+          return '/app/sales/form/order'
+        case 'SD':
+          return '/app/sales/form/delivery'
+        case 'SI':
+          return '/app/sales/form/invoice'
+        case 'SP':
+          return '/app/sales/form/payment'
+        case 'ARCM':
+          return '/app/sales/form/creditmemo'
+        case 'SR':
+          return '/app/sales/form/return'
+        case 'PO':
+          return '/app/purchase/form/order'
+        case 'PI':
+          return  '/app/purchase/form/invoice'
+        case 'PP':
+          return '/app/purchase/form/payment'
+        case 'APCM':
+          return '/app/purchase/form/creditmemo'
+        case 'GR':
+          return  '/app/purchase/form/return'
+      }
     },
 
     actions(action, item) {
