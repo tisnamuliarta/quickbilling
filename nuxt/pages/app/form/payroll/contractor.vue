@@ -1,363 +1,121 @@
 <template>
-  <div>
-    <v-dialog
-      v-model="dialog"
-      max-width="700px"
-      persistent
-      transition="dialog-top-transition"
-      scrollable
-    >
-      <v-card tile>
-        <v-card-title>
-          <v-toolbar-title>
-            <v-btn icon>
-              <v-icon>mdi-progress-pencil</v-icon>
-            </v-btn>
-            <span>Item Master Data</span>
-          </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon dark color="red" @click="close">
-            <v-icon>mdi-close</v-icon>
+  <v-dialog
+    v-model="dialog"
+    fullscreen
+    hide-overlay
+    persistent
+    transition="dialog-top-transition"
+    scrollable
+  >
+    <v-card tile>
+      <v-card-title>
+        <v-toolbar-title>
+          <v-btn icon>
+            <v-icon>mdi-progress-pencil</v-icon>
           </v-btn>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-text-field
-                  v-model="form.name"
-                  label="Name"
-                  placeholder="Name"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+          <span v-text="title"></span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon dark color="red" @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider />
 
-              <!--              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
-              <!--                <v-text-field-->
-              <!--                  v-model="form.code"-->
-              <!--                  label="Code"-->
-              <!--                  outlined-->
-              <!--                  dense-->
-              <!--                  hide-details="auto"-->
-              <!--                ></v-text-field>-->
-              <!--              </v-col>-->
+      <v-card-text class="pl-0 pr-0">
+        <v-container fluid>
+          <LazyDocumentFormDocument
+            ref="formDocument"
+          ></LazyDocumentFormDocument>
+        </v-container>
+      </v-card-text>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.category"
-                  :items="itemCategory"
-                  label="Category"
-                  placeholder="Category"
-                  outlined
-                  multiple
-                  persistent-hint
-                  dense
-                  hint="Exp. Component, Services, Design"
-                  hide-details="auto"
-                >
-                  <template #prepend>
-                    <v-btn small icon>
-                      <v-icon
-                        small
-                        color="orange"
-                        @click="
-                          $refs.formMaster.openForm(
-                            '/api/master/categories',
-                            'Item Category',
-                            'Item Category',
-                            '400px'
-                          )
-                        "
-                      >
-                        mdi-arrow-right-bold
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                </v-select>
-              </v-col>
+      <v-divider />
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.unit"
-                  :items="itemUnit"
-                  label="Unit"
-                  placeholder="Unit"
-                  outlined
-                  persistent-hint
-                  dense
-                  hide-details="auto"
-                >
-                  <template #prepend>
-                    <v-btn small icon>
-                      <v-icon
-                        small
-                        color="orange"
-                        @click="
-                          $refs.formMaster.openForm(
-                            '/api/inventory/item-units',
-                            'Item Unit',
-                            'Item Unit',
-                            '400px'
-                          )
-                        "
-                      >
-                        mdi-arrow-right-bold
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                </v-select>
-              </v-col>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn color="green darken-1" class="mr-3" dark rounded @click="close">
+          Save
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-textarea
-                  v-model="form.description"
-                  label="Descriptions"
-                  outlined
-                  dense
-                  rows="2"
-                ></v-textarea>
-              </v-col>
-
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Buy Price</span>
-                <hr />
-              </v-col>
-
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-model="form.purchase_price"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Buy Unit Price"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.buy_account_id"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Buy Account"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.buy_tax_id"
-                  :items="itemTax"
-                  item-text="name"
-                  item-value="id"
-                  label="Default Buy Tax"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-select>
-              </v-col>
-
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Sell Price</span>
-                <hr />
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-model="form.sale_price"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Buy Unit Price"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.sell_account_id"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Sell Account"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.sell_tax_id"
-                  :items="itemTax"
-                  item-text="name"
-                  item-value="id"
-                  label="Default Sell Tax"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-select>
-              </v-col>
-
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Track Stock for This Item</span>
-                <hr />
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <vuetify-money
-                  v-model="form.minimum_stock"
-                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                  v-bind:options="moneyOptions"
-                  label="Minimum Stock Quantity"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></vuetify-money>
-              </v-col>
-              <v-col cols="12" md="8" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-autocomplete
-                  v-model="form.inventory_account"
-                  :items="itemAccounts"
-                  item-text="name"
-                  item-value="id"
-                  label="Default Inventory Account"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-
-        <v-divider />
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="green darken-1"
-            dark
-            small
-            :loading="submitLoad"
-            @click="save()"
-          >
-            {{ buttonTitle }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <LazyInventoryFormMaster
-      ref="formMaster"
-      @returnData="returnData"
-    ></LazyInventoryFormMaster>
-  </div>
+          <v-menu transition="slide-y-transition" bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn dark icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-menu-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item v-for="(value, i) in items" :key="i">
+                <v-list-item-content>
+                  <v-list-item-title>{{ value.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
-import Dropzone from 'nuxt-dropzone'
-import 'nuxt-dropzone/dropzone.css'
-
 export default {
-  name: 'FormProduct',
-
-  components: { Dropzone },
-
-  props: {
-    formTitle: {
-      type: String,
-      default: '',
-    },
-    buttonTitle: {
-      type: String,
-      default: '',
-    },
-    formData: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-  },
+  name: 'quotation',
 
   data() {
     return {
-      logo: '',
+      title: 'Delivery',
+      items: [
+        { text: 'Edit', action: 'edit' },
+        { text: 'Delete', action: 'delete' },
+      ],
+      breadcrumb: [],
+      form: {},
+      audits: {},
+      defaultItem: {},
+      url: '/api/documents/form',
+      dialogLoading: false,
+      showLoading: false,
       dialog: true,
-      submitLoad: false,
-      form: this.formData,
-      selectedItem: 1,
-      itemCategory: [],
-      itemUnit: [],
-      itemAccounts: [],
-      itemTax: [],
-      images: [],
-      statusProcessing: 'insert',
-      valueWhenIsEmpty: '0',
-      temp_image: null,
-      url: '/api/inventory/items',
-      moneyOptions: {
-        suffix: '',
-        length: 11,
-        precision: 2,
-      },
-      options: {
-        url: '/api/document-files',
-        timeout: 9000000000,
-        addRemoveLinks: true,
-        withCredentials: true,
-        thumbnailWidth: 50,
-        thumbnailHeight: 50,
-        acceptedFiles: 'image/*',
-        dictDefaultMessage:
-          "<span class='mdi mdi-cloud-upload'></span> UPLOAD HERE",
-        // headers: {
-        //   'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN'),
-        // },
-      },
+      itemAction: [],
+      actionName: 'Save',
     }
   },
 
-  mounted() {
-    this.getItemCategory()
-    this.getItemUnit()
-    this.getAccounts()
-    this.getTaxes()
+  activated() {
+    this.dialog = true
+    this.getDataFromApi()
   },
 
   methods: {
-    newData(form) {
-      this.$refs.dialogForm.openDialog()
-      this.statusProcessing = 'insert'
-      this.form = Object.assign({}, form)
-      this.getFiles()
-    },
-
     close() {
       this.$router.back()
       this.$nuxt.$emit('getDataFromApi')
     },
-
-    editItem(item, url) {
-      const dataForm = item
-      dataForm.category = JSON.parse(dataForm.category)
-      this.form = Object.assign({}, dataForm)
-      this.statusProcessing = 'update'
-      this.$refs.dialogForm.openDialog()
-      this.getFiles()
+    checkDisable() {
+      return this.form.status === 'closed' || this.form.status === 'cancel'
     },
 
-    getItemCategory() {
+    arrowLink(status, type) {
       this.$axios
-        .get(`/api/master/categories`, {
+        .get(this.url + '/arrow', {
           params: {
-            type: 'Item Category',
+            type,
+            status,
+            document: this.$route.query.document,
           },
         })
         .then((res) => {
-          this.itemCategory = res.data.data.simple
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              document: res.data.data.id,
+              type,
+            },
+          })
+
+          setTimeout(() => {
+            this.getDataFromApi()
+          }, 300)
         })
         .catch((err) => {
           this.$swal({
@@ -368,157 +126,182 @@ export default {
         })
     },
 
-    getTaxes() {
+    getDataFromApi(copyFromId) {
+      // this.dialogLoading = true
+      this.showLoading = true
+      const type = this.$route.query.type
       this.$axios
-        .get(`/api/financial/taxes`, {
+        .get(this.url + '/' + this.$route.query.document, {
           params: {
-            type: 'Item Category',
+            type,
+            copyFromId,
           },
         })
         .then((res) => {
-          this.itemTax = res.data.data.row_simple
+          let form = ''
+          this.audits = res.data.data.audits
+          if (res.data.data.count > 0) {
+            form = res.data.data.rows
+            this.actionName = 'Update'
+          } else {
+            form = res.data.data.form
+            this.actionName = 'Save'
+          }
+
+          this.form = Object.assign({}, form)
+          this.defaultItem = Object.assign({}, form)
+
+          setTimeout(() => {
+            this.$refs.formDocument.setData(this.form)
+          }, 30)
         })
         .catch((err) => {
+          const message =
+            err.response !== undefined ? err.response.data.message : err
           this.$swal({
             type: 'error',
             title: 'Error',
-            text: err.response.data.message,
+            text: message,
           })
         })
+        .finally((res) => {
+          this.showLoading = false
+        })
     },
 
-    getItemUnit() {
-      this.$axios
-        .get(`/api/inventory/item-units`, {
-          params: {
-            type: 'Item Category',
-          },
-        })
-        .then((res) => {
-          this.itemUnit = res.data.data.simple
-        })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: 'Error',
-            text: err.response.data.message,
+    actionDocument(action) {
+      switch (action) {
+        case 'SQ':
+        case 'SO':
+        case 'PQ':
+        case 'PO':
+          const document = this.$route.query.document
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              document: 0,
+              type: action,
+            },
           })
-        })
+          setTimeout(() => {
+            this.actionName = 'Save'
+            this.$refs.formDocument.changeValue('type', action)
+            this.$refs.formDocument.changeValue('parent_id', document)
+          }, 300)
+          break
+        case 'C':
+          this.$refs.formDocument.changeValue('status', 'cancel')
+          this.store()
+          break
+        case 'sendEmail':
+          this.openDialogEmail()
+          break
+      }
     },
 
-    getAccounts() {
-      this.$axios
-        .get(`/api/financial/accounts`, {
-          params: {
-            type: 'All',
-          },
-        })
-        .then((res) => {
-          this.itemAccounts = res.data.data.rows
-        })
-        .catch((err) => {
-          this.$swal({
-            type: 'error',
-            title: 'Error',
-            text: err.response.data.message,
-          })
-        })
-    },
-
-    sendingParams(file, xhr, formData) {
-      const temp_id = this.form.id ? this.form.id : this.form.temp_id
-      formData.append('temp_id', temp_id)
-      formData.append('type', 'item')
-    },
-
-    handleError(file, message, xhr) {
+    deleteDocument(document) {
+      const vm = this
       this.$swal({
-        type: 'error',
-        title: 'Error...',
-        text: message.message,
+        title: 'Are you sure?',
+        text: 'The data will be deleted',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.value) {
+          this.$axios
+            .delete(this.url + '/' + document)
+            .then((res) => {
+              this.$swal({
+                type: 'success',
+                title: 'Success...',
+                text: 'Data Deleted!',
+              })
+              this.$router.push({
+                path: vm.$helper.mappingAction(vm.$route.query.type),
+              })
+            })
+            .catch((err) => {
+              this.$swal({
+                type: 'error',
+                title: 'Oops...',
+                text: err.response.data.message,
+              })
+            })
+        }
       })
     },
 
-    reloadAttachment(file, response) {
-      if (response.errors) {
-        this.$swal({
-          type: 'error',
-          title: 'Oops...',
-          text: response.message,
-        })
-      } else {
-        this.$emit('eventCountAttachment', {
-          total: response.data.count,
-          row: this.row,
-        })
-
-        setTimeout(() => {
-          this.getFiles()
-        }, 300)
-
-        this.$swal({
-          type: 'success',
-          title: 'Success...',
-          text: 'Attachment uploaded!',
-        })
+    printAction(action) {
+      switch (action) {
+        case 'preview':
+          this.previewDocument()
+          break
+        case 'sendEmail':
+          this.openDialogEmail()
+          break
       }
     },
 
-    getFiles() {
-      this.showLoadingAttachment = true
-      const vm = this
-      const temp_id = this.form.id ? this.form.id : this.form.temp_id
+    openDialogEmail() {
+      this.$refs.dialogSendEmail.openEmailDialog(this.form)
+    },
 
+    previewDocument() {
+      const vm = this
+      this.dialogLoading = true
       this.$axios
-        .get(this.options.url, {
+        .get(`/api/documents/print`, {
           params: {
-            type: 'item',
-            temp_id,
+            id: vm.form.id,
           },
+          responseType: 'arraybuffer',
         })
-        .then((res) => {
-          vm.images = res.data.data.rows
-          vm.total = res.data.data.total
-          vm.showLoadingAttachment = false
+        .then((response) => {
+          this.dialogLoading = false
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+
+          link.href = url
+          link.setAttribute('download', vm.form.document_number + '.pdf') // set custom file name
+          document.body.appendChild(link)
+
+          link.click() // force download file without open new tab
         })
         .catch((err) => {
-          this.showLoadingAttachment = false
+          this.dialogLoading = false
           this.$swal({
             type: 'error',
-            title: 'Oops...',
-            text: err.response.message,
+            title: 'Error',
+            text: err.response.data.message,
           })
         })
     },
 
-    returnData(data) {
-      if (data.type === 'Item Category') {
-        this.itemCategory = data.item
-      } else if (data.type === 'Item Unit') {
-        this.itemUnit = data.item
-      }
-    },
+    store() {
+      const method = this.$route.query.document === '0' ? 'post' : 'patch'
+      const url =
+        this.$route.query.document === '0'
+          ? this.url
+          : this.url + '/' + this.$route.query.document
+      let data = this.$refs.formDocument.returnData(this.$route.query.document)
 
-    save() {
-      const vm = this
-      const status = this.statusProcessing
-
-      if (status === 'insert') {
-        this.store('post', this.url, this.form)
-        vm.submitLoad = false
-      } else if (status === 'update') {
-        this.store('put', this.url + '/' + this.form.id, this.form)
-        vm.submitLoad = false
-      }
-    },
-
-    store(method, url, data) {
-      const vm = this
-      vm.submitLoad = true
+      this.dialogLoading = true
       this.$axios({ method, url, data })
         .then((res) => {
-          this.$refs.dialogForm.closeDialog()
-          this.$emit('getDataFromApi')
+          this.$router.push({
+            path: '/dashboard/documents/form',
+            query: {
+              document: res.data.data.id,
+              type: res.data.data.type,
+            },
+          })
+          this.$nuxt.$emit('snackbar', res.data.message)
+          setTimeout(() => {
+            this.getDataFromApi()
+          }, 50)
         })
         .catch((err) => {
           this.$swal({
@@ -526,8 +309,9 @@ export default {
             title: 'Error',
             text: err.response.data.message,
           })
-
-          vm.submitLoad = false
+        })
+        .finally((res) => {
+          this.dialogLoading = false
         })
     },
   },

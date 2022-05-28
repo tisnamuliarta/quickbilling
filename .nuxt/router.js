@@ -7,6 +7,7 @@ import scrollBehavior from './router.scrollBehavior.js'
 const _72c2a8fb = () => interopDefault(import('..\\nuxt\\pages\\list\\index.vue' /* webpackChunkName: "pages/list/index" */))
 const _0a81983d = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting.vue' /* webpackChunkName: "pages/app/accounting" */))
 const _3e4c7280 = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\account.vue' /* webpackChunkName: "pages/app/accounting/account" */))
+const _d43386be = () => interopDefault(import('..\\nuxt\\pages\\app\\accounting\\reconcile.vue' /* webpackChunkName: "pages/app/accounting/reconcile" */))
 const _047989b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact.vue' /* webpackChunkName: "pages/app/contact" */))
 const _2eaaf386 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
 const _604dc4b0 = () => interopDefault(import('..\\nuxt\\pages\\app\\contact\\customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
@@ -116,6 +117,10 @@ export const routerOptions = {
       path: "account",
       component: _3e4c7280,
       name: "app-accounting-account"
+    }, {
+      path: "reconcile",
+      component: _d43386be,
+      name: "app-accounting-reconcile"
     }]
   }, {
     path: "/app/contact",

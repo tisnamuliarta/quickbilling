@@ -10,8 +10,10 @@
         thumbnailWidth: 50,
         thumbnailHeight: 50,
         acceptedFiles: 'image/*',
+        dictDefaultMessage:
+          '<span class=\'mdi mdi-cloud-upload\'></span> UPLOAD HERE',
         headers: {
-          'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN'),
+          'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN'),
         },
       }"
     :destroy-dropzone="true"

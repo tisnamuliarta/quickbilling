@@ -2,11 +2,10 @@
   <v-row dense>
     <v-col cols="12" md="9" sm="8">
       <v-row dense>
-        <v-col cols="12" md="3" sm="12">
+        <v-col cols="12" md="4" sm="12">
           <v-autocomplete
             v-model="form.contact_id"
             :items="itemContact"
-            @change="changeContact"
             label="Customer/Vendor"
             return-object
             item-value="id"
@@ -14,6 +13,7 @@
             outlined
             dense
             hide-details="auto"
+            @change="changeContact"
           ></v-autocomplete>
         </v-col>
 
@@ -31,12 +31,12 @@
             small-chips
             outlined
           >
-            <template v-slot:no-data>
+            <template #no-data>
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title>
                     No results matching "<strong>{{ search }}</strong
-                  >". Press <kbd>enter</kbd> to create a new one
+                    >". Press <kbd>enter</kbd> to create a new one
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -44,23 +44,12 @@
           </v-combobox>
         </v-col>
 
-        <v-col cols="12" md="2">
-          <v-text-field
-            v-model="form.document_number"
-            readonly
-            label="Transaction Number"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
+        <v-col cols="12" md="2"></v-col>
 
-        <v-col cols="12" md="3"></v-col>
-
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-textarea
-            rows="3"
             v-model="form.contact_address"
+            rows="3"
             label="Billing Address"
             outlined
             dense
@@ -148,7 +137,7 @@
           </v-menu>
         </v-col>
 
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="8">
           <v-combobox
             v-model="form.tags"
             :items="itemTag"
@@ -162,12 +151,12 @@
             small-chips
             outlined
           >
-            <template v-slot:no-data>
+            <template #no-data>
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title>
                     No results matching "<strong>{{ search }}</strong
-                  >". Press <kbd>enter</kbd> to create a new one
+                    >". Press <kbd>enter</kbd> to create a new one
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -178,10 +167,26 @@
     </v-col>
 
     <v-col cols="12" md="3" sm="4" class="text-right">
-      <p class="mb-0">Amount Due</p>
-      <span class="text-right font-weight-bold text-h4">
-            {{ $formatter.formatPrice(form.balance_due) }}
+      <v-row dense>
+        <v-col cols="12">
+          <p class="mb-0">Amount Due</p>
+          <span class="text-right font-weight-bold text-h4">
+            {{
+              isNaN(form.balance_due) ? 0 : $formatter.formatPrice(form.balance_due)
+            }}
           </span>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="form.document_number"
+            readonly
+            label="Transaction Number"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+      </v-row>
     </v-col>
 
     <v-col cols="12">
@@ -193,13 +198,7 @@
           ></LazyDocumentTableDetail>
         </div>
         <v-card-actions>
-          <v-btn
-            color="blue darken-1"
-            class="white--text"
-            small
-            depressed
-            @click="$refs.childDetails.addLine()"
-          >
+          <v-btn small depressed outlined @click="$refs.childDetails.addLine()">
             Add Line
             <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -230,107 +229,46 @@
         ></v-textarea>
       </v-col>
 
-<!--      <v-col cols="12" md="12">-->
-<!--         <DocumentFieldUpload-->
-<!--           v-if="!checkDisable()"-->
-<!--           ref="uploadField"-->
-<!--           :form-data="form"-->
-<!--           form-type="document"-->
-<!--           @eventGetFiles="eventGetFiles"-->
-<!--         ></DocumentFieldUpload>-->
-<!--       </v-col>-->
+      <v-col cols="12" md="12">
+        <DocumentFieldUpload
+          ref="uploadField"
+          :form-data="form"
+          form-type="document"
+          @eventGetFiles="eventGetFiles"
+        ></DocumentFieldUpload>
+      </v-col>
     </v-col>
 
-    <v-col cols="12" md="2" lg="3">
-    </v-col>
+    <v-spacer />
 
     <v-col cols="12" md="6" lg="5">
       <v-row dense>
-        <v-col cols="12" md="8"></v-col>
-        <v-col cols="12" md="4">
-          <vuetify-money
-            v-model="form.sub_total"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotal"
-            readonly
-            label="Sub Total"
-            outlined
-            dense
-            reverse
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
-        </v-col>
-
-        <v-col cols="12" md="8"></v-col>
-
-        <v-col cols="12" md="4">
-          <vuetify-money
-            v-model="form.discount_per_line"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotal"
-            readonly
-            label="Discount Per Lines"
-            outlined
-            dense
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <v-select
-            v-model="form.discount_type"
-            :items="['Amount', 'Percent']"
-            label="Discount Type"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-select>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <vuetify-money
-            v-model="form.discount_rate"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotalDiscount"
-            label="Discount Rate"
-            outlined
-            dense
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
-        </v-col>
-
-        <v-col cols="12" md="4">
-          <vuetify-money
-            v-model="form.discount_amount"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotal"
-            readonly
-            label="Discount Amount"
-            outlined
-            dense
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
-        </v-col>
-
         <v-col cols="12">
-          <v-row
-            v-if="form.tax_details.length > 0"
-            v-for="(item, index) in form.tax_details"
-            :key="index"
-            dense
-          >
-            <v-col cols="12" md="8"></v-col>
+          <v-row dense>
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">Subtotal</span>
+            </v-col>
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">
+                {{
+                  isNaN(form.sub_total) ? 0 : $formatter.formatPrice(form.sub_total)
+                }}
+              </span>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- <v-col cols="12">
+          <v-row dense>
+            <v-spacer />
             <v-col cols="12" md="4">
               <vuetify-money
-                v-model="item.amount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
+                v-model="form.discount_per_line"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotal"
                 readonly
-                :label="item.name"
+                label="Discount Per Lines"
                 outlined
                 dense
                 class="text-money"
@@ -338,19 +276,72 @@
               ></vuetify-money>
             </v-col>
           </v-row>
+        </v-col> -->
+
+        <v-col cols="12">
+          <v-row dense class="align-right">
+            <v-spacer />
+            <v-col cols="12" md="4">
+              <v-select
+                v-model="form.discount_type"
+                :items="['Value', 'Percent']"
+                label="Discount Type"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="12" md="3">
+              <vuetify-money
+                v-model="form.discount_rate"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotalDiscount"
+                label="Discount Rate"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">
+                {{
+                  isNaN(form.discount_amount) ? 0 : $formatter.formatPrice(form.discount_amount)
+                }}
+              </span>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="12">
+          <v-row
+            v-for="(item, index) in form.tax_details"
+            v-if="form.tax_details.length > 0"
+            :key="index"
+            dense
+          >
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">{{ item.name }}</span>
+            </v-col>
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">
+                {{
+                  isNaN(item.amount) ? 0 : $formatter.formatPrice(item.amount)
+                }}
+              </span>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col v-show="form.shipping_info" cols="12" md="8"></v-col>
-        <v-col
-          v-show="form.shipping_info"
-          cols="12"
-          md="4"
-
-        >
+        <v-col v-show="form.shipping_info" cols="12" md="4">
           <vuetify-money
             v-model="form.shipping_fee"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotal"
+            :value-when-is-empty="valueWhenIsEmpty"
+            :options="moneyOptionTotal"
             label="Shipping Fee"
             outlined
             dense
@@ -359,22 +350,23 @@
           ></vuetify-money>
         </v-col>
 
-        <v-col cols="12" md="8"></v-col>
-        <v-col cols="12" md="4">
-          <vuetify-money
-            v-model="form.amount"
-            v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-            v-bind:options="moneyOptionTotal"
-            readonly
-            label="Total"
-            outlined
-            dense
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
+        <v-col cols="12">
+          <v-row dense>
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">Total</span>
+            </v-col>
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">
+                {{
+                  isNaN(form.amount) ? 0 : $formatter.formatPrice(form.amount)
+                }}
+              </span>
+            </v-col>
+          </v-row>
         </v-col>
 
-        <v-col v-if="checkDocument()" cols="12">
+        <!-- <v-col cols="12">
           <v-row dense>
             <v-col cols="12" md="2">
               <v-checkbox
@@ -402,8 +394,8 @@
               <vuetify-money
                 v-show="form.withholding_info"
                 v-model="form.withholding_rate"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotal"
                 label="Rate"
                 outlined
                 dense
@@ -416,8 +408,8 @@
               <vuetify-money
                 v-show="form.withholding_info"
                 v-model="form.withholding_amount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotal"
                 readonly
                 label="Amount"
                 outlined
@@ -427,12 +419,7 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col
-              v-show="form.withholding_info"
-              cols="12"
-              md="12"
-
-            >
+            <v-col v-show="form.withholding_info" cols="12" md="12">
               <v-select
                 v-model="form.withholding_account_id"
                 :items="itemAccounts"
@@ -445,40 +432,19 @@
               ></v-select>
             </v-col>
           </v-row>
-        </v-col>
+        </v-col> -->
 
-        <v-col v-if="checkDocument()" cols="12">
+        <v-col cols="12">
           <v-row dense>
-            <v-col cols="12" md="3">
-              <v-checkbox
-                v-model="form.deposit_info"
-                dense
-                hide-details
-                label="Deposit"
-                class="mt-0"
-              ></v-checkbox>
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">Deposit</span>
             </v-col>
-
-            <v-col cols="12" md="5">
-              <v-select
-                v-show="form.deposit_info"
-                v-model="form.deposit_account_id"
-                :items="itemAccounts"
-                item-text="name"
-                item-value="id"
-                label="Deposit Account"
-                outlined
-                dense
-                hide-details="auto"
-              ></v-select>
-            </v-col>
-
             <v-col cols="12" md="4">
               <vuetify-money
-                v-show="form.deposit_info"
                 v-model="form.deposit_amount"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotal"
                 label="Amount"
                 outlined
                 dense
@@ -491,19 +457,16 @@
 
         <v-col cols="12">
           <v-row dense>
-            <v-spacer></v-spacer>
-            <v-col cols="12" md="4">
-              <vuetify-money
-                v-model="form.balance_due"
-                v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
-                v-bind:options="moneyOptionTotal"
-                readonly
-                label="Balance Due"
-                outlined
-                dense
-                class="text-money"
-                hide-details="auto"
-              ></vuetify-money>
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">Balance Due</span>
+            </v-col>
+            <v-col cols="12" md="4" class="text-right">
+              <span class="font-weight-bold subtitle-1">
+                {{
+                  isNaN(form.balance_due) ? 0 : $formatter.formatPrice(form.balance_due)
+                }}
+              </span>
             </v-col>
           </v-row>
         </v-col>
@@ -835,7 +798,7 @@ export default {
     },
 
     getItemCategory() {
-      //this.$refs.dialogSendEmail.openEmailDialog()
+      // this.$refs.dialogSendEmail.openEmailDialog()
       this.$axios
         .get(`/api/master/categories`, {
           params: {
@@ -963,7 +926,7 @@ export default {
     },
 
     changeContact() {
-      let contact = this.form.contact_id
+      const contact = this.form.contact_id
       this.form.contact_id = contact.id
       this.form.contact_address = this.form.contact_address
         ? this.form.contact_address

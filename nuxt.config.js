@@ -92,6 +92,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
     'nuxt-sweetalert2',
+    'cookie-universal-nuxt',
     // 'nuxt-seo-meta',
     // '@luxdamore/nuxt-prune-html',
     // 'nuxt-precompress',

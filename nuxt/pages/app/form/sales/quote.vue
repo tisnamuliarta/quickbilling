@@ -32,10 +32,10 @@
 
       <v-divider />
 
-      <v-card-actions>
+      <v-card-actions style="background-color: #263238">
         <v-spacer />
-        <v-btn color="green darken-1" class="mr-3" dark rounded @click="close">
-          Save
+        <v-btn small color="green darken-1" class="mr-3" dark @click="close">
+          Save and send
 
           <v-menu transition="slide-y-transition" bottom>
             <template #activator="{ on, attrs }">
@@ -65,8 +65,8 @@ export default {
     return {
       title: 'Sales Quotations',
       items: [
-        { text: 'Edit', action: 'edit' },
-        { text: 'Delete', action: 'delete' },
+        { text: 'Save and new', action: 'edit' },
+        { text: 'Save and close', action: 'delete' },
       ],
       breadcrumb: [],
       form: {},

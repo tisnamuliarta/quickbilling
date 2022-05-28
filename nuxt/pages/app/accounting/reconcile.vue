@@ -81,7 +81,7 @@
 
 <script>
 export default {
-  name: 'Account',
+  name: 'Reconcile',
   data() {
     return {
       totalData: 0,
@@ -102,7 +102,7 @@ export default {
       ],
       itemText: '',
       itemAction: '',
-      url: '/api/financial/accounts',
+      url: '/api/financial/reconcile',
       headers: [
         { text: 'Account Code', value: 'code', cellClass: 'disable-wrap' },
         { text: 'Account Name', value: 'name', cellClass: 'disable-wrap' },

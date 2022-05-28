@@ -240,10 +240,6 @@ export default {
       type: String,
       default: '',
     },
-    buttonTitle: {
-      type: String,
-      default: '',
-    },
     formData: {
       type: Object,
       default() {
@@ -288,6 +284,12 @@ export default {
         //   'X-XSRF-TOKEN': this.$cookies.get('XSRF-TOKEN'),
         // },
       },
+    }
+  },
+
+  computed: {
+    buttonTitle() {
+      return this.$route.query.document === 0 ? 'save' : 'Update'
     }
   },
 
