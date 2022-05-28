@@ -38,6 +38,14 @@
 
       <v-col cols="12" md="4">
         <LazyFormListItem
+          title="Tax"
+          description="Display list of sales tax"
+          url="/list/tax"
+        ></LazyFormListItem>
+      </v-col>
+
+      <v-col cols="12" md="4">
+        <LazyFormListItem
           title="Users"
           description="Display list of users"
           url="/list/users"

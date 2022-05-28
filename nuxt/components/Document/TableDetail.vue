@@ -38,6 +38,8 @@ import {
   HiddenRows,
 } from 'handsontable/plugins'
 
+import 'handsontable/dist/handsontable.full.css'
+
 // register imported cell types and plugins
 registerCellType(DropdownCellType)
 registerCellType(NumericCellType)
@@ -51,8 +53,6 @@ registerPlugin(HiddenColumns)
 registerPlugin(HiddenRows)
 registerPlugin(ContextMenu)
 registerPlugin(DropdownMenu)
-
-import 'handsontable/dist/handsontable.full.css'
 
 Handsontable.renderers.registerRenderer(
   'ButtonAddRederer',
@@ -157,7 +157,7 @@ export default {
           {
             width: '24px',
             wordWrap: false,
-            renderer: 'ButtonAddRederer'
+            renderer: 'ButtonAddRederer',
           },
           {
             data: 'id',
@@ -254,7 +254,7 @@ export default {
           {
             width: '24px',
             wordWrap: false,
-            renderer: 'ButtonDeleteRenderer'
+            renderer: 'ButtonDeleteRenderer',
           },
         ],
       },
@@ -352,7 +352,7 @@ export default {
 
     selectItems(data) {
       let rowData = data.row
-      let selected = data.selected
+      const selected = data.selected
       const type = this.form.type
       const vm = this
       selected.forEach(function (item, index) {
@@ -380,7 +380,7 @@ export default {
       this.form = form
       this.updateTableSettings()
       const vm = this
-      const items = form.items !== undefined ? form.items : data
+      const items = form.items.length > 0 ? form.items : data
       vm.$refs.details.hotInstance.loadData(items)
       const countRows = this.$refs.details.hotInstance.countRows()
       for (let i = 0; i < countRows; i++) {
@@ -399,7 +399,7 @@ export default {
       const countRows = this.$refs.details.hotInstance.countRows()
       let subTotal = 0
       let discountAmount = 0
-      let taxDetail = []
+      const taxDetail = []
       let amount = 0
       let amountRow = 0
       if (countRows > 0) {

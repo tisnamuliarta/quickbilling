@@ -67,7 +67,6 @@ const _20216a6a = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\depos
 const _318e2bcc = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\reconcile.vue' /* webpackChunkName: "pages/app/bank/reconcile" */))
 const _5583634f = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
 const _36730eee = () => interopDefault(import('..\\nuxt\\pages\\app\\bank\\withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
-const _3256e3a4 = () => interopDefault(import('..\\nuxt\\pages\\app\\expense\\form.vue' /* webpackChunkName: "pages/app/expense/form" */))
 const _03226208 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\accounting\\account.vue' /* webpackChunkName: "pages/app/form/accounting/account" */))
 const _bb4bb446 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\accounting\\reconcile.vue' /* webpackChunkName: "pages/app/form/accounting/reconcile" */))
 const _211cdac2 = () => interopDefault(import('..\\nuxt\\pages\\app\\form\\contact\\customer.vue' /* webpackChunkName: "pages/app/form/contact/customer" */))
@@ -363,10 +362,6 @@ export const routerOptions = {
     path: "/app/bank/withdraw",
     component: _36730eee,
     name: "app-bank-withdraw"
-  }, {
-    path: "/app/expense/form",
-    component: _3256e3a4,
-    name: "app-expense-form"
   }, {
     path: "/app/form/accounting/account",
     component: _03226208,

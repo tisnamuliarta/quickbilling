@@ -33,6 +33,18 @@
       <v-divider />
 
       <v-card-actions style="background-color: #263238">
+        <v-btn text small dark>Print or Preview</v-btn>
+        <v-divider
+          dark
+          vertical
+        ></v-divider>
+        <v-btn text small dark>Make recurring</v-btn>
+        <v-divider
+          dark
+          vertical
+        ></v-divider>
+        <v-btn text small dark>More</v-btn>
+
         <v-spacer />
         <v-btn small color="green darken-1" class="mr-3" dark @click="close">
           Save and send

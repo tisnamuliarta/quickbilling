@@ -453,13 +453,6 @@
     "_name": "_36730eee"
   },
   {
-    "name": "app-expense-form",
-    "path": "/app/expense/form",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\expense\\\\form.vue",
-    "chunkName": "pages/app/expense/form",
-    "_name": "_3256e3a4"
-  },
-  {
     "name": "app-form-accounting-account",
     "path": "/app/form/accounting/account",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\accounting\\\\account.vue",

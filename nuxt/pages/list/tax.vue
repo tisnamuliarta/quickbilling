@@ -36,9 +36,9 @@
             </v-toolbar>
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
+            <v-btn text small class="mr-2 font-weight-bold text-right pr-0" color="secondary" @click="editItem(item)">
+              Edit
+            </v-btn>
           </template>
         </v-data-table>
       </div>
@@ -118,7 +118,6 @@
 <script>
 export default {
   name: 'Taxes',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

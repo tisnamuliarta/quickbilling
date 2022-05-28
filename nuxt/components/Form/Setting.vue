@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col cols="12" md="3">
         <LazyFormListAction
-          title="Your Company"
+          title="YOUR COMPANY"
           :items="itemCompany"
           @openAction="openAction"
         ></LazyFormListAction>
@@ -11,7 +11,7 @@
 
       <v-col cols="12" md="3">
         <LazyFormListAction
-          title="Lists"
+          title="LISTS"
           :items="itemList"
           @openAction="openAction"
         ></LazyFormListAction>
@@ -19,7 +19,7 @@
 
       <v-col cols="12" md="3">
         <LazyFormListAction
-          title="Tools"
+          title="TOOLS"
           :items="itemTool"
           @openAction="openAction"
         ></LazyFormListAction>
@@ -27,7 +27,7 @@
 
       <v-col cols="12" md="3">
         <LazyFormListAction
-          title="Profile"
+          title="PROFILE"
           :items="itemProfile"
           @openAction="openAction"
         ></LazyFormListAction>
@@ -44,8 +44,8 @@ export default {
     return {
       dialog: false,
       itemCompany: [
-        {text: 'Account and Settings', type: 'SETTING', action: 'setting'},
-        {text: 'Manage User', route: '/users', action: 'page'},
+        { text: 'Account and Settings', type: 'SETTING', action: 'setting' },
+        { text: 'Manage User', route: '/users', action: 'page' },
         {
           text: 'Chart Of Account',
           route: '/financial/account',
@@ -79,14 +79,16 @@ export default {
           route: '/financial/currency',
           action: 'page',
         },
+        { text: 'Tags', type: 'page', action: 'page' },
       ],
 
       itemProfile: [
-        {text: 'Account', route: '/users/currenct', action: 'page'},
-        {text: 'Sign Out', type: 'function', action: 'logout'},
+        { text: 'Account', route: '/users/currenct', action: 'page' },
+        { text: 'Sign Out', type: 'function', action: 'logout' },
       ],
 
       itemTool: [
+        { text: 'Reclasify transaction', route: '/users/currenct', action: 'page' },
         {
           text: 'Import Data',
           route: '/tools/import',
@@ -107,7 +109,8 @@ export default {
           route: '/financial/budgeting',
           action: 'page',
         },
-        {text: 'Audit Log', route: '/tools/audit', action: 'page'},
+        { text: 'Audit Log', route: '/tools/audit', action: 'page' },
+        { text: 'Backup Company', route: '/tools/audit', action: 'page' },
       ],
     }
   },

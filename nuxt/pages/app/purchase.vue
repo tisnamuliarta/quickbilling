@@ -13,7 +13,7 @@ export default {
     this.$nuxt.$emit('extensionSetting', {
       tabs: [
         {
-          title: 'Overview',
+          title: 'Purchase Overview',
           route: '/app/purchase/overview',
         },
         {

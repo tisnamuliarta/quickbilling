@@ -13,7 +13,7 @@ export default {
     this.$nuxt.$emit('extensionSetting', {
       tabs: [
         {
-          title: 'Overview',
+          title: 'Payroll Overview',
           route: '/app/payroll/overview',
         },
         {

@@ -484,7 +484,7 @@ body {
   white-space: nowrap !important;
 }
 
-// .row--dense > .col, .row--dense > [class*=col-] {
-//   padding: 8px !important;
-// }
+.row--dense > .col, .row--dense > [class*=col-] {
+  padding: 8px !important;
+}
 

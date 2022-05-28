@@ -246,10 +246,10 @@
         <v-col cols="12">
           <v-row dense>
             <v-spacer />
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">Subtotal</span>
             </v-col>
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
                   isNaN(form.sub_total) ? 0 : $formatter.formatPrice(form.sub_total)
@@ -281,7 +281,7 @@
         <v-col cols="12">
           <v-row dense class="align-right">
             <v-spacer />
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" class="pa-1">
               <v-select
                 v-model="form.discount_type"
                 :items="['Value', 'Percent']"
@@ -292,7 +292,7 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="3" class="pa-1">
               <vuetify-money
                 v-model="form.discount_rate"
                 :value-when-is-empty="valueWhenIsEmpty"
@@ -305,7 +305,7 @@
               ></vuetify-money>
             </v-col>
 
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
                   isNaN(form.discount_amount) ? 0 : $formatter.formatPrice(form.discount_amount)
@@ -323,10 +323,10 @@
             dense
           >
             <v-spacer />
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">{{ item.name }}</span>
             </v-col>
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
                   isNaN(item.amount) ? 0 : $formatter.formatPrice(item.amount)
@@ -336,27 +336,34 @@
           </v-row>
         </v-col>
 
-        <v-col v-show="form.shipping_info" cols="12" md="8"></v-col>
-        <v-col v-show="form.shipping_info" cols="12" md="4">
-          <vuetify-money
-            v-model="form.shipping_fee"
-            :value-when-is-empty="valueWhenIsEmpty"
-            :options="moneyOptionTotal"
-            label="Shipping Fee"
-            outlined
-            dense
-            class="text-money"
-            hide-details="auto"
-          ></vuetify-money>
+        <v-col cols="12">
+          <v-row dense>
+            <v-spacer />
+            <v-col cols="12" md="4" class="text-right pa-1">
+              <span class="font-weight-bold subtitle-1">Shipping</span>
+            </v-col>
+            <v-col cols="12" md="4" class="pa-1">
+              <vuetify-money
+                v-model="form.shipping_fee"
+                :value-when-is-empty="valueWhenIsEmpty"
+                :options="moneyOptionTotal"
+                label="Shipping Fee"
+                outlined
+                dense
+                class="text-money"
+                hide-details="auto"
+              ></vuetify-money>
+            </v-col>
+          </v-row>
         </v-col>
 
         <v-col cols="12">
           <v-row dense>
             <v-spacer />
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">Total</span>
             </v-col>
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
                   isNaN(form.amount) ? 0 : $formatter.formatPrice(form.amount)
@@ -437,10 +444,10 @@
         <v-col cols="12">
           <v-row dense>
             <v-spacer />
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">Deposit</span>
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" class="pa-1">
               <vuetify-money
                 v-model="form.deposit_amount"
                 :value-when-is-empty="valueWhenIsEmpty"
@@ -458,10 +465,10 @@
         <v-col cols="12">
           <v-row dense>
             <v-spacer />
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">Balance Due</span>
             </v-col>
-            <v-col cols="12" md="4" class="text-right">
+            <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
                   isNaN(form.balance_due) ? 0 : $formatter.formatPrice(form.balance_due)
@@ -775,6 +782,12 @@ export default {
       setTimeout(() => {
         this.$refs.childDetails.setDataToDetails(
           [
+            {
+              item_number: null,
+              description: null,
+              qty: null,
+              unit: null,
+            },
             {
               item_number: null,
               description: null,

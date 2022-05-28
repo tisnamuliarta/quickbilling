@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: 'All Sales',
+  name: 'AllSales',
 
   head() {
     return {

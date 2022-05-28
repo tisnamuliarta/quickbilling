@@ -19,6 +19,14 @@
 
       <v-col cols="12" md="3">
         <LazyFormListAction
+          title="EMPLOYEE"
+          :items="itemEmployee"
+          @openAction="openAction"
+        ></LazyFormListAction>
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <LazyFormListAction
           title="OTHER"
           :items="itemOther"
           @openAction="openAction"
@@ -46,7 +54,7 @@ export default {
       ],
 
       itemPurchase: [
-        { text: 'Expense', type: 'EXPENSE', route: '/app/expense' },
+        { text: 'Purchase Quotations', type: 'PQ', route: '/app/form/purchase/quote' },
         { text: 'Purchase Order', type: 'PO', route: '/app/form/purchase/order' },
         { text: 'A/P Invoice', type: 'PI', route: '/app/form/purchase/invoice' },
         { text: 'Outgoing Payment', type: 'PP', route: '/app/form/purchase/payment' },
@@ -54,11 +62,17 @@ export default {
         { text: 'Goods Return', type: 'GR', route: '/app/form/purchase/return' },
       ],
 
+      itemEmployee: [
+        { text: 'Single time activity', type: '', route: '/app/form/employee/timeactivity' },
+        { text: 'Weekly timesheet', type: '', route: '/app/form/employee/timesheet' },
+      ],
+
       itemOther: [
-        { text: 'Bank Deposit', type: 'DEPOSIT', route: '/app/accounting/deposit' },
-        { text: 'Transfer', type: 'TRANSFER', route: '/app/accounting/transfer' },
-        { text: 'Journal Entry', type: 'JE', route: '/app/accounting/journal' },
-        { text: 'Statement', type: 'STATEMENT', route: '/app/accounting/statements' },
+        { text: 'Task', type: 'TASK', route: '/app/form/project/task' },
+        { text: 'Bank Deposit', type: 'DEPOSIT', route: '/app/form/accounting/deposit' },
+        { text: 'Transfer', type: 'TRANSFER', route: '/app/form/accounting/transfer' },
+        { text: 'Journal Entry', type: 'JE', route: '/app/form/accounting/journal' },
+        { text: 'Statement', type: 'STATEMENT', route: '/app/form/accounting/statements' },
         {
           text: 'Inventory Qty Adjustment',
           type: 'INVADJ',
