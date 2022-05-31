@@ -9,8 +9,9 @@
       </v-skeleton-loader>
       <v-form v-else @keyup.native.enter="login">
         <v-card
-          class="mt-3"
-          elevation="1"
+          class="mt-3 rounded-lg"
+          elevation="18"
+          rounded="lg"
           tile
         >
           <v-card-text>

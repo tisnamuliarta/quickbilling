@@ -105,7 +105,13 @@
           <v-divider></v-divider>
         </NuxtLink>
 
-        <v-menu offset-y left :nudge-width="700">
+        <v-menu
+          transition="slide-y-transition"
+          bottom
+          offset-y
+          left
+          :nudge-width="700"
+        >
           <template #activator="{ on }">
             <v-btn outlined block small color="primary" class="mb-4" v-on="on">
               <v-icon>mdi-plus</v-icon>
@@ -113,7 +119,7 @@
             </v-btn>
           </template>
 
-          <v-card>
+          <v-card class="rounded-lg" elevation="18">
             <LazyFormNew ref="formNew" @openAction="openAction" />
           </v-card>
         </v-menu>
@@ -248,7 +254,7 @@ export default {
           path: data.item.route,
           query: {
             document: 0,
-            type: data.item.type,
+            // type: data.item.type,
           },
         })
       } else {

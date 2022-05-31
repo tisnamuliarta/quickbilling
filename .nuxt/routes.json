@@ -171,6 +171,29 @@
     "_name": "_032d68a9"
   },
   {
+    "name": "app-reports",
+    "path": "/app/reports",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\reports.vue",
+    "chunkName": "pages/app/reports",
+    "children": [
+      {
+        "name": "app-reports-list",
+        "path": "list",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\reports\\\\list.vue",
+        "chunkName": "pages/app/reports/list",
+        "_name": "_7a063f25"
+      },
+      {
+        "name": "app-reports-performance",
+        "path": "performance",
+        "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\reports\\\\performance.vue",
+        "chunkName": "pages/app/reports/performance",
+        "_name": "_6b5374f9"
+      }
+    ],
+    "_name": "_24a6fd72"
+  },
+  {
     "name": "app-sales",
     "path": "/app/sales",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\sales.vue",

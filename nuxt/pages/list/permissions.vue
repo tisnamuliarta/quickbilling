@@ -22,6 +22,10 @@
         >
           <template v-slot:top>
             <LazySetupBackList></LazySetupBackList>
+            <v-spacer />
+            <v-btn color="primary" small @click="newData">
+              New permisions
+            </v-btn>
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"

@@ -487,15 +487,7 @@ export default {
   name: 'FormDocument',
 
   props: {
-    formTitle: {
-      type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: '',
-    },
-    url: {
+    formType: {
       type: String,
       default: '',
     },

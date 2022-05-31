@@ -45,7 +45,13 @@
       <span>Settings</span>
     </v-tooltip> -->
 
-    <v-menu offset-y left :nudge-width="700">
+    <v-menu
+      transition="slide-y-transition"
+      bottom
+      offset-y
+      left
+      :nudge-width="700"
+    >
       <template #activator="{ on }">
         <v-btn small icon class="mr-2" v-on="on">
           <v-icon>mdi-cog</v-icon>

@@ -27,6 +27,9 @@ const _032d68a9 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase.vu
 const _671c2e58 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\invoice.vue' /* webpackChunkName: "pages/app/purchase/invoice" */))
 const _6f209507 = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\list.vue' /* webpackChunkName: "pages/app/purchase/list" */))
 const _ba7fc83c = () => interopDefault(import('..\\nuxt\\pages\\app\\purchase\\overview.vue' /* webpackChunkName: "pages/app/purchase/overview" */))
+const _24a6fd72 = () => interopDefault(import('..\\nuxt\\pages\\app\\reports.vue' /* webpackChunkName: "pages/app/reports" */))
+const _7a063f25 = () => interopDefault(import('..\\nuxt\\pages\\app\\reports\\list.vue' /* webpackChunkName: "pages/app/reports/list" */))
+const _6b5374f9 = () => interopDefault(import('..\\nuxt\\pages\\app\\reports\\performance.vue' /* webpackChunkName: "pages/app/reports/performance" */))
 const _10cc6614 = () => interopDefault(import('..\\nuxt\\pages\\app\\sales.vue' /* webpackChunkName: "pages/app/sales" */))
 const _3fdc586e = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\invoice.vue' /* webpackChunkName: "pages/app/sales/invoice" */))
 const _19eed39c = () => interopDefault(import('..\\nuxt\\pages\\app\\sales\\list.vue' /* webpackChunkName: "pages/app/sales/list" */))
@@ -200,6 +203,19 @@ export const routerOptions = {
       path: "overview",
       component: _ba7fc83c,
       name: "app-purchase-overview"
+    }]
+  }, {
+    path: "/app/reports",
+    component: _24a6fd72,
+    name: "app-reports",
+    children: [{
+      path: "list",
+      component: _7a063f25,
+      name: "app-reports-list"
+    }, {
+      path: "performance",
+      component: _6b5374f9,
+      name: "app-reports-performance"
     }]
   }, {
     path: "/app/sales",
