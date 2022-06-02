@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters align="center" align-content="center" justify="center">
-    <v-col cols="12" sm="4" md="4" lg="4" xl="3" align-self="center">
+    <v-col cols="12" sm="8" md="8" lg="6" xl="5" align-self="center">
       <v-skeleton-loader
         v-if="loadImage"
         type="article, actions"
@@ -8,78 +8,82 @@
       >
       </v-skeleton-loader>
       <v-form v-else @keyup.native.enter="login">
-        <v-card
-          class="mt-3 rounded-lg"
-          elevation="18"
-          rounded="lg"
-          tile
-        >
-          <v-card-text>
-            <v-row no-gutters>
-              <v-col cols="7">
-                <span class="text-h6">Sign In to your account</span> <br>
-                <span>Enter details below</span>
-              </v-col>
-              <v-col cols="5" class="text-right">
-                <img
-                  :src="logo"
-                  class="align-items-center justify-center logo"
-                  alt="Logo"
-                />
-              </v-col>
+        <v-card class="mt-3 rounded-lg" elevation="0" rounded="lg" tile>
+          <v-row no-gutters>
+            <v-col cols="12" md="6">
+              <v-card-text>
+                <v-row no-gutters>
+                  <v-col cols="7">
+                    <span class="text-h6">Sign In to your account</span> <br />
+                    <span>Enter details below</span>
+                  </v-col>
+                  <v-col cols="5" class="text-right">
+                    <img
+                      :src="logo"
+                      class="align-items-center justify-center logo"
+                      alt="Logo"
+                    />
+                  </v-col>
 
-              <v-col cols="12">
-                <v-divider />
-              </v-col>
+                  <v-col cols="12">
+                    <v-divider />
+                  </v-col>
 
-              <v-col cols="12" class="mb-4 mt-4">
-                <v-text-field
-                  v-model="form.username"
-                  outlined
-                  dense
-                  label="Username"
-                  required
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" class="mb-1">
-                <v-text-field
-                  v-model="form.password"
-                  :append-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
-                  :type="show ? 'text' : 'password'"
-                  outlined
-                  dense
-                  label="Password"
-                  required
-                  hide-details="auto"
-                  @click:append="show = !show"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" class="mb-3">
-                <v-checkbox
-                  v-model="form.remember"
-                  label="Remember Me"
-                  color="success"
-                  off-icon="mdi-checkbox-blank-outline"
-                  on-icon="mdi-checkbox-marked"
-                  hide-details
-                ></v-checkbox>
-              </v-col>
-            </v-row>
-          </v-card-text>
+                  <v-col cols="12" class="mb-4 mt-4">
+                    <v-text-field
+                      v-model="form.username"
+                      outlined
+                      dense
+                      label="Username"
+                      required
+                      hide-details="auto"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="mb-1">
+                    <v-text-field
+                      v-model="form.password"
+                      :append-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
+                      :type="show ? 'text' : 'password'"
+                      outlined
+                      dense
+                      label="Password"
+                      required
+                      hide-details="auto"
+                      @click:append="show = !show"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" class="mb-3">
+                    <v-checkbox
+                      v-model="form.remember"
+                      label="Remember Me"
+                      color="success"
+                      off-icon="mdi-checkbox-blank-outline"
+                      on-icon="mdi-checkbox-marked"
+                      hide-details
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+              </v-card-text>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              class="mr-2"
-              small
-              :loading="loading"
-              @click="login"
-            >
-              Sign In
-            </v-btn>
-          </v-card-actions>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="primary"
+                  class="mr-2"
+                  small
+                  :loading="loading"
+                  @click="login"
+                >
+                  Sign In
+                </v-btn>
+              </v-card-actions>
+            </v-col>
+
+            <v-col cols="12" md="6" class="d-sm-none d-none d-md-flex">
+              <v-divider vertical></v-divider>
+              <v-img :src="bgLogin"></v-img>
+            </v-col>
+          </v-row>
         </v-card>
       </v-form>
       <div v-if="error" class="red darken-2 text-xs-center pa-1">
@@ -121,6 +125,7 @@ export default {
       busy: false,
       message: '',
       logo: '',
+      bgLogin: '',
       error: false,
       apps: [],
     }
@@ -139,11 +144,11 @@ export default {
   methods: {
     getLogo() {
       this.loadImage = true
-      this.$axios.get(`/api/logo`)
-        .then((res) => {
-          this.logo = res.data.data.default
-          this.loadImage = false
-        })
+      this.$axios.get(`/api/logo`).then((res) => {
+        this.logo = res.data.data.default
+        this.bgLogin = res.data.data.bgLogin
+        this.loadImage = false
+      })
     },
 
     clear() {
@@ -153,9 +158,10 @@ export default {
     login() {
       this.loading = true
       this.$axios.get('/sanctum/csrf-cookie').then((res) => {
-        this.$auth.loginWith('local', {
-          data: this.form,
-        })
+        this.$auth
+          .loginWith('local', {
+            data: this.form,
+          })
           .then((response) => {
             this.loading = false
             // this.$router.push('/dashboard')

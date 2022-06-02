@@ -32,6 +32,39 @@
   "AccountingFormReportingPeriod": {
     "description": "Auto imported from components/Accounting/FormReportingPeriod.vue"
   },
+  "FormAgGrid": {
+    "description": "Auto imported from components/Form/AgGrid.vue"
+  },
+  "FormButtonAction": {
+    "description": "Auto imported from components/Form/ButtonAction.vue"
+  },
+  "FormCheckForm": {
+    "description": "Auto imported from components/Form/CheckForm.vue"
+  },
+  "FormDialogFull": {
+    "description": "Auto imported from components/Form/DialogFull.vue"
+  },
+  "FormDocumentGrid": {
+    "description": "Auto imported from components/Form/DocumentGrid.vue"
+  },
+  "FormListAction": {
+    "description": "Auto imported from components/Form/ListAction.vue"
+  },
+  "FormListItem": {
+    "description": "Auto imported from components/Form/ListItem.vue"
+  },
+  "FormNew": {
+    "description": "Auto imported from components/Form/New.vue"
+  },
+  "FormSectionEdit": {
+    "description": "Auto imported from components/Form/SectionEdit.vue"
+  },
+  "FormSectionView": {
+    "description": "Auto imported from components/Form/SectionView.vue"
+  },
+  "FormSetting": {
+    "description": "Auto imported from components/Form/Setting.vue"
+  },
   "DocumentCardAction": {
     "description": "Auto imported from components/Document/CardAction.vue"
   },
@@ -68,39 +101,6 @@
   "DocumentTableItem": {
     "description": "Auto imported from components/Document/TableItem.vue"
   },
-  "FormAgGrid": {
-    "description": "Auto imported from components/Form/AgGrid.vue"
-  },
-  "FormButtonAction": {
-    "description": "Auto imported from components/Form/ButtonAction.vue"
-  },
-  "FormCheckForm": {
-    "description": "Auto imported from components/Form/CheckForm.vue"
-  },
-  "FormDialogFull": {
-    "description": "Auto imported from components/Form/DialogFull.vue"
-  },
-  "FormDocumentGrid": {
-    "description": "Auto imported from components/Form/DocumentGrid.vue"
-  },
-  "FormListAction": {
-    "description": "Auto imported from components/Form/ListAction.vue"
-  },
-  "FormListItem": {
-    "description": "Auto imported from components/Form/ListItem.vue"
-  },
-  "FormNew": {
-    "description": "Auto imported from components/Form/New.vue"
-  },
-  "FormSectionEdit": {
-    "description": "Auto imported from components/Form/SectionEdit.vue"
-  },
-  "FormSectionView": {
-    "description": "Auto imported from components/Form/SectionView.vue"
-  },
-  "FormSetting": {
-    "description": "Auto imported from components/Form/Setting.vue"
-  },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
   },
@@ -124,12 +124,6 @@
   },
   "LayoutToolBar": {
     "description": "Auto imported from components/Layout/ToolBar.vue"
-  },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "SettingEmail": {
     "description": "Auto imported from components/Setting/Email.vue"
@@ -157,6 +151,12 @@
   },
   "SettingUsers": {
     "description": "Auto imported from components/Setting/Users.vue"
+  },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "SetupAdvanced": {
     "description": "Auto imported from components/Setup/Advanced.vue"

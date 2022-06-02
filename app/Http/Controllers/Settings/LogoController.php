@@ -16,6 +16,7 @@ class LogoController extends Controller
         return $this->success([
             'logo' => url('/files/logo/quickbilling-white.png'),
             'default' => url('/files/logo/quickbilling-circle.png'),
+            'bgLogin' => url('/files/login.png'),
         ]);
     }
 
