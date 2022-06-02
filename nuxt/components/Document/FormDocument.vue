@@ -166,13 +166,15 @@
       </v-row>
     </v-col>
 
-    <v-col cols="12" md="3" sm="4" class="text-right">
+    <v-col cols="12" md="3" xl="2" sm="4" class="text-right">
       <v-row dense>
-        <v-col cols="12">
+        <v-col cols="12" class="pt-0">
           <p class="mb-0">Amount Due</p>
           <span class="text-right font-weight-bold text-h4">
             {{
-              isNaN(form.balance_due) ? 0 : $formatter.formatPrice(form.balance_due)
+              isNaN(form.balance_due)
+                ? 0
+                : $formatter.formatPrice(form.balance_due)
             }}
           </span>
         </v-col>
@@ -252,7 +254,9 @@
             <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
-                  isNaN(form.sub_total) ? 0 : $formatter.formatPrice(form.sub_total)
+                  isNaN(form.sub_total)
+                    ? 0
+                    : $formatter.formatPrice(form.sub_total)
                 }}
               </span>
             </v-col>
@@ -308,7 +312,9 @@
             <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
-                  isNaN(form.discount_amount) ? 0 : $formatter.formatPrice(form.discount_amount)
+                  isNaN(form.discount_amount)
+                    ? 0
+                    : $formatter.formatPrice(form.discount_amount)
                 }}
               </span>
             </v-col>
@@ -316,12 +322,7 @@
         </v-col>
 
         <v-col cols="12">
-          <v-row
-            v-for="(item, index) in form.tax_details"
-            v-if="form.tax_details.length > 0"
-            :key="index"
-            dense
-          >
+          <v-row v-for="(item, index) in form.tax_details" :key="index" dense>
             <v-spacer />
             <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">{{ item.name }}</span>
@@ -471,7 +472,9 @@
             <v-col cols="12" md="4" class="text-right pa-1">
               <span class="font-weight-bold subtitle-1">
                 {{
-                  isNaN(form.balance_due) ? 0 : $formatter.formatPrice(form.balance_due)
+                  isNaN(form.balance_due)
+                    ? 0
+                    : $formatter.formatPrice(form.balance_due)
                 }}
               </span>
             </v-col>

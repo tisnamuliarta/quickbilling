@@ -4,6 +4,7 @@
       ref="dialogForm"
       url="/api/documents/form"
       form-type="SQ"
+      dialog-title="Sales Quotations"
       @getDataFromApi="getDataFromApi"
     ></LazyDocumentDialogForm>
   </div>

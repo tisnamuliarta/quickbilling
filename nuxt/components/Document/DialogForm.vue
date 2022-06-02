@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  name: 'quotation',
+  name: 'DialogForm',
 
   props: {
     url: {
@@ -77,11 +77,15 @@ export default {
       type: String,
       default: '',
     },
+    dialogTitle: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
     return {
-      title: 'Sales Quotations',
+      title: this.dialogTitle,
       items: [
         { text: 'Save and new', action: 'edit' },
         { text: 'Save and close', action: 'delete' },
@@ -167,6 +171,8 @@ export default {
 
           this.form = Object.assign({}, form)
           this.defaultItem = Object.assign({}, form)
+
+          this.title = this.title + ' #' + this.form.document_number
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
