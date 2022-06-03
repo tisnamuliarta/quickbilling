@@ -2,19 +2,19 @@ import Vue from 'vue'
 import { decode, parsePath, withoutBase, withoutTrailingSlash, normalizeURL } from 'ufo'
 
 import { getMatchedComponentsInstances, getChildrenComponentInstancesUsingFetch, promisify, globalHandleError, urlJoin, sanitizeComponent } from './utils'
-import NuxtError from '..\\nuxt\\layouts\\error.vue'
+import NuxtError from '../nuxt/layouts/error.vue'
 import NuxtLoading from './components/nuxt-loading.vue'
 import NuxtBuildIndicator from './components/nuxt-build-indicator'
 
-import '..\\node_modules\\@mdi\\font\\scss\\materialdesignicons.scss'
+import '../node_modules/@mdi/font/scss/materialdesignicons.scss'
 
-import '..\\nuxt\\assets\\css\\style.scss'
+import '../nuxt/assets/css/style.scss'
 
-import _2d217e9e from '..\\nuxt\\layouts\\auth.vue'
-import _5fa3735e from '..\\nuxt\\layouts\\dashboard.vue'
-import _6f6c098b from '..\\nuxt\\layouts\\default.vue'
-import _6f2938be from '..\\nuxt\\layouts\\dialog.vue'
-import _2d265194 from '..\\nuxt\\layouts\\list.vue'
+import _2d217e9e from '../nuxt/layouts/auth.vue'
+import _5fa3735e from '../nuxt/layouts/dashboard.vue'
+import _6f6c098b from '../nuxt/layouts/default.vue'
+import _6f2938be from '../nuxt/layouts/dialog.vue'
+import _2d265194 from '../nuxt/layouts/list.vue'
 
 const layouts = { "_auth": sanitizeComponent(_2d217e9e),"_dashboard": sanitizeComponent(_5fa3735e),"_default": sanitizeComponent(_6f6c098b),"_dialog": sanitizeComponent(_6f2938be),"_list": sanitizeComponent(_2d265194) }
 
