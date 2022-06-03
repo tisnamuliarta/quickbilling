@@ -155,7 +155,7 @@ export default {
         columns: [
           // TODO
           {
-            width: '24px',
+            width: '17px',
             wordWrap: false,
             renderer: 'ButtonAddRederer',
           },
@@ -188,7 +188,7 @@ export default {
           },
           {
             data: 'quantity',
-            // width: '100px',
+            width: '70px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -197,20 +197,20 @@ export default {
           },
           {
             data: 'unit',
-            // width: '100px',
+            width: '50px',
             readOnly: true,
             wordWrap: false,
           },
           {
             data: 'default_currency_symbol',
-            // width: '50px',
+            width: '40px',
             readOnly: true,
             wordWrap: false,
             align: 'right',
           },
           {
             data: 'price',
-            // width: '100px',
+            width: '70px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -219,7 +219,7 @@ export default {
           },
           {
             data: 'discount_rate',
-            // width: '100px',
+            width: '40px',
             wordWrap: false,
             type: 'numeric',
             numericFormat: {
@@ -228,7 +228,7 @@ export default {
           },
           {
             data: 'tax_name',
-            // width: '80px',
+            width: '30px',
             type: 'dropdown',
             height: 26,
             wordWrap: false,
@@ -243,7 +243,7 @@ export default {
           },
           {
             data: 'total',
-            // width: '100px',
+            width: '70px',
             wordWrap: false,
             type: 'numeric',
             readOnly: true,
@@ -252,7 +252,7 @@ export default {
             },
           },
           {
-            width: '24px',
+            width: '17px',
             wordWrap: false,
             renderer: 'ButtonDeleteRenderer',
           },

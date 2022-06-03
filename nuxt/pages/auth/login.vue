@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters align="center" align-content="center" justify="center">
-    <v-col cols="12" sm="8" md="8" lg="6" xl="5" align-self="center">
+    <v-col cols="12" sm="8" md="8" lg="7" xl="5" align-self="center">
       <v-skeleton-loader
         v-if="loadImage"
         type="article, actions"
@@ -11,7 +11,7 @@
         <v-card class="mt-3 rounded-lg" elevation="0" rounded="lg" tile>
           <v-row no-gutters>
             <v-col cols="12" md="6">
-              <v-card-text>
+              <v-card-text class="pb-0 mt-4">
                 <v-row no-gutters>
                   <v-col cols="7">
                     <span class="text-h6">Sign In to your account</span> <br />
@@ -32,8 +32,7 @@
                   <v-col cols="12" class="mb-4 mt-4">
                     <v-text-field
                       v-model="form.username"
-                      outlined
-                      dense
+                      filled
                       label="Username"
                       required
                       hide-details="auto"
@@ -44,8 +43,7 @@
                       v-model="form.password"
                       :append-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
                       :type="show ? 'text' : 'password'"
-                      outlined
-                      dense
+                      filled
                       label="Password"
                       required
                       hide-details="auto"
@@ -69,8 +67,9 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   color="primary"
+                  elevation="0"
+                  block
                   class="mr-2"
-                  small
                   :loading="loading"
                   @click="login"
                 >
@@ -86,9 +85,21 @@
           </v-row>
         </v-card>
       </v-form>
-      <div v-if="error" class="red darken-2 text-xs-center pa-1">
-        <span class="white--text">{{ message }}</span>
-      </div>
+
+      <v-snackbar
+        v-model="snackbar"
+        top
+        multi-line
+        transition="slide-y-transition"
+      >
+        {{ text }}
+
+        <template #action="{ attrs }">
+          <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-col>
   </v-row>
 </template>
@@ -114,6 +125,8 @@ export default {
         language: 'en',
         app_name: process.env.appName,
       },
+      snackbar: false,
+      text: '',
       appName: process.env.appName,
       select: null,
       show: false,
@@ -168,11 +181,13 @@ export default {
           })
           .catch((err) => {
             this.loading = false
-            this.$swal({
-              type: 'error',
-              title: 'Error',
-              text: err.response.data.message,
-            })
+            this.snackbar = true
+            this.text = err.response.data.message
+            // this.$swal({
+            //   type: 'error',
+            //   title: 'Error',
+            //   text: err.response.data.message,
+            // })
           })
       })
     },

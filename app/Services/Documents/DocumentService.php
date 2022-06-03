@@ -298,7 +298,7 @@ class DocumentService
     {
         switch ($type) {
             case 'SQ':
-//                $order = $this->orderAction('Sales Order', 'SO', $parent_id, 'mdi-sale', 'orange', 'true');
+                //                $order = $this->orderAction('Sales Order', 'SO', $parent_id, 'mdi-sale', 'orange', 'true');
                 return [
                     ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
                     ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],

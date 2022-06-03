@@ -179,14 +179,14 @@
           </span>
         </v-col>
         <v-col cols="12">
-          <v-text-field
-            v-model="form.document_number"
-            readonly
-            label="Transaction Number"
+          <v-autocomplete
+            v-model="form.sales_persons"
+            :items="itemSalesPersons"
+            label="Sales Person"
             outlined
             dense
             hide-details="auto"
-          ></v-text-field>
+          ></v-autocomplete>
         </v-col>
       </v-row>
     </v-col>
@@ -522,6 +522,7 @@ export default {
       itemWarehouse: [],
       itemFiles: [],
       taxDetails: [],
+      itemSalesPersons: [],
       statusProcessing: 'insert',
       valueWhenIsEmpty: '0',
       tempTotalTax: 0,

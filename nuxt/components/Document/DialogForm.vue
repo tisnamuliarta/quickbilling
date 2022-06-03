@@ -172,7 +172,7 @@ export default {
           this.form = Object.assign({}, form)
           this.defaultItem = Object.assign({}, form)
 
-          this.title = this.title + ' #' + this.form.document_number
+          this.title = this.dialogTitle + ' #' + this.form.document_number
 
           setTimeout(() => {
             this.$refs.formDocument.setData(this.form)
