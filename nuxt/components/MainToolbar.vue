@@ -170,6 +170,8 @@
     ></TableFilter>
 
     <v-spacer />
+    <LazySetupBackList v-if="showBackLink"></LazySetupBackList>
+    <v-btn v-if="showNewData" color="primary" small @click="newData"> {{ newDataText }} </v-btn>
     <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-refresh</v-icon>
     </v-btn>
@@ -235,6 +237,10 @@ export default {
       type: String,
       default: 'New',
     },
+    newDataText: {
+      type: String,
+      default: 'New',
+    },
     showAdd: {
       type: Boolean,
       default: true,
@@ -248,6 +254,14 @@ export default {
       default: false,
     },
     showFilter: {
+      type: Boolean,
+      default: false,
+    },
+    showBackLink: {
+      type: Boolean,
+      default: false,
+    },
+    showNewData: {
       type: Boolean,
       default: false,
     },

@@ -23,10 +23,10 @@ class MasterUserController extends Controller
     public function __construct(UserService $service)
     {
         $this->service = $service;
-        // $this->middleware(['direct_permission:Users-index'])->only(['index', 'show']);
-        // $this->middleware(['direct_permission:Users-store'])->only('store');
-        // $this->middleware(['direct_permission:Users-edits'])->only('update');
-        // $this->middleware(['direct_permission:Users-erase'])->only('destroy');
+        $this->middleware(['direct_permission:Users-index'])->only(['index', 'show']);
+        $this->middleware(['direct_permission:Users-store'])->only('store');
+        $this->middleware(['direct_permission:Users-edits'])->only('update');
+        $this->middleware(['direct_permission:Users-erase'])->only('destroy');
     }
 
     /**
