@@ -9,7 +9,7 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO quickbilling.ifrs_currencies(id, entity_id, name, currency_code, destroyed_at, deleted_at, created_at, updated_at) VALUES
+INSERT INTO quickbilling.currencies(id, entity_id, name, currency_code, destroyed_at, deleted_at, created_at, updated_at) VALUES
 (1, 1, 'Indonesia Rupiah', 'IDR', NULL, NULL, '2022-04-07 07:49:12', '2022-04-07 07:49:12'),
 (2, 1, 'Australia Dollar', 'AUD', NULL, NULL, '2022-04-07 07:49:42', '2022-04-22 07:37:47'),
 (3, 1, 'United States Dollar', 'USD', NULL, NULL, '2022-04-07 07:50:05', '2022-04-07 07:50:05');

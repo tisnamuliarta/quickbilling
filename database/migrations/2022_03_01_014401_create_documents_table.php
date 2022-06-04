@@ -173,12 +173,12 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::drop('documents');
-        Schema::drop('document_histories');
-        Schema::drop('document_items');
-        Schema::drop('document_item_taxes');
-        Schema::drop('document_totals');
-        Schema::drop('item_taxes');
-        Schema::drop('contacts');
+        Schema::dropIfExists('documents');
+        Schema::dropIfExists('document_histories');
+        Schema::dropIfExists('document_items');
+        Schema::dropIfExists('document_item_taxes');
+        Schema::dropIfExists('document_totals');
+        Schema::dropIfExists('item_taxes');
+        Schema::dropIfExists('contacts');
     }
 };

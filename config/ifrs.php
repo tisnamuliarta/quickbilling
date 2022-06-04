@@ -77,7 +77,7 @@ return [
      | Database table prefix to prevent collision during migration
      |
      */
-    'table_prefix' => 'ifrs_',
+    'table_prefix' => '',
 
     /*
      |--------------------------------------------------------------------------

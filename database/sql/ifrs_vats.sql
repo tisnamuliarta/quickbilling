@@ -9,5 +9,5 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO quickbilling.ifrs_vats(id, entity_id, account_id, code, name, rate, destroyed_at, deleted_at, created_at, updated_at) VALUES
+INSERT INTO quickbilling.vats(id, entity_id, account_id, code, name, rate, destroyed_at, deleted_at, created_at, updated_at) VALUES
 (1, 1, 73, 'P', 'PPN', 11.0000, NULL, NULL, '2022-04-11 05:46:37', '2022-04-22 07:37:39');

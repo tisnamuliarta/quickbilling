@@ -9,6 +9,6 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO quickbilling.ifrs_reporting_periods(id, entity_id, period_count, status, calendar_year, destroyed_at, deleted_at, created_at, updated_at, closing_date) VALUES
+INSERT INTO quickbilling.reporting_periods(id, entity_id, period_count, status, calendar_year, destroyed_at, deleted_at, created_at, updated_at, closing_date) VALUES
 (1, 1, 8, 'OPEN', 2021, NULL, NULL, '2022-04-11 00:34:54', '2022-04-11 00:41:11', '2021-12-31 00:00:00'),
 (2, 1, 12, 'OPEN', 2022, NULL, NULL, '2022-04-11 00:47:13', '2022-04-11 00:47:24', '2022-12-31 00:00:00');

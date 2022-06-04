@@ -4,97 +4,97 @@ import { normalizeURL, decode } from 'ufo'
 import { interopDefault } from './utils'
 import scrollBehavior from './router.scrollBehavior.js'
 
-const _39d10f55 = () => interopDefault(import('../nuxt/pages/list/index.vue' /* webpackChunkName: "pages/list/index" */))
-const _64643b77 = () => interopDefault(import('../nuxt/pages/app/accounting.vue' /* webpackChunkName: "pages/app/accounting" */))
-const _31e216d6 = () => interopDefault(import('../nuxt/pages/app/accounting/account.vue' /* webpackChunkName: "pages/app/accounting/account" */))
-const _38f16d94 = () => interopDefault(import('../nuxt/pages/app/accounting/reconcile.vue' /* webpackChunkName: "pages/app/accounting/reconcile" */))
-const _15d81ba4 = () => interopDefault(import('../nuxt/pages/app/contact.vue' /* webpackChunkName: "pages/app/contact" */))
-const _e5ada362 = () => interopDefault(import('../nuxt/pages/app/contact/customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
-const _5b91debf = () => interopDefault(import('../nuxt/pages/app/contact/customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
-const _a8a71e0e = () => interopDefault(import('../nuxt/pages/app/contact/vendor.vue' /* webpackChunkName: "pages/app/contact/vendor" */))
-const _7cc828d5 = () => interopDefault(import('../nuxt/pages/app/contact/vendor-detail.vue' /* webpackChunkName: "pages/app/contact/vendor-detail" */))
-const _5f77e475 = () => interopDefault(import('../nuxt/pages/app/item.vue' /* webpackChunkName: "pages/app/item" */))
-const _96ee94b0 = () => interopDefault(import('../nuxt/pages/app/item/list.vue' /* webpackChunkName: "pages/app/item/list" */))
-const _d9c2e7a8 = () => interopDefault(import('../nuxt/pages/app/item/price-list.vue' /* webpackChunkName: "pages/app/item/price-list" */))
-const _7cd2c6f8 = () => interopDefault(import('../nuxt/pages/app/item/form/fitem.vue' /* webpackChunkName: "pages/app/item/form/fitem" */))
-const _31ba6547 = () => interopDefault(import('../nuxt/pages/app/item/form/fprice-list.vue' /* webpackChunkName: "pages/app/item/form/fprice-list" */))
-const _a9453e9a = () => interopDefault(import('../nuxt/pages/app/payroll.vue' /* webpackChunkName: "pages/app/payroll" */))
-const _22c11781 = () => interopDefault(import('../nuxt/pages/app/payroll/contractor.vue' /* webpackChunkName: "pages/app/payroll/contractor" */))
-const _95d6778c = () => interopDefault(import('../nuxt/pages/app/payroll/employee.vue' /* webpackChunkName: "pages/app/payroll/employee" */))
-const _7b7724f6 = () => interopDefault(import('../nuxt/pages/app/payroll/overview.vue' /* webpackChunkName: "pages/app/payroll/overview" */))
-const _8ac216b2 = () => interopDefault(import('../nuxt/pages/app/project.vue' /* webpackChunkName: "pages/app/project" */))
-const _1418db3a = () => interopDefault(import('../nuxt/pages/app/purchase.vue' /* webpackChunkName: "pages/app/purchase" */))
-const _82064efe = () => interopDefault(import('../nuxt/pages/app/purchase/invoice.vue' /* webpackChunkName: "pages/app/purchase/invoice" */))
-const _811ae70c = () => interopDefault(import('../nuxt/pages/app/purchase/list.vue' /* webpackChunkName: "pages/app/purchase/list" */))
-const _019321d5 = () => interopDefault(import('../nuxt/pages/app/purchase/overview.vue' /* webpackChunkName: "pages/app/purchase/overview" */))
-const _36058f66 = () => interopDefault(import('../nuxt/pages/app/reports.vue' /* webpackChunkName: "pages/app/reports" */))
-const _2613ee60 = () => interopDefault(import('../nuxt/pages/app/reports/list.vue' /* webpackChunkName: "pages/app/reports/list" */))
-const _65aef624 = () => interopDefault(import('../nuxt/pages/app/reports/performance.vue' /* webpackChunkName: "pages/app/reports/performance" */))
-const _0ccb269a = () => interopDefault(import('../nuxt/pages/app/sales.vue' /* webpackChunkName: "pages/app/sales" */))
-const _79b445b8 = () => interopDefault(import('../nuxt/pages/app/sales/invoice.vue' /* webpackChunkName: "pages/app/sales/invoice" */))
-const _421202a3 = () => interopDefault(import('../nuxt/pages/app/sales/list.vue' /* webpackChunkName: "pages/app/sales/list" */))
-const _c46d4904 = () => interopDefault(import('../nuxt/pages/app/sales/overview.vue' /* webpackChunkName: "pages/app/sales/overview" */))
-const _00d615e7 = () => interopDefault(import('../nuxt/pages/app/task.vue' /* webpackChunkName: "pages/app/task" */))
-const _ebe2ca14 = () => interopDefault(import('../nuxt/pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
-const _605e91ef = () => interopDefault(import('../nuxt/pages/documents/form.vue' /* webpackChunkName: "pages/documents/form" */))
-const _d7508e6e = () => interopDefault(import('../nuxt/pages/documents/list.vue' /* webpackChunkName: "pages/documents/list" */))
-const _e92c3160 = () => interopDefault(import('../nuxt/pages/documents/view.vue' /* webpackChunkName: "pages/documents/view" */))
-const _67516b2c = () => interopDefault(import('../nuxt/pages/home/business-overview.vue' /* webpackChunkName: "pages/home/business-overview" */))
-const _69def306 = () => interopDefault(import('../nuxt/pages/home/getthingdone.vue' /* webpackChunkName: "pages/home/getthingdone" */))
-const _78bb6e6b = () => interopDefault(import('../nuxt/pages/list/account-category.vue' /* webpackChunkName: "pages/list/account-category" */))
-const _2f6b30e4 = () => interopDefault(import('../nuxt/pages/list/accountmapping.vue' /* webpackChunkName: "pages/list/accountmapping" */))
-const _6f8d9fa0 = () => interopDefault(import('../nuxt/pages/list/attachment.vue' /* webpackChunkName: "pages/list/attachment" */))
-const _05469200 = () => interopDefault(import('../nuxt/pages/list/budgeting.vue' /* webpackChunkName: "pages/list/budgeting" */))
-const _03e20af8 = () => interopDefault(import('../nuxt/pages/list/closing.vue' /* webpackChunkName: "pages/list/closing" */))
-const _4b447280 = () => interopDefault(import('../nuxt/pages/list/company.vue' /* webpackChunkName: "pages/list/company" */))
-const _5aa9995e = () => interopDefault(import('../nuxt/pages/list/currency.vue' /* webpackChunkName: "pages/list/currency" */))
-const _63b18642 = () => interopDefault(import('../nuxt/pages/list/journal-entry.vue' /* webpackChunkName: "pages/list/journal-entry" */))
-const _72d16ba8 = () => interopDefault(import('../nuxt/pages/list/menu.vue' /* webpackChunkName: "pages/list/menu" */))
-const _0362df6a = () => interopDefault(import('../nuxt/pages/list/paymentmethod.vue' /* webpackChunkName: "pages/list/paymentmethod" */))
-const _20c60496 = () => interopDefault(import('../nuxt/pages/list/paymentterm.vue' /* webpackChunkName: "pages/list/paymentterm" */))
-const _0a0f15c7 = () => interopDefault(import('../nuxt/pages/list/permissions.vue' /* webpackChunkName: "pages/list/permissions" */))
-const _2d66862f = () => interopDefault(import('../nuxt/pages/list/price-list.vue' /* webpackChunkName: "pages/list/price-list" */))
-const _1d992b40 = () => interopDefault(import('../nuxt/pages/list/recurring.vue' /* webpackChunkName: "pages/list/recurring" */))
-const _04915f0d = () => interopDefault(import('../nuxt/pages/list/reporting-period.vue' /* webpackChunkName: "pages/list/reporting-period" */))
-const _7f0587c0 = () => interopDefault(import('../nuxt/pages/list/roles.vue' /* webpackChunkName: "pages/list/roles" */))
-const _72595900 = () => interopDefault(import('../nuxt/pages/list/setup.vue' /* webpackChunkName: "pages/list/setup" */))
-const _342a5f24 = () => interopDefault(import('../nuxt/pages/list/tax.vue' /* webpackChunkName: "pages/list/tax" */))
-const _7f3ae98b = () => interopDefault(import('../nuxt/pages/list/users.vue' /* webpackChunkName: "pages/list/users" */))
-const _e343c180 = () => interopDefault(import('../nuxt/pages/reports/bank.vue' /* webpackChunkName: "pages/reports/bank" */))
-const _27c0f752 = () => interopDefault(import('../nuxt/pages/reports/bp.vue' /* webpackChunkName: "pages/reports/bp" */))
-const _435d5097 = () => interopDefault(import('../nuxt/pages/reports/item.vue' /* webpackChunkName: "pages/reports/item" */))
-const _6a96a023 = () => interopDefault(import('../nuxt/pages/tools/audit.vue' /* webpackChunkName: "pages/tools/audit" */))
-const _db1809c8 = () => interopDefault(import('../nuxt/pages/tools/export.vue' /* webpackChunkName: "pages/tools/export" */))
-const _04a8fa8d = () => interopDefault(import('../nuxt/pages/tools/import.vue' /* webpackChunkName: "pages/tools/import" */))
-const _1dc6c12d = () => interopDefault(import('../nuxt/pages/app/bank/deposit.vue' /* webpackChunkName: "pages/app/bank/deposit" */))
-const _10e39c1d = () => interopDefault(import('../nuxt/pages/app/bank/reconcile.vue' /* webpackChunkName: "pages/app/bank/reconcile" */))
-const _0c88e4ec = () => interopDefault(import('../nuxt/pages/app/bank/transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
-const _250edeea = () => interopDefault(import('../nuxt/pages/app/bank/withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
-const _53558228 = () => interopDefault(import('../nuxt/pages/app/form/accounting/account.vue' /* webpackChunkName: "pages/app/form/accounting/account" */))
-const _1a6459cd = () => interopDefault(import('../nuxt/pages/app/form/accounting/reconcile.vue' /* webpackChunkName: "pages/app/form/accounting/reconcile" */))
-const _8547bb34 = () => interopDefault(import('../nuxt/pages/app/form/contact/customer.vue' /* webpackChunkName: "pages/app/form/contact/customer" */))
-const _61290260 = () => interopDefault(import('../nuxt/pages/app/form/contact/vendor.vue' /* webpackChunkName: "pages/app/form/contact/vendor" */))
-const _454aa566 = () => interopDefault(import('../nuxt/pages/app/form/item/item.vue' /* webpackChunkName: "pages/app/form/item/item" */))
-const _317d8d96 = () => interopDefault(import('../nuxt/pages/app/form/item/price-list.vue' /* webpackChunkName: "pages/app/form/item/price-list" */))
-const _120761d8 = () => interopDefault(import('../nuxt/pages/app/form/payroll/contractor.vue' /* webpackChunkName: "pages/app/form/payroll/contractor" */))
-const _35708f5e = () => interopDefault(import('../nuxt/pages/app/form/payroll/employee.vue' /* webpackChunkName: "pages/app/form/payroll/employee" */))
-const _56efa298 = () => interopDefault(import('../nuxt/pages/app/form/purchase/creditmemo.vue' /* webpackChunkName: "pages/app/form/purchase/creditmemo" */))
-const _5a392999 = () => interopDefault(import('../nuxt/pages/app/form/purchase/delivery.vue' /* webpackChunkName: "pages/app/form/purchase/delivery" */))
-const _7fd3c81e = () => interopDefault(import('../nuxt/pages/app/form/purchase/dp.vue' /* webpackChunkName: "pages/app/form/purchase/dp" */))
-const _21a066d0 = () => interopDefault(import('../nuxt/pages/app/form/purchase/invoice.vue' /* webpackChunkName: "pages/app/form/purchase/invoice" */))
-const _f2455e0e = () => interopDefault(import('../nuxt/pages/app/form/purchase/order.vue' /* webpackChunkName: "pages/app/form/purchase/order" */))
-const _727eb21e = () => interopDefault(import('../nuxt/pages/app/form/purchase/payment.vue' /* webpackChunkName: "pages/app/form/purchase/payment" */))
-const _45cfc127 = () => interopDefault(import('../nuxt/pages/app/form/purchase/quote.vue' /* webpackChunkName: "pages/app/form/purchase/quote" */))
-const _7a0b2c15 = () => interopDefault(import('../nuxt/pages/app/form/purchase/return.vue' /* webpackChunkName: "pages/app/form/purchase/return" */))
-const _15a3ece2 = () => interopDefault(import('../nuxt/pages/app/form/sales/creditmemo.vue' /* webpackChunkName: "pages/app/form/sales/creditmemo" */))
-const _4402e250 = () => interopDefault(import('../nuxt/pages/app/form/sales/delivery.vue' /* webpackChunkName: "pages/app/form/sales/delivery" */))
-const _622b2c30 = () => interopDefault(import('../nuxt/pages/app/form/sales/dp.vue' /* webpackChunkName: "pages/app/form/sales/dp" */))
-const _0f80a101 = () => interopDefault(import('../nuxt/pages/app/form/sales/invoice.vue' /* webpackChunkName: "pages/app/form/sales/invoice" */))
-const _3afa2ba2 = () => interopDefault(import('../nuxt/pages/app/form/sales/order.vue' /* webpackChunkName: "pages/app/form/sales/order" */))
-const _31dd094c = () => interopDefault(import('../nuxt/pages/app/form/sales/payment.vue' /* webpackChunkName: "pages/app/form/sales/payment" */))
-const _0c26c860 = () => interopDefault(import('../nuxt/pages/app/form/sales/quote.vue' /* webpackChunkName: "pages/app/form/sales/quote" */))
-const _4989a68c = () => interopDefault(import('../nuxt/pages/app/form/sales/return.vue' /* webpackChunkName: "pages/app/form/sales/return" */))
-const _796e3bce = () => interopDefault(import('../nuxt/pages/index.vue' /* webpackChunkName: "pages/index" */))
+const _ddedff0c = () => interopDefault(import('../nuxt/pages/list/index.vue' /* webpackChunkName: "pages/list/index" */))
+const _e375dbc8 = () => interopDefault(import('../nuxt/pages/app/accounting.vue' /* webpackChunkName: "pages/app/accounting" */))
+const _1455538c = () => interopDefault(import('../nuxt/pages/app/accounting/account.vue' /* webpackChunkName: "pages/app/accounting/account" */))
+const _5a3bd59b = () => interopDefault(import('../nuxt/pages/app/accounting/reconcile.vue' /* webpackChunkName: "pages/app/accounting/reconcile" */))
+const _f64bb4ae = () => interopDefault(import('../nuxt/pages/app/contact.vue' /* webpackChunkName: "pages/app/contact" */))
+const _5cf5b534 = () => interopDefault(import('../nuxt/pages/app/contact/customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
+const _382fbc3a = () => interopDefault(import('../nuxt/pages/app/contact/customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
+const _937125c4 = () => interopDefault(import('../nuxt/pages/app/contact/vendor.vue' /* webpackChunkName: "pages/app/contact/vendor" */))
+const _46b5ade0 = () => interopDefault(import('../nuxt/pages/app/contact/vendor-detail.vue' /* webpackChunkName: "pages/app/contact/vendor-detail" */))
+const _44584a4c = () => interopDefault(import('../nuxt/pages/app/item.vue' /* webpackChunkName: "pages/app/item" */))
+const _6b8ff663 = () => interopDefault(import('../nuxt/pages/app/item/list.vue' /* webpackChunkName: "pages/app/item/list" */))
+const _4839d6b2 = () => interopDefault(import('../nuxt/pages/app/item/price-list.vue' /* webpackChunkName: "pages/app/item/price-list" */))
+const _74d1611a = () => interopDefault(import('../nuxt/pages/app/item/form/fitem.vue' /* webpackChunkName: "pages/app/item/form/fitem" */))
+const _dcd134fc = () => interopDefault(import('../nuxt/pages/app/item/form/fprice-list.vue' /* webpackChunkName: "pages/app/item/form/fprice-list" */))
+const _3b23942e = () => interopDefault(import('../nuxt/pages/app/payroll.vue' /* webpackChunkName: "pages/app/payroll" */))
+const _31877926 = () => interopDefault(import('../nuxt/pages/app/payroll/contractor.vue' /* webpackChunkName: "pages/app/payroll/contractor" */))
+const _f63d69c2 = () => interopDefault(import('../nuxt/pages/app/payroll/employee.vue' /* webpackChunkName: "pages/app/payroll/employee" */))
+const _dbde172c = () => interopDefault(import('../nuxt/pages/app/payroll/overview.vue' /* webpackChunkName: "pages/app/payroll/overview" */))
+const _4a652822 = () => interopDefault(import('../nuxt/pages/app/project.vue' /* webpackChunkName: "pages/app/project" */))
+const _5ef3ce48 = () => interopDefault(import('../nuxt/pages/app/purchase.vue' /* webpackChunkName: "pages/app/purchase" */))
+const _e26d4134 = () => interopDefault(import('../nuxt/pages/app/purchase/invoice.vue' /* webpackChunkName: "pages/app/purchase/invoice" */))
+const _2b24f7b5 = () => interopDefault(import('../nuxt/pages/app/purchase/list.vue' /* webpackChunkName: "pages/app/purchase/list" */))
+const _2b577790 = () => interopDefault(import('../nuxt/pages/app/purchase/overview.vue' /* webpackChunkName: "pages/app/purchase/overview" */))
+const _74c36bc8 = () => interopDefault(import('../nuxt/pages/app/reports.vue' /* webpackChunkName: "pages/app/reports" */))
+const _21fbca35 = () => interopDefault(import('../nuxt/pages/app/reports/list.vue' /* webpackChunkName: "pages/app/reports/list" */))
+const _d1a3502e = () => interopDefault(import('../nuxt/pages/app/reports/performance.vue' /* webpackChunkName: "pages/app/reports/performance" */))
+const _59edfcd5 = () => interopDefault(import('../nuxt/pages/app/sales.vue' /* webpackChunkName: "pages/app/sales" */))
+const _35329e1a = () => interopDefault(import('../nuxt/pages/app/sales/invoice.vue' /* webpackChunkName: "pages/app/sales/invoice" */))
+const _6bf2d948 = () => interopDefault(import('../nuxt/pages/app/sales/list.vue' /* webpackChunkName: "pages/app/sales/list" */))
+const _af3750ba = () => interopDefault(import('../nuxt/pages/app/sales/overview.vue' /* webpackChunkName: "pages/app/sales/overview" */))
+const _7f320c4c = () => interopDefault(import('../nuxt/pages/app/task.vue' /* webpackChunkName: "pages/app/task" */))
+const _3d72e7ca = () => interopDefault(import('../nuxt/pages/auth/login.vue' /* webpackChunkName: "pages/auth/login" */))
+const _eb812ed8 = () => interopDefault(import('../nuxt/pages/documents/form.vue' /* webpackChunkName: "pages/documents/form" */))
+const _838ee124 = () => interopDefault(import('../nuxt/pages/documents/list.vue' /* webpackChunkName: "pages/documents/list" */))
+const _956a8416 = () => interopDefault(import('../nuxt/pages/documents/view.vue' /* webpackChunkName: "pages/documents/view" */))
+const _49c4a7e2 = () => interopDefault(import('../nuxt/pages/home/business-overview.vue' /* webpackChunkName: "pages/home/business-overview" */))
+const _54dd437e = () => interopDefault(import('../nuxt/pages/home/getthingdone.vue' /* webpackChunkName: "pages/home/getthingdone" */))
+const _bb0077b4 = () => interopDefault(import('../nuxt/pages/list/account-category.vue' /* webpackChunkName: "pages/list/account-category" */))
+const _310ef009 = () => interopDefault(import('../nuxt/pages/list/accountmapping.vue' /* webpackChunkName: "pages/list/accountmapping" */))
+const _4b19a3aa = () => interopDefault(import('../nuxt/pages/list/attachment.vue' /* webpackChunkName: "pages/list/attachment" */))
+const _2f2768a5 = () => interopDefault(import('../nuxt/pages/list/budgeting.vue' /* webpackChunkName: "pages/list/budgeting" */))
+const _6ce246dd = () => interopDefault(import('../nuxt/pages/list/closing.vue' /* webpackChunkName: "pages/list/closing" */))
+const _435e02a5 = () => interopDefault(import('../nuxt/pages/list/company.vue' /* webpackChunkName: "pages/list/company" */))
+const _11b0da19 = () => interopDefault(import('../nuxt/pages/list/currency.vue' /* webpackChunkName: "pages/list/currency" */))
+const _4e7b8df8 = () => interopDefault(import('../nuxt/pages/list/journal-entry.vue' /* webpackChunkName: "pages/list/journal-entry" */))
+const _13ba2067 = () => interopDefault(import('../nuxt/pages/list/menu.vue' /* webpackChunkName: "pages/list/menu" */))
+const _0dfddb8f = () => interopDefault(import('../nuxt/pages/list/paymentmethod.vue' /* webpackChunkName: "pages/list/paymentmethod" */))
+const _24a2bf1a = () => interopDefault(import('../nuxt/pages/list/paymentterm.vue' /* webpackChunkName: "pages/list/paymentterm" */))
+const _3f14d72c = () => interopDefault(import('../nuxt/pages/list/permissions.vue' /* webpackChunkName: "pages/list/permissions" */))
+const _3fa0842a = () => interopDefault(import('../nuxt/pages/list/price-list.vue' /* webpackChunkName: "pages/list/price-list" */))
+const _1b144105 = () => interopDefault(import('../nuxt/pages/list/recurring.vue' /* webpackChunkName: "pages/list/recurring" */))
+const _2e55b4c8 = () => interopDefault(import('../nuxt/pages/list/reporting-period.vue' /* webpackChunkName: "pages/list/reporting-period" */))
+const _53850e36 = () => interopDefault(import('../nuxt/pages/list/roles.vue' /* webpackChunkName: "pages/list/roles" */))
+const _1e0b44a5 = () => interopDefault(import('../nuxt/pages/list/setup.vue' /* webpackChunkName: "pages/list/setup" */))
+const _6446c6d3 = () => interopDefault(import('../nuxt/pages/list/tax.vue' /* webpackChunkName: "pages/list/tax" */))
+const _531a4aa0 = () => interopDefault(import('../nuxt/pages/list/users.vue' /* webpackChunkName: "pages/list/users" */))
+const _114349b6 = () => interopDefault(import('../nuxt/pages/reports/bank.vue' /* webpackChunkName: "pages/reports/bank" */))
+const _7ef8e877 = () => interopDefault(import('../nuxt/pages/reports/bp.vue' /* webpackChunkName: "pages/reports/bp" */))
+const _a744e708 = () => interopDefault(import('../nuxt/pages/reports/item.vue' /* webpackChunkName: "pages/reports/item" */))
+const _0b4658c4 = () => interopDefault(import('../nuxt/pages/tools/audit.vue' /* webpackChunkName: "pages/tools/audit" */))
+const _091791fe = () => interopDefault(import('../nuxt/pages/tools/export.vue' /* webpackChunkName: "pages/tools/export" */))
+const _6da93672 = () => interopDefault(import('../nuxt/pages/tools/import.vue' /* webpackChunkName: "pages/tools/import" */))
+const _52cc8292 = () => interopDefault(import('../nuxt/pages/app/bank/deposit.vue' /* webpackChunkName: "pages/app/bank/deposit" */))
+const _1b7e9842 = () => interopDefault(import('../nuxt/pages/app/bank/reconcile.vue' /* webpackChunkName: "pages/app/bank/reconcile" */))
+const _783b5027 = () => interopDefault(import('../nuxt/pages/app/bank/transfer.vue' /* webpackChunkName: "pages/app/bank/transfer" */))
+const _592afbc6 = () => interopDefault(import('../nuxt/pages/app/bank/withdraw.vue' /* webpackChunkName: "pages/app/bank/withdraw" */))
+const _9a19c732 = () => interopDefault(import('../nuxt/pages/app/form/accounting/account.vue' /* webpackChunkName: "pages/app/form/accounting/account" */))
+const _4700c488 = () => interopDefault(import('../nuxt/pages/app/form/accounting/reconcile.vue' /* webpackChunkName: "pages/app/form/accounting/reconcile" */))
+const _1d3922a1 = () => interopDefault(import('../nuxt/pages/app/form/contact/customer.vue' /* webpackChunkName: "pages/app/form/contact/customer" */))
+const _cd1d5c6a = () => interopDefault(import('../nuxt/pages/app/form/contact/vendor.vue' /* webpackChunkName: "pages/app/form/contact/vendor" */))
+const _4fe5a18b = () => interopDefault(import('../nuxt/pages/app/form/item/item.vue' /* webpackChunkName: "pages/app/form/item/item" */))
+const _5df5c59a = () => interopDefault(import('../nuxt/pages/app/form/item/price-list.vue' /* webpackChunkName: "pages/app/form/item/price-list" */))
+const _22b5815a = () => interopDefault(import('../nuxt/pages/app/form/payroll/contractor.vue' /* webpackChunkName: "pages/app/form/payroll/contractor" */))
+const _4524b88c = () => interopDefault(import('../nuxt/pages/app/form/payroll/employee.vue' /* webpackChunkName: "pages/app/form/payroll/employee" */))
+const _0e0d747d = () => interopDefault(import('../nuxt/pages/app/form/purchase/creditmemo.vue' /* webpackChunkName: "pages/app/form/purchase/creditmemo" */))
+const _14079e84 = () => interopDefault(import('../nuxt/pages/app/form/purchase/delivery.vue' /* webpackChunkName: "pages/app/form/purchase/delivery" */))
+const _e03aba54 = () => interopDefault(import('../nuxt/pages/app/form/purchase/dp.vue' /* webpackChunkName: "pages/app/form/purchase/dp" */))
+const _4f0cccd3 = () => interopDefault(import('../nuxt/pages/app/form/purchase/invoice.vue' /* webpackChunkName: "pages/app/form/purchase/invoice" */))
+const _50e323f4 = () => interopDefault(import('../nuxt/pages/app/form/purchase/order.vue' /* webpackChunkName: "pages/app/form/purchase/order" */))
+const _269da72c = () => interopDefault(import('../nuxt/pages/app/form/purchase/payment.vue' /* webpackChunkName: "pages/app/form/purchase/payment" */))
+const _0fd59422 = () => interopDefault(import('../nuxt/pages/app/form/purchase/quote.vue' /* webpackChunkName: "pages/app/form/purchase/quote" */))
+const _1e808f0c = () => interopDefault(import('../nuxt/pages/app/form/purchase/return.vue' /* webpackChunkName: "pages/app/form/purchase/return" */))
+const _550b09ca = () => interopDefault(import('../nuxt/pages/app/form/sales/creditmemo.vue' /* webpackChunkName: "pages/app/form/sales/creditmemo" */))
+const _0e08b54b = () => interopDefault(import('../nuxt/pages/app/form/sales/delivery.vue' /* webpackChunkName: "pages/app/form/sales/delivery" */))
+const _3a9cd523 = () => interopDefault(import('../nuxt/pages/app/form/sales/dp.vue' /* webpackChunkName: "pages/app/form/sales/dp" */))
+const _1e4702a6 = () => interopDefault(import('../nuxt/pages/app/form/sales/invoice.vue' /* webpackChunkName: "pages/app/form/sales/invoice" */))
+const _0ac6b287 = () => interopDefault(import('../nuxt/pages/app/form/sales/order.vue' /* webpackChunkName: "pages/app/form/sales/order" */))
+const _14504602 = () => interopDefault(import('../nuxt/pages/app/form/sales/payment.vue' /* webpackChunkName: "pages/app/form/sales/payment" */))
+const _6c8dba96 = () => interopDefault(import('../nuxt/pages/app/form/sales/quote.vue' /* webpackChunkName: "pages/app/form/sales/quote" */))
+const _734dfc47 = () => interopDefault(import('../nuxt/pages/app/form/sales/return.vue' /* webpackChunkName: "pages/app/form/sales/return" */))
+const _ce5930ee = () => interopDefault(import('../nuxt/pages/index.vue' /* webpackChunkName: "pages/index" */))
 
 const emptyFn = () => {}
 
@@ -109,378 +109,378 @@ export const routerOptions = {
 
   routes: [{
     path: "/list",
-    component: _39d10f55,
+    component: _ddedff0c,
     name: "list"
   }, {
     path: "/app/accounting",
-    component: _64643b77,
+    component: _e375dbc8,
     name: "app-accounting",
     children: [{
       path: "account",
-      component: _31e216d6,
+      component: _1455538c,
       name: "app-accounting-account"
     }, {
       path: "reconcile",
-      component: _38f16d94,
+      component: _5a3bd59b,
       name: "app-accounting-reconcile"
     }]
   }, {
     path: "/app/contact",
-    component: _15d81ba4,
+    component: _f64bb4ae,
     name: "app-contact",
     children: [{
       path: "customer",
-      component: _e5ada362,
+      component: _5cf5b534,
       name: "app-contact-customer"
     }, {
       path: "customer-detail",
-      component: _5b91debf,
+      component: _382fbc3a,
       name: "app-contact-customer-detail"
     }, {
       path: "vendor",
-      component: _a8a71e0e,
+      component: _937125c4,
       name: "app-contact-vendor"
     }, {
       path: "vendor-detail",
-      component: _7cc828d5,
+      component: _46b5ade0,
       name: "app-contact-vendor-detail"
     }]
   }, {
     path: "/app/item",
-    component: _5f77e475,
+    component: _44584a4c,
     name: "app-item",
     children: [{
       path: "list",
-      component: _96ee94b0,
+      component: _6b8ff663,
       name: "app-item-list"
     }, {
       path: "price-list",
-      component: _d9c2e7a8,
+      component: _4839d6b2,
       name: "app-item-price-list"
     }, {
       path: "form/fitem",
-      component: _7cd2c6f8,
+      component: _74d1611a,
       name: "app-item-form-fitem"
     }, {
       path: "form/fprice-list",
-      component: _31ba6547,
+      component: _dcd134fc,
       name: "app-item-form-fprice-list"
     }]
   }, {
     path: "/app/payroll",
-    component: _a9453e9a,
+    component: _3b23942e,
     name: "app-payroll",
     children: [{
       path: "contractor",
-      component: _22c11781,
+      component: _31877926,
       name: "app-payroll-contractor"
     }, {
       path: "employee",
-      component: _95d6778c,
+      component: _f63d69c2,
       name: "app-payroll-employee"
     }, {
       path: "overview",
-      component: _7b7724f6,
+      component: _dbde172c,
       name: "app-payroll-overview"
     }]
   }, {
     path: "/app/project",
-    component: _8ac216b2,
+    component: _4a652822,
     name: "app-project"
   }, {
     path: "/app/purchase",
-    component: _1418db3a,
+    component: _5ef3ce48,
     name: "app-purchase",
     children: [{
       path: "invoice",
-      component: _82064efe,
+      component: _e26d4134,
       name: "app-purchase-invoice"
     }, {
       path: "list",
-      component: _811ae70c,
+      component: _2b24f7b5,
       name: "app-purchase-list"
     }, {
       path: "overview",
-      component: _019321d5,
+      component: _2b577790,
       name: "app-purchase-overview"
     }]
   }, {
     path: "/app/reports",
-    component: _36058f66,
+    component: _74c36bc8,
     name: "app-reports",
     children: [{
       path: "list",
-      component: _2613ee60,
+      component: _21fbca35,
       name: "app-reports-list"
     }, {
       path: "performance",
-      component: _65aef624,
+      component: _d1a3502e,
       name: "app-reports-performance"
     }]
   }, {
     path: "/app/sales",
-    component: _0ccb269a,
+    component: _59edfcd5,
     name: "app-sales",
     children: [{
       path: "invoice",
-      component: _79b445b8,
+      component: _35329e1a,
       name: "app-sales-invoice"
     }, {
       path: "list",
-      component: _421202a3,
+      component: _6bf2d948,
       name: "app-sales-list"
     }, {
       path: "overview",
-      component: _c46d4904,
+      component: _af3750ba,
       name: "app-sales-overview"
     }]
   }, {
     path: "/app/task",
-    component: _00d615e7,
+    component: _7f320c4c,
     name: "app-task"
   }, {
     path: "/auth/login",
-    component: _ebe2ca14,
+    component: _3d72e7ca,
     name: "auth-login"
   }, {
     path: "/documents/form",
-    component: _605e91ef,
+    component: _eb812ed8,
     name: "documents-form"
   }, {
     path: "/documents/list",
-    component: _d7508e6e,
+    component: _838ee124,
     name: "documents-list"
   }, {
     path: "/documents/view",
-    component: _e92c3160,
+    component: _956a8416,
     name: "documents-view"
   }, {
     path: "/home/business-overview",
-    component: _67516b2c,
+    component: _49c4a7e2,
     name: "home-business-overview"
   }, {
     path: "/home/getthingdone",
-    component: _69def306,
+    component: _54dd437e,
     name: "home-getthingdone"
   }, {
     path: "/list/account-category",
-    component: _78bb6e6b,
+    component: _bb0077b4,
     name: "list-account-category"
   }, {
     path: "/list/accountmapping",
-    component: _2f6b30e4,
+    component: _310ef009,
     name: "list-accountmapping"
   }, {
     path: "/list/attachment",
-    component: _6f8d9fa0,
+    component: _4b19a3aa,
     name: "list-attachment"
   }, {
     path: "/list/budgeting",
-    component: _05469200,
+    component: _2f2768a5,
     name: "list-budgeting"
   }, {
     path: "/list/closing",
-    component: _03e20af8,
+    component: _6ce246dd,
     name: "list-closing"
   }, {
     path: "/list/company",
-    component: _4b447280,
+    component: _435e02a5,
     name: "list-company"
   }, {
     path: "/list/currency",
-    component: _5aa9995e,
+    component: _11b0da19,
     name: "list-currency"
   }, {
     path: "/list/journal-entry",
-    component: _63b18642,
+    component: _4e7b8df8,
     name: "list-journal-entry"
   }, {
     path: "/list/menu",
-    component: _72d16ba8,
+    component: _13ba2067,
     name: "list-menu"
   }, {
     path: "/list/paymentmethod",
-    component: _0362df6a,
+    component: _0dfddb8f,
     name: "list-paymentmethod"
   }, {
     path: "/list/paymentterm",
-    component: _20c60496,
+    component: _24a2bf1a,
     name: "list-paymentterm"
   }, {
     path: "/list/permissions",
-    component: _0a0f15c7,
+    component: _3f14d72c,
     name: "list-permissions"
   }, {
     path: "/list/price-list",
-    component: _2d66862f,
+    component: _3fa0842a,
     name: "list-price-list"
   }, {
     path: "/list/recurring",
-    component: _1d992b40,
+    component: _1b144105,
     name: "list-recurring"
   }, {
     path: "/list/reporting-period",
-    component: _04915f0d,
+    component: _2e55b4c8,
     name: "list-reporting-period"
   }, {
     path: "/list/roles",
-    component: _7f0587c0,
+    component: _53850e36,
     name: "list-roles"
   }, {
     path: "/list/setup",
-    component: _72595900,
+    component: _1e0b44a5,
     name: "list-setup"
   }, {
     path: "/list/tax",
-    component: _342a5f24,
+    component: _6446c6d3,
     name: "list-tax"
   }, {
     path: "/list/users",
-    component: _7f3ae98b,
+    component: _531a4aa0,
     name: "list-users"
   }, {
     path: "/reports/bank",
-    component: _e343c180,
+    component: _114349b6,
     name: "reports-bank"
   }, {
     path: "/reports/bp",
-    component: _27c0f752,
+    component: _7ef8e877,
     name: "reports-bp"
   }, {
     path: "/reports/item",
-    component: _435d5097,
+    component: _a744e708,
     name: "reports-item"
   }, {
     path: "/tools/audit",
-    component: _6a96a023,
+    component: _0b4658c4,
     name: "tools-audit"
   }, {
     path: "/tools/export",
-    component: _db1809c8,
+    component: _091791fe,
     name: "tools-export"
   }, {
     path: "/tools/import",
-    component: _04a8fa8d,
+    component: _6da93672,
     name: "tools-import"
   }, {
     path: "/app/bank/deposit",
-    component: _1dc6c12d,
+    component: _52cc8292,
     name: "app-bank-deposit"
   }, {
     path: "/app/bank/reconcile",
-    component: _10e39c1d,
+    component: _1b7e9842,
     name: "app-bank-reconcile"
   }, {
     path: "/app/bank/transfer",
-    component: _0c88e4ec,
+    component: _783b5027,
     name: "app-bank-transfer"
   }, {
     path: "/app/bank/withdraw",
-    component: _250edeea,
+    component: _592afbc6,
     name: "app-bank-withdraw"
   }, {
     path: "/app/form/accounting/account",
-    component: _53558228,
+    component: _9a19c732,
     name: "app-form-accounting-account"
   }, {
     path: "/app/form/accounting/reconcile",
-    component: _1a6459cd,
+    component: _4700c488,
     name: "app-form-accounting-reconcile"
   }, {
     path: "/app/form/contact/customer",
-    component: _8547bb34,
+    component: _1d3922a1,
     name: "app-form-contact-customer"
   }, {
     path: "/app/form/contact/vendor",
-    component: _61290260,
+    component: _cd1d5c6a,
     name: "app-form-contact-vendor"
   }, {
     path: "/app/form/item/item",
-    component: _454aa566,
+    component: _4fe5a18b,
     name: "app-form-item-item"
   }, {
     path: "/app/form/item/price-list",
-    component: _317d8d96,
+    component: _5df5c59a,
     name: "app-form-item-price-list"
   }, {
     path: "/app/form/payroll/contractor",
-    component: _120761d8,
+    component: _22b5815a,
     name: "app-form-payroll-contractor"
   }, {
     path: "/app/form/payroll/employee",
-    component: _35708f5e,
+    component: _4524b88c,
     name: "app-form-payroll-employee"
   }, {
     path: "/app/form/purchase/creditmemo",
-    component: _56efa298,
+    component: _0e0d747d,
     name: "app-form-purchase-creditmemo"
   }, {
     path: "/app/form/purchase/delivery",
-    component: _5a392999,
+    component: _14079e84,
     name: "app-form-purchase-delivery"
   }, {
     path: "/app/form/purchase/dp",
-    component: _7fd3c81e,
+    component: _e03aba54,
     name: "app-form-purchase-dp"
   }, {
     path: "/app/form/purchase/invoice",
-    component: _21a066d0,
+    component: _4f0cccd3,
     name: "app-form-purchase-invoice"
   }, {
     path: "/app/form/purchase/order",
-    component: _f2455e0e,
+    component: _50e323f4,
     name: "app-form-purchase-order"
   }, {
     path: "/app/form/purchase/payment",
-    component: _727eb21e,
+    component: _269da72c,
     name: "app-form-purchase-payment"
   }, {
     path: "/app/form/purchase/quote",
-    component: _45cfc127,
+    component: _0fd59422,
     name: "app-form-purchase-quote"
   }, {
     path: "/app/form/purchase/return",
-    component: _7a0b2c15,
+    component: _1e808f0c,
     name: "app-form-purchase-return"
   }, {
     path: "/app/form/sales/creditmemo",
-    component: _15a3ece2,
+    component: _550b09ca,
     name: "app-form-sales-creditmemo"
   }, {
     path: "/app/form/sales/delivery",
-    component: _4402e250,
+    component: _0e08b54b,
     name: "app-form-sales-delivery"
   }, {
     path: "/app/form/sales/dp",
-    component: _622b2c30,
+    component: _3a9cd523,
     name: "app-form-sales-dp"
   }, {
     path: "/app/form/sales/invoice",
-    component: _0f80a101,
+    component: _1e4702a6,
     name: "app-form-sales-invoice"
   }, {
     path: "/app/form/sales/order",
-    component: _3afa2ba2,
+    component: _0ac6b287,
     name: "app-form-sales-order"
   }, {
     path: "/app/form/sales/payment",
-    component: _31dd094c,
+    component: _14504602,
     name: "app-form-sales-payment"
   }, {
     path: "/app/form/sales/quote",
-    component: _0c26c860,
+    component: _6c8dba96,
     name: "app-form-sales-quote"
   }, {
     path: "/app/form/sales/return",
-    component: _4989a68c,
+    component: _734dfc47,
     name: "app-form-sales-return"
   }, {
     path: "/",
-    component: _796e3bce,
+    component: _ce5930ee,
     name: "index"
   }, {
     path: "/__nuxt_laravel",
-    component: _796e3bce,
+    component: _ce5930ee,
     name: "__nuxt_laravel"
   }],
 
