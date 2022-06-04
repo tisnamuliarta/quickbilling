@@ -35,10 +35,10 @@ class ContactService
             $result = array();
             $query = Contact::selectRaw(
                 " contacts.*,
-            0 as balance,
-             CONCAT('(', sell.number, ') ', sell.name) as sell_account_name,
-             CONCAT('(', buy.number, ') ', buy.name) as buy_account_name,
-             'actions' as ACTIONS "
+                    0 as balance,
+                    CONCAT('(', sell.code, ') ', sell.name) as sell_account_name,
+                    CONCAT('(', buy.code, ') ', buy.name) as buy_account_name,
+                    'actions' as ACTIONS "
             )
                 ->leftJoin('accounts as sell', 'sell.id', 'contacts.receivable_account_id')
                 ->leftJoin('accounts as buy', 'buy.id', 'contacts.payable_account_id')
