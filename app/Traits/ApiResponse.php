@@ -60,13 +60,13 @@ trait ApiResponse
             }
         }
 
-        $currency = Currency::where('code', auth()->user()->entity->currency->currency_code)
-            ->select('currencies.code', 'currencies.symbol')
+        $currency = Currency::where('currency_code', auth()->user()->entity->currency->currency_code)
+            ->select('currencies.currency_code', 'currencies.currency_code')
             ->first();
 
         $arr_form['entity_id'] = auth()->user()->entity_id;
-        $arr_form['default_currency_code'] = (isset($currency)) ? $currency->code : null;
-        $arr_form['default_currency_symbol'] = (isset($currency)) ? $currency->symbol : null;
+        $arr_form['default_currency_code'] = (isset($currency)) ? $currency->currency_code : null;
+        $arr_form['default_currency_symbol'] = (isset($currency)) ? $currency->currency_symbol : null;
 
         return $arr_form;
     }

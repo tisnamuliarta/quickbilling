@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create(config('ifrs.table_prefix') . 'users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
@@ -25,8 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('user_type')->nullable();
             $table->rememberToken();
             $table->timestamp('last_logged_in_at')->nullable();
-            $table->timestamps();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -37,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists(config('ifrs.table_prefix') .'users');
     }
 }

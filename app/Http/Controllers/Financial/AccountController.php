@@ -37,8 +37,8 @@ class AccountController extends Controller
 
         if ($type == 'index') {
             $result = [];
-            $result['form'] = $this->form('ifrs_accounts');
-            $result['form']['account_type_list'] = $this->getEnumValues('ifrs_accounts', 'account_type');
+            $result['form'] = $this->form('accounts');
+            $result['form']['account_type_list'] = $this->getEnumValues('accounts', 'account_type');
             $result = array_merge($result, $this->service->index($request));
         } else {
             if ($type == 'All') {

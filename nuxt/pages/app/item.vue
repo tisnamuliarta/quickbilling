@@ -26,7 +26,7 @@ export default {
         { text: 'Price List', type: '', route: '/app/form/item/price-list' },
       ],
       show: true,
-      showBtn: true
+      showBtn: false
     })
   },
 }

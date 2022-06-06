@@ -9,7 +9,7 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO quickbilling.ifrs_categories(id, entity_id, category_type, name, destroyed_at, deleted_at, created_at, updated_at) VALUES
+INSERT INTO quickbilling.categories(id, entity_id, category_type, name, destroyed_at, deleted_at, created_at, updated_at) VALUES
 (5, 1, 'CURRENT_ASSET', 'Asset Accounts', NULL, NULL, '2022-04-09 13:35:15', '2022-04-09 13:35:15'),
 (9, 1, 'CURRENT_LIABILITY', 'Liability Accounts', NULL, NULL, '2022-04-09 13:36:44', '2022-04-09 13:36:44'),
 (12, 1, 'OPERATING_REVENUE', 'Operations Accounts', NULL, NULL, '2022-04-09 13:38:08', '2022-04-09 13:38:08'),

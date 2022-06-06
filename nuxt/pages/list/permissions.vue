@@ -17,15 +17,12 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          fixed-header
+          height="70vh"
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
           dense
         >
           <template v-slot:top>
-            <LazySetupBackList></LazySetupBackList>
-            <v-spacer />
-            <v-btn color="primary" small @click="newData">
-              New permisions
-            </v-btn>
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"
@@ -34,6 +31,10 @@
               :search="search"
               :filter="false"
               title="Master Permissions"
+              show-new-data
+              new-data-text="New Permission"
+              show-back-link
+              show-batch-action
               @emitData="emitData"
               @newData="newData"
             />

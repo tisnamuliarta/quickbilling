@@ -34,8 +34,8 @@ class AccountCategoryController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('ifrs_categories');
-        $result['category_type_list'] = $this->getEnumValues('ifrs_categories', 'category_type');
+        $result['form'] = $this->form('categories');
+        $result['category_type_list'] = $this->getEnumValues('categories', 'category_type');
         $result = array_merge($result, $this->service->index($request));
         return $this->success($result);
     }

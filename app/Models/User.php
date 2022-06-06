@@ -24,9 +24,7 @@ class User extends Authenticatable implements Recyclable
 
     use IFRSUser;
     use Recycling;
-    //use ModelTablePrefix;
-
-    protected $table = 'users';
+    use ModelTablePrefix;
 
     /**
      * The attributes that are mass assignable.

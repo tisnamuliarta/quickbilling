@@ -9,5 +9,5 @@
 
 SET NAMES 'utf8';
 
-INSERT INTO quickbilling.ifrs_entities(id, currency_id, parent_id, name, multi_currency, mid_year_balances, year_start, destroyed_at, deleted_at, created_at, updated_at, locale) VALUES
+INSERT INTO quickbilling.entities(id, currency_id, parent_id, name, multi_currency, mid_year_balances, year_start, destroyed_at, deleted_at, created_at, updated_at, locale) VALUES
 (1, 3, NULL, 'PT Coding Of cents', 0, 0, 2, NULL, NULL, '2022-04-07 01:29:20', '2022-05-07 17:24:34', 'en_GB');

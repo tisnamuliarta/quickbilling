@@ -37,20 +37,16 @@ class ItemService
         $result = array();
         $query = Item::selectRaw("
                 items.*,
-                0 as average_price,
-                0 as last_buy_price,
-                (SELECT JSON_ARRAYAGG(t1.name)
-                    FROM categories AS t1
-                    LEFT JOIN item_categories AS t2 ON t1.id = t2.category_id
-               WHERE t2.item_id = items.id ) as category,
-               (SELECT JSON_ARRAYAGG(t1.name)
-                    FROM categories AS t1
-                    LEFT JOIN item_categories AS t2 ON t1.id = t2.category_id
-               WHERE t2.item_id = items.id ) as categories,
-               sell_tax.name as sell_tax_name,
-               buy_tax.name as buy_tax_name,
+                sell_tax.name as sell_tax_name,
+                buy_tax.name as buy_tax_name,
+                sale_account.name as sales_account,
+                buy_account.name as purchase_account,
+                inventory_accounts.name as inventory_account,
                 'actions' as ACTIONS
             ")
+            ->leftJoin('accounts as sale_account', 'sale_account.id', 'items.sell_account_id')
+            ->leftJoin('accounts as buy_account', 'buy_account.id', 'items.buy_account_id')
+            ->leftJoin('accounts as inventory_accounts', 'inventory_accounts.id', 'items.inventory_account')
             ->leftJoin('taxes as sell_tax', 'sell_tax.id', 'items.sell_tax_id')
             ->leftJoin('taxes as buy_tax', 'buy_tax.id', 'items.buy_tax_id');
 

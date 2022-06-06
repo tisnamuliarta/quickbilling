@@ -12,16 +12,6 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('contact_banks', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('contact_id');
-            $table->unsignedBigInteger('bank_id');
-            $table->string('contact_account_name');
-            $table->string('contact_account_number');
-            $table->string('branch')->nullable();
-            $table->timestamps();
-        });
-
         Schema::create('price_lists', function (Blueprint $table) {
             $table->id();
             $table->string('price_list_name');

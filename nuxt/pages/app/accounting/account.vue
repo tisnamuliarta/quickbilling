@@ -1,12 +1,6 @@
 <template>
   <v-row>
     <v-col cols="12" class="mt-0">
-      <!--        <v-skeleton-loader-->
-      <!--          v-show="loading"-->
-      <!--          type="table"-->
-      <!--          class="mx-auto"-->
-      <!--        >-->
-      <!--        </v-skeleton-loader>-->
       <v-data-table
         :mobile-breakpoint="0"
         :headers="headers"
@@ -32,6 +26,8 @@
             :search="search"
             title="Chart of Accounts"
             show-batch-action
+            show-new-data
+            new-data-text="New Account"
             @emitData="emitData"
             @newData="newData"
           />
@@ -100,8 +96,8 @@ export default {
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
       ],
-      itemText: '',
-      itemAction: '',
+      itemText: 'Edit',
+      itemAction: 'edit',
       url: '/api/financial/accounts',
       headers: [
         { text: 'Account Code', value: 'code', cellClass: 'disable-wrap' },

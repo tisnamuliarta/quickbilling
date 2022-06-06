@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\File;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class ItemCategory extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
-
-    protected $table = 'attachments';
 }

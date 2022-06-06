@@ -2,659 +2,659 @@
   {
     "name": "list",
     "path": "/list",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/index.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/index.vue",
     "chunkName": "pages/list/index",
-    "_name": "_39d10f55"
+    "_name": "_ddedff0c"
   },
   {
     "name": "app-accounting",
     "path": "/app/accounting",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/accounting.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/accounting.vue",
     "chunkName": "pages/app/accounting",
     "children": [
       {
         "name": "app-accounting-account",
         "path": "account",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/accounting/account.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/accounting/account.vue",
         "chunkName": "pages/app/accounting/account",
-        "_name": "_31e216d6"
+        "_name": "_1455538c"
       },
       {
         "name": "app-accounting-reconcile",
         "path": "reconcile",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/accounting/reconcile.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/accounting/reconcile.vue",
         "chunkName": "pages/app/accounting/reconcile",
-        "_name": "_38f16d94"
+        "_name": "_5a3bd59b"
       }
     ],
-    "_name": "_64643b77"
+    "_name": "_e375dbc8"
   },
   {
     "name": "app-contact",
     "path": "/app/contact",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/contact.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/contact.vue",
     "chunkName": "pages/app/contact",
     "children": [
       {
         "name": "app-contact-customer",
         "path": "customer",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/contact/customer.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/customer.vue",
         "chunkName": "pages/app/contact/customer",
-        "_name": "_e5ada362"
+        "_name": "_5cf5b534"
       },
       {
         "name": "app-contact-customer-detail",
         "path": "customer-detail",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/contact/customer-detail.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/customer-detail.vue",
         "chunkName": "pages/app/contact/customer-detail",
-        "_name": "_5b91debf"
+        "_name": "_382fbc3a"
       },
       {
-        "name": "app-contact-vendor",
-        "path": "vendor",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/contact/vendor.vue",
-        "chunkName": "pages/app/contact/vendor",
-        "_name": "_a8a71e0e"
+        "name": "app-contact-overview",
+        "path": "overview",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/overview.vue",
+        "chunkName": "pages/app/contact/overview",
+        "_name": "_65124562"
       },
       {
         "name": "app-contact-vendor-detail",
         "path": "vendor-detail",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/contact/vendor-detail.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/vendor-detail.vue",
         "chunkName": "pages/app/contact/vendor-detail",
-        "_name": "_7cc828d5"
+        "_name": "_46b5ade0"
       }
     ],
-    "_name": "_15d81ba4"
+    "_name": "_f64bb4ae"
   },
   {
     "name": "app-item",
     "path": "/app/item",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/item.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/item.vue",
     "chunkName": "pages/app/item",
     "children": [
       {
         "name": "app-item-list",
         "path": "list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/item/list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/item/list.vue",
         "chunkName": "pages/app/item/list",
-        "_name": "_96ee94b0"
+        "_name": "_6b8ff663"
       },
       {
         "name": "app-item-price-list",
         "path": "price-list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/item/price-list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/item/price-list.vue",
         "chunkName": "pages/app/item/price-list",
-        "_name": "_d9c2e7a8"
+        "_name": "_4839d6b2"
       },
       {
         "name": "app-item-form-fitem",
         "path": "form/fitem",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/item/form/fitem.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/item/form/fitem.vue",
         "chunkName": "pages/app/item/form/fitem",
-        "_name": "_7cd2c6f8"
+        "_name": "_74d1611a"
       },
       {
         "name": "app-item-form-fprice-list",
         "path": "form/fprice-list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/item/form/fprice-list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/item/form/fprice-list.vue",
         "chunkName": "pages/app/item/form/fprice-list",
-        "_name": "_31ba6547"
+        "_name": "_dcd134fc"
       }
     ],
-    "_name": "_5f77e475"
+    "_name": "_44584a4c"
   },
   {
     "name": "app-payroll",
     "path": "/app/payroll",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/payroll.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/payroll.vue",
     "chunkName": "pages/app/payroll",
     "children": [
       {
         "name": "app-payroll-contractor",
         "path": "contractor",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/payroll/contractor.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/payroll/contractor.vue",
         "chunkName": "pages/app/payroll/contractor",
-        "_name": "_22c11781"
+        "_name": "_31877926"
       },
       {
         "name": "app-payroll-employee",
         "path": "employee",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/payroll/employee.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/payroll/employee.vue",
         "chunkName": "pages/app/payroll/employee",
-        "_name": "_95d6778c"
+        "_name": "_f63d69c2"
       },
       {
         "name": "app-payroll-overview",
         "path": "overview",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/payroll/overview.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/payroll/overview.vue",
         "chunkName": "pages/app/payroll/overview",
-        "_name": "_7b7724f6"
+        "_name": "_dbde172c"
       }
     ],
-    "_name": "_a9453e9a"
+    "_name": "_3b23942e"
   },
   {
     "name": "app-project",
     "path": "/app/project",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/project.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/project.vue",
     "chunkName": "pages/app/project",
-    "_name": "_8ac216b2"
+    "_name": "_4a652822"
   },
   {
     "name": "app-purchase",
     "path": "/app/purchase",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/purchase.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/purchase.vue",
     "chunkName": "pages/app/purchase",
     "children": [
       {
         "name": "app-purchase-invoice",
         "path": "invoice",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/purchase/invoice.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/purchase/invoice.vue",
         "chunkName": "pages/app/purchase/invoice",
-        "_name": "_82064efe"
+        "_name": "_e26d4134"
       },
       {
         "name": "app-purchase-list",
         "path": "list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/purchase/list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/purchase/list.vue",
         "chunkName": "pages/app/purchase/list",
-        "_name": "_811ae70c"
+        "_name": "_2b24f7b5"
       },
       {
         "name": "app-purchase-overview",
         "path": "overview",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/purchase/overview.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/purchase/overview.vue",
         "chunkName": "pages/app/purchase/overview",
-        "_name": "_019321d5"
+        "_name": "_2b577790"
       }
     ],
-    "_name": "_1418db3a"
+    "_name": "_5ef3ce48"
   },
   {
     "name": "app-reports",
     "path": "/app/reports",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/reports.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/reports.vue",
     "chunkName": "pages/app/reports",
     "children": [
       {
         "name": "app-reports-list",
         "path": "list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/reports/list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/reports/list.vue",
         "chunkName": "pages/app/reports/list",
-        "_name": "_2613ee60"
+        "_name": "_21fbca35"
       },
       {
         "name": "app-reports-performance",
         "path": "performance",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/reports/performance.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/reports/performance.vue",
         "chunkName": "pages/app/reports/performance",
-        "_name": "_65aef624"
+        "_name": "_d1a3502e"
       }
     ],
-    "_name": "_36058f66"
+    "_name": "_74c36bc8"
   },
   {
     "name": "app-sales",
     "path": "/app/sales",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/sales.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/sales.vue",
     "chunkName": "pages/app/sales",
     "children": [
       {
         "name": "app-sales-invoice",
         "path": "invoice",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/sales/invoice.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/sales/invoice.vue",
         "chunkName": "pages/app/sales/invoice",
-        "_name": "_79b445b8"
+        "_name": "_35329e1a"
       },
       {
         "name": "app-sales-list",
         "path": "list",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/sales/list.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/sales/list.vue",
         "chunkName": "pages/app/sales/list",
-        "_name": "_421202a3"
+        "_name": "_6bf2d948"
       },
       {
         "name": "app-sales-overview",
         "path": "overview",
-        "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/sales/overview.vue",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/sales/overview.vue",
         "chunkName": "pages/app/sales/overview",
-        "_name": "_c46d4904"
+        "_name": "_af3750ba"
       }
     ],
-    "_name": "_0ccb269a"
+    "_name": "_59edfcd5"
   },
   {
     "name": "app-task",
     "path": "/app/task",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/task.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/task.vue",
     "chunkName": "pages/app/task",
-    "_name": "_00d615e7"
+    "_name": "_7f320c4c"
   },
   {
     "name": "auth-login",
     "path": "/auth/login",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/auth/login.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/auth/login.vue",
     "chunkName": "pages/auth/login",
-    "_name": "_ebe2ca14"
+    "_name": "_3d72e7ca"
   },
   {
     "name": "documents-form",
     "path": "/documents/form",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/documents/form.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/documents/form.vue",
     "chunkName": "pages/documents/form",
-    "_name": "_605e91ef"
+    "_name": "_eb812ed8"
   },
   {
     "name": "documents-list",
     "path": "/documents/list",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/documents/list.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/documents/list.vue",
     "chunkName": "pages/documents/list",
-    "_name": "_d7508e6e"
+    "_name": "_838ee124"
   },
   {
     "name": "documents-view",
     "path": "/documents/view",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/documents/view.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/documents/view.vue",
     "chunkName": "pages/documents/view",
-    "_name": "_e92c3160"
+    "_name": "_956a8416"
   },
   {
     "name": "home-business-overview",
     "path": "/home/business-overview",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/home/business-overview.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/home/business-overview.vue",
     "chunkName": "pages/home/business-overview",
-    "_name": "_67516b2c"
+    "_name": "_49c4a7e2"
   },
   {
     "name": "home-getthingdone",
     "path": "/home/getthingdone",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/home/getthingdone.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/home/getthingdone.vue",
     "chunkName": "pages/home/getthingdone",
-    "_name": "_69def306"
+    "_name": "_54dd437e"
   },
   {
     "name": "list-account-category",
     "path": "/list/account-category",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/account-category.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/account-category.vue",
     "chunkName": "pages/list/account-category",
-    "_name": "_78bb6e6b"
+    "_name": "_bb0077b4"
   },
   {
     "name": "list-accountmapping",
     "path": "/list/accountmapping",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/accountmapping.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/accountmapping.vue",
     "chunkName": "pages/list/accountmapping",
-    "_name": "_2f6b30e4"
+    "_name": "_310ef009"
   },
   {
     "name": "list-attachment",
     "path": "/list/attachment",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/attachment.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/attachment.vue",
     "chunkName": "pages/list/attachment",
-    "_name": "_6f8d9fa0"
+    "_name": "_4b19a3aa"
   },
   {
     "name": "list-budgeting",
     "path": "/list/budgeting",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/budgeting.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/budgeting.vue",
     "chunkName": "pages/list/budgeting",
-    "_name": "_05469200"
+    "_name": "_2f2768a5"
   },
   {
     "name": "list-closing",
     "path": "/list/closing",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/closing.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/closing.vue",
     "chunkName": "pages/list/closing",
-    "_name": "_03e20af8"
+    "_name": "_6ce246dd"
   },
   {
     "name": "list-company",
     "path": "/list/company",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/company.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/company.vue",
     "chunkName": "pages/list/company",
-    "_name": "_4b447280"
+    "_name": "_435e02a5"
   },
   {
     "name": "list-currency",
     "path": "/list/currency",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/currency.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/currency.vue",
     "chunkName": "pages/list/currency",
-    "_name": "_5aa9995e"
+    "_name": "_11b0da19"
   },
   {
     "name": "list-journal-entry",
     "path": "/list/journal-entry",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/journal-entry.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/journal-entry.vue",
     "chunkName": "pages/list/journal-entry",
-    "_name": "_63b18642"
+    "_name": "_4e7b8df8"
   },
   {
     "name": "list-menu",
     "path": "/list/menu",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/menu.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/menu.vue",
     "chunkName": "pages/list/menu",
-    "_name": "_72d16ba8"
+    "_name": "_13ba2067"
   },
   {
     "name": "list-paymentmethod",
     "path": "/list/paymentmethod",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/paymentmethod.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/paymentmethod.vue",
     "chunkName": "pages/list/paymentmethod",
-    "_name": "_0362df6a"
+    "_name": "_0dfddb8f"
   },
   {
     "name": "list-paymentterm",
     "path": "/list/paymentterm",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/paymentterm.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/paymentterm.vue",
     "chunkName": "pages/list/paymentterm",
-    "_name": "_20c60496"
+    "_name": "_24a2bf1a"
   },
   {
     "name": "list-permissions",
     "path": "/list/permissions",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/permissions.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/permissions.vue",
     "chunkName": "pages/list/permissions",
-    "_name": "_0a0f15c7"
+    "_name": "_3f14d72c"
   },
   {
     "name": "list-price-list",
     "path": "/list/price-list",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/price-list.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/price-list.vue",
     "chunkName": "pages/list/price-list",
-    "_name": "_2d66862f"
+    "_name": "_3fa0842a"
   },
   {
     "name": "list-recurring",
     "path": "/list/recurring",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/recurring.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/recurring.vue",
     "chunkName": "pages/list/recurring",
-    "_name": "_1d992b40"
+    "_name": "_1b144105"
   },
   {
     "name": "list-reporting-period",
     "path": "/list/reporting-period",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/reporting-period.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/reporting-period.vue",
     "chunkName": "pages/list/reporting-period",
-    "_name": "_04915f0d"
+    "_name": "_2e55b4c8"
   },
   {
     "name": "list-roles",
     "path": "/list/roles",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/roles.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/roles.vue",
     "chunkName": "pages/list/roles",
-    "_name": "_7f0587c0"
+    "_name": "_53850e36"
   },
   {
     "name": "list-setup",
     "path": "/list/setup",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/setup.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/setup.vue",
     "chunkName": "pages/list/setup",
-    "_name": "_72595900"
+    "_name": "_1e0b44a5"
   },
   {
     "name": "list-tax",
     "path": "/list/tax",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/tax.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/tax.vue",
     "chunkName": "pages/list/tax",
-    "_name": "_342a5f24"
+    "_name": "_6446c6d3"
   },
   {
     "name": "list-users",
     "path": "/list/users",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/list/users.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/list/users.vue",
     "chunkName": "pages/list/users",
-    "_name": "_7f3ae98b"
+    "_name": "_531a4aa0"
   },
   {
     "name": "reports-bank",
     "path": "/reports/bank",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/reports/bank.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/reports/bank.vue",
     "chunkName": "pages/reports/bank",
-    "_name": "_e343c180"
+    "_name": "_114349b6"
   },
   {
     "name": "reports-bp",
     "path": "/reports/bp",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/reports/bp.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/reports/bp.vue",
     "chunkName": "pages/reports/bp",
-    "_name": "_27c0f752"
+    "_name": "_7ef8e877"
   },
   {
     "name": "reports-item",
     "path": "/reports/item",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/reports/item.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/reports/item.vue",
     "chunkName": "pages/reports/item",
-    "_name": "_435d5097"
+    "_name": "_a744e708"
   },
   {
     "name": "tools-audit",
     "path": "/tools/audit",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/tools/audit.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/tools/audit.vue",
     "chunkName": "pages/tools/audit",
-    "_name": "_6a96a023"
+    "_name": "_0b4658c4"
   },
   {
     "name": "tools-export",
     "path": "/tools/export",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/tools/export.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/tools/export.vue",
     "chunkName": "pages/tools/export",
-    "_name": "_db1809c8"
+    "_name": "_091791fe"
   },
   {
     "name": "tools-import",
     "path": "/tools/import",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/tools/import.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/tools/import.vue",
     "chunkName": "pages/tools/import",
-    "_name": "_04a8fa8d"
+    "_name": "_6da93672"
   },
   {
     "name": "app-bank-deposit",
     "path": "/app/bank/deposit",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/bank/deposit.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/bank/deposit.vue",
     "chunkName": "pages/app/bank/deposit",
-    "_name": "_1dc6c12d"
+    "_name": "_52cc8292"
   },
   {
     "name": "app-bank-reconcile",
     "path": "/app/bank/reconcile",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/bank/reconcile.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/bank/reconcile.vue",
     "chunkName": "pages/app/bank/reconcile",
-    "_name": "_10e39c1d"
+    "_name": "_1b7e9842"
   },
   {
     "name": "app-bank-transfer",
     "path": "/app/bank/transfer",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/bank/transfer.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/bank/transfer.vue",
     "chunkName": "pages/app/bank/transfer",
-    "_name": "_0c88e4ec"
+    "_name": "_783b5027"
   },
   {
     "name": "app-bank-withdraw",
     "path": "/app/bank/withdraw",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/bank/withdraw.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/bank/withdraw.vue",
     "chunkName": "pages/app/bank/withdraw",
-    "_name": "_250edeea"
+    "_name": "_592afbc6"
   },
   {
     "name": "app-form-accounting-account",
     "path": "/app/form/accounting/account",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/accounting/account.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/accounting/account.vue",
     "chunkName": "pages/app/form/accounting/account",
-    "_name": "_53558228"
+    "_name": "_9a19c732"
   },
   {
     "name": "app-form-accounting-reconcile",
     "path": "/app/form/accounting/reconcile",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/accounting/reconcile.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/accounting/reconcile.vue",
     "chunkName": "pages/app/form/accounting/reconcile",
-    "_name": "_1a6459cd"
+    "_name": "_4700c488"
   },
   {
     "name": "app-form-contact-customer",
     "path": "/app/form/contact/customer",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/contact/customer.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/contact/customer.vue",
     "chunkName": "pages/app/form/contact/customer",
-    "_name": "_8547bb34"
+    "_name": "_1d3922a1"
   },
   {
     "name": "app-form-contact-vendor",
     "path": "/app/form/contact/vendor",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/contact/vendor.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/contact/vendor.vue",
     "chunkName": "pages/app/form/contact/vendor",
-    "_name": "_61290260"
+    "_name": "_cd1d5c6a"
   },
   {
     "name": "app-form-item-item",
     "path": "/app/form/item/item",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/item/item.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/item/item.vue",
     "chunkName": "pages/app/form/item/item",
-    "_name": "_454aa566"
+    "_name": "_4fe5a18b"
   },
   {
     "name": "app-form-item-price-list",
     "path": "/app/form/item/price-list",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/item/price-list.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/item/price-list.vue",
     "chunkName": "pages/app/form/item/price-list",
-    "_name": "_317d8d96"
+    "_name": "_5df5c59a"
   },
   {
     "name": "app-form-payroll-contractor",
     "path": "/app/form/payroll/contractor",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/payroll/contractor.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/payroll/contractor.vue",
     "chunkName": "pages/app/form/payroll/contractor",
-    "_name": "_120761d8"
+    "_name": "_22b5815a"
   },
   {
     "name": "app-form-payroll-employee",
     "path": "/app/form/payroll/employee",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/payroll/employee.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/payroll/employee.vue",
     "chunkName": "pages/app/form/payroll/employee",
-    "_name": "_35708f5e"
+    "_name": "_4524b88c"
   },
   {
     "name": "app-form-purchase-creditmemo",
     "path": "/app/form/purchase/creditmemo",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/creditmemo.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/creditmemo.vue",
     "chunkName": "pages/app/form/purchase/creditmemo",
-    "_name": "_56efa298"
+    "_name": "_0e0d747d"
   },
   {
     "name": "app-form-purchase-delivery",
     "path": "/app/form/purchase/delivery",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/delivery.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/delivery.vue",
     "chunkName": "pages/app/form/purchase/delivery",
-    "_name": "_5a392999"
+    "_name": "_14079e84"
   },
   {
     "name": "app-form-purchase-dp",
     "path": "/app/form/purchase/dp",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/dp.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/dp.vue",
     "chunkName": "pages/app/form/purchase/dp",
-    "_name": "_7fd3c81e"
+    "_name": "_e03aba54"
   },
   {
     "name": "app-form-purchase-invoice",
     "path": "/app/form/purchase/invoice",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/invoice.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/invoice.vue",
     "chunkName": "pages/app/form/purchase/invoice",
-    "_name": "_21a066d0"
+    "_name": "_4f0cccd3"
   },
   {
     "name": "app-form-purchase-order",
     "path": "/app/form/purchase/order",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/order.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/order.vue",
     "chunkName": "pages/app/form/purchase/order",
-    "_name": "_f2455e0e"
+    "_name": "_50e323f4"
   },
   {
     "name": "app-form-purchase-payment",
     "path": "/app/form/purchase/payment",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/payment.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/payment.vue",
     "chunkName": "pages/app/form/purchase/payment",
-    "_name": "_727eb21e"
+    "_name": "_269da72c"
   },
   {
     "name": "app-form-purchase-quote",
     "path": "/app/form/purchase/quote",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/quote.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/quote.vue",
     "chunkName": "pages/app/form/purchase/quote",
-    "_name": "_45cfc127"
+    "_name": "_0fd59422"
   },
   {
     "name": "app-form-purchase-return",
     "path": "/app/form/purchase/return",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/purchase/return.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/purchase/return.vue",
     "chunkName": "pages/app/form/purchase/return",
-    "_name": "_7a0b2c15"
+    "_name": "_1e808f0c"
   },
   {
     "name": "app-form-sales-creditmemo",
     "path": "/app/form/sales/creditmemo",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/creditmemo.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/creditmemo.vue",
     "chunkName": "pages/app/form/sales/creditmemo",
-    "_name": "_15a3ece2"
+    "_name": "_550b09ca"
   },
   {
     "name": "app-form-sales-delivery",
     "path": "/app/form/sales/delivery",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/delivery.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/delivery.vue",
     "chunkName": "pages/app/form/sales/delivery",
-    "_name": "_4402e250"
+    "_name": "_0e08b54b"
   },
   {
     "name": "app-form-sales-dp",
     "path": "/app/form/sales/dp",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/dp.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/dp.vue",
     "chunkName": "pages/app/form/sales/dp",
-    "_name": "_622b2c30"
+    "_name": "_3a9cd523"
   },
   {
     "name": "app-form-sales-invoice",
     "path": "/app/form/sales/invoice",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/invoice.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/invoice.vue",
     "chunkName": "pages/app/form/sales/invoice",
-    "_name": "_0f80a101"
+    "_name": "_1e4702a6"
   },
   {
     "name": "app-form-sales-order",
     "path": "/app/form/sales/order",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/order.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/order.vue",
     "chunkName": "pages/app/form/sales/order",
-    "_name": "_3afa2ba2"
+    "_name": "_0ac6b287"
   },
   {
     "name": "app-form-sales-payment",
     "path": "/app/form/sales/payment",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/payment.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/payment.vue",
     "chunkName": "pages/app/form/sales/payment",
-    "_name": "_31dd094c"
+    "_name": "_14504602"
   },
   {
     "name": "app-form-sales-quote",
     "path": "/app/form/sales/quote",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/quote.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/quote.vue",
     "chunkName": "pages/app/form/sales/quote",
-    "_name": "_0c26c860"
+    "_name": "_6c8dba96"
   },
   {
     "name": "app-form-sales-return",
     "path": "/app/form/sales/return",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/app/form/sales/return.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/app/form/sales/return.vue",
     "chunkName": "pages/app/form/sales/return",
-    "_name": "_4989a68c"
+    "_name": "_734dfc47"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/index.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_796e3bce"
+    "_name": "_ce5930ee"
   },
   {
     "name": "__nuxt_laravel",
     "path": "/__nuxt_laravel",
-    "component": "/mnt/c/laragon/www/quickbilling/nuxt/pages/index.vue",
+    "component": "/var/www/html/quickbilling/nuxt/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_796e3bce"
+    "_name": "_ce5930ee"
   }
 ]

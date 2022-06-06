@@ -24,24 +24,24 @@ return new class extends Migration {
         });
 
         // Accounts
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->string('name', 200);
-            $table->string('number', 20);
-            $table->string('currency_code', 5);
-            $table->decimal('opening_balance', 15, 4)->default('0.0000');
-            $table->string('bank_name', 150)->nullable();
-            $table->string('bank_phone', 15)->nullable();
-            $table->text('bank_address')->nullable();
-            $table->boolean('enabled')->default(1);
-            $table->unsignedBigInteger('tax_id')->nullable();
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        // Schema::create('accounts', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('entity_id');
+        //     $table->string('name', 200);
+        //     $table->string('number', 20);
+        //     $table->string('currency_code', 5);
+        //     $table->decimal('opening_balance', 15, 4)->default('0.0000');
+        //     $table->string('bank_name', 150)->nullable();
+        //     $table->string('bank_phone', 15)->nullable();
+        //     $table->text('bank_address')->nullable();
+        //     $table->boolean('enabled')->default(1);
+        //     $table->unsignedBigInteger('tax_id')->nullable();
+        //     $table->unsignedBigInteger('created_by')->nullable();
+        //     $table->timestamps();
+        //     $table->softDeletes();
 
-            $table->index('entity_id');
-        });
+        //     $table->index('entity_id');
+        // });
 
         // Bills
         Schema::create('bills', function (Blueprint $table) {
@@ -121,17 +121,17 @@ return new class extends Migration {
             $table->index('entity_id');
         });
 
-        Schema::create('bill_statuses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->string('name', 150);
-            $table->string('code', 50);
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        // Schema::create('bill_statuses', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('entity_id');
+        //     $table->string('name', 150);
+        //     $table->string('code', 50);
+        //     $table->unsignedBigInteger('created_by')->nullable();
+        //     $table->timestamps();
+        //     $table->softDeletes();
 
-            $table->index('entity_id');
-        });
+        //     $table->index('entity_id');
+        // });
 
         Schema::create('bill_totals', function (Blueprint $table) {
             $table->id();
@@ -149,7 +149,7 @@ return new class extends Migration {
         });
 
         // Categories
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('item_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
@@ -165,7 +165,7 @@ return new class extends Migration {
         });
 
         // Currencies
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('old_urrencies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('entity_id');
             $table->string('name', 150);
@@ -345,13 +345,6 @@ return new class extends Migration {
         Schema::create('item_units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
-        });
-
-        Schema::create('item_categories', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('item_id');
             $table->timestamps();
         });
 
@@ -575,35 +568,6 @@ return new class extends Migration {
             $table->index('entity_id');
         });
 
-        // Transactions
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('entity_id');
-            $table->string('type', 150);
-            $table->dateTime('paid_at');
-            $table->decimal('amount', 15, 4);
-            $table->string('currency_code', 3);
-            $table->decimal('currency_rate', 15, 8);
-            $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('document_id')->nullable();
-            $table->unsignedBigInteger('contact_id')->nullable();
-            $table->unsignedBigInteger('category_id')->default(1);
-            $table->text('description')->nullable();
-            $table->string('payment_method');
-            $table->string('reference')->nullable();
-            $table->unsignedBigInteger('parent_id')->default(0);
-            $table->boolean('reconciled')->default(0);
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->index(['entity_id', 'type']);
-            $table->index('account_id');
-            $table->index('category_id');
-            $table->index('contact_id');
-            $table->index('document_id');
-        });
-
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
@@ -646,49 +610,47 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::drop('accounts');
-        Schema::drop('bills');
-        Schema::drop('bill_histories');
-        Schema::drop('bill_items');
-        Schema::drop('bill_item_taxes');
-        Schema::drop('bill_totals');
-        Schema::drop('categories');
-        Schema::drop('companies');
-        Schema::drop('currencies');
-        Schema::drop('currency_rates');
-        Schema::drop('invoices');
-        Schema::drop('invoice_histories');
-        Schema::drop('invoice_items');
-        Schema::drop('invoice_item_taxes');
-        Schema::drop('invoice_totals');
-        Schema::drop('items');
+        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('bills');
+        Schema::dropIfExists('bill_histories');
+        Schema::dropIfExists('bill_items');
+        Schema::dropIfExists('bill_item_taxes');
+        Schema::dropIfExists('bill_totals');
         Schema::dropIfExists('item_categories');
+        Schema::dropIfExists('companies');
+        Schema::dropIfExists('old_urrencies');
+        Schema::dropIfExists('currency_rates');
+        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('invoice_histories');
+        Schema::dropIfExists('invoice_items');
+        Schema::dropIfExists('invoice_item_taxes');
+        Schema::dropIfExists('invoice_totals');
+        Schema::dropIfExists('items');
         Schema::dropIfExists('item_units');
-        Schema::drop('modules');
-        Schema::drop('module_histories');
-        Schema::drop('notifications');
+        Schema::dropIfExists('modules');
+        Schema::dropIfExists('module_histories');
+        Schema::dropIfExists('notifications');
 
 
-        Schema::drop('reconciliations');
-        Schema::drop('recurring');
-        Schema::drop('taxes');
-        Schema::drop('transfers');
-        Schema::drop('user_companies');
+        Schema::dropIfExists('reconciliations');
+        Schema::dropIfExists('recurring');
+        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('transfers');
+        Schema::dropIfExists('user_companies');
 
-        Schema::drop('dashboards');
-        Schema::drop('user_dashboards');
-        Schema::drop('widgets');
-        Schema::drop('email_templates');
-        Schema::drop('firewall_ips');
-        Schema::drop('firewall_logs');
-        Schema::drop('reports');
-        Schema::drop('transactions');
+        Schema::dropIfExists('dashboards');
+        Schema::dropIfExists('user_dashboards');
+        Schema::dropIfExists('widgets');
+        Schema::dropIfExists('email_templates');
+        Schema::dropIfExists('firewall_ips');
+        Schema::dropIfExists('firewall_logs');
+        Schema::dropIfExists('reports');
 
-        Schema::drop('payment_methods');
-        Schema::drop('payment_terms');
-        Schema::drop('product_units');
-        Schema::drop('tags');
+        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('payment_terms');
+        Schema::dropIfExists('product_units');
+        Schema::dropIfExists('tags');
         Schema::dropIfExists('taggables');
-        Schema::drop('account_mappings');
+        Schema::dropIfExists('account_mappings');
     }
 };

@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\File;
+namespace App\Models\Payroll;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class PayType extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
-
-    protected $table = 'attachments';
 }

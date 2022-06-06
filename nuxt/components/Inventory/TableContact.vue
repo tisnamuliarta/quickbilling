@@ -26,6 +26,8 @@
               :search="search"
               title="Contacts"
               show-batch-action
+              show-new-data
+              new-data-text="New Customer"
               @emitData="emitData"
               @newData="newData"
             />

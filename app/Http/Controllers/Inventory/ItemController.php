@@ -40,6 +40,8 @@ class ItemController extends Controller
         $result = [];
         $result['form'] = $this->form('items');
         $result['form']['temp_id'] = mt_rand(100000, 999999999999);
+        $result['form']['is_sell'] = true;
+        $result['form']['is_purchase'] = false;
         $result['url'] = url('/');
         $result = array_merge($result, $this->service->index($request));
 

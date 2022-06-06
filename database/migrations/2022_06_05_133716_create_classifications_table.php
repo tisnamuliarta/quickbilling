@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBanksTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateBanksTable extends Migration
      */
     public function up()
     {
-        Schema::create('banks', function (Blueprint $table) {
+        Schema::create('classifications', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 200);
-            $table->string('code', 10);
-            $table->string('swift_code', 30)->nullable();
-            $table->string('phone', 20)->nullable();
-            $table->string('address', 200)->nullable();
+            $table->morphs('class');
             $table->unsignedBigInteger('created_by');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateBanksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('banks');
+        Schema::dropIfExists('classifications');
     }
-}
+};
