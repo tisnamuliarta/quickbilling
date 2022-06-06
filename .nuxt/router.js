@@ -11,7 +11,7 @@ const _5a3bd59b = () => interopDefault(import('../nuxt/pages/app/accounting/reco
 const _f64bb4ae = () => interopDefault(import('../nuxt/pages/app/contact.vue' /* webpackChunkName: "pages/app/contact" */))
 const _5cf5b534 = () => interopDefault(import('../nuxt/pages/app/contact/customer.vue' /* webpackChunkName: "pages/app/contact/customer" */))
 const _382fbc3a = () => interopDefault(import('../nuxt/pages/app/contact/customer-detail.vue' /* webpackChunkName: "pages/app/contact/customer-detail" */))
-const _937125c4 = () => interopDefault(import('../nuxt/pages/app/contact/vendor.vue' /* webpackChunkName: "pages/app/contact/vendor" */))
+const _65124562 = () => interopDefault(import('../nuxt/pages/app/contact/overview.vue' /* webpackChunkName: "pages/app/contact/overview" */))
 const _46b5ade0 = () => interopDefault(import('../nuxt/pages/app/contact/vendor-detail.vue' /* webpackChunkName: "pages/app/contact/vendor-detail" */))
 const _44584a4c = () => interopDefault(import('../nuxt/pages/app/item.vue' /* webpackChunkName: "pages/app/item" */))
 const _6b8ff663 = () => interopDefault(import('../nuxt/pages/app/item/list.vue' /* webpackChunkName: "pages/app/item/list" */))
@@ -137,9 +137,9 @@ export const routerOptions = {
       component: _382fbc3a,
       name: "app-contact-customer-detail"
     }, {
-      path: "vendor",
-      component: _937125c4,
-      name: "app-contact-vendor"
+      path: "overview",
+      component: _65124562,
+      name: "app-contact-overview"
     }, {
       path: "vendor-detail",
       component: _46b5ade0,

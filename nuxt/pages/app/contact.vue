@@ -21,12 +21,12 @@ export default {
     this.$nuxt.$emit('extensionSetting', {
       tabs: [
         {
-          title: 'Customer',
-          route: '/app/contact/customer',
+          title: 'Business Partner Overview',
+          route: '/app/contact/overview',
         },
         {
-          title: 'Vendor',
-          route: '/app/contact/vendor',
+          title: 'Customer',
+          route: '/app/contact/customer',
         },
       ],
       item: [
@@ -34,7 +34,7 @@ export default {
         {text: 'Vendor', type: '', route: '/app/form/contact/vendor'},
       ],
       show: true,
-      showBtn: true
+      showBtn: false
     })
   },
 }

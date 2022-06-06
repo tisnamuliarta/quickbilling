@@ -2,16 +2,16 @@
   <div>
     <DialogForm
       ref="dialogForm"
-      max-width="700px"
+      max-width="600px"
       :dialog-title="formTitle"
       button-title="Save"
     >
       <template #content>
         <v-form>
           <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
+            <v-row dense>
+              <v-col cols="12" md="6">
+                <v-autocomplete
                   v-model="form.item_group_id"
                   :items="itemGroup"
                   label="Type"
@@ -22,10 +22,21 @@
                   dense
                   hide-details="auto"
                 >
-                </v-select>
+                  <template #item="data">
+                    <v-list-item-content>
+                      <v-list-item-title
+                        class="font-weight-bold"
+                        v-text="data.item.name"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        v-text="data.item.desc"
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </template>
+                </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="form.name"
                   label="Name"
@@ -36,18 +47,18 @@
                 ></v-text-field>
               </v-col>
 
-              <!--              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">-->
-              <!--                <v-text-field-->
-              <!--                  v-model="form.code"-->
-              <!--                  label="Code"-->
-              <!--                  outlined-->
-              <!--                  dense-->
-              <!--                  hide-details="auto"-->
-              <!--                ></v-text-field>-->
-              <!--              </v-col>-->
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="form.code"
+                  label="Code"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
+              <v-col cols="12" md="6">
+                <v-autocomplete
                   v-model="form.category"
                   :items="itemCategory"
                   label="Category"
@@ -57,11 +68,19 @@
                   dense
                   hide-details="auto"
                 >
-                </v-select>
+                  <template #prepend-item>
+                    <div>
+                      <v-btn text block small class="text-left">
+                        <v-icon>mdi-plus</v-icon>
+                        Add New
+                      </v-btn>
+                    </div>
+                  </template>
+                </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
+              <v-col cols="12" md="6">
+                <v-autocomplete
                   v-model="form.unit"
                   :items="itemUnit"
                   label="Unit"
@@ -71,76 +90,132 @@
                   dense
                   hide-details="auto"
                 >
-                </v-select>
+                </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-textarea
-                  v-model="form.description"
-                  label="Descriptions"
+              <v-col cols="12" md="6">
+                <v-autocomplete
+                  v-model="form.classification_id"
+                  :items="itemClassification"
+                  label="Unit"
+                  item-text="name"
+                  item-value="id"
                   outlined
+                  persistent-hint
                   dense
-                  rows="2"
-                ></v-textarea>
+                  hide-details="auto"
+                >
+                </v-autocomplete>
               </v-col>
 
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Buy Price</span>
-                <hr />
-              </v-col>
-
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col v-if="form.item_group_id === 1" cols="12" md="4">
                 <vuetify-money
-                  v-model="form.purchase_price"
+                  v-model="form.onhand"
                   v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                   v-bind:options="moneyOptions"
-                  label="Cost"
+                  label="Initial quantity onhand"
+                  class="text-money"
                   outlined
                   dense
                   hide-details="auto"
                 ></vuetify-money>
               </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+
+              <v-col v-if="form.item_group_id === 1" cols="12" md="4">
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template #activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="form.onhand_date"
+                      label="As of date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      persistent-hint
+                      outlined
+                      dense
+                      hide-details="auto"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+
+                  <v-date-picker
+                    v-model="form.onhand_date"
+                    no-title
+                    @input="menu = false"
+                  >
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <v-col v-if="form.item_group_id === 1" cols="12" md="4">
+                <vuetify-money
+                  v-model="form.reorder_point"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="moneyOptions"
+                  label="Reorder point"
+                  class="text-money"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></vuetify-money>
+              </v-col>
+
+              <v-col cols="12" md="12">
                 <v-autocomplete
-                  v-model="form.buy_account_id"
+                  v-model="form.inventory_account"
                   :items="itemAccounts"
                   item-text="name"
                   item-value="id"
-                  label="Expense Account"
+                  label="Default Inventory Account"
                   outlined
                   dense
                   hide-details="auto"
                 ></v-autocomplete>
               </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
-                  v-model="form.buy_tax_id"
-                  :items="itemTax"
-                  item-text="name"
-                  item-value="id"
-                  label="Default Buy Tax"
+
+              <v-col cols="12" md="12" class="pb-0 font-weight-bold">
+                <span>Sales Information</span>
+              </v-col>
+
+              <v-col cols="12" md="10">
+                <v-checkbox
+                  v-model="form.is_sell"
+                  hide-details="auto"
+                  label="I sell this product/service to customers"
+                ></v-checkbox>
+              </v-col>
+
+              <v-col v-if="form.is_sell" cols="12">
+                <v-text-field
+                  v-model="form.description"
+                  label="Descriptions"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-select>
+                ></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Sales Price</span>
-                <hr />
-              </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col v-if="form.is_sell" cols="12" md="3">
                 <vuetify-money
                   v-model="form.sale_price"
                   v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                   v-bind:options="moneyOptions"
                   label="Sales Price"
+                  class="text-money"
                   outlined
                   dense
                   hide-details="auto"
                 ></vuetify-money>
               </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+
+              <v-col v-if="form.is_sell" cols="12" md="9">
                 <v-autocomplete
                   v-model="form.sell_account_id"
                   :items="itemAccounts"
@@ -152,41 +227,75 @@
                   hide-details="auto"
                 ></v-autocomplete>
               </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <v-select
+
+              <v-col v-if="form.is_sell" cols="12" md="12">
+                <v-autocomplete
                   v-model="form.sell_tax_id"
                   :items="itemTax"
                   item-text="name"
                   item-value="id"
-                  label="Default Sell Tax"
+                  label="Sales Tax"
                   outlined
                   dense
                   hide-details="auto"
-                ></v-select>
+                ></v-autocomplete>
               </v-col>
 
-              <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
-                <span>Track Stock for This Item</span>
-                <hr />
+              <v-col cols="12" md="12" class="pb-0 pt-0 font-weight-bold">
+                <span>Purchase Information</span>
               </v-col>
-              <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+
+              <v-col cols="12" md="10">
+                <v-checkbox
+                  v-model="form.is_purchase"
+                  hide-details="auto"
+                  label="I purchase this product/service from vendor"
+                ></v-checkbox>
+              </v-col>
+
+              <v-col v-if="form.is_purchase" cols="12">
+                <v-text-field
+                  v-model="form.purchase_description"
+                  label="Descriptions"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-text-field>
+              </v-col>
+
+              <v-col v-if="form.is_purchase" cols="12" md="3">
                 <vuetify-money
-                  v-model="form.minimum_stock"
+                  v-model="form.purchase_price"
                   v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
                   v-bind:options="moneyOptions"
-                  label="Minimum Stock Quantity"
+                  class="text-money"
+                  label="Cost"
                   outlined
                   dense
                   hide-details="auto"
                 ></vuetify-money>
               </v-col>
-              <v-col cols="12" md="8" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+
+              <v-col v-if="form.is_purchase" cols="12" md="9">
                 <v-autocomplete
-                  v-model="form.inventory_account"
+                  v-model="form.buy_account_id"
                   :items="itemAccounts"
                   item-text="name"
                   item-value="id"
-                  label="Default Inventory Account"
+                  label="Expense Account"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></v-autocomplete>
+              </v-col>
+
+              <v-col v-if="form.is_purchase" cols="12" md="12">
+                <v-autocomplete
+                  v-model="form.contact_id"
+                  :items="itemContact"
+                  item-text="name"
+                  item-value="id"
+                  label="Prefered Vendor"
                   outlined
                   dense
                   hide-details="auto"
@@ -251,12 +360,36 @@ export default {
       selectedItem: 1,
       itemCategory: [],
       itemUnit: [],
+      itemClassification: [],
       itemAccounts: [],
-      itemGroup: [],
+      itemGroup: [
+        {
+          id: 1,
+          name: 'Inventory',
+          desc: 'Product you buy and/or sell and you track quantities of',
+        },
+        {
+          id: 2,
+          name: 'Non inventory',
+          desc: "Product you buy and/or sell but you don't need to (or can't) track quantities of, for example nuts and bolts used in an installation",
+        },
+        {
+          id: 3,
+          name: 'Service',
+          desc: 'Service that you provide to customers, for example, landscaping or tax preparation services',
+        },
+        {
+          id: 4,
+          name: 'Bundle',
+          desc: 'A collection of products and/or services that you sell together, for example a gift basket of fruit, cheese, and whine',
+        },
+      ],
+      menu: '',
       itemTax: [],
+      itemContact: [],
       images: [],
       statusProcessing: 'insert',
-      valueWhenIsEmpty: '0',
+      valueWhenIsEmpty: null,
       temp_image: null,
       url: '/api/inventory/items',
       moneyOptions: {
@@ -286,6 +419,7 @@ export default {
     this.getItemUnit()
     this.getAccounts()
     this.getTaxes()
+    this.getContacts()
   },
 
   methods: {
@@ -298,7 +432,7 @@ export default {
 
     editItem(item, url) {
       const dataForm = item
-      dataForm.category = JSON.parse(dataForm.category)
+      // dataForm.category = JSON.parse(dataForm.category)
       this.form = Object.assign({}, dataForm)
       this.statusProcessing = 'update'
       this.$refs.dialogForm.openDialog()
@@ -333,6 +467,25 @@ export default {
         })
         .then((res) => {
           this.itemTax = res.data.data.row_simple
+        })
+        .catch((err) => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: err.response.data.message,
+          })
+        })
+    },
+
+    getContacts() {
+      this.$axios
+        .get(`/api/bp/contacts`, {
+          params: {
+            type: 'Item Category',
+          },
+        })
+        .then((res) => {
+          this.itemContact = res.data.data.rows
         })
         .catch((err) => {
           this.$swal({

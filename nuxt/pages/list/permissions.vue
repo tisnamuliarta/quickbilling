@@ -18,7 +18,7 @@
           :loading="loading"
           class="elevation-1"
           fixed-header
-          height="75vh"
+          height="70vh"
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
           dense
         >

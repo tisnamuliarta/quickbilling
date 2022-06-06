@@ -26,7 +26,7 @@ export default {
         { text: 'Reconcile', type: 'SO', route: '/app/form/accounting/reconcile' },
       ],
       show: true,
-      showBtn: true
+      showBtn: false
     })
   },
 }

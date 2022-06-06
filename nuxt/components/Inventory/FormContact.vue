@@ -9,8 +9,8 @@
       <template #content>
         <v-form class="pt-2">
           <v-container>
-            <v-row no-gutters>
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+            <v-row dense>
+              <v-col cols="12" class="">
                 <v-text-field
                   v-model="form.name"
                   label="Name"
@@ -20,7 +20,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col cols="12" md="4" class="">
                 <v-select
                   v-model="form.type"
                   :items="['Vendor', 'Customer', 'Employee', 'Other']"
@@ -33,7 +33,7 @@
                 </v-select>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col cols="12" class="">
                 <v-checkbox
                   v-model="form.can_login"
                   dense
@@ -42,7 +42,7 @@
                 ></v-checkbox>
               </v-col>
 
-              <v-col v-if="form.can_login" cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col v-if="form.can_login" cols="12" md="6" class="">
                 <v-text-field
                   v-model="form.email"
                   label="Email"
@@ -53,7 +53,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col v-if="form.can_login" cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col v-if="form.can_login" cols="12" md="6" class="">
                 <v-text-field
                   v-model="form.password"
                   label="Password"
@@ -65,7 +65,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+              <v-col cols="12" class="">
                 <v-card flat>
                   <v-tabs
                     v-model="tab"
@@ -81,8 +81,8 @@
 
                   <v-tabs-items v-model="tab">
                     <v-tab-item value="tab-1">
-                      <v-row no-gutters class="mt-2">
-                        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-row dense class="mt-2">
+                        <v-col cols="12" md="3" class="">
                           <v-select
                             v-model="form.identify"
                             :items="['Mr.', 'Ms.']"
@@ -92,7 +92,7 @@
                             hide-details="auto"
                           ></v-select>
                         </v-col>
-                        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="3" class="">
                           <v-text-field
                             v-model="form.first_name"
                             label="First Name"
@@ -101,7 +101,7 @@
                             hide-details="auto"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="3" class="">
                           <v-text-field
                             v-model="form.middle_name"
                             label="Middle Name"
@@ -110,7 +110,7 @@
                             hide-details="auto"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="12" md="3" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="3" class="">
                           <v-text-field
                             v-model="form.last_name"
                             label="Last Name"
@@ -120,7 +120,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="4" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="3" class="">
                           <v-select
                             v-model="form.identify_by"
                             :items="['Driver License', 'National ID', 'Passport']"
@@ -131,7 +131,7 @@
                           ></v-select>
                         </v-col>
 
-                        <v-col cols="12" md="8" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="9" class="">
                           <v-text-field
                             v-model="form.identify_number"
                             label="Identify Number"
@@ -141,7 +141,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="6" class="">
                           <v-text-field
                             v-model="form.company_name"
                             label="Company Name"
@@ -151,7 +151,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="6" class="">
                           <v-text-field
                             v-model="form.phone"
                             label="Handphone"
@@ -161,7 +161,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="6" class="">
                           <v-text-field
                             v-model="form.fax"
                             label="Fax"
@@ -171,7 +171,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="6" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="6" class="">
                           <v-text-field
                             v-model="form.tax_number"
                             label="Tax Number"
@@ -181,7 +181,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="12" class="">
                           <v-textarea
                             v-model="form.address"
                             rows="3"
@@ -192,7 +192,7 @@
                           ></v-textarea>
                         </v-col>
 
-                        <v-col cols="12" md="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="12" md="12" class="">
                           <v-textarea
                             v-model="form.shipping_address"
                             rows="3"
@@ -209,22 +209,22 @@
                       <v-row
                         v-for="(item, index) in form.banks"
                         :key="index"
-                        no-gutters
+                        dense
                       >
                         <v-col
                           cols="11"
-                          class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                          class=""
                         >
                           <v-col
                             cols="12"
-                            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                            class=""
                           >
                             <span>Bank Account</span>
                             <hr>
                           </v-col>
                           <v-col
                             cols="12"
-                            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                            class=""
                           >
                             <v-autocomplete
                               v-model="item.name"
@@ -238,7 +238,7 @@
 
                           <v-col
                             cols="12"
-                            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                            class=""
                           >
                             <v-text-field
                               v-model="item.branch"
@@ -251,7 +251,7 @@
 
                           <v-col
                             cols="12"
-                            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                            class=""
                           >
                             <v-text-field
                               v-model="item.contact_account_name"
@@ -264,7 +264,7 @@
 
                           <v-col
                             cols="12"
-                            class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                            class=""
                           >
                             <v-text-field
                               v-model="item.contact_account_number"
@@ -276,7 +276,7 @@
                           </v-col>
                         </v-col>
 
-                        <v-col cols="1" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="1" class="">
                           <v-btn
                             color="red darken-1"
                             dark
@@ -291,7 +291,7 @@
                         </v-col>
                       </v-row>
 
-                      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col cols="12" class="">
                         <v-btn
                           color="green darken-1"
                           dark
@@ -318,7 +318,7 @@
                         ></v-autocomplete>
                       </v-col>
 
-                      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col cols="12" class="">
                         <v-autocomplete
                           v-model="form.payable_account_id"
                           :items="itemAccounts"
@@ -332,7 +332,7 @@
                         ></v-autocomplete>
                       </v-col>
 
-                      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col cols="12" class="">
                         <v-checkbox
                           v-model="form.active_max_payable"
                           dense
@@ -341,7 +341,7 @@
                         ></v-checkbox>
                       </v-col>
 
-                      <v-col v-if="form.active_max_payable" cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col v-if="form.active_max_payable" cols="12" class="">
                         <vuetify-money
                           v-model="form.max_payable"
                           v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
@@ -353,7 +353,7 @@
                         ></vuetify-money>
                       </v-col>
 
-                      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col cols="12" class="">
                         <v-autocomplete
                           v-model="form.payment_term_id"
                           :items="itemPaymentTerm"
@@ -372,12 +372,12 @@
                       <v-row
                         v-for="(item, index) in form.emails"
                         :key="index"
-                        no-gutters
+                        dense
                         class="mt-2"
                       >
                         <v-col
                           cols="11"
-                          class="pr-1 pl-1 pb-1 pt-1 mt-1"
+                          class=""
                         >
                           <v-text-field
                             v-model="item.email"
@@ -388,7 +388,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="1" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                        <v-col cols="1" class="">
                           <v-btn
                             color="red darken-1"
                             dark
@@ -403,7 +403,7 @@
                         </v-col>
                       </v-row>
 
-                      <v-col cols="12" class="pr-1 pl-1 pb-1 pt-1 mt-1">
+                      <v-col cols="12" class="">
                         <v-btn
                           color="green darken-1"
                           dark

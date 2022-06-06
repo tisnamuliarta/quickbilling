@@ -50,11 +50,11 @@
         "_name": "_382fbc3a"
       },
       {
-        "name": "app-contact-vendor",
-        "path": "vendor",
-        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/vendor.vue",
-        "chunkName": "pages/app/contact/vendor",
-        "_name": "_937125c4"
+        "name": "app-contact-overview",
+        "path": "overview",
+        "component": "/var/www/html/quickbilling/nuxt/pages/app/contact/overview.vue",
+        "chunkName": "pages/app/contact/overview",
+        "_name": "_65124562"
       },
       {
         "name": "app-contact-vendor-detail",

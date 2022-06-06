@@ -27,6 +27,9 @@
               :search="search"
               :show-add="showAdd"
               title="Items"
+              show-new-data
+              new-data-text="New Item"
+              show-batch-action
               @emitData="emitData"
               @newData="newData"
             />
@@ -59,10 +62,6 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-          </template>
-
-          <template #[`item.categories`]="{ item }">
-            {{ parseJson(item.categories) }}
           </template>
 
           <template #[`item.sale_price`]="{ item }">

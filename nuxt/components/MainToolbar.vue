@@ -41,15 +41,16 @@
       <template #activator="{ on, attrs }">
         <v-btn
           small
-          color="green"
+          color="black"
           class="ml-0 mr-2"
           dark
+          outlined
           elevation="0"
           v-bind="attrs"
           v-on="on"
         >
           Batch Action
-          <v-btn dark small icon>
+          <v-btn color="black" dark small icon>
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </v-btn>
@@ -171,7 +172,15 @@
 
     <v-spacer />
     <LazySetupBackList v-if="showBackLink"></LazySetupBackList>
-    <v-btn v-if="showNewData" color="primary" small @click="newData"> {{ newDataText }} </v-btn>
+    <v-btn
+      v-if="showNewData"
+      color="primary"
+      elevation="0"
+      small
+      @click="newData"
+    >
+      {{ newDataText }}
+    </v-btn>
     <v-btn :loading="loading" icon small @click="passDataToToolbar">
       <v-icon>mdi-refresh</v-icon>
     </v-btn>

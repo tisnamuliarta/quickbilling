@@ -49,20 +49,20 @@
                 ></v-text-field>
               </v-col>
 
-<!--              <v-col cols="12">-->
-<!--                <v-autocomplete-->
-<!--                  v-model="form.currency_id"-->
-<!--                  :items="itemCurrency"-->
-<!--                  label="Currency"-->
-<!--                  item-text="currency_code"-->
-<!--                  item-value="id"-->
-<!--                  outlined-->
-<!--                  persistent-hint-->
-<!--                  dense-->
-<!--                  hide-details="auto"-->
-<!--                >-->
-<!--                </v-autocomplete>-->
-<!--              </v-col>-->
+              <!--              <v-col cols="12">-->
+              <!--                <v-autocomplete-->
+              <!--                  v-model="form.currency_id"-->
+              <!--                  :items="itemCurrency"-->
+              <!--                  label="Currency"-->
+              <!--                  item-text="currency_code"-->
+              <!--                  item-value="id"-->
+              <!--                  outlined-->
+              <!--                  persistent-hint-->
+              <!--                  dense-->
+              <!--                  hide-details="auto"-->
+              <!--                >-->
+              <!--                </v-autocomplete>-->
+              <!--              </v-col>-->
 
               <!--              <v-col cols="12" >-->
               <!--                <v-text-field-->
@@ -84,7 +84,6 @@
                   hide-details="auto"
                 ></v-textarea>
               </v-col>
-
             </v-row>
           </v-container>
         </v-form>
@@ -162,6 +161,7 @@ export default {
       this.statusProcessing = 'update'
       this.$refs.dialogForm.openDialog()
       this.itemAccountType = form.account_type_list
+      this.changeAccountType()
     },
 
     changeAccountType() {
@@ -175,13 +175,15 @@ export default {
     },
 
     getCategory() {
-      this.$axios.get(`/api/financial/account-category`, {
-        params: {
-          type: 'Account Category'
-        }
-      }).then((res) => {
-        this.itemAllCurrency = res.data.data.rows
-      })
+      this.$axios
+        .get(`/api/financial/account-category`, {
+          params: {
+            type: 'Account Category',
+          },
+        })
+        .then((res) => {
+          this.itemAllCurrency = res.data.data.rows
+        })
         .catch((err) => {
           this.$swal({
             type: 'error',
@@ -192,13 +194,15 @@ export default {
     },
 
     getCurrency() {
-      this.$axios.get(`/api/financial/currency`, {
-        params: {
-          type: 'Account Category'
-        }
-      }).then((res) => {
-        this.itemCurrency = res.data.data.rows
-      })
+      this.$axios
+        .get(`/api/financial/currency`, {
+          params: {
+            type: 'Account Category',
+          },
+        })
+        .then((res) => {
+          this.itemCurrency = res.data.data.rows
+        })
         .catch((err) => {
           this.$swal({
             type: 'error',
@@ -240,7 +244,7 @@ export default {
     store(method, url, data) {
       const vm = this
       vm.submitLoad = true
-      this.$axios({method, url, data})
+      this.$axios({ method, url, data })
         .then((res) => {
           this.$refs.dialogForm.closeDialog()
           this.$emit('getDataFromApi')
