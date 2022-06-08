@@ -511,13 +511,6 @@
     "_name": "_076167c0"
   },
   {
-    "name": "app-form-purchase-delivery",
-    "path": "/app/form/purchase/delivery",
-    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\delivery.vue",
-    "chunkName": "pages/app/form/purchase/delivery",
-    "_name": "_fdf4d5be"
-  },
-  {
     "name": "app-form-purchase-dp",
     "path": "/app/form/purchase/dp",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\dp.vue",
@@ -551,6 +544,13 @@
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\quote.vue",
     "chunkName": "pages/app/form/purchase/quote",
     "_name": "_2f1e429f"
+  },
+  {
+    "name": "app-form-purchase-receipt",
+    "path": "/app/form/purchase/receipt",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\receipt.vue",
+    "chunkName": "pages/app/form/purchase/receipt",
+    "_name": "_6b7b819b"
   },
   {
     "name": "app-form-purchase-return",
