@@ -28,7 +28,11 @@
             :search="search"
             :title="toolbarTitle"
             :button-title="btnTitle"
+            :new-data-multiple-item="itemMultiple"
             show-batch-action
+            show-filter
+            show-new-data-multiple
+            new-data-text="New Transactions"
             @emitData="emitData"
             @newData="newData"
           />
@@ -127,6 +131,12 @@ export default {
       },
     },
     headerTable: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    itemMultiple: {
       type: Array,
       default() {
         return []

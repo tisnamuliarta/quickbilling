@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'AR Down Payment',
+      title: 'AP Down Payment',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },

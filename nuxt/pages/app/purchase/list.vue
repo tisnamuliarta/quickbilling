@@ -5,6 +5,7 @@
       type-document="P"
       form-url="/app/purchasereturn/form"
       table-title="Purchase Transactions"
+      :item-multiple="itemMultiple"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
@@ -35,7 +36,20 @@
 
 <script>
 export default {
-  name: 'AllSales',
+  name: 'AllPurchase',
+
+  data() {
+    return {
+      itemMultiple: [
+        { text: 'Expense', type: 'EXPENSE', route: '/app/expense' },
+        { text: 'Purchase Order', type: 'PO', route: '/app/form/purchase/order' },
+        { text: 'A/P Invoice', type: 'PI', route: '/app/form/purchase/invoice' },
+        { text: 'Outgoing Payment', type: 'PP', route: '/app/form/purchase/payment' },
+        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/form/purchase/creditmemo' },
+        { text: 'Goods Return', type: 'GR', route: '/app/form/purchase/return' },
+      ],
+    }
+  },
 
   head() {
     return {

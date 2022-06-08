@@ -63,7 +63,7 @@ export default {
 
   data() {
     return {
-      title: 'AR Invoice',
+      title: 'AP Invoice',
       items: [
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },

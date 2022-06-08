@@ -28,7 +28,7 @@
     <!--      </v-card>-->
     <!--    </v-dialog>-->
 
-    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0 ">
+    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0">
       <v-icon>mdi-arrow-down-left</v-icon>
     </v-btn>
 
@@ -42,7 +42,7 @@
         <v-btn
           small
           color="black"
-          class="ml-0 mr-2 "
+          class="ml-0 mr-2"
           dark
           outlined
           elevation="0"
@@ -74,7 +74,7 @@
       :nudge-width="400"
       max-width="400px"
       bottom
-      offset-x
+      offset-y
     >
       <template #activator="{ on, attrs }">
         <v-btn
@@ -157,12 +157,12 @@
         <v-card-actions>
           <v-btn text> Cancel </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" rounded> Apply </v-btn>
+          <v-btn color="primary" small elevation="0"> Apply </v-btn>
         </v-card-actions>
       </v-card>
     </v-menu>
 
-    <v-form @keyup.native.enter="getDataFromApi" class="d-none d-sm-flex">
+    <v-form @keyup.native.enter="getDataFromApi" class="d-none d-sm-flex ml-2">
       <v-layout wrap>
         <v-row>
           <v-col cols="12" md="12" sm="12" class="mt-0 mr-2">
@@ -206,6 +206,42 @@
     >
       <v-icon>mdi-plus-box</v-icon>
     </v-btn>
+
+    <v-menu
+      v-if="showNewDataMultiple"
+      transition="slide-y-transition"
+      offset-y
+      bottom
+    >
+      <template #activator="{ on, attrs }">
+        <v-btn small color="primary" elevation="0" v-bind="attrs" v-on="on">
+          New Transactions
+          <v-btn dark small icon>
+            <v-icon>mdi-menu-down</v-icon>
+          </v-btn>
+        </v-btn>
+      </template>
+      <v-list dense>
+        <v-list-item
+          v-for="(value, i) in newDataMultipleItem"
+          :key="i"
+          dense
+          @click="
+            $router.push({
+              path: value.route,
+              query: {
+                document: 0,
+                type: value.type,
+              },
+            })
+          "
+        >
+          <v-list-item-content>
+            <v-list-item-title>{{ value.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 
     <v-btn
       class="ml-1 mr-1 d-none d-sm-flex"
@@ -348,6 +384,16 @@ export default {
     showNewData: {
       type: Boolean,
       default: false,
+    },
+    showNewDataMultiple: {
+      type: Boolean,
+      default: false,
+    },
+    newDataMultipleItem: {
+      type: Array,
+      default() {
+        return []
+      },
     },
     itemSearch: {
       type: Array,
