@@ -47,7 +47,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('bp_banks');
         Schema::dropIfExists('price_lists');
         Schema::dropIfExists('price_list_bp');
         Schema::dropIfExists('price_list_products');

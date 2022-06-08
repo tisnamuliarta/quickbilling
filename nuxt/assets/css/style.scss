@@ -33,16 +33,20 @@
   overflow: hidden;
 }
 
-.v-text-field--filled.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot {
+.v-text-field--filled.v-input--dense.v-text-field--single-line
+  > .v-input__control
+  > .v-input__slot {
   min-height: 24px !important;
 }
 
-.v-text-field.v-text-field--solo.v-input--dense>.v-input__control {
+.v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
   min-height: 24px !important;
   font-size: 12px !important;
 }
 
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)>.v-input__control>.v-input__slot {
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+  > .v-input__control
+  > .v-input__slot {
   box-shadow: none !important;
   border: 1px solid #8a8a8a !important;
 }
@@ -94,7 +98,7 @@
 }
 
 .bg-white {
-background-color: #f6e99f;
+  background-color: #f6e99f;
 }
 
 .btnToTenant {
@@ -104,7 +108,7 @@ background-color: #f6e99f;
   text-align: center;
   font: 12px sans-serif;
   // padding: 5px;
-  color: #fff!important;
+  color: #fff !important;
 }
 
 .btnDelete {
@@ -114,7 +118,7 @@ background-color: #f6e99f;
   text-align: center;
   font: 12px sans-serif;
   padding: 5px;
-  color: #fff!important;
+  color: #fff !important;
 }
 
 .btnSPB {
@@ -124,9 +128,8 @@ background-color: #f6e99f;
   text-align: center;
   font: 12px sans-serif;
   padding: 5px;
-  color: #fff!important;
+  color: #fff !important;
 }
-
 
 .btnNPB {
   width: 99%;
@@ -135,7 +138,7 @@ background-color: #f6e99f;
   text-align: center;
   font: 12px sans-serif;
   padding: 5px;
-  color: #fff!important;
+  color: #fff !important;
 }
 
 .v-data-table__wrapper table tbody tr:hover {
@@ -163,7 +166,7 @@ background-color: #f6e99f;
   text-transform: capitalize !important;
 }
 
-.v-dialog>.v-card>.v-card__title {
+.v-dialog > .v-card > .v-card__title {
   padding: 5px 24px 5px !important;
 }
 
@@ -220,7 +223,8 @@ body {
   color: #222 !important;
 }
 
-.theme--light.v-card > .v-card__text, .theme--light.v-card > .v-card__subtitle {
+.theme--light.v-card > .v-card__text,
+.theme--light.v-card > .v-card__subtitle {
   color: #222 !important;
 }
 
@@ -228,119 +232,117 @@ body {
 //   color: #222 !important;
 // }
 
-
 .handsontable thead th.colorJkt {
-    background: #E6A23C;
-    border-color: #DEDE9A;
+  background: #e6a23c;
+  border-color: #dede9a;
 }
 
 .handsontable thead th.colorTenant {
-    background: #409EFF;
-    border-color: #DEDE9A;
+  background: #409eff;
+  border-color: #dede9a;
 }
 
 .handsontable thead th.colorPPJK {
-    background: #67C23A;
-    border-color: #DEDE9A;
+  background: #67c23a;
+  border-color: #dede9a;
 }
 
 .currentRow {
-    background-color: #F9F9FB !important;
+  background-color: #f9f9fb !important;
 }
 
 .currentCol {
-    background-color: #E7E8EF !important;
+  background-color: #e7e8ef !important;
 }
 
-
 .myBtRed {
-    width: 99%;
-    height: 100%;
-    background: #f56c6c;
-    text-align: center;
-    font: 11px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #f56c6c;
+  text-align: center;
+  font: 11px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .btnInv {
-    width: 99%;
-    height: 100%;
-    background: #85ce61;
-    text-align: center;
-    font: 11px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #85ce61;
+  text-align: center;
+  font: 11px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .linkToTenant {
-    color: #E6A23C !important;
+  color: #e6a23c !important;
 }
 
 .linkToPPJK {
-    color: #85ce61 !important;
+  color: #85ce61 !important;
 }
 
 .linkToJkt {
-    color: #409EFF !important;
+  color: #409eff !important;
 }
 
 .btnToTenant {
-    width: 99%;
-    height: 100%;
-    background: #E6A23C;
-    text-align: center;
-    font: 12px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #e6a23c;
+  text-align: center;
+  font: 12px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .btnToJkt {
-    width: 99%;
-    height: 100%;
-    background: #409EFF;
-    text-align: center;
-    font: 12px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #409eff;
+  text-align: center;
+  font: 12px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .btnToJkt2 {
-    width: 99%;
-    height: 100%;
-    /*background: #e0e648;*/
-    background: #409EFF;
-    text-align: center;
-    font: 12px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  /*background: #e0e648;*/
+  background: #409eff;
+  text-align: center;
+  font: 12px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .btnToPPJK {
-    width: 99%;
-    height: 100%;
-    background: #85ce61;
-    text-align: center;
-    font: 12px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #85ce61;
+  text-align: center;
+  font: 12px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .myBt {
-    width: 99%;
-    height: 100%;
-    background: #66b1ff;
-    text-align: center;
-    font: 11px sans-serif;
-    /*padding: 5px;*/
-    color: #fff!important;
+  width: 99%;
+  height: 100%;
+  background: #66b1ff;
+  text-align: center;
+  font: 11px sans-serif;
+  /*padding: 5px;*/
+  color: #fff !important;
 }
 
 .filterHeader > input {
-    background-color: #fff!important;
-    width: 100%;
-    /* border-top: 1px solid #eee; */
-    /* border-bottom: 1px solid #eee; */
+  background-color: #fff !important;
+  width: 100%;
+  /* border-top: 1px solid #eee; */
+  /* border-bottom: 1px solid #eee; */
 }
 
 .has-border-bottom {
@@ -348,17 +350,18 @@ body {
 }
 
 .filterHeader {
-    border: 1.5px solid #eee;
-    height: 10px;
-    padding-bottom: 7px;
+  border: 1.5px solid #eee;
+  height: 10px;
+  padding-bottom: 7px;
 }
 
-.v-text-field.v-text-field--solo.v-input--dense .v-input__prepend-outer, .v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
+.v-text-field.v-text-field--solo.v-input--dense .v-input__prepend-outer,
+.v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
   margin-top: 2px !important;
 }
 
 .doc-open {
-  background-color: #69F0AE;
+  background-color: #69f0ae;
 }
 
 .doc-open-upload {
@@ -373,25 +376,31 @@ body {
   background-color: #fff;
 }
 
-.theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
-    color: #222!important;
+.theme--light.v-input--is-disabled input,
+.theme--light.v-input--is-disabled textarea {
+  color: #222 !important;
 }
 
-.v-text-field--filled.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot {
+.v-text-field--filled.v-input--dense.v-text-field--single-line
+  > .v-input__control
+  > .v-input__slot {
   min-height: 24px !important;
 }
 
-.v-text-field.v-text-field--solo.v-input--dense>.v-input__control {
+.v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
   min-height: 24px !important;
   font-size: 12px !important;
 }
 
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)>.v-input__control>.v-input__slot {
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+  > .v-input__control
+  > .v-input__slot {
   box-shadow: none !important;
   border: 1px solid #8a8a8a !important;
 }
 
-.v-text-field.v-text-field--solo.v-input--dense .v-input__prepend-outer, .v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
+.v-text-field.v-text-field--solo.v-input--dense .v-input__prepend-outer,
+.v-text-field.v-text-field--solo.v-input--dense .v-input__append-outer {
   margin-top: 2px !important;
 }
 
@@ -430,11 +439,16 @@ body {
 //  table-layout: fixed;
 //}
 
-.text-money >>>>> input {
+.text-money>>>>>input {
   text-align: right;
 }
 
-.text-money > .v-input > .v-input__control > .v-input__slot > .v-text-field__slot > input {
+.text-money
+  > .v-input
+  > .v-input__control
+  > .v-input__slot
+  > .v-text-field__slot
+  > input {
   text-align: right;
 }
 
@@ -484,11 +498,17 @@ body {
   white-space: nowrap !important;
 }
 
-.row--dense > .col, .row--dense > [class*=col-] {
+.row--dense > .col,
+.row--dense > [class*='col-'] {
   padding: 8px !important;
 }
 
-.v-list-item__title, .v-list-item__subtitle {
+.v-list-item__title,
+.v-list-item__subtitle {
   white-space: normal !important;
 }
 
+.theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  color: rgb(0, 0, 0) !important;
+  font-weight: bold !important;
+}

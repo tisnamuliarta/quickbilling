@@ -28,7 +28,7 @@
     <!--      </v-card>-->
     <!--    </v-dialog>-->
 
-    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0">
+    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0 d-none d-sm-flex">
       <v-icon>mdi-arrow-down-left</v-icon>
     </v-btn>
 
@@ -42,7 +42,7 @@
         <v-btn
           small
           color="black"
-          class="ml-0 mr-2"
+          class="ml-0 mr-2 d-none d-sm-flex"
           dark
           outlined
           elevation="0"
@@ -50,7 +50,7 @@
           v-on="on"
         >
           Batch Action
-          <v-btn color="black" dark small icon>
+          <v-btn color="black" class="d-none d-sm-flex" dark small icon>
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </v-btn>
@@ -69,96 +69,98 @@
       </v-list>
     </v-menu>
 
-    <v-btn
-      v-if="showFilter"
-      small
-      rounded
-      color="green"
-      dark
-      @click="newData()"
+    <v-menu
+      :close-on-content-click="false"
+      :nudge-width="400"
+      max-width="400px"
+      bottom
+      offset-x
     >
-      Filter
-
-      <v-menu
-        :close-on-content-click="false"
-        :nudge-width="400"
-        max-width="400px"
-        bottom
-        offset-x
-      >
-        <template #activator="{ on, attrs }">
-          <v-btn dark small icon v-bind="attrs" v-on="on">
+      <template #activator="{ on, attrs }">
+        <v-btn
+          v-if="showFilter"
+          small
+          outlined
+          color="black"
+          class="d-none d-sm-flex"
+          elevation="0"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Filter
+          <v-btn dark color="black" class="d-none d-sm-flex" small icon>
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
-        </template>
+        </v-btn>
+      </template>
 
-        <v-card>
-          <v-card-text>
-            <v-row dense>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="Transaction"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6"> </v-col>
+      <v-card>
+        <v-card-text>
+          <v-row dense>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Transaction"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6"> </v-col>
 
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="Status"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Status"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
 
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="Delivery Method"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Delivery Method"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  label="Date"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+            <v-col cols="12" md="4">
+              <v-text-field
+                label="Date"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  label="From"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
+            <v-col cols="12" md="4">
+              <v-text-field
+                label="From"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
 
-              <v-col cols="12" md="4">
-                <v-text-field
-                  label="To"
-                  outlined
-                  dense
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text> Cancel </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" rounded> Apply </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-menu>
-    </v-btn>
+            <v-col cols="12" md="4">
+              <v-text-field
+                label="To"
+                outlined
+                dense
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text> Cancel </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" rounded> Apply </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
 
     <TableFilter
       class="mr-2 ml-2"
@@ -170,30 +172,113 @@
       @passDataToToolbar="passDataToToolbar"
     ></TableFilter>
 
+    <v-form @keyup.native.enter="getDataFromApi">
+    <v-layout wrap>
+      <v-row>
+        <v-col cols="12" md="12" sm="12" class="mt-0 mr-2">
+          <v-text-field
+            v-model="search"
+            @change="getDataFromApi"
+            label="search"
+            class="mt-1"
+            outlined
+            dense
+            hide-details="auto"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-layout>
+  </v-form>
+
     <v-spacer />
+
     <LazySetupBackList v-if="showBackLink"></LazySetupBackList>
+
     <v-btn
       v-if="showNewData"
       color="primary"
+      class="d-none d-sm-flex"
       elevation="0"
       small
       @click="newData"
     >
       {{ newDataText }}
     </v-btn>
-    <v-btn :loading="loading" icon small @click="passDataToToolbar">
+
+    <v-btn
+      v-if="showNewData"
+      color="primary"
+      class="d-flex d-sm-none"
+      elevation="0"
+      small
+      icon
+      @click="newData"
+    >
+      <v-icon>mdi-plus-box</v-icon>
+    </v-btn>
+
+    <v-btn
+      class="ml-1 mr-1 d-none d-sm-flex"
+      :loading="loading"
+      icon
+      small
+      @click="processAction('refresh')"
+    >
       <v-icon>mdi-refresh</v-icon>
     </v-btn>
 
-    <v-btn :loading="loading" icon small @click="passDataToToolbar">
-      <v-icon>mdi-printer-outline</v-icon>
+    <v-btn
+      class="ml-1 mr-1 d-none d-sm-flex"
+      :loading="loading"
+      icon
+      small
+      @click="processAction('print')"
+    >
+      <v-icon>mdi-printer</v-icon>
     </v-btn>
-    <v-btn :loading="loading" icon small @click="passDataToToolbar">
+
+    <v-btn
+      class="ml-1 mr-1 d-none d-sm-flex"
+      :loading="loading"
+      icon
+      small
+      @click="processAction('export-excel')"
+    >
       <v-icon>mdi-microsoft-excel</v-icon>
     </v-btn>
-    <v-btn :loading="loading" icon small @click="passDataToToolbar">
-      <v-icon>mdi-cog-outline</v-icon>
+
+    <v-btn
+      class="d-none d-sm-flex"
+      :loading="loading"
+      icon
+      small
+      @click="processAction('setting')"
+    >
+      <v-icon>mdi-cog</v-icon>
     </v-btn>
+
+    <v-menu offset-y left class="d-flex d-sm-none" :nudge-width="120">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon v-bind="attrs" v-on="on" class="d-flex d-sm-none">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list dense>
+        <v-list-item
+          link
+          dense
+          v-for="(item, i) in itemsMenu"
+          :key="i"
+          @click="processAction(item.action)"
+        >
+          <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-app-bar>
 </template>
 
@@ -293,6 +378,17 @@ export default {
         { text: 'Edit', action: 'edit' },
         { text: 'Delete', action: 'delete' },
       ],
+
+      itemsMenu: [
+        { title: 'Refresh', icon: 'mdi-refresh', action: 'refresh' },
+        { title: 'Print', icon: 'mdi-printer', action: 'print' },
+        {
+          title: 'Export to excel',
+          icon: 'mdi-microsoft-excel',
+          action: 'export-excel',
+        },
+        { title: 'Form Settings', icon: 'mdi-cog', action: 'setting' },
+      ],
     }
   },
 
@@ -309,6 +405,29 @@ export default {
         searchItem: data.searchItem,
         search: data.search,
       })
+    },
+
+    getDataFromApi() {
+      this.$emit('getDataFromApi', {
+        search: this.search
+      })
+    },
+
+    processAction(action) {
+      switch (action) {
+        case 'refresh':
+          this.$emit('getDataFromApi')
+          break
+        case 'print':
+          this.$emit('getDataFromApi')
+          break
+        case 'export-excel':
+          this.$emit('getDataFromApi')
+          break
+        case 'setting':
+          this.$emit('getDataFromApi')
+          break
+      }
     },
 
     makeInActive() {},

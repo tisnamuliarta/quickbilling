@@ -44,7 +44,6 @@
             <v-btn
               small
               color="primary"
-              small
               elevation="0"
               v-bind="attrs"
               v-on="on"

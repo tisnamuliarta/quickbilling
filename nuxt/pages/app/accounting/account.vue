@@ -18,6 +18,10 @@
         :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
       >
         <template v-slot:top>
+          <div class="pl-4 pt-2">
+            <span class="font-weight-medium text-h6">Chart of accounts</span>
+          </div>
+
           <LazyMainToolbar
             :document-status="documentStatus"
             :search-status="searchStatus"

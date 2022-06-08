@@ -26,13 +26,13 @@ export default function (ctx, inject) {
     "namespace": "auth"
   },
   "cookie": {
-    "prefix": "auth.",
+    "prefix": "auth_tizerp_production.",
     "options": {
       "path": "/"
     }
   },
   "localStorage": {
-    "prefix": "auth."
+    "prefix": "auth_tizerp_production."
   },
   "defaultStrategy": "laravelSanctum"
 }

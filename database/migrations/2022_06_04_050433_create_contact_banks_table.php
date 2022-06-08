@@ -110,7 +110,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('employee_details', function (Blueprint $table) {
+        Schema::create('employee_pay_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('pay_type_id');
@@ -129,7 +129,7 @@ return new class extends Migration
         Schema::dropIfExists('contact_banks');
         Schema::dropIfExists('employees');
         Schema::dropIfExists('work_locations');
-        Schema::dropIfExists('employee_details');
+        Schema::dropIfExists('employee_pay_details');
         Schema::dropIfExists('pay_types');
     }
 };

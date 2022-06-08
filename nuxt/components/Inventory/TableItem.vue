@@ -14,6 +14,8 @@
           class="elevation-1"
           item-key="id"
           calculate-widths
+          fixed-header
+          height="70vh"
           show-select
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
@@ -258,7 +260,12 @@ export default {
         this.headers = [
           { text: 'Item Code', value: 'code', width: '120px' },
           { text: 'Item Name', value: 'name', width: '150px' },
-          { text: 'Item Category', value: 'categories', width: '120px' },
+          {
+            text: 'Item Category',
+            value: 'categories',
+            sortable: false,
+            filterable: false,
+          },
           {
             text: 'Minimum Stock',
             value: 'minimum_stock',

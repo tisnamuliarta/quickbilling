@@ -23,10 +23,10 @@ class ItemController extends Controller
     public function __construct(ItemService $service)
     {
         $this->service = $service;
-//        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
-//        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
-//        $this->middleware(['direct_permission:Roles-edits'])->only('update');
-//        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
+        //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+        //    $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+        //    $this->middleware(['direct_permission:Roles-edits'])->only('update');
+        //    $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
     }
 
     /**
