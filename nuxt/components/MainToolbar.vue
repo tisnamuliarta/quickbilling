@@ -28,7 +28,7 @@
     <!--      </v-card>-->
     <!--    </v-dialog>-->
 
-    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0 d-none d-sm-flex">
+    <v-btn v-if="showBatchAction" icon class="mr-0 pr-0 ">
       <v-icon>mdi-arrow-down-left</v-icon>
     </v-btn>
 
@@ -42,7 +42,7 @@
         <v-btn
           small
           color="black"
-          class="ml-0 mr-2 d-none d-sm-flex"
+          class="ml-0 mr-2 "
           dark
           outlined
           elevation="0"
@@ -50,7 +50,7 @@
           v-on="on"
         >
           Batch Action
-          <v-btn color="black" class="d-none d-sm-flex" dark small icon>
+          <v-btn color="black" class="" dark small icon>
             <v-icon>mdi-menu-down</v-icon>
           </v-btn>
         </v-btn>
@@ -162,33 +162,23 @@
       </v-card>
     </v-menu>
 
-    <TableFilter
-      class="mr-2 ml-2"
-      :document-status="documentStatus"
-      :search-status="searchStatusData"
-      :item-search="itemSearch"
-      :search-item="searchItemData"
-      :search="searchData"
-      @passDataToToolbar="passDataToToolbar"
-    ></TableFilter>
-
-    <v-form @keyup.native.enter="getDataFromApi">
-    <v-layout wrap>
-      <v-row>
-        <v-col cols="12" md="12" sm="12" class="mt-0 mr-2">
-          <v-text-field
-            v-model="search"
-            @change="getDataFromApi"
-            label="search"
-            class="mt-1"
-            outlined
-            dense
-            hide-details="auto"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-layout>
-  </v-form>
+    <v-form @keyup.native.enter="getDataFromApi" class="d-none d-sm-flex">
+      <v-layout wrap>
+        <v-row>
+          <v-col cols="12" md="12" sm="12" class="mt-0 mr-2">
+            <v-text-field
+              v-model="search"
+              @change="getDataFromApi"
+              label="search"
+              class="mt-1"
+              outlined
+              dense
+              hide-details="auto"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-layout>
+    </v-form>
 
     <v-spacer />
 
@@ -409,7 +399,7 @@ export default {
 
     getDataFromApi() {
       this.$emit('getDataFromApi', {
-        search: this.search
+        search: this.search,
       })
     },
 

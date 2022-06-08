@@ -4,6 +4,7 @@
       ref="tableDocument"
       type-document="P"
       form-url="/app/purchasereturn/form"
+      table-title="Purchase Transactions"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},

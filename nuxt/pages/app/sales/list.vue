@@ -3,6 +3,7 @@
     <DocumentTableDocument
       ref="tableDocument"
       type-document="S"
+      table-title="Sales Transactions"
       form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},

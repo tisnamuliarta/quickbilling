@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\App;
 
 class AuthController extends Controller
 {
@@ -34,6 +35,8 @@ class AuthController extends Controller
             $user = User::find(auth()->user()->id);
             $user->last_logged_in_at = Carbon::now();
             $user->save();
+
+            App::setLocale($request->locale);
 
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,

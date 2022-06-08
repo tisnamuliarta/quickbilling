@@ -4,6 +4,7 @@
       ref="tableDocument"
       type-document="SI"
       form-url="/app/sales/invoice/form"
+      table-title="Invoice"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
         {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},

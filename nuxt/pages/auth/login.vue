@@ -38,7 +38,7 @@
                       hide-details="auto"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" class="mb-1">
+                  <v-col cols="12" class="mb-4">
                     <v-text-field
                       v-model="form.password"
                       :append-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
@@ -50,7 +50,20 @@
                       @click:append="show = !show"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" class="mb-3">
+
+                  <v-col cols="12" class="mb-1">
+                    <v-select
+                      v-model="form.locale"
+                      label="Language"
+                      :items="language"
+                      item-text="text"
+                      item-value="value"
+                      filled
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="12" class="mb-1">
                     <v-checkbox
                       v-model="form.remember"
                       label="Remember Me"
@@ -115,16 +128,20 @@ export default {
         username: '',
         password: '',
         remember: false,
-        language: 'en',
+        locale: 'en',
         app_name: process.env.appName,
       },
       defaultForm: {
         username: '',
         password: '',
         remember: false,
-        language: 'en',
+        locale: 'en',
         app_name: process.env.appName,
       },
+      language: [
+        {text: 'English', value: 'en'},
+        {text: 'Indonesia', value: 'id'},
+      ],
       snackbar: false,
       text: '',
       appName: process.env.appName,

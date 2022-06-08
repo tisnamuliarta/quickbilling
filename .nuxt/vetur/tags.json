@@ -125,6 +125,12 @@
   "LayoutToolBar": {
     "description": "Auto imported from components/Layout/ToolBar.vue"
   },
+  "MasterDialogPermission": {
+    "description": "Auto imported from components/Master/DialogPermission.vue"
+  },
+  "MasterPermissionList": {
+    "description": "Auto imported from components/Master/PermissionList.vue"
+  },
   "SettingEmail": {
     "description": "Auto imported from components/Setting/Email.vue"
   },
@@ -151,12 +157,6 @@
   },
   "SettingUsers": {
     "description": "Auto imported from components/Setting/Users.vue"
-  },
-  "MasterDialogPermission": {
-    "description": "Auto imported from components/Master/DialogPermission.vue"
-  },
-  "MasterPermissionList": {
-    "description": "Auto imported from components/Master/PermissionList.vue"
   },
   "SetupAdvanced": {
     "description": "Auto imported from components/Setup/Advanced.vue"
