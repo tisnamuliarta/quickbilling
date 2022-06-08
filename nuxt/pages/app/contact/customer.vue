@@ -134,6 +134,13 @@ export default {
     }
   },
 
+  activated() {
+    this.$nuxt.$emit('extensionSetting', {
+      show: false,
+      showBtn: false,
+    })
+  },
+
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'New Contacts' : 'Edit Contacts'

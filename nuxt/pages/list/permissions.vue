@@ -2,12 +2,12 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-<!--        <v-skeleton-loader-->
-<!--          v-show="loading"-->
-<!--          type="table"-->
-<!--          class="mx-auto"-->
-<!--        >-->
-<!--        </v-skeleton-loader>-->
+        <!--        <v-skeleton-loader-->
+        <!--          v-show="loading"-->
+        <!--          type="table"-->
+        <!--          class="mx-auto"-->
+        <!--        >-->
+        <!--        </v-skeleton-loader>-->
         <v-data-table
           :mobile-breakpoint="0"
           :headers="headers"
@@ -23,6 +23,10 @@
           dense
         >
           <template v-slot:top>
+            <div class="pl-4 pt-2">
+              <span class="font-weight-medium text-h6">Permissions</span>
+            </div>
+
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"
@@ -40,21 +44,18 @@
             />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-btn color="secondary" class="font-weight-bold text-right" text small @click="actions(itemAction, item)">
+            <v-btn
+              color="secondary"
+              class="font-weight-bold text-right"
+              text
+              small
+              @click="actions(itemAction, item)"
+            >
               {{ itemText }}
             </v-btn>
-            <v-menu
-              transition="slide-y-transition"
-              bottom
-            >
+            <v-menu transition="slide-y-transition" bottom>
               <template #activator="{ on, attrs }">
-                <v-btn
-                  color="black"
-                  dark
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
+                <v-btn color="black" dark icon v-bind="attrs" v-on="on">
                   <v-icon>mdi-menu-down</v-icon>
                 </v-btn>
               </template>
@@ -83,7 +84,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class='headline'>{{ formTitle }}</span>
+          <span class="headline">{{ formTitle }}</span>
           <v-spacer></v-spacer>
           <v-btn icon color="red" dark @click="dialog = false">
             <v-icon>mdi-close-circle</v-icon>
@@ -338,8 +339,8 @@ export default {
       searchItem: '',
       search: '',
       items: [
-        {text: 'Edit', action: 'edit'},
-        {text: 'Delete', action: 'delete'},
+        { text: 'Edit', action: 'edit' },
+        { text: 'Delete', action: 'delete' },
       ],
       itemText: '',
       itemAction: '',
@@ -390,19 +391,19 @@ export default {
       },
       options: {},
       headers: [
-        {text: 'Name', value: 'menu_name'},
-        {text: 'Parent Name', value: 'parent_name'},
+        { text: 'Name', value: 'menu_name' },
+        { text: 'Parent Name', value: 'parent_name' },
         // { text: 'Icon', value: 'icon' },
-        {text: 'Route', value: 'route_name'},
-        {text: 'Has Child', value: 'has_child'},
+        { text: 'Route', value: 'route_name' },
+        { text: 'Has Child', value: 'has_child' },
         // { text: 'Has Route', value: 'has_route' },
-        {text: 'Is CRUD', value: 'is_crud'},
-        {text: 'Order Line', value: 'order_line'},
+        { text: 'Is CRUD', value: 'is_crud' },
+        { text: 'Order Line', value: 'order_line' },
         // { text: 'Index', value: 'index', align: 'center' },
         // { text: 'Store', value: 'store', align: 'center' },
         // { text: 'Edits', value: 'edits', align: 'center' },
         // { text: 'Erase', value: 'erase', align: 'center' },
-        {text: 'Action', value: 'ACTIONS', align: 'center'},
+        { text: 'Action', value: 'ACTIONS', align: 'center' },
       ],
     }
   },
@@ -493,8 +494,9 @@ export default {
     },
 
     deleteItem(item) {
-      this.$axios.delete(`/api/master/permissions/` + item.menu_name)
-        .then(res => {
+      this.$axios
+        .delete(`/api/master/permissions/` + item.menu_name)
+        .then((res) => {
           this.getDataFromApi()
           this.$nuxt.$emit('getMenu', 'nice payload')
         })
@@ -602,7 +604,7 @@ export default {
     store(method, url, data, type, column = 'all') {
       const vm = this
       vm.submitLoad = true
-      this.$axios({method, url, data})
+      this.$axios({ method, url, data })
         .then((res) => {
           if (res.data.status === 'Error') {
             this.$swal({

@@ -30,13 +30,11 @@ class AuthController extends Controller
                 return $this->error('Credentials not match', 401);
             }
 
-            session(['company_id' => 1]);
+            session(['locale' => $request->locale]);
 
             $user = User::find(auth()->user()->id);
             $user->last_logged_in_at = Carbon::now();
             $user->save();
-
-            App::setLocale($request->locale);
 
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,
@@ -130,6 +128,8 @@ class AuthController extends Controller
     protected function menus(Request $request)
     {
         try {
+            App::setLocale(session('locale'));
+
             $permissions = $request->user()
                 ->getAllPermissions()
                 ->where('parent_id', '=', '0')
@@ -147,9 +147,9 @@ class AuthController extends Controller
                     if ($prev_name != $child->menu_name) {
                         if (Str::contains($child->name, 'index')) {
                             $array_child[] = [
-                                'menu' => $child->menu_name,
-                                'icon' => $child->icon,
-                                'route_name' => $child->route_name,
+                                'menu' => __($child->menu_name),
+                                'icon' => __($child->icon),
+                                'route_name' => __($child->route_name),
                             ];
 
                             $prev_name = $child->menu_name;
@@ -158,9 +158,9 @@ class AuthController extends Controller
                 }
 
                 $array[] = [
-                    'menu' => $permission->menu_name,
-                    'icon' => $permission->icon,
-                    'route_name' => $permission->route_name,
+                    'menu' => __($permission->menu_name),
+                    'icon' => __($permission->icon),
+                    'route_name' => __($permission->route_name),
                     'children' => $array_child
                 ];
             }
@@ -172,5 +172,10 @@ class AuthController extends Controller
                 'trace' => $exception->getTrace()
             ]);
         }
+    }
+
+    public function staticMenus()
+    {
+
     }
 }

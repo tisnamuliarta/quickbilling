@@ -81,7 +81,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     this.$nuxt.$emit('extensionSetting', {
       tabs: [
         {

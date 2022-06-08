@@ -43,6 +43,13 @@ export default {
     }
   },
 
+  activated() {
+    this.$nuxt.$emit('extensionSetting', {
+      show: false,
+      showBtn: false,
+    })
+  },
+
   created() {
     this.$nuxt.$on('getDataFromApi', ($event) => this.getDataFromApi($event))
   },

@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index']);
 // List nav bar menu for guest
-Route::get('menus', [AuthController::class, 'menus']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Route::get('menus', [AuthController::class, 'menus']);
+    Route::get('menus', [AuthController::class, 'menus']);
+
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/roles', [AuthController::class, 'roles']);
         Route::post('/permissions', [AuthController::class, 'permissions']);

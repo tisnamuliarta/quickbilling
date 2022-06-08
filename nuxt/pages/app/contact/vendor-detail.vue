@@ -6,6 +6,13 @@
 
 <script>
 export default {
-  name: "vendor-detail"
+  name: "vendor-detail",
+
+  activated() {
+    this.$nuxt.$emit('extensionSetting', {
+      show: false,
+      showBtn: false,
+    })
+  },
 }
 </script>

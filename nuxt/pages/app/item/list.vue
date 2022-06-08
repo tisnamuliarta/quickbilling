@@ -6,6 +6,12 @@
 
 <script>
 export default {
-  name: 'ItemMaster'
+  name: 'ItemMaster',
+  activated() {
+    this.$nuxt.$emit('extensionSetting', {
+      show: false,
+      showBtn: false,
+    })
+  },
 }
 </script>
