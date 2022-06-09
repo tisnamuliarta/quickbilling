@@ -8,7 +8,7 @@
               <v-col cols="12" md="4">
                 <v-card class="mx-auto">
                   <v-card-text>
-                    <div class="subtitle-1">INVOICES</div>
+                    <div class="subtitle-1">{{ $t('Sales Invoice') }}</div>
                   </v-card-text>
                   <v-card-text></v-card-text>
                 </v-card>
@@ -17,7 +17,7 @@
               <v-col cols="12" md="4">
                 <v-card class="mx-auto">
                   <v-card-text>
-                    <div class="subtitle-1">EXPENSES</div>
+                    <div class="subtitle-1">{{ $t('Expense') }}</div>
                   </v-card-text>
                   <v-card-text></v-card-text>
                 </v-card>
@@ -26,7 +26,7 @@
               <v-col cols="12" md="4">
                 <v-card class="mx-auto">
                   <v-card-text>
-                    <div class="subtitle-1">PROFIT AND LOSS</div>
+                    <div class="subtitle-1">{{ $t('Profit and loss') }}</div>
                   </v-card-text>
                   <v-card-text></v-card-text>
                 </v-card>
@@ -35,7 +35,7 @@
               <v-col cols="12" md="4">
                 <v-card class="mx-auto">
                   <v-card-text>
-                    <div class="subtitle-1">SALES</div>
+                    <div class="subtitle-1">{{ $t('Sales') }}</div>
                   </v-card-text>
                   <v-card-text>
                     <v-sheet color="rgba(0, 0, 0, .12)">

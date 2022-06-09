@@ -19,7 +19,7 @@
       >
         <template v-slot:top>
           <div class="pl-4 pt-2">
-            <span class="font-weight-medium text-h6">Chart of accounts</span>
+            <span class="font-weight-medium text-h6">{{ $t('Chart Of Accounts') }} </span>
           </div>
 
           <LazyMainToolbar

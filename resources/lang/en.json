@@ -29,6 +29,8 @@
   "Payroll Overview": "Payroll Overview",
   "Employees": "Employees",
   "Contractors": "Contractors",
+  "Profit and loss": "Profit and loss",
+  "Expense": "Expense",
   "auth": {
     "failed": "These credentials do not match our records.",
     "password": "The provided password is incorrect.",

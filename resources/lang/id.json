@@ -29,6 +29,8 @@
   "Payroll Overview": "Pratinjau Penggajian",
   "Employees": "Karyawan",
   "Contractors": "Kontraktor",
+  "Profit and loss": "Untung dan rugi",
+  "Expense": "Pengeluaran",
   "auth": {
     "failed": "These credentials do not match our records.",
     "password": "The provided password is incorrect.",

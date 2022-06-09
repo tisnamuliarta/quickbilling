@@ -139,8 +139,8 @@ export default {
         app_name: process.env.appName,
       },
       language: [
-        {text: 'English', value: 'en'},
-        {text: 'Indonesia', value: 'id'},
+        { text: 'English', value: 'en' },
+        { text: 'Indonesia', value: 'id' },
       ],
       snackbar: false,
       text: '',
@@ -194,6 +194,7 @@ export default {
           })
           .then((response) => {
             this.loading = false
+            this.$i18n.setLocale(this.form.locale)
             // this.$router.push('/dashboard')
           })
           .catch((err) => {
