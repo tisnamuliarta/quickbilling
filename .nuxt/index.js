@@ -15,6 +15,9 @@ import { createStore } from './store.js'
 
 import nuxt_plugin_plugin_4242da09 from 'nuxt_plugin_plugin_4242da09' // Source: .\\components\\plugin.js (mode: 'all')
 import nuxt_plugin_plugin_c3b572ea from 'nuxt_plugin_plugin_c3b572ea' // Source: .\\vuetify\\plugin.js (mode: 'all')
+import nuxt_plugin_pluginutils_77672f7c from 'nuxt_plugin_pluginutils_77672f7c' // Source: .\\nuxt-i18n\\plugin.utils.js (mode: 'all')
+import nuxt_plugin_pluginrouting_ce5825e6 from 'nuxt_plugin_pluginrouting_ce5825e6' // Source: .\\nuxt-i18n\\plugin.routing.js (mode: 'all')
+import nuxt_plugin_pluginmain_abdc3cfc from 'nuxt_plugin_pluginmain_abdc3cfc' // Source: .\\nuxt-i18n\\plugin.main.js (mode: 'all')
 import nuxt_plugin_cookieuniversalnuxt_f671c958 from 'nuxt_plugin_cookieuniversalnuxt_f671c958' // Source: .\\cookie-universal-nuxt.js (mode: 'all')
 import nuxt_plugin_srcplugin75e3c8be_ac6749a6 from 'nuxt_plugin_srcplugin75e3c8be_ac6749a6' // Source: .\\src.plugin.75e3c8be.js (mode: 'client')
 import nuxt_plugin_workbox_0d3c8dc8 from 'nuxt_plugin_workbox_0d3c8dc8' // Source: .\\workbox.js (mode: 'client')
@@ -91,7 +94,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"titleTemplate":"%s","title":"Quick Billing","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Quick Billing"},{"hid":"charset","charset":"utf-8"},{"hid":"mobile-web-app-capable","name":"mobile-web-app-capable","content":"yes"},{"hid":"og:type","name":"og:type","property":"og:type","content":"website"},{"hid":"og:description","name":"og:description","property":"og:description","content":"\u003Cp align=\"center\"\u003E\u003Ca href=\"https:\u002F\u002Flaravel.com\" target=\"_blank\"\u003E\u003Cimg src=\"https:\u002F\u002Fraw.githubusercontent.com\u002Ftisnamuliarta\u002Fquickbilling\u002Fmain\u002Fpublic\u002Ffiles\u002Flogo\u002Fquickbilling-circle.png\" width=\"400\"\u003E\u003C\u002Fa\u003E\u003C\u002Fp\u003E"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ficon.png"},{"hid":"shortcut-icon","rel":"shortcut icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_64x64.88d784.png"},{"hid":"apple-touch-icon","rel":"apple-touch-icon","href":"\u002F_nuxt\u002Ficons\u002Ficon_512x512.88d784.png","sizes":"512x512"},{"rel":"manifest","href":"\u002F_nuxt\u002Fmanifest.04f2d3b7.json","hid":"manifest"}],"style":[],"script":[],"htmlAttrs":{"lang":"en"}},
+    head: {"titleTemplate":"%s","title":"Quick Billing","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Quick Billing"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ficon.png"}],"style":[],"script":[]},
 
     store,
     router,
@@ -226,6 +229,18 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_plugin_c3b572ea === 'function') {
     await nuxt_plugin_plugin_c3b572ea(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_pluginutils_77672f7c === 'function') {
+    await nuxt_plugin_pluginutils_77672f7c(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_pluginrouting_ce5825e6 === 'function') {
+    await nuxt_plugin_pluginrouting_ce5825e6(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_pluginmain_abdc3cfc === 'function') {
+    await nuxt_plugin_pluginmain_abdc3cfc(app.context, inject)
   }
 
   if (typeof nuxt_plugin_cookieuniversalnuxt_f671c958 === 'function') {

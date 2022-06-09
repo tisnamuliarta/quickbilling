@@ -49,7 +49,7 @@
         <v-col cols="12" md="4">
           <v-textarea
             v-model="form.contact_address"
-            rows="3"
+            rows="2"
             label="Billing Address"
             outlined
             dense

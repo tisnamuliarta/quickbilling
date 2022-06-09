@@ -93,10 +93,29 @@ export default {
     '@nuxtjs/auth-next',
     'nuxt-sweetalert2',
     'cookie-universal-nuxt',
+    '@nuxtjs/i18n',
     // 'nuxt-seo-meta',
     // '@luxdamore/nuxt-prune-html',
-    // 'nuxt-precompress',
+    // 'nuxt-precompress',a
   ],
+
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        file: 'en.js',
+      },
+      {
+        code: 'id',
+        file: 'id.js',
+      },
+    ],
+    lazy: true,
+    strategy: 'no_prefix',
+    baseUrl: '/',
+    langDir: 'lang/',
+    defaultLocale: 'en',
+  },
 
   auth: {
     localStorage: {
