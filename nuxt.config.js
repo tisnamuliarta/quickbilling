@@ -220,7 +220,7 @@ export default {
     },
   },
   router: {
-    base: '/',
+    base: '/quickbilling/',
   },
   /*
    ** Build configuration

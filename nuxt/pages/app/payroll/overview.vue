@@ -1,44 +1,44 @@
 <template>
-  <div>
-    <DocumentTableDocument
-      ref="tableDocument"
-      type-document="PN"
-      form-url="/app/purchasereturn/form"
-      :header-table="[
-        {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
-        {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
-        {text: 'Date', value: 'issued_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {text: 'Due Date', value: 'due_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {text: 'Status', value: 'status', align: 'left', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {
-          text: 'Balance Due',
-          value: 'balance_due',
-          align: 'right',
-          cellClass: 'disable-wrap',
-          sortable: false,
-          filterable: false
-        },
-        {text: 'Total', value: 'amount', align: 'right', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {
-          text: 'Actions',
-          value: 'actions',
-          align: 'center',
-          cellClass: 'disable-wrap',
-          sortable: false,
-          filterable: false
-        },
-      ]"
-    ></DocumentTableDocument>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto">
+          <v-card-text>
+            <div class="subtitle-1">SHORTCUTS</div>
+          </v-card-text>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-btn icon>
+                    <v-icon x-large>mdi-receipt</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto">
+          <v-card-text>
+            <div class="subtitle-1">SHORTCUTS</div>
+          </v-card-text>
+          <v-card-text></v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 export default {
-  name: 'SalesOverview',
+  name: 'PayrollOverview',
 
   head() {
     return {
-      title: 'Sales Overview',
+      title: 'Payroll Overview',
     }
   },
 
@@ -58,10 +58,7 @@ export default {
       if (this.$refs.tableDocument) {
         this.$refs.tableDocument.getDataFromApi()
       }
-    }
-  }
+    },
+  },
 }
 </script>
-
-
-

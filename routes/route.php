@@ -46,6 +46,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('master')
         ->group(__DIR__ . '/master.php');
 
+    Route::prefix('payroll')
+        ->group(__DIR__ . '/payroll.php');
+
     // List all sales routes
     Route::prefix('transactions')
         ->group(__DIR__ . '/transactions.php');

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PayType extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function employeeDetail()
+    {
+        return $this->hasMany(EmployeeDetail::class);
+    }
 }

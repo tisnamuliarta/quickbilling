@@ -101,6 +101,12 @@
   "FormSetting": {
     "description": "Auto imported from components/Form/Setting.vue"
   },
+  "LayoutNavigationDrawer": {
+    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
+  },
+  "LayoutToolBar": {
+    "description": "Auto imported from components/Layout/ToolBar.vue"
+  },
   "InventoryDialogItem": {
     "description": "Auto imported from components/Inventory/DialogItem.vue"
   },
@@ -119,17 +125,14 @@
   "InventoryTableItem": {
     "description": "Auto imported from components/Inventory/TableItem.vue"
   },
-  "LayoutNavigationDrawer": {
-    "description": "Auto imported from components/Layout/NavigationDrawer.vue"
-  },
-  "LayoutToolBar": {
-    "description": "Auto imported from components/Layout/ToolBar.vue"
-  },
   "MasterDialogPermission": {
     "description": "Auto imported from components/Master/DialogPermission.vue"
   },
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
+  },
+  "PayrollTableEmployee": {
+    "description": "Auto imported from components/Payroll/TableEmployee.vue"
   },
   "SettingEmail": {
     "description": "Auto imported from components/Setting/Email.vue"

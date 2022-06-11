@@ -1,8 +1,9 @@
 <template>
   <div>
-    <DocumentTableDocument
+    <PayrollTableEmployee
       ref="tableDocument"
-      type-document="S"
+      type-document="EMPLOYEE"
+      table-title="Employees"
       form-url="/app/purchasereturn/form"
       :header-table="[
         {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
@@ -29,17 +30,17 @@
           filterable: false
         },
       ]"
-    ></DocumentTableDocument>
+    ></PayrollTableEmployee>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AllSales',
+  name: 'Employees',
 
   head() {
     return {
-      title: 'All Sales',
+      title: 'Employees',
     }
   },
 

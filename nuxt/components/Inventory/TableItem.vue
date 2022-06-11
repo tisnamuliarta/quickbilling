@@ -15,14 +15,14 @@
           item-key="id"
           calculate-widths
           fixed-header
-          height="70vh"
+          :height="(viewData) ? '60vh' : '70vh'"
           show-select
           dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
           <template v-slot:top>
 
-            <div class="pl-4 pt-2">
+            <div v-if="!viewData" class="pl-4 pt-2">
               <span class="font-weight-medium text-h6">Item Master Data</span>
             </div>
 
@@ -256,10 +256,10 @@ export default {
     mappingHeader() {
       if (this.viewData) {
         this.headers = [
-          { text: 'Item Code', value: 'code' },
-          { text: 'Item Name', value: 'name' },
-          { text: 'Item Category', value: 'categories' },
-          { text: 'Unit', value: 'unit' },
+          { text: 'Item Code', value: 'code', cellClass: 'disable-wrap' },
+          { text: 'Item Name', value: 'name', cellClass: 'disable-wrap' },
+          { text: 'Item Category', value: 'categories', cellClass: 'disable-wrap' },
+          { text: 'Unit', value: 'unit', cellClass: 'disable-wrap' },
         ]
       } else {
         this.headers = [
