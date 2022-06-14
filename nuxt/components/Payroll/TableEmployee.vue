@@ -97,6 +97,14 @@
         </template>
       </v-data-table>
     </v-col>
+
+    <LazyPayrollFormEmployee
+      ref="formData"
+      :form-data="form"
+      :form-title="formTitle"
+      :button-title="buttonTitle"
+      @getDataFromApi="getDataFromApi"
+    ></LazyPayrollFormEmployee>
   </v-row>
 </template>
 

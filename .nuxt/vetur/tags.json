@@ -131,6 +131,9 @@
   "MasterPermissionList": {
     "description": "Auto imported from components/Master/PermissionList.vue"
   },
+  "PayrollFormEmployee": {
+    "description": "Auto imported from components/Payroll/FormEmployee.vue"
+  },
   "PayrollTableEmployee": {
     "description": "Auto imported from components/Payroll/TableEmployee.vue"
   },

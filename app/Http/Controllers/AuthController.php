@@ -122,7 +122,10 @@ class AuthController extends Controller
     }
 
     /**
-     * @param Request $request
+     * list menus
+     *
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function menus(Request $request)
@@ -132,6 +135,7 @@ class AuthController extends Controller
 
             $permissions = $request->user()
                 ->getAllPermissions()
+                ->sortBy('order_line')
                 ->where('parent_id', '=', '0')
                 ->where('route_name', '=', 'N');
 
@@ -139,6 +143,7 @@ class AuthController extends Controller
             foreach ($permissions as $permission) {
                 $children = $request->user()
                     ->getAllPermissions()
+                    ->sortBy('order_line')
                     ->where('parent_id', '=', $permission->id);
 
                 $array_child = [];
@@ -172,10 +177,5 @@ class AuthController extends Controller
                 'trace' => $exception->getTrace()
             ]);
         }
-    }
-
-    public function staticMenus()
-    {
-
     }
 }

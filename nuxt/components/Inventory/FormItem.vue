@@ -180,6 +180,19 @@
                 ></v-autocomplete>
               </v-col>
 
+              <v-col cols="12" md="4">
+                <vuetify-money
+                  v-model="form.commision_rate"
+                  v-bind:valueWhenIsEmpty="valueWhenIsEmpty"
+                  v-bind:options="moneyOptions"
+                  label="Commission Rate"
+                  class="text-money"
+                  outlined
+                  dense
+                  hide-details="auto"
+                ></vuetify-money>
+              </v-col>
+
               <v-col cols="12" md="12" class="pb-0 font-weight-bold">
                 <span>Sales Information</span>
               </v-col>

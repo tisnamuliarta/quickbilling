@@ -83,7 +83,6 @@
 <script>
 export default {
   name: 'PaymentMethod',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

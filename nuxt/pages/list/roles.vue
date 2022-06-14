@@ -11,52 +11,64 @@
           :server-items-length="totalData"
           :loading="loading"
           class="elevation-1"
+          show-select
+          dense
+          fixed-header
+          height="70vh"
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
-          <template v-slot:top>
-            <v-toolbar flat color="white" dense>
-              <v-chip
-                link
-                class="ma-2"
-                color="primary"
-                label
-                small
-                @click="$router.push({path: '/dashboard/list'})"
-              >
-                <v-icon left> mdi-arrow-left</v-icon>
-                All list
-              </v-chip>
-              <v-toolbar-title class="hidden-xs-only">Master Roles</v-toolbar-title>
-              <v-divider class="mx-2" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-btn icon color="green" dark @click="newData()">
-                <v-icon>mdi-plus-circle</v-icon>
-              </v-btn>
+          <template #top>
+            <div class="pl-4 pt-2">
+              <span class="font-weight-medium text-h6">Users</span>
+            </div>
 
-              <v-btn :loading="loading" icon @click="getDataFromApi">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </v-toolbar>
+            <LazyMainToolbar
+              :document-status="documentStatus"
+              :search-status="searchStatus"
+              :item-search="itemSearch"
+              :search-item="searchItem"
+              :search="search"
+              :filter="false"
+              title="Roles"
+              title-button="Roles"
+              class="has-border-bottom"
+              show-back-link
+              show-new-data
+              show-batch-action
+              new-data-text="New Role"
+              @emitData="emitData"
+              @newData="newData"
+              @getDataFromApi="getDataFromApi"
+            />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
-
-            <v-icon
+            <v-btn
+              color="secondary"
+              class="font-weight-bold text-right"
+              text
               small
-              class="mr-2"
-              color="orange"
-              @click="
-                $refs.dialogPermission.openRolePermissions(
-                  item,
-                  'Role Permissions',
-                  'role'
-                )
-              "
+              @click="actions(itemAction, item)"
             >
-              mdi-gate
-            </v-icon>
+              {{ itemText }}
+            </v-btn>
+            <v-menu transition="slide-y-transition" bottom>
+              <template #activator="{ on, attrs }">
+                <v-btn color="black" dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </template>
         </v-data-table>
       </div>
@@ -129,7 +141,6 @@
 <script>
 export default {
   name: 'MasterRole',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,
@@ -143,6 +154,13 @@ export default {
       loading: true,
       insertDivision: true,
       insert: true,
+
+      items: [
+        { text: 'Edit', action: 'edit' },
+        { text: 'Direct Permissions', action: 'permissions' },
+      ],
+      itemText: '',
+      itemAction: '',
 
       loadingPermission: true,
       allData: [],
@@ -189,11 +207,25 @@ export default {
     },
   },
 
-  mounted() {
+  activated() {
     this.getDataFromApi()
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
   },
 
   methods: {
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else {
+        this.$refs.dialogPermission.openRolePermissions(
+          item,
+          'Role Permissions',
+          'role'
+        )
+      }
+    },
+
     getDataFromApi() {
       this.loading = true
       const vm = this

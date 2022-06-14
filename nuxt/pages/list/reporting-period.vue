@@ -57,7 +57,6 @@
 <script>
 export default {
   name: 'ReportingPeriod',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

@@ -7,7 +7,6 @@
 <script>
 export default {
   name: "Item",
-  layout: 'dashboard',
 
   head() {
     return {

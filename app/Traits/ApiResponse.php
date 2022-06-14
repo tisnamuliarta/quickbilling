@@ -17,7 +17,7 @@ trait ApiResponse
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function success($data, string $message = null, int $code = 200)
+    protected function success($data, string $message = null, int $code = 200): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'status' => 'Success',
@@ -35,7 +35,7 @@ trait ApiResponse
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function error(string $message = null, int $code = 422, $data = null)
+    protected function error(string $message = null, int $code = 422, $data = null): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'status' => 'Error',

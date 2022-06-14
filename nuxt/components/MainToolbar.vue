@@ -162,12 +162,12 @@
       </v-card>
     </v-menu>
 
-    <v-form @keyup.native.enter="getDataFromApi" class="d-none d-sm-flex ml-2">
+    <v-form class="d-none d-sm-flex ml-2">
       <v-layout wrap>
         <v-row>
           <v-col cols="12" md="12" sm="12" class="mt-0 mr-2">
             <v-text-field
-              v-model="search"
+              v-model="searchData"
               @change="getDataFromApi"
               label="search"
               class="mt-1"
@@ -426,6 +426,17 @@ export default {
         { title: 'Form Settings', icon: 'mdi-cog', action: 'setting' },
       ],
     }
+  },
+
+  watch: {
+    searchData: {
+      handler() {
+        this.$emit('emitData', {
+          search: this.searchData,
+        })
+      },
+      deep: true,
+    },
   },
 
   methods: {

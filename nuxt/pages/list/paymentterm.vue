@@ -95,7 +95,6 @@
 <script>
 export default {
   name: 'PaymentTerm',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

@@ -115,7 +115,6 @@
 <script>
 export default {
   name: 'Currency',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

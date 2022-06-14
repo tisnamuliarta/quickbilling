@@ -2,14 +2,8 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
         </v-skeleton-loader>
         <v-data-table
-          v-show="!loading"
           :mobile-breakpoint="0"
           :headers="headers"
           :items="allData"
@@ -17,12 +11,18 @@
           :options.sync="options"
           :server-items-length="totalData"
           :loading="loading"
-          class="elevation-1"
-          dense
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
+          class="elevation-1"
+          show-select
+          dense
+          fixed-header
+          height="70vh"
         >
-          <template v-slot:top>
-            <LazySetupBackList></LazySetupBackList>
+          <template #top>
+            <div class="pl-4 pt-2">
+              <span class="font-weight-medium text-h6">Users</span>
+            </div>
+
             <LazyMainToolbar
               :document-status="documentStatus"
               :search-status="searchStatus"
@@ -33,45 +33,43 @@
               title="Users"
               title-button="User"
               class="has-border-bottom"
+              show-back-link
+              show-new-data
+              show-batch-action
+              new-data-text="New User"
               @emitData="emitData"
               @newData="newData"
+              @getDataFromApi="getDataFromApi"
             />
           </template>
           <template #[`item.Action`]="{ item }">
             <v-btn
-              value="left"
+              color="secondary"
+              class="font-weight-bold text-right"
+              text
               small
-              icon
-              @click="editItem(item)"
+              @click="actions(itemAction, item)"
             >
-              <v-icon left>
-                mdi-pencil-circle
-              </v-icon>
+              {{ itemText }}
             </v-btn>
-            <v-btn
-              value="center"
-              small
-              icon
-              @click="copyItem(item)"
-            >
-              <v-icon left>
-                mdi-content-copy
-              </v-icon>
-            </v-btn>
-            <v-btn
-              value="right"
-              small
-              icon
-              @click="
-                      $refs.dialogPermission.openDialogPermission(
-                        item,
-                        'Direct Permissions'
-                      )
-                    ">
-              <v-icon left>
-                mdi-playlist-edit
-              </v-icon>
-            </v-btn>
+            <v-menu transition="slide-y-transition" bottom>
+              <template #activator="{ on, attrs }">
+                <v-btn color="black" dark icon v-bind="attrs" v-on="on">
+                  <v-icon>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(value, i) in items"
+                  :key="i"
+                  @click="actions(value.action, item)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>{{ value.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </template>
         </v-data-table>
       </div>
@@ -190,7 +188,6 @@
 <script>
 export default {
   name: 'MasterUser',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,
@@ -209,6 +206,13 @@ export default {
       searchRole: '',
       search: '',
       searchStatus: '',
+      items: [
+        { text: 'Edit', action: 'edit' },
+        { text: 'Copy', action: 'copy' },
+        { text: 'Direct Permissions', action: 'permissions' },
+      ],
+      itemText: '',
+      itemAction: '',
 
       allData: [],
       itemRole: [],
@@ -222,12 +226,12 @@ export default {
       defaultForm: {},
 
       headers: [
-        {text: 'Username', value: 'username'},
-        {text: 'Name', value: 'name'},
-        {text: 'Email', value: 'email'},
-        {text: 'Enabled', value: 'enabled'},
-        {text: 'Role', value: 'role'},
-        {text: 'Action', value: 'Action', align: 'end'},
+        { text: 'Username', value: 'username' },
+        { text: 'Name', value: 'name' },
+        { text: 'Email', value: 'email' },
+        { text: 'Enabled', value: 'enabled' },
+        { text: 'Role', value: 'role' },
+        { text: 'Action', value: 'Action', align: 'end' },
       ],
     }
   },
@@ -253,15 +257,29 @@ export default {
     },
   },
 
-  mounted() {
+  activated() {
     setTimeout(() => {
       this.refreshData()
     }, 500)
+
+    this.itemText = this.items[0].text
+    this.itemAction = this.items[0].action
   },
 
   methods: {
-    changeEntity() {
+    changeEntity() {},
 
+    actions(action, item) {
+      if (action === 'edit') {
+        this.editItem(item)
+      } else if (action === 'copy') {
+        this.copyItem(item)
+      } else {
+        this.$refs.dialogPermission.openDialogPermission(
+          item,
+          'Direct Permissions'
+        )
+      }
     },
 
     emitData(data) {
@@ -402,7 +420,7 @@ export default {
     store(method, url, data, type, column = 'all') {
       const vm = this
       vm.submitLoad = true
-      this.$axios({method, url, data})
+      this.$axios({ method, url, data })
         .then((res) => {
           this.dialog = false
           this.$swal({

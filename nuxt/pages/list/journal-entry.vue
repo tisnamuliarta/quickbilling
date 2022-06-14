@@ -56,7 +56,6 @@
 <script>
 export default {
   name: 'AccountCategory',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

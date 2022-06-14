@@ -2,12 +2,12 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-<!--        <v-skeleton-loader-->
-<!--          v-show="loading"-->
-<!--          type="table"-->
-<!--          class="mx-auto"-->
-<!--        >-->
-<!--        </v-skeleton-loader>-->
+        <!--        <v-skeleton-loader-->
+        <!--          v-show="loading"-->
+        <!--          type="table"-->
+        <!--          class="mx-auto"-->
+        <!--        >-->
+        <!--        </v-skeleton-loader>-->
         <v-data-table
           :mobile-breakpoint="0"
           :headers="headers"
@@ -40,7 +40,8 @@
               @click="editItem(item)"
               color="secondary"
               class="font-weight-bold text-right"
-            >Edit</v-btn>
+              >Edit</v-btn
+            >
           </template>
         </v-data-table>
       </div>
@@ -60,7 +61,6 @@
 <script>
 export default {
   name: 'AccountCategory',
-  layout: 'dashboard',
   data() {
     return {
       totalData: 0,

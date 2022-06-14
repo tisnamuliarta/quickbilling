@@ -42,6 +42,7 @@ export { default as InventoryTableContact } from '../..\\nuxt\\components\\Inven
 export { default as InventoryTableItem } from '../..\\nuxt\\components\\Inventory\\TableItem.vue'
 export { default as MasterDialogPermission } from '../..\\nuxt\\components\\Master\\DialogPermission.vue'
 export { default as MasterPermissionList } from '../..\\nuxt\\components\\Master\\PermissionList.vue'
+export { default as PayrollFormEmployee } from '../..\\nuxt\\components\\Payroll\\FormEmployee.vue'
 export { default as PayrollTableEmployee } from '../..\\nuxt\\components\\Payroll\\TableEmployee.vue'
 export { default as SettingEmail } from '../..\\nuxt\\components\\Setting\\Email.vue'
 export { default as SettingEntity } from '../..\\nuxt\\components\\Setting\\Entity.vue'

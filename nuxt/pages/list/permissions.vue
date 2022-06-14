@@ -41,6 +41,7 @@
               show-batch-action
               @emitData="emitData"
               @newData="newData"
+              @getDataFromApi="getDataFromApi"
             />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
@@ -429,7 +430,7 @@ export default {
     },
   },
 
-  mounted() {
+  activated() {
     this.getDataFromApi()
     this.getRole()
     this.itemText = this.items[0].text

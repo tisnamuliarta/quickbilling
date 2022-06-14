@@ -6,21 +6,11 @@
       table-title="Employees"
       form-url="/app/purchasereturn/form"
       :header-table="[
-        {text: 'Number', value: 'document_number', cellClass: 'disable-wrap'},
-        {text: 'Customer', value: 'contact_name', cellClass: 'disable-wrap'},
-        {text: 'Type', value: 'type', cellClass: 'disable-wrap'},
-        {text: 'Date', value: 'issued_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {text: 'Due Date', value: 'due_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {text: 'Status', value: 'status', align: 'left', cellClass: 'disable-wrap', sortable: false, filterable: false},
-        {
-          text: 'Balance Due',
-          value: 'balance_due',
-          align: 'right',
-          cellClass: 'disable-wrap',
-          sortable: false,
-          filterable: false
-        },
-        {text: 'Total', value: 'amount', align: 'right', cellClass: 'disable-wrap', sortable: false, filterable: false},
+        {text: 'Name', value: 'name', cellClass: 'disable-wrap'},
+        {text: 'Pay Rate', value: 'contact_name', cellClass: 'disable-wrap'},
+        {text: 'Pay Method', value: 'type', cellClass: 'disable-wrap'},
+        {text: 'Status', value: 'issued_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
+        {text: 'Phone Number', value: 'due_at', cellClass: 'disable-wrap', sortable: false, filterable: false},
         {
           text: 'Actions',
           value: 'actions',

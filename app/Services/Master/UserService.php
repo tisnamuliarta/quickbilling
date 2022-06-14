@@ -48,6 +48,9 @@ class UserService
                     case 'Name':
                         $data_query->where('name', 'LIKE', '%' . $search . '%');
                         break;
+                    default:
+                        $data_query->where('name', 'LIKE', '%' . $search . '%');
+                        break;
                 }
 
                 if (isset($select_role)) {

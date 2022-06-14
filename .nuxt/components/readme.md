@@ -50,6 +50,7 @@ You can directly use them in pages and other components without the need to impo
 - `<InventoryTableItem>` | `<inventory-table-item>` (components/Inventory/TableItem.vue)
 - `<MasterDialogPermission>` | `<master-dialog-permission>` (components/Master/DialogPermission.vue)
 - `<MasterPermissionList>` | `<master-permission-list>` (components/Master/PermissionList.vue)
+- `<PayrollFormEmployee>` | `<payroll-form-employee>` (components/Payroll/FormEmployee.vue)
 - `<PayrollTableEmployee>` | `<payroll-table-employee>` (components/Payroll/TableEmployee.vue)
 - `<SettingEmail>` | `<setting-email>` (components/Setting/Email.vue)
 - `<SettingEntity>` | `<setting-entity>` (components/Setting/Entity.vue)

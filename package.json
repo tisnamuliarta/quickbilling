@@ -63,6 +63,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "ag-grid-community": "^27.2.1",
     "ag-grid-vue": "^27.2.1",
+    "apexcharts": "^3.35.3",
     "chart.js": "^3.7.1",
     "cookie-universal-nuxt": "^2.1.5",
     "core-js": "^3.19.3",
