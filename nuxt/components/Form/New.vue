@@ -44,37 +44,122 @@ export default {
     return {
       dialog: false,
       itemSales: [
-        { text: 'Sales Quotations', type: 'SQ', route: '/app/form/sales/quote' },
-        { text: 'Sales Order', type: 'SO', route: '/app/form/sales/order' },
-        { text: 'Sales Delivery', type: 'SD', route: '/app/form/sales/delivery' },
-        { text: 'A/R Invoice', type: 'SI', route: '/app/form/sales/invoice' },
-        { text: 'Incoming Payment', type: 'SP', route: '/app/form/sales/payment' },
-        { text: 'A/R Credit Memo', type: 'ARCM', route: '/app/form/sales/creditmemo' },
-        { text: 'Sales Return', type: 'SR', route: '/app/form/sales/return' },
+        {
+          text: this.$t('Sales Quotations'),
+          type: 'SQ',
+          route: '/app/form/sales/quote',
+        },
+        {
+          text: this.$t('Sales Order'),
+          type: 'SO',
+          route: '/app/form/sales/order',
+        },
+        {
+          text: this.$t('Sales Delivery'),
+          type: 'SD',
+          route: '/app/form/sales/delivery',
+        },
+        {
+          text: this.$t('A/R Invoice'),
+          type: 'SI',
+          route: '/app/form/sales/invoice',
+        },
+        {
+          text: this.$t('Incoming Payment'),
+          type: 'SP',
+          route: '/app/form/sales/payment',
+        },
+        {
+          text: this.$t('A/R Credit Memo'),
+          type: 'ARCM',
+          route: '/app/form/sales/creditmemo',
+        },
+        {
+          text: this.$t('Sales Return'),
+          type: 'SR',
+          route: '/app/form/sales/return',
+        },
       ],
 
       itemPurchase: [
-        { text: 'Purchase Quotations', type: 'PQ', route: '/app/form/purchase/quote' },
-        { text: 'Purchase Order', type: 'PO', route: '/app/form/purchase/order' },
-        { text: 'A/P Invoice', type: 'PI', route: '/app/form/purchase/invoice' },
-        { text: 'Outgoing Payment', type: 'PP', route: '/app/form/purchase/payment' },
-        { text: 'A/P Credit Memo', type: 'APCM', route: '/app/form/purchase/creditmemo' },
-        { text: 'Goods Return', type: 'GR', route: '/app/form/purchase/return' },
+        {
+          text: this.$t('Expenses'),
+          type: 'EXPENSE',
+          route: '/app/form/purchase/expense',
+        },
+        {
+          text: this.$t('Purchase Quotations'),
+          type: 'PQ',
+          route: '/app/form/purchase/quote',
+        },
+        {
+          text: this.$t('Purchase Order'),
+          type: 'PO',
+          route: '/app/form/purchase/order',
+        },
+        {
+          text: this.$t('A/P Invoice'),
+          type: 'PI',
+          route: '/app/form/purchase/invoice',
+        },
+        {
+          text: this.$t('Outgoing Payment'),
+          type: 'PP',
+          route: '/app/form/purchase/payment',
+        },
+        {
+          text: this.$t('A/P Credit Memo'),
+          type: 'APCM',
+          route: '/app/form/purchase/creditmemo',
+        },
+        {
+          text: this.$t('Goods Return'),
+          type: 'GR',
+          route: '/app/form/purchase/return',
+        },
       ],
 
       itemEmployee: [
-        { text: 'Single time activity', type: '', route: '/app/form/employee/timeactivity' },
-        { text: 'Weekly timesheet', type: '', route: '/app/form/employee/timesheet' },
+        {
+          text: this.$t('Single time activity'),
+          type: '',
+          route: '/app/form/employee/timeactivity',
+        },
+        {
+          text: this.$t('Weekly timesheet'),
+          type: '',
+          route: '/app/form/employee/timesheet',
+        },
       ],
 
       itemOther: [
-        { text: 'Task', type: 'TASK', route: '/app/form/project/task' },
-        { text: 'Bank Deposit', type: 'DEPOSIT', route: '/app/form/accounting/deposit' },
-        { text: 'Transfer', type: 'TRANSFER', route: '/app/form/accounting/transfer' },
-        { text: 'Journal Entry', type: 'JE', route: '/app/form/accounting/journal' },
-        { text: 'Statement', type: 'STATEMENT', route: '/app/form/accounting/statements' },
         {
-          text: 'Inventory Qty Adjustment',
+          text: this.$t('Tasks'),
+          type: 'TASK',
+          route: '/app/form/project/task',
+        },
+        {
+          text: this.$t('Bank Deposit'),
+          type: 'DEPOSIT',
+          route: '/app/form/accounting/deposit',
+        },
+        {
+          text: this.$t('Transfer'),
+          type: 'TRANSFER',
+          route: '/app/form/accounting/transfer',
+        },
+        {
+          text: this.$t('Journal Entry'),
+          type: 'JE',
+          route: '/app/form/accounting/journal',
+        },
+        {
+          text: this.$t('Statement'),
+          type: 'STATEMENT',
+          route: '/app/form/accounting/statements',
+        },
+        {
+          text: this.$t('Inventory Qty Adjustment'),
           type: 'INVADJ',
           route: '/app/invtoryqtyadjustment',
         },

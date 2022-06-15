@@ -18,6 +18,7 @@
           :loading="loading"
           class="elevation-1"
           fixed-header
+          show-select
           height="70vh"
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
           dense
@@ -589,7 +590,6 @@ export default {
 
       if (status === 'insert') {
         this.store('post', '/api/master/permissions', form, 'insert', type)
-        vm.submitLoad = false
       } else if (status === 'update') {
         this.store(
           'put',
@@ -598,7 +598,6 @@ export default {
           'update',
           type
         )
-        vm.submitLoad = false
       }
     },
 
@@ -607,20 +606,12 @@ export default {
       vm.submitLoad = true
       this.$axios({ method, url, data })
         .then((res) => {
-          if (res.data.status === 'Error') {
-            this.$swal({
-              type: 'error',
-              title: 'Error',
-              text: res.data.message,
-            })
-            vm.submitLoad = false
-          } else {
-            this.dialog = false
-            this.message = res.data.message
-            setTimeout(() => (this.message = false), 8000)
-            this.$nuxt.$emit('getMenu', 'nice payload')
-            this.getDataFromApi()
-          }
+          this.dialog = false
+          this.submitLoad = false
+          this.message = res.data.message
+          setTimeout(() => (this.message = false), 8000)
+          this.$nuxt.$emit('getMenu', 'nice payload')
+          this.getDataFromApi()
         })
         // eslint-disable-next-line node/handle-callback-err
         .catch((err) => {

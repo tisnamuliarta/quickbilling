@@ -2,11 +2,7 @@
   <v-layout>
     <v-flex sm12>
       <div class="mt-0">
-        <v-skeleton-loader
-          v-show="loading"
-          type="table"
-          class="mx-auto"
-        >
+        <v-skeleton-loader v-show="loading" type="table" class="mx-auto">
         </v-skeleton-loader>
         <v-data-table
           v-show="!loading"
@@ -19,26 +15,43 @@
           :loading="loading"
           class="elevation-1"
           dense
+          fixed-header
+          show-select
+          height="70vh"
           :footer-props="{ 'items-per-page-options': [20, 50, 100, -1] }"
         >
           <template v-slot:top>
-            <v-toolbar flat color="white" dense>
-              <v-toolbar-title class="hidden-xs-only">Payment Methods</v-toolbar-title>
-              <v-divider class="mx-2" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-btn icon color="green" dark @click="newData()">
-                <v-icon>mdi-plus-circle</v-icon>
-              </v-btn>
+            <div class="pl-4 pt-2">
+              <span class="font-weight-medium text-h6">Payment Method</span>
+            </div>
 
-              <v-btn :loading="loading" icon @click="getDataFromApi">
-                <v-icon>mdi-refresh</v-icon>
-              </v-btn>
-            </v-toolbar>
+            <LazyMainToolbar
+              :document-status="documentStatus"
+              :search-status="searchStatus"
+              :item-search="itemSearch"
+              :search-item="searchItem"
+              :search="search"
+              :filter="false"
+              title="Master Permissions"
+              show-new-data
+              new-data-text="New Payment Method"
+              show-back-link
+              show-batch-action
+              @emitData="emitData"
+              @newData="newData"
+              @getDataFromApi="getDataFromApi"
+            />
           </template>
           <template #[`item.ACTIONS`]="{ item }">
-            <v-icon small class="mr-2" color="orange" @click="editItem(item)">
-              mdi-pencil-circle
-            </v-icon>
+            <v-btn
+              text
+              small
+              color="secondary"
+              class="font-weight-bold text-right"
+              @click="editItem(item)"
+            >
+              Edit
+            </v-btn>
           </template>
         </v-data-table>
       </div>
@@ -96,9 +109,9 @@ export default {
 
       valueWhenIsEmpty: '0',
       moneyOptions: {
-        suffix: "",
+        suffix: '',
         length: 11,
-        precision: 2
+        precision: 2,
       },
 
       itemAccounts: [],
@@ -160,11 +173,12 @@ export default {
     },
 
     getAccounts() {
-      this.$axios.get(`/api/financial/accounts`, {
-        params: {
-          type: "All"
-        }
-      })
+      this.$axios
+        .get(`/api/financial/accounts`, {
+          params: {
+            type: 'All',
+          },
+        })
         .then((res) => {
           this.itemAccounts = res.data.data.rows
         })
@@ -202,16 +216,8 @@ export default {
 
       if (status === 'insert') {
         this.store('post', this.url, data, 'insert', type)
-        vm.submitLoad = false
       } else if (status === 'update') {
-        this.store(
-          'put',
-          this.url + '/' + this.form.id,
-          data,
-          'update',
-          type
-        )
-        vm.submitLoad = false
+        this.store('put', this.url + '/' + this.form.id, data, 'update', type)
       }
     },
 

@@ -44,12 +44,12 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    '~/plugins/vue-gates',
-    '~/plugins/dragable',
-    '~/plugins/vuetify-money',
-    // '~/plugins/vue-cookie',
-    '~/plugins/formatter',
-    '~/plugins/helper',
+    { src: '~/plugins/tabulator.js' },
+    { src: '~/plugins/helper.js' },
+    { src: '~/plugins/formatter.js' },
+    { src: '~/plugins/dragable.js' },
+    { src: '~/plugins/vue-gates.js' },
+    { src: '~/plugins/vuetify-money.js' },
   ],
   /*
    ** Auto import components

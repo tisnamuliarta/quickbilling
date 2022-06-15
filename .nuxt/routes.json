@@ -444,6 +444,12 @@
     "chunkName": "pages/app/form/purchase/dp"
   },
   {
+    "name": "app-form-purchase-expense",
+    "path": "/app/form/purchase/expense",
+    "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\expense.vue",
+    "chunkName": "pages/app/form/purchase/expense"
+  },
+  {
     "name": "app-form-purchase-invoice",
     "path": "/app/form/purchase/invoice",
     "component": "C:\\\\laragon\\\\www\\\\quickbilling\\\\nuxt\\\\pages\\\\app\\\\form\\\\purchase\\\\invoice.vue",

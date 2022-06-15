@@ -24,11 +24,12 @@ import nuxt_plugin_workbox_0d3c8dc8 from 'nuxt_plugin_workbox_0d3c8dc8' // Sourc
 import nuxt_plugin_metaplugin_24c13a48 from 'nuxt_plugin_metaplugin_24c13a48' // Source: .\\pwa\\meta.plugin.js (mode: 'all')
 import nuxt_plugin_iconplugin_2968dfbc from 'nuxt_plugin_iconplugin_2968dfbc' // Source: .\\pwa\\icon.plugin.js (mode: 'all')
 import nuxt_plugin_axios_6eb253ac from 'nuxt_plugin_axios_6eb253ac' // Source: .\\axios.js (mode: 'all')
-import nuxt_plugin_vuegates_72bed74b from 'nuxt_plugin_vuegates_72bed74b' // Source: ..\\nuxt\\plugins\\vue-gates (mode: 'all')
-import nuxt_plugin_dragable_7e1b63f8 from 'nuxt_plugin_dragable_7e1b63f8' // Source: ..\\nuxt\\plugins\\dragable (mode: 'all')
-import nuxt_plugin_vuetifymoney_56b8af0b from 'nuxt_plugin_vuetifymoney_56b8af0b' // Source: ..\\nuxt\\plugins\\vuetify-money (mode: 'all')
-import nuxt_plugin_formatter_4867cbd8 from 'nuxt_plugin_formatter_4867cbd8' // Source: ..\\nuxt\\plugins\\formatter (mode: 'all')
-import nuxt_plugin_helper_619f8ab8 from 'nuxt_plugin_helper_619f8ab8' // Source: ..\\nuxt\\plugins\\helper (mode: 'all')
+import nuxt_plugin_tabulator_3b7494eb from 'nuxt_plugin_tabulator_3b7494eb' // Source: ..\\nuxt\\plugins\\tabulator.js (mode: 'all')
+import nuxt_plugin_helper_850e665a from 'nuxt_plugin_helper_850e665a' // Source: ..\\nuxt\\plugins\\helper.js (mode: 'all')
+import nuxt_plugin_formatter_0c8f7763 from 'nuxt_plugin_formatter_0c8f7763' // Source: ..\\nuxt\\plugins\\formatter.js (mode: 'all')
+import nuxt_plugin_dragable_65457d73 from 'nuxt_plugin_dragable_65457d73' // Source: ..\\nuxt\\plugins\\dragable.js (mode: 'all')
+import nuxt_plugin_vuegates_0e609acc from 'nuxt_plugin_vuegates_0e609acc' // Source: ..\\nuxt\\plugins\\vue-gates.js (mode: 'all')
+import nuxt_plugin_vuetifymoney_444aa9e8 from 'nuxt_plugin_vuetifymoney_444aa9e8' // Source: ..\\nuxt\\plugins\\vuetify-money.js (mode: 'all')
 import nuxt_plugin_auth_43fb9ff8 from 'nuxt_plugin_auth_43fb9ff8' // Source: .\\auth.js (mode: 'all')
 
 // Component: <ClientOnly>
@@ -267,24 +268,28 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_axios_6eb253ac(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_vuegates_72bed74b === 'function') {
-    await nuxt_plugin_vuegates_72bed74b(app.context, inject)
+  if (typeof nuxt_plugin_tabulator_3b7494eb === 'function') {
+    await nuxt_plugin_tabulator_3b7494eb(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_dragable_7e1b63f8 === 'function') {
-    await nuxt_plugin_dragable_7e1b63f8(app.context, inject)
+  if (typeof nuxt_plugin_helper_850e665a === 'function') {
+    await nuxt_plugin_helper_850e665a(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_vuetifymoney_56b8af0b === 'function') {
-    await nuxt_plugin_vuetifymoney_56b8af0b(app.context, inject)
+  if (typeof nuxt_plugin_formatter_0c8f7763 === 'function') {
+    await nuxt_plugin_formatter_0c8f7763(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_formatter_4867cbd8 === 'function') {
-    await nuxt_plugin_formatter_4867cbd8(app.context, inject)
+  if (typeof nuxt_plugin_dragable_65457d73 === 'function') {
+    await nuxt_plugin_dragable_65457d73(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_helper_619f8ab8 === 'function') {
-    await nuxt_plugin_helper_619f8ab8(app.context, inject)
+  if (typeof nuxt_plugin_vuegates_0e609acc === 'function') {
+    await nuxt_plugin_vuegates_0e609acc(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuetifymoney_444aa9e8 === 'function') {
+    await nuxt_plugin_vuetifymoney_444aa9e8(app.context, inject)
   }
 
   if (typeof nuxt_plugin_auth_43fb9ff8 === 'function') {
