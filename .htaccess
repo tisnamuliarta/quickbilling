@@ -5,6 +5,10 @@
 
 RewriteEngine On
 
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 RewriteCond %{REQUEST_FILENAME} -d [OR]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ ^$1 [N]
@@ -61,4 +65,3 @@ mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
 mod_gzip_item_exclude mime ^image/.*
 mod_gzip_item_include handler ^cgi-script$
 </ifModule>
-

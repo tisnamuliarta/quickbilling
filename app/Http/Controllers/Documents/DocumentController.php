@@ -80,6 +80,7 @@ class DocumentController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -130,7 +131,7 @@ class DocumentController extends Controller
 
     /**
      * @param $details
-     * @return array|false[]
+     * @return array
      */
     protected function validateDetails($details): array
     {
@@ -214,6 +215,7 @@ class DocumentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function update(Request $request, int $id)
     {

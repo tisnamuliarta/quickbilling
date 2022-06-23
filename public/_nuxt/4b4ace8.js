@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[23],{868:function(n,e,t){"use strict";t.r(e);var l={name:"GetThingDone"},o=t(47),component=Object(o.a)(l,(function(){var n=this,e=n.$createElement;return(n._self._c||e)("span",[n._v("Get Thing done")])}),[],!1,null,null,null);e.default=component.exports}}]);

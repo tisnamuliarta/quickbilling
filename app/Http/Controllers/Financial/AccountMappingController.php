@@ -20,10 +20,10 @@ class AccountMappingController extends Controller
     public function __construct(AccountService $service)
     {
         $this->service = $service;
-//        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
-//        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
-//        $this->middleware(['direct_permission:Roles-edits'])->only('update');
-//        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
+        //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+        //        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+        //        $this->middleware(['direct_permission:Roles-edits'])->only('update');
+        //        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
     }
 
     /**
@@ -59,9 +59,9 @@ class AccountMappingController extends Controller
         try {
             foreach ($form as $index => $item) {
                 AccountMapping::where('name', $index)
-                ->update([
-                    'account_id' => $item
-                ]);
+                    ->update([
+                        'account_id' => $item
+                    ]);
             }
 
             DB::commit();
