@@ -64,7 +64,6 @@ class StudentParent extends Model
         return $this->hasOne(SpecialNeed::class, 'id', 'father_special_need');
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */

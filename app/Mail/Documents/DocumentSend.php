@@ -12,7 +12,9 @@ class DocumentSend extends Mailable
     use Queueable, SerializesModels;
 
     public $form;
+
     public $documents;
+
     public $files;
 
     /**
@@ -34,13 +36,14 @@ class DocumentSend extends Mailable
      */
     public function build()
     {
-        $url = config('app.front_url') . '/view?no=' . $this->documents->document_number;
-        $file_name = Str::upper($this->documents->document_number) . '.pdf';
+        $url = config('app.front_url').'/view?no='.$this->documents->document_number;
+        $file_name = Str::upper($this->documents->document_number).'.pdf';
+
         return $this->from($this->form['from_email'])
             ->markdown('emails.documents.send', [
                 'url' => $url,
                 'messages' => $this->form['messages'],
-                'documents' => $this->documents
+                'documents' => $this->documents,
             ])
             ->attachData($this->files, $file_name, [
                 'mime' => 'application/pdf',

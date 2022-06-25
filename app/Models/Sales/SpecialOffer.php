@@ -10,6 +10,8 @@ class SpecialOffer extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'special_offer_id';
+
     protected $table = 'special_offer';
 }

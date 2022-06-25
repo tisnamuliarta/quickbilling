@@ -11,10 +11,9 @@ trait ApiResponse
     /**
      * Return a success JSON response.
      *
-     * @param array|string $data
-     * @param string|null $message
-     * @param int|null $code
-     *
+     * @param  array|string  $data
+     * @param  string|null  $message
+     * @param  int|null  $code
      * @return \Illuminate\Http\JsonResponse
      */
     protected function success($data, string $message = null, int $code = 200): \Illuminate\Http\JsonResponse
@@ -22,17 +21,16 @@ trait ApiResponse
         return response()->json([
             'status' => 'Success',
             'message' => $message,
-            'data' => $data
+            'data' => $data,
         ], $code);
     }
 
     /**
      * Return an error JSON response.
      *
-     * @param string|null $message
-     * @param int $code
-     * @param array|string|null $data
-     *
+     * @param  string|null  $message
+     * @param  int  $code
+     * @param  array|string|null  $data
      * @return \Illuminate\Http\JsonResponse
      */
     protected function error(string $message = null, int $code = 422, $data = null): \Illuminate\Http\JsonResponse
@@ -40,7 +38,7 @@ trait ApiResponse
         return response()->json([
             'status' => 'Error',
             'message' => $message,
-            'data' => $data
+            'data' => $data,
         ], $code);
     }
 
@@ -84,6 +82,7 @@ trait ApiResponse
         foreach (explode(',', $matches[1]) as $value) {
             $items[] = trim($value, "'");
         }
+
         return $items;
     }
 
@@ -96,13 +95,14 @@ trait ApiResponse
     {
         $validator = Validator::make($request->all(), $rules);
 
-        $string_data = "";
+        $string_data = '';
         if ($validator->fails()) {
             foreach (collect($validator->messages()) as $error) {
                 foreach ($error as $items) {
-                    $string_data .= $items . " \n  ";
+                    $string_data .= $items." \n  ";
                 }
             }
+
             return $string_data;
         } else {
             return false;

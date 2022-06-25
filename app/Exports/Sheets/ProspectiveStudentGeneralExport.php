@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Exports\Sheets;
 
 use App\Models\Student\Student;
@@ -12,10 +11,12 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 class ProspectiveStudentGeneralExport implements FromView, WithTitle, ShouldAutoSize
 {
     private $status;
+
     private $search_year;
 
     /**
      * ProspectiveStudentGeneralExport constructor.
+     *
      * @param $search_year
      * @param $status
      */
@@ -66,13 +67,14 @@ class ProspectiveStudentGeneralExport implements FromView, WithTitle, ShouldAuto
      */
     public function dataStudent($search_year)
     {
-        $students = Student::leftJoin("ppdb as B", "B.id", "students.ppdb_id")
-            ->select("students.*")
-            ->where("B.start_year", "=", $search_year)
+        $students = Student::leftJoin('ppdb as B', 'B.id', 'students.ppdb_id')
+            ->select('students.*')
+            ->where('B.start_year', '=', $search_year)
             //->whereBetween("created_at", [$request->startDate, $request->endDate])
             //->where("approval_step", "LIKE", "%$report_type%")
             ->distinct()
             ->get();
+
         return $students;
     }
 

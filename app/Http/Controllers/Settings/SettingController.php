@@ -26,9 +26,10 @@ class SettingController extends Controller
     public function index(Request $request)
     {
         $page = $request->page;
+
         return $this->success([
             'form' => $this->setting->getForm($page),
-            'url' => url('/')
+            'url' => url('/'),
         ]);
     }
 
@@ -46,8 +47,8 @@ class SettingController extends Controller
             return $this->success([], 'Data saved!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), '422', [
-               'errors' => $exception->getMessage(),
-               'trace' => $exception->getTrace()
+                'errors' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
             ]);
         }
     }

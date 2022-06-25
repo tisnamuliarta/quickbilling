@@ -15,8 +15,7 @@ class FileController extends Controller
     use FileUpload;
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -24,23 +23,23 @@ class FileController extends Controller
         $type = $request->type;
         if ($type == 'company_logo') {
             $setting = Setting::where('key', 'company_logo')->first();
+
             return $this->success([
                 'rows' => $setting->value,
-                'total' => 1
+                'total' => 1,
             ]);
         }
-        $attachment = File::where('fileable_id', '=', (int)$request->temp_id)
+        $attachment = File::where('fileable_id', '=', (int) $request->temp_id)
             ->where('fileable_type', $type);
 
         return $this->success([
             'rows' => $attachment->get(),
-            'total' => $attachment->count()
+            'total' => $attachment->count(),
         ]);
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -60,15 +59,14 @@ class FileController extends Controller
 
                 $this->upload($data_file, '/files/logo', 'logo', $fileName);
 
-
                 Setting::where('key', 'company_logo')
                     ->update([
-                        'value' => $fileName
+                        'value' => $fileName,
                     ]);
 
                 return $this->success([
                     'row' => $fileName,
-                    'total' => 1
+                    'total' => 1,
                 ], 'Data saved!');
             }
 
@@ -76,8 +74,8 @@ class FileController extends Controller
 
             $destination_path = public_path('/files/files');
 
-            if (!file_exists($destination_path)) {
-                if (!mkdir($destination_path, 0777, true) && !is_dir($destination_path)) {
+            if (! file_exists($destination_path)) {
+                if (! mkdir($destination_path, 0777, true) && ! is_dir($destination_path)) {
                     throw new \RuntimeException(
                         sprintf(
                             'Directory "%s" was not created',
@@ -88,27 +86,27 @@ class FileController extends Controller
             }
 
             $origin_name = $data_file->getClientOriginalName();
-            $name_no_ext = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))) . time();
-            $file_name = $name_no_ext . '.' . $extension;
+            $name_no_ext = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))).time();
+            $file_name = $name_no_ext.'.'.$extension;
             $data_file->move($destination_path, $file_name);
 
             $data = [
                 'company_id' => $request->user()->entity_id,
                 'filename' => $file_name,
                 'extension' => $extension,
-                'directory' => url('/files/files/' . $file_name),
-                'fileable_id' => (int)$request->temp_id,
-                'fileable_type' => $request->type
+                'directory' => url('/files/files/'.$file_name),
+                'fileable_id' => (int) $request->temp_id,
+                'fileable_type' => $request->type,
             ];
 
             File::create($data);
 
             $count_attachment = File::where('fileable_type', '=', $request->type)
-                ->where('fileable_id', '=', (int)$request->temp_id)
+                ->where('fileable_id', '=', (int) $request->temp_id)
                 ->count();
 
             return $this->success([
-                'count' => $count_attachment
+                'count' => $count_attachment,
             ], 'Document Uploaded!');
         } catch (\Exception $e) {
             return $this->error($e->getMessage(), '422');
@@ -116,8 +114,7 @@ class FileController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request)
@@ -127,8 +124,8 @@ class FileController extends Controller
                 ->first();
 
             if ($attachment) {
-                $file = '/files/files/' . $attachment->filename;
-                unlink(public_path() . $file);
+                $file = '/files/files/'.$attachment->filename;
+                unlink(public_path().$file);
                 File::where('id', '=', $attachment->id)
                     ->delete();
 

@@ -3,10 +3,8 @@
 namespace App\Services\Payroll;
 
 use App\Models\Payroll\Employee;
-use App\Models\Payroll\EmployeeDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class EmployeeService
 {
@@ -18,21 +16,21 @@ class EmployeeService
     {
         $type = (isset($request->type)) ? $request->type : '';
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "id";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "desc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 10;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'id';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = Employee::select(
-            "employees.*",
+            'employees.*',
             DB::raw("'actions' as actions")
         )
             ->with(['workLocation', 'bank', 'entity'])
-            ->where('type', 'LIKE', '%' . $type . '%');
+            ->where('type', 'LIKE', '%'.$type.'%');
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $all_data = $query->orderBy($sorts, $order)
             ->offset($offset)
@@ -40,8 +38,9 @@ class EmployeeService
             ->get();
 
         $result['form'] = $this->getForm($type);
+
         return array_merge($result, [
-            "rows" => $all_data,
+            'rows' => $all_data,
         ]);
     }
 
@@ -78,7 +77,7 @@ class EmployeeService
     /**
      * @param $request
      * @param $type
-     * @param null $id
+     * @param  null  $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -116,7 +115,6 @@ class EmployeeService
         $request->request->remove('default_currency_code');
         $request->request->remove('default_currency_symbol');
         $data = $request->all();
-
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;

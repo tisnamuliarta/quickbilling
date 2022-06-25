@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -461,7 +462,6 @@ return new class extends Migration {
             $table->index('entity_id');
         });
 
-
         Schema::create('user_companies', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->unsignedBigInteger('entity_id')->unsigned();
@@ -630,7 +630,6 @@ return new class extends Migration {
         Schema::dropIfExists('modules');
         Schema::dropIfExists('module_histories');
         Schema::dropIfExists('notifications');
-
 
         Schema::dropIfExists('reconciliations');
         Schema::dropIfExists('recurring');

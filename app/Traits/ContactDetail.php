@@ -78,6 +78,7 @@ trait ContactDetail
     public function bankIdByName($bank)
     {
         $bank = Bank::where('name', '=', $bank)->first();
+
         return $bank->id;
     }
 }

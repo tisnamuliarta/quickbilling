@@ -10,6 +10,8 @@ class UserCompany extends Model
     use HasFactory;
 
     public $timestamps = false;
+
     public $incrementing = false;
+
     protected $primaryKey = false;
 }

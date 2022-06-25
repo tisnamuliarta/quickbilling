@@ -14,7 +14,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -33,7 +33,7 @@ class CategoryController extends Controller
                     [
                         'id' => null,
                         'name' => null,
-                    ]
+                    ],
                 ];
             }
             $header = ['id', 'Name'];
@@ -52,7 +52,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -84,9 +84,11 @@ class CategoryController extends Controller
                 $data->save();
             }
             DB::commit();
+
             return $this->success([], 'Rows updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), '422');
         }
     }
@@ -100,13 +102,14 @@ class CategoryController extends Controller
     public function show($id)
     {
         $brand = Category::find($id);
+
         return $this->success($brand);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param $id
      * @return \Illuminate\Http\Response
      */
@@ -118,7 +121,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -129,9 +132,11 @@ class CategoryController extends Controller
             $id = $request->id;
             Category::whereIn('id', $id)->delete();
             DB::commit();
+
             return $this->success([], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), '422');
         }
     }

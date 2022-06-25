@@ -26,7 +26,7 @@ class ProspectiveStudentExport implements WithMultipleSheets
             new ProspectiveStudentGeneralExport($this->request, 'general'),
             new ProspectiveStudentGeneralExport($this->request, 'score'),
             new ProspectiveStudentGeneralExport($this->request, 'parent'),
-            new ProspectiveStudentGeneralExport($this->request, 'help')
+            new ProspectiveStudentGeneralExport($this->request, 'help'),
         ];
     }
 }

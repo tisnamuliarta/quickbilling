@@ -18,11 +18,11 @@ class EntityService
         $logo = Setting::where('key', 'company_logo')->first();
 
         return [
-            "rows" => $query,
-            "status" => ($query) ? 'update' : 'insert',
-            "simple" => $simple,
-            "logo" => $logo,
-            'url' => url('/')
+            'rows' => $query,
+            'status' => ($query) ? 'update' : 'insert',
+            'simple' => $simple,
+            'logo' => $logo,
+            'url' => url('/'),
         ];
     }
 
@@ -39,6 +39,7 @@ class EntityService
         $request->request->remove('updated_at');
         $request->request->remove('deleted_at');
         $request->request->remove('destroyed_at');
+
         return $request->all();
     }
 }

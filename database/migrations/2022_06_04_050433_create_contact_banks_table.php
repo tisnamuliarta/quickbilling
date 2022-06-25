@@ -45,16 +45,16 @@ return new class extends Migration
             $table->string('status')->default('draft');
         });
 
-        Schema::table('vats', function(Blueprint $table) {
+        Schema::table('vats', function (Blueprint $table) {
             $table->string('code', 5)->change();
             $table->string('status')->default('draft');
         });
 
-        Schema::table('items', function(Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->unsignedBigInteger('contact_id')->nullable();
         });
 
-        Schema::table('line_items', function(Blueprint $table) {
+        Schema::table('line_items', function (Blueprint $table) {
             $table->unsignedBigInteger('item_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->unsignedBigInteger('contact_id')->nullable();

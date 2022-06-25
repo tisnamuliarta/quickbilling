@@ -14,23 +14,22 @@ class MasterUserDataController extends Controller
     // Menu
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function userPermission(Request $request)
     {
         $form = json_decode($request->form);
         $user = User::find($form->id);
-        $permissions = DB::select('call sp_user_permissions (' . $user->id . ')');
+        $permissions = DB::select('call sp_user_permissions ('.$user->id.')');
+
         return $this->success([
-            'rows' => $permissions
+            'rows' => $permissions,
         ]);
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function storeUserPermission(Request $request)
@@ -54,25 +53,25 @@ class MasterUserDataController extends Controller
             return $this->success([], 'Data Updated');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
 
-
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function userRoles(Request $request)
     {
         $form = $request->form;
         $user = User::find($form->id);
+
         return $this->success([
-            'rows' => $user->roles
+            'rows' => $user->roles,
         ]);
     }
 }

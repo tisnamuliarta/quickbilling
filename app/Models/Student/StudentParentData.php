@@ -12,6 +12,6 @@ class StudentParentData extends Model
         'name_father',
         'nik_father',
         'name_mother',
-        'nik_mother'
+        'nik_mother',
     ];
 }

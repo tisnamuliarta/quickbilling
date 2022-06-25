@@ -7,7 +7,6 @@ use App\Models\Master\ListPermission;
 use App\Traits\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 
 class MasterPermissionController extends Controller
@@ -28,22 +27,22 @@ class MasterPermissionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $options = json_decode($request->options);
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "order_line";
-        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'desc' : 'asc') : "asc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 20;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'order_line';
+        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'desc' : 'asc') : 'asc';
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = ListPermission::select('*');
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $parents = Permission::where('has_child', 'Y')
             //->whereIsNull('route_name')
@@ -69,15 +68,16 @@ class MasterPermissionController extends Controller
         $result = array_merge($result, [
             'rows' => $all_data,
             'simple' => $arr_rows,
-            'parent' => $data_parent
+            'parent' => $data_parent,
         ]);
+
         return $this->success($result);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -99,14 +99,14 @@ class MasterPermissionController extends Controller
             DB::commit();
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
 
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -127,7 +127,7 @@ class MasterPermissionController extends Controller
                 if ($line) {
                     $order_line = floatval($data_menu->order_line);
                     $decimal = strlen(strrchr($data_menu->order_line, '.')) - 1;
-                    $increment = '.' . str_repeat('0', $decimal - 1) . '1';
+                    $increment = '.'.str_repeat('0', $decimal - 1).'1';
                     $order_line += $increment;
                 } else {
                     $order_line = $data_menu->order_line + 1;
@@ -141,35 +141,34 @@ class MasterPermissionController extends Controller
         $order_line = $form['order_line'];
 
         if ($form['is_crud'] == 'Y') {
-            $this->generatePermission((object)$data, $order_line, '-index', 'Y');
+            $this->generatePermission((object) $data, $order_line, '-index', 'Y');
         } else {
             if (isset($form['index'])) {
-                $this->generatePermission((object)$data, $order_line, '-index', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-index', 'Y');
             }
 
             if (isset($form['store'])) {
-                $this->generatePermission((object)$data, $order_line, '-store', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-store', 'Y');
             }
 
             if (isset($form['edits'])) {
-                $this->generatePermission((object)$data, $order_line, '-edits', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-edits', 'Y');
             }
 
             if (isset($form['erase'])) {
-                $this->generatePermission((object)$data, $order_line, '-erase', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-erase', 'Y');
             }
         }
     }
 
-
     /**
      * @param $form
-     *
      * @return array
      */
     protected function data($form)
     {
         $parent = Permission::where('menu_name', $form['parent_name'])->first();
+
         return [
             'name' => $form['menu_name'],
             'menu_name' => $form['menu_name'],
@@ -189,9 +188,8 @@ class MasterPermissionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param int $id
-     *
+     * @param  Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
@@ -201,15 +199,15 @@ class MasterPermissionController extends Controller
 
         return $this->success([
             'rows' => $data[0],
-            'role_name' => ['superuser']
+            'role_name' => ['superuser'],
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
@@ -232,14 +230,14 @@ class MasterPermissionController extends Controller
             DB::commit();
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
 
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -252,9 +250,10 @@ class MasterPermissionController extends Controller
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        Permission::where("menu_name", "=", $id)->delete();
+        Permission::where('menu_name', '=', $id)->delete();
+
         return $this->success([
-            "errors" => false
+            'errors' => false,
         ], 'Row deleted!');
     }
 }

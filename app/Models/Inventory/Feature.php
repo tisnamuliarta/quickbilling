@@ -10,6 +10,8 @@ class Feature extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'feature_id';
+
     protected $table = 'features';
 }

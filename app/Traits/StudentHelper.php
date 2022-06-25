@@ -4,8 +4,8 @@ namespace App\Traits;
 
 use App\Models\Student\Expertise;
 use App\Models\Student\Major;
-use App\Models\Student\StudentRegistration;
 use App\Models\Student\School;
+use App\Models\Student\StudentRegistration;
 use Illuminate\Support\Facades\DB;
 
 trait StudentHelper
@@ -34,10 +34,11 @@ trait StudentHelper
         $expertise = Expertise::all();
         $arr_data = [];
         foreach ($expertise as $item) {
-            $arr_data [$item->major_id] = [
-                $item->id, $item->name
+            $arr_data[$item->major_id] = [
+                $item->id, $item->name,
             ];
         }
+
         return $arr_data;
     }
 
@@ -47,7 +48,7 @@ trait StudentHelper
      */
     protected function expertise($major)
     {
-        return Expertise::where("major_id", "=", $major)->get();
+        return Expertise::where('major_id', '=', $major)->get();
     }
 
     /**
@@ -55,7 +56,7 @@ trait StudentHelper
      */
     protected function checkOpenRegistration()
     {
-        return StudentRegistration::where("start_year", "=", date("Y"))
+        return StudentRegistration::where('start_year', '=', date('Y'))
             ->first();
     }
 
@@ -65,14 +66,15 @@ trait StudentHelper
     protected function ppdbThisYear()
     {
         $year = date('Y');
-        return StudentRegistration::where('start_year', "=", $year)->first();
+
+        return StudentRegistration::where('start_year', '=', $year)->first();
     }
 
     /**
-     * @param string $table
-     * @param string $term
-     * @param string $field
-     * @param int $length
+     * @param  string  $table
+     * @param  string  $term
+     * @param  string  $field
+     * @param  int  $length
      * @param $ppdb
      * @return string
      */
@@ -80,15 +82,15 @@ trait StudentHelper
     {
         $term_length = strlen($term);
         $unique_table = DB::table($table)
-            ->where("registration_id", "=", $ppdb->id)
-            ->orderBy("created_at", "DESC")
+            ->where('registration_id', '=', $ppdb->id)
+            ->orderBy('created_at', 'DESC')
             ->first();
 
-        $selected_field = (!$unique_table) ? $term . sprintf("%0$length" . "s", 0) : $unique_table->$field;
-        $actual_number = (int)substr($selected_field, $term_length, ($term_length + $length));
+        $selected_field = (! $unique_table) ? $term.sprintf("%0$length".'s', 0) : $unique_table->$field;
+        $actual_number = (int) substr($selected_field, $term_length, ($term_length + $length));
         $increase_number = $actual_number + 1;
         //dd($actual_number);
         //dd($term . sprintf("%0$length" . "s", $increase_number));
-        return $term . sprintf("%0$length" . "s", $increase_number);
+        return $term.sprintf("%0$length".'s', $increase_number);
     }
 }

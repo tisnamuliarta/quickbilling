@@ -10,6 +10,8 @@ class SalesOrderHeader extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'order_header_id';
+
     protected $table = 'sales_order_header';
 }

@@ -10,7 +10,6 @@ use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -33,17 +32,17 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = isset($request->type) ? (string)$request->type : 'index';
+        $type = isset($request->type) ? (string) $request->type : 'index';
         $result = [];
         $extra_list['emails'] = [
             [
-                'email' => null
-            ]
+                'email' => null,
+            ],
         ];
         $extra_list['password'] = null;
         $extra_list['banks'] = [
@@ -52,7 +51,7 @@ class ContactController extends Controller
                 'branch' => null,
                 'contact_account_name' => null,
                 'contact_account_number' => null,
-            ]
+            ],
         ];
         $result['form'] = array_merge($this->form('contacts'), $extra_list);
         $result = array_merge($result, $this->service->index($request, $type));
@@ -63,7 +62,7 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -83,14 +82,16 @@ class ContactController extends Controller
             $this->processDetails($form, $contact);
 
             DB::commit();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -98,16 +99,16 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Contact::where("id", "=", $id)->first();
+        $data = Contact::where('id', '=', $id)->first();
         $extra_list['emails'] = [
             [
-                'email' => null
-            ]
+                'email' => null,
+            ],
         ];
         $extra_list['password'] = null;
         $extra_list['banks'] = [
@@ -116,15 +117,14 @@ class ContactController extends Controller
                 'branch' => null,
                 'contact_account_name' => null,
                 'contact_account_number' => null,
-            ]
+            ],
         ];
         $form = array_merge($this->form('contacts'), $extra_list);
 
-
         return $this->success([
-            "rows" => $data,
-            "form" => $form,
-            "count" => ($data) ? 1 : 0
+            'rows' => $data,
+            'form' => $form,
+            'count' => ($data) ? 1 : 0,
         ]);
     }
 
@@ -151,8 +151,8 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
@@ -178,12 +178,12 @@ class ContactController extends Controller
             DB::commit();
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -191,21 +191,22 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Contact::where("id", "=", $id)->first();
+        $details = Contact::where('id', '=', $id)->first();
         if ($details) {
-            Contact::where("id", "=", $id)->delete();
+            Contact::where('id', '=', $id)->delete();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Row deleted!');
         }
 
         return $this->error('Row not found', 422, [
-            "errors" => true
+            'errors' => true,
         ]);
     }
 

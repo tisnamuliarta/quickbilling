@@ -21,7 +21,6 @@ class User extends Authenticatable implements Recyclable
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
-
     use IFRSUser;
     use Recycling;
     use ModelTablePrefix;
@@ -35,7 +34,7 @@ class User extends Authenticatable implements Recyclable
         'name',
         'email',
         'password',
-        'username'
+        'username',
     ];
 
     /**

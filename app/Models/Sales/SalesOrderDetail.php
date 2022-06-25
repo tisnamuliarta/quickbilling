@@ -10,6 +10,8 @@ class SalesOrderDetail extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'order_detail_id';
+
     protected $table = 'sales_order_detail';
 }

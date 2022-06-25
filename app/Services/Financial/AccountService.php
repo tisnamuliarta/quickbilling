@@ -10,6 +10,7 @@ class AccountService
 {
     use Categories;
     use Accounting;
+
     /**
      * @param $request
      * @return array
@@ -17,16 +18,16 @@ class AccountService
     public function index($request): array
     {
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "code";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'code';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = Account::with(['currency', 'entity', 'category', 'balances']);
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $all_data = $query->orderBy($sorts, $order)
             //->offset($offset)
@@ -34,7 +35,7 @@ class AccountService
             ->get();
 
         return array_merge($result, [
-            "rows" => $all_data,
+            'rows' => $all_data,
         ]);
     }
 
@@ -47,12 +48,12 @@ class AccountService
         $query = Account::selectRaw(
             " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
         )
-            ->where('account_type', 'LIKE', '%' . $type . '%')
+            ->where('account_type', 'LIKE', '%'.$type.'%')
             ->orderBy('code')
             ->get();
 
         return [
-            "rows" => $query
+            'rows' => $query,
         ];
     }
 

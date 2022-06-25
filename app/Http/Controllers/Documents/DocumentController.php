@@ -15,7 +15,7 @@ class DocumentController extends Controller
     /**
      * MasterUserController constructor.
      *
-     * @param \App\Services\Documents\DocumentService $service
+     * @param  \App\Services\Documents\DocumentService  $service
      */
     public function __construct(DocumentService $service)
     {
@@ -29,7 +29,7 @@ class DocumentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -38,13 +38,13 @@ class DocumentController extends Controller
             return $this->success($this->service->index($request));
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                $exception->getTrace()
+                $exception->getTrace(),
             ]);
         }
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function arrowAction(Request $request)
@@ -64,11 +64,12 @@ class DocumentController extends Controller
                 $row = $query->where('id', '>', $document)->first();
             }
 
-            if (!$row) {
+            if (! $row) {
                 return $this->error('Document not found', 404);
             }
+
             return $this->success([
-                'id' => $row->id
+                'id' => $row->id,
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
@@ -78,8 +79,9 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -115,16 +117,18 @@ class DocumentController extends Controller
             $this->service->processItems($items, $document, $tax_details);
 
             DB::commit();
+
             return $this->success([
-                "id" => $document->id,
-                "status" => "update",
-                "type" => $request->type
+                'id' => $document->id,
+                'status' => 'update',
+                'type' => $request->type,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -142,7 +146,7 @@ class DocumentController extends Controller
         foreach ($details as $index => $detail) {
             $lines = $index + 1;
 
-            if (!array_key_exists('item_id', $detail)) {
+            if (! array_key_exists('item_id', $detail)) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
             } elseif (empty($detail['item_id'])) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
@@ -155,13 +159,14 @@ class DocumentController extends Controller
                 return ['error' => true, 'message' => "Line ${lines}: Quantity cannot 0!"];
             }
         }
+
         return ['error' => false];
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -177,7 +182,7 @@ class DocumentController extends Controller
                 }
             }
 
-            $data = Document::where("id", "=", $id)
+            $data = Document::where('id', '=', $id)
                 ->with(['items', 'taxDetails', 'entity', 'parent', 'child'])
                 ->first();
 
@@ -188,11 +193,11 @@ class DocumentController extends Controller
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
                 'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
-                'audits' => ($id != 0) ? $data->audits()->with('user')->get() : []
+                'audits' => ($id != 0) ? $data->audits()->with('user')->get() : [],
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                'trace' => $exception->getTrace()
+                'trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -204,17 +209,19 @@ class DocumentController extends Controller
     public function getAudit($id)
     {
         $data = Document::find($id);
+
         return $this->success([
-            'audit' => $data->audits()->with('user')->get()
+            'audit' => $data->audits()->with('user')->get(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(Request $request, int $id)
@@ -248,15 +255,16 @@ class DocumentController extends Controller
             $this->service->processItems($items, $document, $tax_details);
 
             DB::commit();
+
             return $this->success([
-                "id" => $document->id,
-                "status" => "update",
-                "type" => $request->type
+                'id' => $document->id,
+                'status' => 'update',
+                'type' => $request->type,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -264,7 +272,7 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse
@@ -272,13 +280,14 @@ class DocumentController extends Controller
         $document = Document::find($id);
         if ($document) {
             $document->delete();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Row deleted!');
         }
 
         return $this->error('Row not found', 422, [
-            "errors" => true
+            'errors' => true,
         ]);
     }
 }

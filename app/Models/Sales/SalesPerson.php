@@ -10,6 +10,8 @@ class SalesPerson extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'sales_person_id';
+
     protected $table = 'sales_persons';
 }

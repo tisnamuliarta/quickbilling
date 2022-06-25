@@ -20,7 +20,7 @@ class MasterRolesController extends Controller
     {
         $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
         $this->middleware(['direct_permission:Roles-store'])->only([
-            'store', 'storePermissionRole', 'index', 'show', 'permissionRole'
+            'store', 'storePermissionRole', 'index', 'show', 'permissionRole',
         ]);
         $this->middleware(['direct_permission:Roles-edits'])->only('update');
         $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
@@ -29,22 +29,22 @@ class MasterRolesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "desc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 20;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = Role::selectRaw("*, 'actions' as ACTIONS");
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $all_data = $query->offset($offset)
             ->orderBy($sorts, $order)
@@ -54,16 +54,17 @@ class MasterRolesController extends Controller
         $arr_rows = Role::pluck('name');
 
         $result = array_merge($result, [
-            "rows" => $all_data,
-            "simple" => $arr_rows
+            'rows' => $all_data,
+            'simple' => $arr_rows,
         ]);
+
         return $this->success($result);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -85,12 +86,12 @@ class MasterRolesController extends Controller
             Role::create($data);
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -98,23 +99,23 @@ class MasterRolesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Role::where("id", "=", $id)->get();
+        $data = Role::where('id', '=', $id)->get();
 
         return $this->success([
-            'rows' => $data
+            'rows' => $data,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
@@ -134,15 +135,15 @@ class MasterRolesController extends Controller
                 'description' => $form['description'],
             ];
 
-            Role::where("id", "=", $id)->update($data);
+            Role::where('id', '=', $id)->update($data);
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -150,41 +151,42 @@ class MasterRolesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        $details = Role::where("id", "=", $id)->first();
+        $details = Role::where('id', '=', $id)->first();
         if ($details) {
-            Role::where("id", "=", $id)->delete();
+            Role::where('id', '=', $id)->delete();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Row deleted!');
         }
 
         return $this->error('Row not found', 422, [
-            "errors" => true
+            'errors' => true,
         ]);
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function permissionRole(Request $request)
     {
         $form = json_decode($request->form);
         $role = Role::where('name', $form->name)->first();
-        $permissions = DB::select("call sp_role_permissions (" . $role->id . ")");
+        $permissions = DB::select('call sp_role_permissions ('.$role->id.')');
+
         return $this->success([
-            'rows' => $permissions
+            'rows' => $permissions,
         ]);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function storePermissionRole(Request $request)
@@ -214,9 +216,10 @@ class MasterRolesController extends Controller
             return $this->success([], 'Data Updated');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }

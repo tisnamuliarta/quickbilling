@@ -2,9 +2,8 @@
 
 namespace App\Models\Financial;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use IFRS\Models\Currency as IfrsCurrency;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Currency extends IfrsCurrency
 {

@@ -17,7 +17,7 @@ class CompanySeeder extends Seeder
     public function run()
     {
         $company = Company::create([
-           'name' => 'CRM'
+            'name' => 'CRM',
         ]);
 
         $user = User::where('username', 'manager')->first();
@@ -25,7 +25,7 @@ class CompanySeeder extends Seeder
         UserCompany::create([
             'user_id' => $user->id,
             'company_id' => $company->id,
-            'user_type' => 'Administrator'
+            'user_type' => 'Administrator',
         ]);
     }
 }

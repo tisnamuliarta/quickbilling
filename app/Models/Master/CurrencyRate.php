@@ -10,6 +10,8 @@ class CurrencyRate extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = 'currency_rate_id';
+
     protected $table = 'currency_rate';
 }

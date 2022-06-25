@@ -16,6 +16,7 @@ trait Categories
         if ($data) {
             return $data->id;
         }
+
         return 0;
     }
 }

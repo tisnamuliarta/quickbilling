@@ -9,7 +9,6 @@ use App\Services\Inventory\ItemService;
 use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
 {
@@ -32,7 +31,7 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -51,7 +50,7 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -72,14 +71,16 @@ class ItemController extends Controller
             $this->processItemDetails($category, $item['id']);
 
             DB::commit();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -103,17 +104,17 @@ class ItemController extends Controller
      */
     public function show($product)
     {
-        $data = Item::where("product_id", "=", $product)->first();
+        $data = Item::where('product_id', '=', $product)->first();
 
         return $this->success([
-            'rows' => $data
+            'rows' => $data,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -130,7 +131,7 @@ class ItemController extends Controller
         try {
             $category = $request->category;
 
-            $item = Item::where("id", "=", $id)
+            $item = Item::where('id', '=', $id)
                 ->update($this->service->formData($request, 'update', $id));
 
             $this->processItemDetails($category, $id);
@@ -138,14 +139,14 @@ class ItemController extends Controller
             DB::commit();
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
 
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -170,13 +171,14 @@ class ItemController extends Controller
         $details = Item::find($id);
         if ($details) {
             $details->delete();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Row deleted!');
         }
 
         return $this->error('Row not found', 422, [
-            "errors" => true
+            'errors' => true,
         ]);
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Listeners\Files;
 
 use App\Events\Files\FileProcessed;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class StoreFile
 {

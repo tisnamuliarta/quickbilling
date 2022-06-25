@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\App;
 
 class AuthController extends Controller
 {
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return mixed
      */
     public function login(Request $request)
@@ -21,12 +20,12 @@ class AuthController extends Controller
         try {
             $attr = $request->validate([
                 'username' => 'required|string',
-                'password' => 'required|string'
+                'password' => 'required|string',
             ]);
 
             $remember = $request->remember;
 
-            if (!Auth::attempt($attr, $remember)) {
+            if (! Auth::attempt($attr, $remember)) {
                 return $this->error('Credentials not match', 401);
             }
 
@@ -38,11 +37,11 @@ class AuthController extends Controller
 
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,
-                'user' => auth()->user()
+                'user' => auth()->user(),
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 401, [
-                'trace' => $exception->getTrace()
+                'trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -57,7 +56,7 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return $this->success([
-            'message' => 'Tokens Revoked'
+            'message' => 'Tokens Revoked',
         ]);
     }
 
@@ -74,8 +73,7 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param string $token
-     *
+     * @param  string  $token
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token)
@@ -84,20 +82,20 @@ class AuthController extends Controller
             'token' => $token,
             'user' => auth()->user(),
             'token_type' => 'Bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
 
     /**
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function user(Request $request)
     {
         $user = User::where('id', '=', $request->user()->id)->with('roles')->first();
+
         return response()->json([
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -124,8 +122,7 @@ class AuthController extends Controller
     /**
      * list menus
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     protected function menus(Request $request)
@@ -166,15 +163,16 @@ class AuthController extends Controller
                     'menu' => __($permission->menu_name),
                     'icon' => __($permission->icon),
                     'route_name' => __($permission->route_name),
-                    'children' => $array_child
+                    'children' => $array_child,
                 ];
             }
+
             return $this->success([
-                'menus' => $array
+                'menus' => $array,
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                'trace' => $exception->getTrace()
+                'trace' => $exception->getTrace(),
             ]);
         }
     }

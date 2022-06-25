@@ -11,7 +11,9 @@ class SendDocumentNotification extends Notification
     use Queueable;
 
     protected $documents;
+
     protected $messages;
+
     protected $attachments;
 
     /**
@@ -29,7 +31,7 @@ class SendDocumentNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -40,15 +42,15 @@ class SendDocumentNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        $url = config('app.front_url') . '/view?no=' . $this->documents->document_number;
+        $url = config('app.front_url').'/view?no='.$this->documents->document_number;
 
         return (new MailMessage)
-            ->greeting('Dear ' . $this->documents->contact_name)
+            ->greeting('Dear '.$this->documents->contact_name)
             ->line($this->messages)
             ->action('View Invoice', $url)
             ->line('Thank you for using our application!')
@@ -58,14 +60,14 @@ class SendDocumentNotification extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)
     {
         return [
             'document_number' => $this->documents->document_number,
-            'type' => $this->documents->type
+            'type' => $this->documents->type,
         ];
     }
 }

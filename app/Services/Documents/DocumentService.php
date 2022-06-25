@@ -26,18 +26,18 @@ class DocumentService
     {
         $type = (isset($request->type)) ? $request->type : '';
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "document_number";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "desc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 10;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'document_number';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = Document::select(
-            "documents.*",
+            'documents.*',
             DB::raw("'actions' as actions"),
-            DB::raw("CONVERT(issued_at, date) as issued_at"),
-            DB::raw("CONVERT(due_at, date) as due_at"),
+            DB::raw('CONVERT(issued_at, date) as issued_at'),
+            DB::raw('CONVERT(due_at, date) as due_at'),
             DB::raw("
                 CASE
                     WHEN documents.due_at < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
@@ -46,9 +46,9 @@ class DocumentService
             ")
         )
             ->with(['items', 'taxDetails', 'entity'])
-            ->where('type', 'LIKE', '%' . $type . '%');
+            ->where('type', 'LIKE', '%'.$type.'%');
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $all_data = $query->orderBy($sorts, $order)
             ->offset($offset)
@@ -56,8 +56,9 @@ class DocumentService
             ->get();
 
         $result['form'] = $this->getForm($type);
+
         return array_merge($result, [
-            "rows" => $all_data,
+            'rows' => $all_data,
         ]);
     }
 
@@ -94,7 +95,7 @@ class DocumentService
     /**
      * @param $request
      * @param $type
-     * @param null $id
+     * @param  null  $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -133,7 +134,6 @@ class DocumentService
         $request->request->remove('default_currency_symbol');
         $data = $request->all();
 
-
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
             $data['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
@@ -146,7 +146,6 @@ class DocumentService
     /**
      * @param $sysDate
      * @param $alias
-     *
      * @return string
      */
     protected function generateDocNum($sysDate, $alias): string
@@ -159,18 +158,19 @@ class DocumentService
 
         $day_val = date('j', $data_date);
 
-        if ((int)$day_val === 1) {
-            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
+        if ((int) $day_val === 1) {
+            $document = Str::upper($alias).'-'.sprintf('%05s', '1');
             $check_document = Document::where('document_number', '=', $document)
                 ->where('type', $alias)
                 ->first();
-            if (!$check_document) {
-                return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', '1');
+            if (! $check_document) {
+                return Str::upper($alias).'-'.(int) $year_val.$month.sprintf('%05s', '1');
             } else {
                 //SQ-220100001
                 return $this->itemCode($data_date, $alias, $year_val, $month);
             }
         }
+
         return $this->itemCode($data_date, $alias, $year_val, $month);
     }
 
@@ -196,10 +196,10 @@ class DocumentService
             ->first();
 
         $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int)substr($number, 7, 12);
+        $clear_doc_num = (int) substr($number, 7, 12);
         $number = $clear_doc_num + 1;
 
-        return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', $number);
+        return Str::upper($alias).'-'.(int) $year_val.$month.sprintf('%05s', $number);
     }
 
     /**
@@ -244,13 +244,13 @@ class DocumentService
             'name' => $item['name'],
             'description' => $item['description'],
             'sku' => $item['sku'],
-            'quantity' => doubleval($item['quantity']),
-            'price' => doubleval($item['price']),
+            'quantity' => floatval($item['quantity']),
+            'price' => floatval($item['price']),
             'unit' => $item['unit'],
             'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
-            'discount_rate' => doubleval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'total' => doubleval($item['total']),
+            'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
+            'total' => floatval($item['total']),
         ];
 
         $merge = [];
@@ -283,7 +283,7 @@ class DocumentService
                     'document_item_id' => $item_detail->id,
                     'tax_id' => $this->getTaxIdByName($tax['name']),
                     'name' => $tax['name'],
-                    'amount' => doubleval($tax['amount'])
+                    'amount' => floatval($tax['amount']),
                 ]
             );
         }
@@ -305,7 +305,7 @@ class DocumentService
                     ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
                     ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
                     ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
-                    ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true]
+                    ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
                 ];
             case 'SO':
                 return [
@@ -332,7 +332,7 @@ class DocumentService
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
         $query = Document::where('type', $action)
-            ->whereIn('parent_id', (array)$parent_id);
+            ->whereIn('parent_id', (array) $parent_id);
 
         return [
             'title' => $title,
@@ -341,7 +341,7 @@ class DocumentService
             'button' => $button,
             'icon' => $icon,
             'items' => $query->get(),
-            'pluck' => $query->pluck('id')
+            'pluck' => $query->pluck('id'),
         ];
     }
 }

@@ -14,7 +14,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Document extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-
     use HasFactory;
     use SoftDeletes;
 
@@ -23,15 +22,15 @@ class Document extends Model implements Auditable
     protected $appends = [
         'default_currency_code',
         'default_currency_symbol',
-//        'attachment',
-//        'amount_without_tax',
-//        'discount',
-//        'paid',
-//        'received_at',
-//        'status_label',
-//        'sent_at',
-//        'reconciled',
-//        'contact_location'
+        //        'attachment',
+        //        'amount_without_tax',
+        //        'discount',
+        //        'paid',
+        //        'received_at',
+        //        'status_label',
+        //        'sent_at',
+        //        'reconciled',
+        //        'contact_location'
     ];
 
     /**

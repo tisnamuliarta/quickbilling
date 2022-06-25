@@ -85,7 +85,7 @@ class SettingService
     {
         Setting::where('key', $key)
             ->update([
-                'value' => $value
+                'value' => $value,
             ]);
     }
 }

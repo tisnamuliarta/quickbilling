@@ -22,8 +22,9 @@ class DocumentExportController extends Controller
     use DocumentHelper;
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
+     *
      * @throws \NumberToWords\Exception\InvalidArgumentException
      * @throws \NumberToWords\Exception\NumberToWordsException
      */
@@ -42,7 +43,7 @@ class DocumentExportController extends Controller
 //            }
 //        }
 
-        $file_name = Str::upper($documents->document_number) . '.pdf';
+        $file_name = Str::upper($documents->document_number).'.pdf';
 
 //        file_put_contents($destination_path . $file_name, $pdf->output());
 //        return response()->download($destination_path . $file_name);
@@ -52,6 +53,7 @@ class DocumentExportController extends Controller
     /**
      * @param $documents
      * @return \Barryvdh\DomPDF\PDF
+     *
      * @throws \NumberToWords\Exception\InvalidArgumentException
      * @throws \NumberToWords\Exception\NumberToWordsException
      */
@@ -67,7 +69,7 @@ class DocumentExportController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function email(Request $request): \Illuminate\Http\JsonResponse
@@ -80,23 +82,24 @@ class DocumentExportController extends Controller
         $validator = Validator::make($request->all(), [
             'form.send_to' => 'required|array',
             'form.send_to.*' => 'required|email',
-            'form.messages' => 'required'
+            'form.messages' => 'required',
         ], $messages);
 
         $form = $request->form;
 
-        $string_data = "";
+        $string_data = '';
         if ($validator->fails()) {
             foreach (collect($validator->messages()) as $error) {
                 foreach ($error as $items) {
-                    $string_data .= $items . ", \n  ";
+                    $string_data .= $items.", \n  ";
                 }
             }
+
             return $this->error($string_data);
         }
 
         try {
-            $documents = (object)$request->defaultItem;
+            $documents = (object) $request->defaultItem;
             $documents = Document::find($documents->id);
             $pdf = $this->pdfInstance($documents);
             if (count($form['cc_email']) > 0) {

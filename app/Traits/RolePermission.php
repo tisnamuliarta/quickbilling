@@ -24,8 +24,8 @@ trait RolePermission
     /**
      * @param $request
      * @param $order_line
-     * @param string $suffix
-     * @param string $insert_role
+     * @param  string  $suffix
+     * @param  string  $insert_role
      * @return void
      */
     protected function generatePermission($request, $order_line, string $suffix = '-index', string $insert_role = 'N')
@@ -40,15 +40,15 @@ trait RolePermission
             'has_route' => $request->has_route,
             'order_line' => $order_line,
             'is_crud' => $request->is_crud,
-            'guard_name' => $request->guard_name
+            'guard_name' => $request->guard_name,
         ];
 
         if ($request->is_crud == 'Y') {
             $suffix = ['index', 'store', 'edits', 'erase'];
 
             foreach ($suffix as $value) {
-                $data['name'] = $request->name . '-' . $value;
-                $old_name = $request->old_name . '-' . $value;
+                $data['name'] = $request->name.'-'.$value;
+                $old_name = $request->old_name.'-'.$value;
 
                 $permission = Permission::where('name', '=', $old_name)->first();
                 if ($permission) {
@@ -61,8 +61,8 @@ trait RolePermission
                 $this->assignPermissionToRole($permission, $insert_role, $request);
             }
         } else {
-            $data['name'] = $request->name . $suffix;
-            $old_name = $request->old_name . $suffix;
+            $data['name'] = $request->name.$suffix;
+            $old_name = $request->old_name.$suffix;
             $permission = Permission::where('name', '=', $old_name)->first();
 
             if ($permission) {
@@ -120,14 +120,14 @@ trait RolePermission
      */
     protected function actionStoreRolePermission($role, $detail, $key)
     {
-        $permission = Permission::where('name', $detail['permission'] . '-' . $key)
+        $permission = Permission::where('name', $detail['permission'].'-'.$key)
             ->first();
 
         if ($permission) {
             if ($detail[$key] == 'Y') {
-                $role->givePermissionTo($detail['permission'] . '-' . $key);
+                $role->givePermissionTo($detail['permission'].'-'.$key);
             } else {
-                $role->revokePermissionTo($detail['permission'] . '-' . $key);
+                $role->revokePermissionTo($detail['permission'].'-'.$key);
             }
         }
     }
@@ -139,18 +139,17 @@ trait RolePermission
      */
     protected function actionRemovePermission($role, $detail, $key)
     {
-        $permission = Permission::where('name', $detail['permission'] . '-' . $key)
+        $permission = Permission::where('name', $detail['permission'].'-'.$key)
             ->first();
 
         if ($permission) {
-            $role->revokePermissionTo($detail['permission'] . '-' . $key);
+            $role->revokePermissionTo($detail['permission'].'-'.$key);
         }
     }
 
     /**
      * @param $request
      * @param $role_name
-     *
      * @return bool
      */
     protected function checkRole($request, $role_name)
@@ -162,6 +161,7 @@ trait RolePermission
                 return true;
             }
         }
+
         return false;
     }
 }

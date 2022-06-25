@@ -10,7 +10,6 @@ use OwenIt\Auditing\Contracts\Auditable;
 class DocumentHistory extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-
     use HasFactory;
     use SoftDeletes;
 

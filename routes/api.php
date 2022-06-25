@@ -44,14 +44,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('master')
-        ->group(__DIR__ . '/master.php');
+        ->group(__DIR__.'/master.php');
 
     Route::prefix('payroll')
-        ->group(__DIR__ . '/payroll.php');
+        ->group(__DIR__.'/payroll.php');
 
     // List all sales routes
     Route::prefix('transactions')
-        ->group(__DIR__ . '/transactions.php');
+        ->group(__DIR__.'/transactions.php');
 
     // List all documents routes
     Route::get('document-files', [FileController::class, 'index']);
@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('financial')
-        ->group(__DIR__ . '/financial.php');
+        ->group(__DIR__.'/financial.php');
 
     // Route Resource for settings
     Route::apiResources([

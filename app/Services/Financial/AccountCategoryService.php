@@ -2,9 +2,9 @@
 
 namespace App\Services\Financial;
 
+use App\Models\Financial\Category;
 use App\Traits\Accounting;
 use App\Traits\Categories;
-use IFRS\Models\Category;
 
 class AccountCategoryService
 {
@@ -18,16 +18,19 @@ class AccountCategoryService
     public function index($request): array
     {
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "category_type";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'category_type';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
+        $search = $request->search;
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
-        $query = Category::select('*');
+        $result = [];
+        $query = Category::select('*')
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orWhere('category_type', 'LIKE', '%'.$search.'%');
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $all_data = $query->orderBy($sorts, $order)
             //->offset($offset)
@@ -35,10 +38,9 @@ class AccountCategoryService
             ->get();
 
         return array_merge($result, [
-            "rows" => $all_data,
+            'rows' => $all_data,
         ]);
     }
-
 
     /**
      * @param $request

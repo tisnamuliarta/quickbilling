@@ -42,11 +42,11 @@ class CreateOption extends Command
         $option_type = $this->argument('types');
 
         $check_option = Setting::where('key', '=', $option_name)->first();
-        if (!$check_option) {
+        if (! $check_option) {
             Setting::create([
                 'key' => $option_name,
                 'types' => $option_type,
-                'entity_id' => 0
+                'entity_id' => 0,
             ]);
             $this->info('Setting created successfully!');
         } else {

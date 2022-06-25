@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\Files\FileProcessed;
+use App\Listeners\Files\StoreFile;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Events\Files\FileProcessed;
-use App\Listeners\Files\StoreFile;
 
 class EventServiceProvider extends ServiceProvider
 {

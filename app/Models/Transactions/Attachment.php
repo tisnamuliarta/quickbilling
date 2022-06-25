@@ -17,5 +17,6 @@ class Attachment extends Model
     protected $guarded = [];
 
     protected $primaryKey = 'attachment_id';
+
     protected $table = 'attachments';
 }

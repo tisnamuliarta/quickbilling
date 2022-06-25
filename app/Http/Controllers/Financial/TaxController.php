@@ -30,7 +30,7 @@ class TaxController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -45,7 +45,7 @@ class TaxController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -55,7 +55,7 @@ class TaxController extends Controller
         ]);
         if ($validation) {
             return $this->error($validation, 422, [
-                "errors" => true
+                'errors' => true,
             ]);
         }
 
@@ -64,14 +64,16 @@ class TaxController extends Controller
             Vat::create($this->service->formData($request));
 
             DB::commit();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -79,8 +81,8 @@ class TaxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
@@ -88,15 +90,15 @@ class TaxController extends Controller
         $data = Vat::find($id);
 
         return $this->success([
-            'rows' => $data
+            'rows' => $data,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
@@ -106,21 +108,21 @@ class TaxController extends Controller
         ]);
         if ($validation) {
             return $this->error($validation, 422, [
-                "errors" => true
+                'errors' => true,
             ]);
         }
 
         try {
-            Vat::where("id", "=", $id)
+            Vat::where('id', '=', $id)
                 ->update($this->service->formData($request));
 
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
-                "errors" => true,
-                "Trace" => $exception->getTrace()
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
             ]);
         }
     }
@@ -128,7 +130,7 @@ class TaxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
@@ -136,13 +138,14 @@ class TaxController extends Controller
         $details = Vat::find($id);
         if ($details) {
             $details->delete();
+
             return $this->success([
-                "errors" => false
+                'errors' => false,
             ], 'Row deleted!');
         }
 
         return $this->error('Row not found', 422, [
-            "errors" => true
+            'errors' => true,
         ]);
     }
 }

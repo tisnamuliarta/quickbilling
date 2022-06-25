@@ -22,7 +22,7 @@ trait FileUpload
         $result = [];
 
         foreach ($files as $file) {
-            $result[] = public_path('files/files/' . $file->filename);
+            $result[] = public_path('files/files/'.$file->filename);
         }
 
         return $result;
@@ -36,8 +36,9 @@ trait FileUpload
     {
         $extension = $dataFile->getClientOriginalExtension();
         $origin_name = $dataFile->getClientOriginalName();
-        $nameWithoutExt = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))) . time();
-        return $nameWithoutExt . '.' . $extension;
+        $nameWithoutExt = strtoupper(Str::slug(pathinfo($origin_name, PATHINFO_FILENAME))).time();
+
+        return $nameWithoutExt.'.'.$extension;
     }
 
     /**
@@ -68,8 +69,8 @@ trait FileUpload
 
         $destinationPath = public_path($path);
 
-        if (!file_exists($destinationPath)) {
-            if (!mkdir($destinationPath, 0777, true) && !is_dir($destinationPath)) {
+        if (! file_exists($destinationPath)) {
+            if (! mkdir($destinationPath, 0777, true) && ! is_dir($destinationPath)) {
                 throw new \RuntimeException(
                     sprintf(
                         'Directory "%s" was not created',
@@ -99,14 +100,14 @@ trait FileUpload
             if ($type == 'logo') {
                 $setting = Setting::where('key', 'company_logo')->first();
                 if ($setting->value) {
-                    $concatFileName = $destinationPath . '/' . $setting->value;
+                    $concatFileName = $destinationPath.'/'.$setting->value;
                     if (file_exists($concatFileName)) {
                         unlink($concatFileName);
                     }
                 }
             }
 
-            $concatFileName = $destinationPath . '/' . $fileName;
+            $concatFileName = $destinationPath.'/'.$fileName;
             $imageFile = Image::make($dataFile->getRealPath());
             $imageFile->resize(500, null, function ($constraint) {
                 $constraint->aspectRatio();

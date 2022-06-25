@@ -3,7 +3,6 @@
 namespace App\Services\Inventory;
 
 use App\Models\Inventory\Contact;
-use Illuminate\Support\Str;
 
 class ContactService
 {
@@ -16,14 +15,14 @@ class ContactService
     {
         $all_data = [];
         $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 0;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : "name";
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : "asc";
+        $pages = isset($options->page) ? (int) $options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 0;
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
+        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
         $type = $request->contactType;
         $offset = ($pages - 1) * $row_data;
 
-        $result = array();
+        $result = [];
         $query = Contact::selectRaw(
             " contacts.*,
                     0 as balance,
@@ -33,10 +32,10 @@ class ContactService
         )
             ->leftJoin('accounts as sell', 'sell.id', 'contacts.receivable_account_id')
             ->leftJoin('accounts as buy', 'buy.id', 'contacts.payable_account_id')
-            ->where('contacts.type', 'LIKE', '%' . $type . '%')
+            ->where('contacts.type', 'LIKE', '%'.$type.'%')
             ->with(['banks', 'emails']);
 
-        $result["total"] = $query->count();
+        $result['total'] = $query->count();
 
         $query->orderBy($sorts, $order);
         if ($row_data != 0) {
@@ -46,7 +45,7 @@ class ContactService
         $all_data = $query->get();
 
         $all_data = array_merge($result, [
-            "rows" => $all_data,
+            'rows' => $all_data,
         ]);
 
         return $all_data;
@@ -76,7 +75,7 @@ class ContactService
             'address' => (array_key_exists('address', $form)) ? $form['address'] : null,
             'payable_account_id' => (array_key_exists('payable_account_id', $form))
                 ? $form['payable_account_id'] : null,
-            'max_payable' => (array_key_exists('max_payable', $form)) ? (float)$form['max_payable'] : 0,
+            'max_payable' => (array_key_exists('max_payable', $form)) ? (float) $form['max_payable'] : 0,
             'can_login' => (array_key_exists('can_login', $form)) ? (($form['can_login']) ?: false) : false,
             'active_max_payable' => (array_key_exists('active_max_payable', $form))
                 ? (($form['active_max_payable']) ?: false) : false,

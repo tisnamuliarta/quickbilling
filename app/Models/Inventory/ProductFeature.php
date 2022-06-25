@@ -10,6 +10,8 @@ class ProductFeature extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $primaryKey = false;
+
     protected $table = 'product_features';
 }

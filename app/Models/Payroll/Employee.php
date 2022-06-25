@@ -13,7 +13,6 @@ class Employee extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
-
     use SoftDeletes;
 
     protected $guarded = [];

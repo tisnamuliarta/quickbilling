@@ -14,7 +14,7 @@ class BankController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -29,7 +29,7 @@ class BankController extends Controller
                     'swift_code' => null,
                     'phone' => null,
                     'address' => null,
-                ]
+                ],
             ];
         }
         $header = ['id', 'Name', 'Code', 'Swift Code', 'Phone', 'Address'];
@@ -46,7 +46,7 @@ class BankController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -82,9 +82,11 @@ class BankController extends Controller
                 $data->save();
             }
             DB::commit();
+
             return $this->success([], 'Rows updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), '422');
         }
     }
@@ -98,13 +100,14 @@ class BankController extends Controller
     public function show($id)
     {
         $brand = Bank::find($id);
+
         return $this->success($brand);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param $id
      * @return \Illuminate\Http\Response
      */
@@ -116,7 +119,7 @@ class BankController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -127,9 +130,11 @@ class BankController extends Controller
             $id = $request->id;
             Bank::whereIn('id', $id)->delete();
             DB::commit();
+
             return $this->success([], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), '422');
         }
     }
