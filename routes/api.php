@@ -54,8 +54,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ->group(__DIR__.'/transactions.php');
 
     // List all documents routes
-    Route::get('document-files', [FileController::class, 'index']);
     Route::post('document-files', [FileController::class, 'store']);
+    Route::get('document-files', [FileController::class, 'index']);
     Route::delete('document-files', [FileController::class, 'destroy']);
 
     Route::apiResource('documents', DocumentController::class);

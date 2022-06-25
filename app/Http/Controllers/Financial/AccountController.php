@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
 use App\Services\Financial\AccountService;
-use IFRS\Models\Account;
+use App\Models\Financial\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
