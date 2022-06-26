@@ -7,6 +7,7 @@ use App\Http\Controllers\File\FileController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
+use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Settings\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::apiResources([
             'items' => ItemController::class,
             'item-units' => ItemUnitController::class,
+            'item-category' => ItemCategoryController::class,
             'item-groups' => ItemGroupController::class,
         ]);
     });

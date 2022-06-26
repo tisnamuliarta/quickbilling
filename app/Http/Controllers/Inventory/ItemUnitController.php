@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\ItemUnit;
+use App\Services\Inventory\ItemUnitService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,35 +12,33 @@ use Illuminate\Support\Str;
 
 class ItemUnitController extends Controller
 {
+    public ItemUnitService $service;
+
+    /**
+     * MasterUserController constructor.
+     */
+    public function __construct(ItemUnitService $service)
+    {
+        $this->service = $service;
+        //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+        //        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+        //        $this->middleware(['direct_permission:Roles-edits'])->only('update');
+        //        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = $request->type;
-        $data = [];
-        $header = [];
-        $data = ItemUnit::select('id', 'name')->get();
-        if (count($data) < 1) {
-            $data = [
-                [
-                    'id' => null,
-                    'name' => null,
-                ],
-            ];
-        }
-        $header = ['id', 'Name'];
+        $result = [];
+        $result['form'] = $this->form('item_units');
+        $result = array_merge($result, $this->service->index($request));
 
-        $simple = ItemUnit::pluck('name');
-
-        return $this->success([
-            'rows' => $data,
-            'header' => $header,
-            'simple' => $simple,
-        ]);
+        return $this->success($result);
     }
 
     /**
@@ -48,57 +47,103 @@ class ItemUnitController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        $details = collect($request->details);
-        DB::beginTransaction();
-        try {
-            foreach ($details as $detail) {
-                if (empty($detail['name'])) {
-                    return $this->error('Name cannot empty', '422');
-                }
+        $validation = $this->validation($request, [
+            'name' => 'required|unique:item_units',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
+                'errors' => true,
+            ]);
+        }
 
-                $data = ItemUnit::where('id', '=', $detail['id'])->first();
-                if ($data) {
-                    $data->name = Str::ucfirst($detail['name']);
-                    $data->updated_at = Carbon::now();
-                } else {
-                    $data = new ItemUnit();
-                    $data->name = Str::ucfirst($detail['name']);
-                    $data->created_at = Carbon::now();
-                }
-                $data->save();
-            }
+        DB::beginTransaction();
+        $form = $request->form;
+        try {
+            ItemUnit::create($this->service->formData($request, 'store'));
+
             DB::commit();
 
-            return $this->success([], 'Rows updated!');
+            return $this->success([
+                'errors' => false,
+            ], 'Data inserted!');
         } catch (\Exception $exception) {
             DB::rollBack();
 
-            return $this->error($exception->getMessage(), '422');
+            return $this->error($exception->getMessage(), 422, [
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
+            ]);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id): \Illuminate\Http\JsonResponse
+    {
+        $data = ItemUnit::where('id', '=', $id)->get();
+
+        return $this->success([
+            'rows' => $data,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $validation = $this->validation($request, [
+            'name' => 'required',
+        ]);
+        if ($validation) {
+            return $this->error($validation, 422, [
+                'errors' => true,
+            ]);
+        }
+
+        try {
+            ItemUnit::where('id', '=', $id)->update($this->service->formData($request, 'update'));
+
+            return $this->success([
+                'errors' => false,
+            ], 'Data updated!');
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                'errors' => true,
+                'Trace' => $exception->getTrace(),
+            ]);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Request  $request
-     * @param $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        DB::beginTransaction();
-        try {
-            $id = $request->id;
-            ItemUnit::whereIn('id', $id)->delete();
-            DB::commit();
+        $details = ItemUnit::find($id);
+        if ($details) {
+            $details->delete();
 
-            return $this->success([], 'Data updated!');
-        } catch (\Exception $exception) {
-            DB::rollBack();
-
-            return $this->error($exception->getMessage(), '422');
+            return $this->success([
+                'errors' => false,
+            ], 'Row deleted!');
         }
+
+        return $this->error('Row not found', 422, [
+            'errors' => true,
+        ]);
     }
 }

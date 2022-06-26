@@ -33,11 +33,13 @@ class AuthController extends Controller
 
             $user = User::find(auth()->user()->id);
             $user->last_logged_in_at = Carbon::now();
+            $user->locale =  $request->locale;
             $user->save();
 
             return response()->json([
                 'token' => $request->user()->createToken('api-token')->plainTextToken,
                 'user' => auth()->user(),
+                'locale' => session('locale')
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 401, [
@@ -128,7 +130,7 @@ class AuthController extends Controller
     protected function menus(Request $request)
     {
         try {
-            App::setLocale(session('locale'));
+            App::setLocale(auth()->user()->locale);
 
             $permissions = $request->user()
                 ->getAllPermissions()

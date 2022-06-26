@@ -41,9 +41,16 @@ class ItemService
                 buy_tax.name as buy_tax_name,
                 sale_account.name as sales_account,
                 buy_account.name as purchase_account,
-                inventory_accounts.name as inventory_account,
-                'actions' as ACTIONS
+                inventory_accounts.name as inventory_account_name,
+                'actions' as ACTIONS,
+                CASE
+                    WHEN items.item_group_id = 1 THEN 'Inventory'
+                    WHEN items.item_group_id = 2 THEN 'Non inventory'
+                    WHEN items.item_group_id = 3 THEN 'Service'
+                    WHEN items.item_group_id = 4 THEN 'Bundle'
+                END as group_name
             ")
+            ->with(['category'])
             ->leftJoin('accounts as sale_account', 'sale_account.id', 'items.sell_account_id')
             ->leftJoin('accounts as buy_account', 'buy_account.id', 'items.buy_account_id')
             ->leftJoin('accounts as inventory_accounts', 'inventory_accounts.id', 'items.inventory_account')
@@ -74,19 +81,25 @@ class ItemService
             'entity_id' => auth()->user()->entity_id,
         ]);
 
+        $request->request->remove('default_currency_code');
+        $request->request->remove('default_currency_symbol');
         $request->request->remove('category');
         $request->request->remove('categories');
+        $request->request->remove('sales_account');
+        $request->request->remove('purchase_account');
         $request->request->remove('ACTIONS');
         $request->request->remove('average_price');
         $request->request->remove('last_buy_price');
         $request->request->remove('sell_tax_name');
         $request->request->remove('buy_tax_name');
+        $request->request->remove('updated_at');
+        $request->request->remove('created_at');
+        $request->request->remove('deleted_at');
+        $request->request->remove('group_name');
+        $request->request->remove('inventory_account_name');
         $data = $request->all();
 
         $data['image'] = '';
-        $data['item_group_id'] = 0;
-        $data['updated_at'] = Carbon::now();
-        $data['created_at'] = Carbon::now();
         $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;
         $data['quantity'] = (isset($request->quantity)) ? $request->quantity : 0;
         $data['minimum_stock'] = (isset($request->minimum_stock)) ? $request->minimum_stock : 0;

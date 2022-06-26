@@ -33,8 +33,9 @@ class ReportingPeriodController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('ifrs_categories');
-        $result['form']['status_list'] = $this->getEnumValues('ifrs_reporting_periods', 'status');
+        $result['form'] = $this->form('reporting_periods');
+        $result['form']['status_list'] = $this->getEnumValues('reporting_periods', 'status');
+
         $result['form']['status'] = 'OPEN';
         $result = array_merge($result, $this->service->index($request));
 

@@ -22,6 +22,7 @@ trait ApiResponse
             'status' => 'Success',
             'message' => $message,
             'data' => $data,
+            'locale' => session('locale')
         ], $code);
     }
 
@@ -39,6 +40,7 @@ trait ApiResponse
             'status' => 'Error',
             'message' => $message,
             'data' => $data,
+            'locale' => session('locale')
         ], $code);
     }
 
