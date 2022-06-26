@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\StoreRoleRequest;
 use App\Models\User;
 use App\Traits\RolePermission;
 use Illuminate\Http\Request;
@@ -64,18 +65,11 @@ class MasterRolesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreRoleRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreRoleRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         $form = $request->form;
         try {
             $data = [
@@ -104,7 +98,7 @@ class MasterRolesController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Role::where('id', '=', $id)->get();
+        $data = Role::find($id);
 
         return $this->success([
             'rows' => $data,
@@ -114,19 +108,12 @@ class MasterRolesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreRoleRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(StoreRoleRequest $request, $id)
     {
-        $validation = $this->validation($request, [
-            'form.name' => 'Name is required!',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         $form = $request->form;
         try {
             $data = [
@@ -174,7 +161,7 @@ class MasterRolesController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function permissionRole(Request $request)
+    public function permissionRole(Request $request): \Illuminate\Http\JsonResponse
     {
         $form = json_decode($request->form);
         $role = Role::where('name', $form->name)->first();
@@ -186,10 +173,11 @@ class MasterRolesController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function storePermissionRole(Request $request)
+    public function storePermissionRole(Request $request): \Illuminate\Http\JsonResponse
     {
         $details = collect($request->details);
         DB::beginTransaction();

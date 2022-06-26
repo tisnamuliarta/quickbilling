@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class LogoController extends Controller
 {
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         return $this->success([
             'logo' => url('/files/logo/quickbilling-white.png'),

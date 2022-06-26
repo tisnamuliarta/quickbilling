@@ -18,17 +18,17 @@ class AccountCategoryService
     public function index($request): array
     {
         $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'category_type';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
+        $pages = isset($options->page) ? (int)$options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'category_type';
+        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'asc';
         $search = $request->search;
         $offset = ($pages - 1) * $row_data;
 
         $result = [];
         $query = Category::select('*')
-            ->where('name', 'LIKE', '%'.$search.'%')
-            ->orWhere('category_type', 'LIKE', '%'.$search.'%');
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->orWhere('category_type', 'LIKE', '%' . $search . '%');
 
         $result['total'] = $query->count();
 

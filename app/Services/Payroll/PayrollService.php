@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Services\Inventory;
+namespace App\Services\Payroll;
 
-use App\Models\Inventory\ItemCategory;
-use Illuminate\Support\Facades\DB;
+use App\Models\Financial\Category;
+use App\Traits\Accounting;
+use App\Traits\Categories;
 
-class ItemCategoryService
+class PayrollService
 {
+    use Categories;
+    use Accounting;
 
     /**
      * @param $request
@@ -17,14 +20,15 @@ class ItemCategoryService
         $options = $request->options;
         $pages = isset($options->page) ? (int) $options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
+        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'category_type';
         $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
         $search = $request->search;
         $offset = ($pages - 1) * $row_data;
 
         $result = [];
-        $query = ItemCategory::select('*')
-            ->where('name', 'LIKE', '%'.$search.'%');
+        $query = Category::select('*')
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orWhere('category_type', 'LIKE', '%'.$search.'%');
 
         $result['total'] = $query->count();
 
@@ -40,41 +44,16 @@ class ItemCategoryService
 
     /**
      * @param $request
-     * @param $type
      * @return array
      */
-    public function formData($request, $type): array
+    public function formData($request): array
     {
-        if ($type === 'store') {
-            $request->merge([
-                'code' => $this->generateDocNum(date('Y-m-d H:i:s'))
-            ]);
-        }
         $request->request->remove('updated_at');
         $request->request->remove('created_at');
         $request->request->remove('deleted_at');
         $request->request->remove('destroyed_at');
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
         $request->request->remove('id');
 
         return $request->all();
-    }
-
-    /**
-     * @param $sysDate
-     * @return string
-     */
-    protected function generateDocNum($sysDate): string
-    {
-        $doc_num = ItemCategory::selectRaw('code')
-            ->orderBy('code', 'DESC')
-            ->first();
-
-        $number = empty($doc_num) ? '00000' : $doc_num->code;
-        $clear_doc_num = (int) substr($number, 0, 5);
-        $number = $clear_doc_num + 1;
-
-        return sprintf('%05s', $number);
     }
 }

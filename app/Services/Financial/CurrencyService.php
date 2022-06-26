@@ -13,10 +13,10 @@ class CurrencyService
     public function index($request): array
     {
         $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
+        $pages = isset($options->page) ? (int)$options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'name';
+        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'asc';
         $offset = ($pages - 1) * $row_data;
 
         $result = [];

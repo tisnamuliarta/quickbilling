@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BusinessPartner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BusinessPartner\StoreContactRequest;
 use App\Models\Inventory\Contact;
 use App\Models\Inventory\ContactBank;
 use App\Models\Inventory\ContactEmail;
@@ -32,12 +33,12 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = isset($request->type) ? (string) $request->type : 'index';
+        $type = isset($request->type) ? (string)$request->type : 'index';
         $result = [];
         $extra_list['emails'] = [
             [
@@ -62,24 +63,17 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreContactRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreContactRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'form.name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         DB::beginTransaction();
-        $form = $request->form;
         try {
-            $contact = Contact::create($this->service->formData($form));
+            $contact = Contact::create($this->service->formData($request, 'store'));
 
-            $this->processDetails($form, $contact);
+            $this->processDetails($request, $contact);
 
             DB::commit();
 
@@ -97,9 +91,29 @@ class ContactController extends Controller
     }
 
     /**
+     * @param $request
+     * @param $contact
+     * @return void
+     */
+    protected function processDetails($request, $contact)
+    {
+        if ($request->banks) {
+            $this->storeContactBank($request->banks, $contact['id']);
+        }
+
+        if ($request->emails) {
+            $this->storeContactEmail($request->emails, $contact['id']);
+        }
+
+        if ($request->can_login) {
+            $this->createUser($request->all());
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -129,51 +143,25 @@ class ContactController extends Controller
     }
 
     /**
-     * @param $form
-     * @param $contact
-     * @return void
-     */
-    protected function processDetails($form, $contact)
-    {
-        if ($form['banks']) {
-            $this->storeContactBank($form['banks'], $contact['id']);
-        }
-
-        if ($form['emails']) {
-            $this->storeContactEmail($form['emails'], $contact['id']);
-        }
-
-        if ($form['can_login']) {
-            $this->createUser($form);
-        }
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreContactRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreContactRequest $request, int $id)
     {
-        $validation = $this->validation($request, [
-            'form.name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
-        $form = $request->form;
+        DB::transaction();
         try {
-            $formData = $this->service->formData($form);
+            $formData = $this->service->formData($request, 'update');
             $contact = Contact::find($id);
             foreach ($formData as $index => $formDatum) {
                 $contact->$index = $formDatum;
             }
             $contact->save();
 
-            $this->processDetails($form, $contact);
+            $this->processDetails($request, $contact);
 
             DB::commit();
 
@@ -191,7 +179,7 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse
@@ -210,11 +198,19 @@ class ContactController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function deleteBank($id)
     {
         ContactBank::where('id', $id)->delete();
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function deleteEmail($id)
     {
         ContactEmail::where('email', $id)->delete();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\StoreUserRequest;
 use App\Models\User;
 use App\Services\Master\UserService;
 use App\Traits\MasterData;
@@ -14,7 +15,7 @@ class MasterUserController extends Controller
 {
     use MasterData, RolePermission;
 
-    protected $service;
+    protected UserService $service;
 
     /**
      * MasterUserController constructor.
@@ -31,7 +32,7 @@ class MasterUserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -46,24 +47,12 @@ class MasterUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreUserRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreUserRequest $request): \Illuminate\Http\JsonResponse
     {
-        $user_id = $request->id;
-        $validation = $this->validation($request, [
-            'entity_id' => 'required',
-            'username' => 'required|unique:users,username,'.$user_id,
-            'email' => 'required|unique:users,email,'.$user_id,
-            'name' => 'required',
-            'role' => 'required',
-            'enabled' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         DB::beginTransaction();
         try {
             $role = $request->role;
@@ -87,9 +76,18 @@ class MasterUserController extends Controller
     }
 
     /**
+     * @param $roles
+     * @param $user
+     */
+    protected function storeUserDetails($roles, $user)
+    {
+        $this->storeUserRole($roles, $user);
+    }
+
+    /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -100,38 +98,16 @@ class MasterUserController extends Controller
     }
 
     /**
-     * @param $roles
-     * @param $user
-     */
-    protected function storeUserDetails($roles, $user)
-    {
-        $this->storeUserRole($roles, $user);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreUserRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function update(StoreUserRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-        $user_id = $request->id;
-        $validation = $this->validation($request, [
-            'entity_id' => 'required',
-            'username' => 'required|unique:users,username,'.$user_id,
-            'email' => 'required|unique:users,email,'.$user_id,
-            'name' => 'required',
-            'role' => 'required',
-            'enabled' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
-        $form = $request->form;
-
+        DB::beginTransaction();
         try {
             $role = $request->role;
             $user = User::find($id);
@@ -142,11 +118,12 @@ class MasterUserController extends Controller
             $user->save();
 
             $this->storeUserDetails($role, $user);
-
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -157,10 +134,10 @@ class MasterUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
         $details = User::where('id', '=', $id)->first();
         if ($details) {

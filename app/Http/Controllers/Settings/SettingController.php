@@ -36,10 +36,10 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Settings\StoreSettingRequest  $request
+     * @param \App\Http\Requests\Settings\StoreSettingRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreSettingRequest $request)
+    public function store(StoreSettingRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             $this->setting->store($request);
@@ -56,7 +56,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Settings\Setting  $setting
+     * @param \App\Models\Settings\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function show(Setting $setting)
@@ -67,8 +67,8 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Settings\UpdateSettingRequest  $request
-     * @param  \App\Models\Settings\Setting  $setting
+     * @param \App\Http\Requests\Settings\UpdateSettingRequest $request
+     * @param \App\Models\Settings\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSettingRequest $request, Setting $setting)
@@ -79,7 +79,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Settings\Setting  $setting
+     * @param \App\Models\Settings\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function destroy(Setting $setting)

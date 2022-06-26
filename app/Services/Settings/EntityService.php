@@ -27,12 +27,10 @@ class EntityService
     }
 
     /**
-     * @param $form
      * @param $request
-     * @param $type
      * @return array
      */
-    public function formData($form, $request, $type): array
+    public function formData($request): array
     {
         $request->request->remove('id');
         $request->request->remove('created_at');

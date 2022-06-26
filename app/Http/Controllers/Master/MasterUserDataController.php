@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\DB;
 class MasterUserDataController extends Controller
 {
     use RolePermission;
+
     // Menu
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function userPermission(Request $request)
     {
         $form = json_decode($request->form);
         $user = User::find($form->id);
-        $permissions = DB::select('call sp_user_permissions ('.$user->id.')');
+        $permissions = DB::select('call sp_user_permissions (' . $user->id . ')');
 
         return $this->success([
             'rows' => $permissions,
@@ -29,8 +30,9 @@ class MasterUserDataController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function storeUserPermission(Request $request)
     {
@@ -62,7 +64,7 @@ class MasterUserDataController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function userRoles(Request $request)

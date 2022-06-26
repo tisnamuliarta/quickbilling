@@ -7,7 +7,6 @@ use App\Models\Inventory\ItemCategory;
 use App\Traits\Categories;
 use App\Traits\FileUpload;
 use App\Traits\Financial;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -23,15 +22,15 @@ class ItemService
      */
     public function index($request): array
     {
-        $pagination = (object) $request->options;
-        $pages = isset($pagination->page) ? (int) $pagination->page : 1;
-        $row_data = isset($pagination->itemsPerPage) ? (int) $pagination->itemsPerPage : 20;
-        $sorts = isset($pagination->sortBy[0]) ? (string) $pagination->sortBy[0] : 'name';
+        $pagination = (object)$request->options;
+        $pages = isset($pagination->page) ? (int)$pagination->page : 1;
+        $row_data = isset($pagination->itemsPerPage) ? (int)$pagination->itemsPerPage : 20;
+        $sorts = isset($pagination->sortBy[0]) ? (string)$pagination->sortBy[0] : 'name';
         $order = isset($pagination->sortDesc[0]) ? 'DESC' : 'asc';
-        $data_status = isset($request->dataStatus) ? (string) $request->dataStatus : 'open';
+        $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
 
-        $search = isset($request->q) ? (string) $request->q : '';
-        $select_data = isset($request->selectData) ? (string) $request->selectData : 'name';
+        $search = isset($request->q) ? (string)$request->q : '';
+        $select_data = isset($request->selectData) ? (string)$request->selectData : 'name';
         $offset = ($pages - 1) * $row_data;
 
         $result = [];
@@ -72,7 +71,7 @@ class ItemService
     /**
      * @param $request
      * @param $type
-     * @param  null  $id
+     * @param null $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -127,11 +126,11 @@ class ItemService
 
         $day_val = date('j', $data_date);
 
-        if ((int) $day_val === 1) {
-            $document = Str::upper($alias).'-'.sprintf('%05s', '1');
+        if ((int)$day_val === 1) {
+            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
             $check_document = Item::where('code', '=', $document)->first();
-            if (! $check_document) {
-                return Str::upper($alias).'-'.sprintf('%05s', '1');
+            if (!$check_document) {
+                return Str::upper($alias) . '-' . sprintf('%05s', '1');
             } else {
                 //ITM-xxxxx
                 return $this->itemCode($data_date, $alias);
@@ -162,10 +161,10 @@ class ItemService
             ->first();
 
         $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int) substr($number, 4, 9);
+        $clear_doc_num = (int)substr($number, 4, 9);
         $number = $clear_doc_num + 1;
 
-        return Str::upper($alias).'-'.sprintf('%05s', $number);
+        return Str::upper($alias) . '-' . sprintf('%05s', $number);
     }
 
     /**
@@ -174,7 +173,7 @@ class ItemService
      * @param $int
      * @return int|mixed|null
      */
-    public function checkItem($item, $request, $int)
+    public function checkItem($item, $request, $int): mixed
     {
         $default_int = ($int) ? 0 : null;
 

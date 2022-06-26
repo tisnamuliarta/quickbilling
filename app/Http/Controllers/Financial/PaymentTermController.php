@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Financial\StorePaymentTermRequest;
 use App\Models\Financial\PaymentTerm;
 use App\Services\Financial\PaymentTermService;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentTermController extends Controller
 {
-    public $service;
+    public PaymentTermService $service;
 
     /**
      * MasterUserController constructor.
@@ -27,7 +28,7 @@ class PaymentTermController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -42,21 +43,15 @@ class PaymentTermController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StorePaymentTermRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StorePaymentTermRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         DB::beginTransaction();
         try {
-            PaymentTerm::create($this->service->formData($request, 'store'));
+            PaymentTerm::create($this->service->formData($request));
 
             DB::commit();
 
@@ -76,12 +71,12 @@ class PaymentTermController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = PaymentTerm::where('id', '=', $id)->get();
+        $data = PaymentTerm::find($id);
 
         return $this->success([
             'rows' => $data,
@@ -91,26 +86,22 @@ class PaymentTermController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StorePaymentTermRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StorePaymentTermRequest $request, $id)
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
+        DB::beginTransaction();
         try {
-            PaymentTerm::where('id', '=', $id)->update($this->service->formData($request, 'update'));
-
+            PaymentTerm::where('id', '=', $id)->update($this->service->formData($request));
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -121,7 +112,7 @@ class PaymentTermController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse

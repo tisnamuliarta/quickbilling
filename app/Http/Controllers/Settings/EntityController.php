@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\StoreEntityRequest;
 use App\Models\Settings\Setting;
 use App\Services\Settings\EntityService;
 use IFRS\Models\Entity;
@@ -28,13 +29,13 @@ class EntityController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('ifrs_entities');
+        $result['form'] = $this->form('entities');
         $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
@@ -43,22 +44,15 @@ class EntityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreEntityRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreEntityRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         DB::beginTransaction();
-        $form = $request->form;
         try {
-            Entity::create($this->service->formData($form, $request, 'store'));
+            Entity::create($this->service->formData($request));
 
             Setting::where('key', 'company_name')
                 ->update([
@@ -83,7 +77,7 @@ class EntityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -98,33 +92,28 @@ class EntityController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreEntityRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreEntityRequest $request, $id)
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
-        $form = $request->form;
+        DB::beginTransaction();
         try {
             Entity::where('id', '=', $id)
-                ->update($this->service->formData($form, $request, 'update'));
+                ->update($this->service->formData($request));
 
             Setting::where('key', 'company_name')
                 ->update([
                     'value' => $request->name,
                 ]);
-
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -135,7 +124,7 @@ class EntityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse

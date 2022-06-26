@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Financial\StoreAccountCategoryRequest;
 use App\Models\Financial\Category;
 use App\Services\Financial\AccountCategoryService;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class AccountCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -43,23 +44,13 @@ class AccountCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreAccountCategoryRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreAccountCategoryRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'category_type' => 'required',
-            'name' => 'required|unique:categories',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
         DB::beginTransaction();
-        $form = $request->form;
         try {
             Category::create($this->service->formData($request));
 
@@ -81,12 +72,12 @@ class AccountCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Category::where('id', '=', $id)->get();
+        $data = Category::find($id);
 
         return $this->success([
             'rows' => $data,
@@ -96,29 +87,23 @@ class AccountCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreAccountCategoryRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreAccountCategoryRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'category_type' => 'required',
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
+        DB::beginTransaction();
         try {
             Category::where('id', '=', $id)->update($this->service->formData($request));
 
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -129,7 +114,7 @@ class AccountCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

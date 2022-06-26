@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Financial\StoreTaxRequest;
 use App\Services\Financial\TaxService;
 use App\Traits\Financial;
 use IFRS\Models\Vat;
@@ -13,7 +14,7 @@ class TaxController extends Controller
 {
     use Financial;
 
-    public $service;
+    public TaxService $service;
 
     /**
      * MasterUserController constructor.
@@ -30,7 +31,7 @@ class TaxController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -45,20 +46,12 @@ class TaxController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreTaxRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreTaxRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
         DB::beginTransaction();
         try {
             Vat::create($this->service->formData($request));
@@ -81,8 +74,8 @@ class TaxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
@@ -97,29 +90,23 @@ class TaxController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreTaxRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreTaxRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
+        DB::beginTransaction();
         try {
             Vat::where('id', '=', $id)
                 ->update($this->service->formData($request));
-
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -130,7 +117,7 @@ class TaxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

@@ -38,15 +38,16 @@ class PaymentMethodService
     }
 
     /**
-     * @param $form
      * @param $request
-     * @param $type
      * @return array
      */
-    public function formData($form, $request, $type): array
+    public function formData($request): array
     {
-        return [
-            'name' => $form['name'],
-        ];
+        $request->request->remove('updated_at');
+        $request->request->remove('created_at');
+        $request->request->remove('deleted_at');
+        $request->request->remove('destroyed_at');
+
+        return $request->all();
     }
 }

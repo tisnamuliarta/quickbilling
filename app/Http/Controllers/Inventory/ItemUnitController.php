@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Inventory\StoreItemUnitRequest;
 use App\Models\Inventory\ItemUnit;
 use App\Services\Inventory\ItemUnitService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ItemUnitController extends Controller
 {
@@ -29,7 +28,7 @@ class ItemUnitController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -44,22 +43,13 @@ class ItemUnitController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreItemUnitRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreItemUnitRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required|unique:item_units',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
         DB::beginTransaction();
-        $form = $request->form;
         try {
             ItemUnit::create($this->service->formData($request, 'store'));
 
@@ -81,12 +71,12 @@ class ItemUnitController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = ItemUnit::where('id', '=', $id)->get();
+        $data = ItemUnit::find($id);
 
         return $this->success([
             'rows' => $data,
@@ -96,28 +86,23 @@ class ItemUnitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreItemUnitRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreItemUnitRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation, 422, [
-                'errors' => true,
-            ]);
-        }
-
+        DB::beginTransaction();
         try {
             ItemUnit::where('id', '=', $id)->update($this->service->formData($request, 'update'));
 
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -128,7 +113,7 @@ class ItemUnitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

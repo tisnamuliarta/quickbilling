@@ -5,6 +5,7 @@ namespace App\Services\Financial;
 use App\Traits\Accounting;
 use App\Traits\Categories;
 use IFRS\Models\Account;
+use JetBrains\PhpStorm\ArrayShape;
 
 class AccountService
 {
@@ -43,7 +44,7 @@ class AccountService
      * @param $type
      * @return array
      */
-    public function dataByType($type): array
+    #[ArrayShape(['rows' => "mixed"])] public function dataByType($type): array
     {
         $query = Account::selectRaw(
             " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
