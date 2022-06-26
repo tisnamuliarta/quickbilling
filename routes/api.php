@@ -9,6 +9,7 @@ use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
 use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Settings\SettingController;
+use App\Http\Controllers\Transactions\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index']);
@@ -48,25 +49,37 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('master')
         ->group(__DIR__.'/master.php');
 
-    Route::prefix('payroll')
-        ->group(__DIR__.'/payroll.php');
+    // payroll route
+    Route::group(['prefix' => 'payroll'], function () {
+        Route::apiResources([
+            'employees' => \App\Http\Controllers\Payroll\EmployeeController::class,
+            'contractors' => \App\Http\Controllers\Payroll\ContractorController::class,
+            'work-locations' => \App\Http\Controllers\Payroll\WorkLocationController::class,
+        ]);
+    });
+
+    Route::apiResources([
+        'payrolls' => \App\Http\Controllers\Payroll\PayrollController::class,
+    ]);
 
     // List all sales routes
-    Route::prefix('transactions')
-        ->group(__DIR__.'/transactions.php');
+    Route::apiResources([
+        'transactions' => TransactionController::class,
+    ]);
 
     // List all documents routes
     Route::post('document-files', [FileController::class, 'store']);
     Route::get('document-files', [FileController::class, 'index']);
     Route::delete('document-files', [FileController::class, 'destroy']);
 
-    Route::apiResource('documents', DocumentController::class);
-    Route::group(['prefix' => 'documents'], function () {
+    Route::group(['prefix' => 'document'], function () {
         // Route::get('form/arrow', [DocumentController::class, 'arrowAction']);
         Route::get('audit/{id}', [DocumentController::class, 'getAudit']);
         Route::get('print', [\App\Http\Controllers\Documents\DocumentExportController::class, 'print']);
         Route::post('email', [\App\Http\Controllers\Documents\DocumentExportController::class, 'email']);
     });
+
+    Route::apiResource('documents', DocumentController::class);
 
     // List all master routes
     Route::prefix('financial')
