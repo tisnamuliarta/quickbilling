@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Payrolls\StoreWorkLocationRequest;
+use App\Http\Requests\Payrolls\UpdateWorkLocationRequest;
+use App\Models\Payroll\WorkLocation;
 
 class WorkLocationController extends Controller
 {
@@ -20,10 +22,10 @@ class WorkLocationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Payrolls\StoreWorkLocationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreWorkLocationRequest $request)
     {
         //
     }
@@ -31,10 +33,10 @@ class WorkLocationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Payroll\WorkLocation  $workLocation
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(WorkLocation $workLocation)
     {
         //
     }
@@ -42,11 +44,11 @@ class WorkLocationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Payrolls\UpdateWorkLocationRequest  $request
+     * @param  \App\Models\Payroll\WorkLocation  $workLocation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateWorkLocationRequest $request, WorkLocation $workLocation)
     {
         //
     }
@@ -54,10 +56,10 @@ class WorkLocationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Payroll\WorkLocation  $workLocation
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(WorkLocation $workLocation)
     {
         //
     }

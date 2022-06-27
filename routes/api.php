@@ -4,10 +4,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessPartner\ContactController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\File\FileController;
+use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
-use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Transactions\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +17,6 @@ Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    // Route::get('menus', [AuthController::class, 'menus']);
     Route::get('menus', [AuthController::class, 'menus']);
 
     Route::group(['prefix' => 'auth'], function () {
@@ -47,7 +46,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('master')
-        ->group(__DIR__.'/master.php');
+        ->group(__DIR__ . '/master.php');
 
     // payroll route
     Route::group(['prefix' => 'payroll'], function () {
@@ -83,7 +82,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('financial')
-        ->group(__DIR__.'/financial.php');
+        ->group(__DIR__ . '/financial.php');
 
     // Route Resource for settings
     Route::apiResources([

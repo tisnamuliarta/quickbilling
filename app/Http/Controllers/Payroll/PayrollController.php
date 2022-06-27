@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Payrolls\StorePayrollRequest;
+use App\Http\Requests\Payrolls\UpdatePayrollRequest;
+use App\Models\Payroll\Payroll;
 
 class PayrollController extends Controller
 {
@@ -20,10 +22,10 @@ class PayrollController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Payrolls\StorePayrollRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePayrollRequest $request)
     {
         //
     }
@@ -31,10 +33,10 @@ class PayrollController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Payroll\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Payroll $payroll)
     {
         //
     }
@@ -42,11 +44,11 @@ class PayrollController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Payrolls\UpdatePayrollRequest  $request
+     * @param  \App\Models\Payroll\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePayrollRequest $request, Payroll $payroll)
     {
         //
     }
@@ -54,10 +56,10 @@ class PayrollController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Payroll\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Payroll $payroll)
     {
         //
     }

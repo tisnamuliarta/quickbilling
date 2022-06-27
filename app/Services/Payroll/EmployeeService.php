@@ -4,6 +4,7 @@ namespace App\Services\Payroll;
 
 use App\Models\Payroll\Employee;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeService
@@ -52,10 +53,12 @@ class EmployeeService
         $request->request->remove('created_at');
         $request->request->remove('updated_at');
         $request->request->remove('deleted_at');
+        $request->request->remove('deleted_at');
 
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
         $data = $request->all();
+
+        Arr::forget($data, 'default_currency_code');
+        Arr::forget($data, 'default_currency_symbol');
 
         return $data;
     }

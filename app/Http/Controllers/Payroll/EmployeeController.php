@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Payroll;
 
-use App\Models\Payroll\Employee;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payrolls\StoreEmployeeRequest;
+use App\Models\Payroll\Employee;
 use App\Services\Payroll\EmployeeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,13 +28,14 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
         $result['form'] = $this->form('employees');
+        $result['form']['status'] = 'active';
         $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);
@@ -42,18 +44,12 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreEmployeeRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(StoreEmployeeRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validation = $this->validation($request, [
-            'first_name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
         DB::beginTransaction();
         try {
             Employee::create($this->service->formData($request, 'store'));
@@ -76,7 +72,7 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -91,26 +87,22 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreEmployeeRequest $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(StoreEmployeeRequest $request, $id)
     {
-        $validation = $this->validation($request, [
-            'first_name' => 'required',
-        ]);
-        if ($validation) {
-            return $this->error($validation);
-        }
-
+        DB::beginTransaction();
         try {
             Employee::where('id', '=', $id)->update($this->service->formData($request, 'update'));
-
+            DB::commit();
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -121,7 +113,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

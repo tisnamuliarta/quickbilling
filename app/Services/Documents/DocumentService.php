@@ -26,10 +26,10 @@ class DocumentService
     {
         $type = (isset($request->type)) ? $request->type : '';
         $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'document_number';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
+        $pages = isset($options->page) ? (int)$options->page : 1;
+        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'document_number';
+        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
         $result = [];
@@ -46,7 +46,7 @@ class DocumentService
             ")
         )
             ->with(['items', 'taxDetails', 'entity'])
-            ->where('type', 'LIKE', '%'.$type.'%');
+            ->where('type', 'LIKE', '%' . $type . '%');
 
         $result['total'] = $query->count();
 
@@ -93,9 +93,68 @@ class DocumentService
     }
 
     /**
+     * @param $sysDate
+     * @param $alias
+     * @return string
+     */
+    protected function generateDocNum($sysDate, $alias): string
+    {
+        $alias = Str::limit($alias, 2);
+
+        $data_date = strtotime($sysDate);
+        $year_val = date('y', $data_date);
+        $month = date('m', $data_date);
+
+        $day_val = date('j', $data_date);
+
+        if ((int)$day_val === 1) {
+            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
+            $check_document = Document::where('document_number', '=', $document)
+                ->where('type', $alias)
+                ->first();
+            if (!$check_document) {
+                return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', '1');
+            } else {
+                //SQ-220100001
+                return $this->itemCode($data_date, $alias, $year_val, $month);
+            }
+        }
+
+        return $this->itemCode($data_date, $alias, $year_val, $month);
+    }
+
+    /**
+     * @param $data_date
+     * @param $alias
+     * @param $year_val
+     * @param $month
+     * @return string
+     */
+    protected function itemCode($data_date, $alias, $year_val, $month): string
+    {
+        $full_year = date('Y', $data_date);
+        $end_date = date('t', $data_date);
+
+        $first_date = "${full_year}-${month}-01";
+        $second_date = "${full_year}-${month}-${end_date}";
+
+        $doc_num = Document::selectRaw('document_number as code')
+            ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
+            ->where('type', $alias)
+            ->orderBy('code', 'DESC')
+            ->first();
+
+        $number = empty($doc_num) ? '0000000000' : $doc_num->code;
+        $clear_doc_num = (int)substr($number, 7, 12);
+        $number = $clear_doc_num + 1;
+
+        return Str::upper($alias) . '-' . (int)$year_val . $month . sprintf('%05s', $number);
+    }
+
+    /**
      * @param $request
      * @param $type
-     * @param  null  $id
+     * @param null $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -141,65 +200,6 @@ class DocumentService
         }
 
         return $data;
-    }
-
-    /**
-     * @param $sysDate
-     * @param $alias
-     * @return string
-     */
-    protected function generateDocNum($sysDate, $alias): string
-    {
-        $alias = Str::limit($alias, 2);
-
-        $data_date = strtotime($sysDate);
-        $year_val = date('y', $data_date);
-        $month = date('m', $data_date);
-
-        $day_val = date('j', $data_date);
-
-        if ((int) $day_val === 1) {
-            $document = Str::upper($alias).'-'.sprintf('%05s', '1');
-            $check_document = Document::where('document_number', '=', $document)
-                ->where('type', $alias)
-                ->first();
-            if (! $check_document) {
-                return Str::upper($alias).'-'.(int) $year_val.$month.sprintf('%05s', '1');
-            } else {
-                //SQ-220100001
-                return $this->itemCode($data_date, $alias, $year_val, $month);
-            }
-        }
-
-        return $this->itemCode($data_date, $alias, $year_val, $month);
-    }
-
-    /**
-     * @param $data_date
-     * @param $alias
-     * @param $year_val
-     * @param $month
-     * @return string
-     */
-    protected function itemCode($data_date, $alias, $year_val, $month): string
-    {
-        $full_year = date('Y', $data_date);
-        $end_date = date('t', $data_date);
-
-        $first_date = "${full_year}-${month}-01";
-        $second_date = "${full_year}-${month}-${end_date}";
-
-        $doc_num = Document::selectRaw('document_number as code')
-            ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
-            ->where('type', $alias)
-            ->orderBy('code', 'DESC')
-            ->first();
-
-        $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int) substr($number, 7, 12);
-        $number = $clear_doc_num + 1;
-
-        return Str::upper($alias).'-'.(int) $year_val.$month.sprintf('%05s', $number);
     }
 
     /**
@@ -296,28 +296,24 @@ class DocumentService
      */
     public function mappingAction($type, $parent_id): array
     {
-        switch ($type) {
-            case 'SQ':
-                //                $order = $this->orderAction('Sales Order', 'SO', $parent_id, 'mdi-sale', 'orange', 'true');
-                return [
-                    ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
-                    ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],
-                    ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
-                    ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
-                    ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
-                    ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
-                ];
-            case 'SO':
-                return [
-                    ['title' => 'Create Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
-                    ['title' => 'Clone', 'action' => 'SO', 'icon' => 'mdi-content-copy'],
-                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
-                ];
-            default:
-                return [
-                    ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
-                ];
-        }
+        return match ($type) {
+            'SQ' => [
+                ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
+                ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],
+                ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
+                ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
+                ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
+                ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
+            ],
+            'SO' => [
+                ['title' => 'Create Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
+                ['title' => 'Clone', 'action' => 'SO', 'icon' => 'mdi-content-copy'],
+                ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
+            ],
+            default => [
+                ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
+            ],
+        };
     }
 
     /**
@@ -332,7 +328,7 @@ class DocumentService
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
         $query = Document::where('type', $action)
-            ->whereIn('parent_id', (array) $parent_id);
+            ->whereIn('parent_id', (array)$parent_id);
 
         return [
             'title' => $title,
