@@ -36,6 +36,17 @@ class EmployeeController extends Controller
         $result = [];
         $result['form'] = $this->form('employees');
         $result['form']['status'] = 'active';
+
+        $result['itemGender'] = [
+            ['id' => 1, 'name'=> __("Male")],
+            ['id' => 2, 'name'=> __("Female")],
+        ];
+
+        $result['paymentMethod'] = [
+            ['id' => 1, 'name'=> __("Cash")],
+            ['id' => 2, 'name'=> __("Direct Deposit")],
+        ];
+
         $result = array_merge($result, $this->service->index($request));
 
         return $this->success($result);

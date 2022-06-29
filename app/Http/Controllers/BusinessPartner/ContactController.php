@@ -24,10 +24,10 @@ class ContactController extends Controller
     public function __construct(ContactService $service)
     {
         $this->service = $service;
-//        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
-//        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
-//        $this->middleware(['direct_permission:Roles-edits'])->only('update');
-//        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
+        //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
+        //        $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
+        //        $this->middleware(['direct_permission:Roles-edits'])->only('update');
+        //        $this->middleware(['direct_permission:Roles-erase'])->only('destroy');
     }
 
     /**
@@ -91,9 +91,10 @@ class ContactController extends Controller
     }
 
     /**
-     * @param $request
-     * @param $contact
-     * @return void
+     * It stores the contact's bank details and emails, and if the contact can login, it creates a user
+     *
+     * @param request The request object
+     * @param contact The contact array returned from the storeContact method.
      */
     protected function processDetails($request, $contact)
     {

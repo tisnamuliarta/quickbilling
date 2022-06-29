@@ -17,6 +17,12 @@ class Employee extends Model implements Auditable
 
     protected $guarded = [];
 
+    protected $casts = [
+        'gender' => 'integer',
+        'payment_method' => 'integer',
+        'hire_date' => 'datetime:Y-m-d',
+    ];
+
     public function entity()
     {
         return $this->belongsTo(Entity::class);

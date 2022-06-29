@@ -1,4 +1,8 @@
 {
+  "Male": "Male",
+  "Female": "Female",
+  "Direct Deposit": "Direct Deposit",
+  "Cash": "Cash",
   "Permissions": "Permissions",
   "Roles": "Roles",
   "Reports": "Reports",
@@ -54,6 +58,9 @@
   "Journal Entry": "Journal Entry",
   "Statement": "Statement",
   "Inventory Qty Adjustment": "Inventory Qty Adjustment",
+  "document": {
+    "contactRequired": "Business partner is required"
+  },
   "auth": {
     "failed": "These credentials do not match our records.",
     "password": "The provided password is incorrect.",

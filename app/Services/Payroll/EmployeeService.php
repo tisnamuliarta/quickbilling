@@ -26,6 +26,7 @@ class EmployeeService
         $result = [];
         $query = Employee::select(
             'employees.*',
+            'employees.id as user_id',
             DB::raw("'actions' as actions")
         )
             ->with(['workLocation', 'bank', 'entity']);
@@ -59,6 +60,10 @@ class EmployeeService
 
         Arr::forget($data, 'default_currency_code');
         Arr::forget($data, 'default_currency_symbol');
+        Arr::forget($data, 'actions');
+        Arr::forget($data, 'work_location');
+        Arr::forget($data, 'bank');
+        Arr::forget($data, 'entity');
 
         return $data;
     }

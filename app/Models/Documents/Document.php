@@ -4,6 +4,7 @@ namespace App\Models\Documents;
 
 use App\Models\Financial\Currency;
 use App\Models\Inventory\Contact;
+use App\Models\Sales\SalesPerson;
 use Carbon\Carbon;
 use IFRS\Models\Entity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,7 +81,7 @@ class Document extends Model implements Auditable
 
     public function currency()
     {
-        return $this->belongsTo(Currency::class, 'currency_code', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'currency_code');
     }
 
     public function entity()
@@ -112,6 +113,11 @@ class Document extends Model implements Auditable
     {
         return $this->hasMany(Document::class, 'parent_id', 'id')
             ->where('type', '=', 'SO');
+    }
+
+    public function salesPerson()
+    {
+        return $this->hasMany(SalesPerson::class);
     }
 
     public function getDefaultCurrencyCodeAttribute()

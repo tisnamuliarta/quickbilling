@@ -89,6 +89,7 @@ class DocumentController extends Controller
     {
         $items = collect($request->items);
         $tax_details = collect($request->tax_details);
+        $sales_persons = collect($request->sales_persons);
 
         $validate_details = $this->validateDetails($items);
         if ($validate_details['error']) {
@@ -97,6 +98,7 @@ class DocumentController extends Controller
 
         DB::beginTransaction();
         try {
+            // return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = Document::create($this->service->formData($request, 'store'));
 
             if ($document->parent_id !== 0) {
@@ -108,6 +110,8 @@ class DocumentController extends Controller
             }
 
             $this->service->processItems($items, $document, $tax_details);
+
+            $this->service->processSalesPerson($sales_persons, $document);
 
             DB::commit();
 
@@ -176,7 +180,7 @@ class DocumentController extends Controller
             }
 
             $data = Document::where('id', '=', $id)
-                ->with(['items', 'taxDetails', 'entity', 'parent', 'child'])
+                ->with(['items', 'taxDetails', 'entity', 'parent', 'child', 'salesPerson'])
                 ->first();
 
             $form = $this->service->getForm(($data) ? $data->type : $type);
@@ -221,6 +225,7 @@ class DocumentController extends Controller
     {
         $items = collect($request->items);
         $tax_details = collect($request->tax_details);
+        $sales_persons = collect($request->sales_persons);
 
         $validate_details = $this->validateDetails($items);
         if ($validate_details['error']) {
@@ -232,12 +237,15 @@ class DocumentController extends Controller
 
             $document = Document::find($id);
             $forms = collect($this->service->formData($request, 'update'));
+            //return $this->error('', 422, [$forms]);
             foreach ($forms as $index => $form) {
                 $document->$index = $form;
             }
             $document->save();
 
             $this->service->processItems($items, $document, $tax_details);
+
+            $this->service->processSalesPerson($sales_persons, $document);
 
             DB::commit();
 

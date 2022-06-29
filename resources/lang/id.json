@@ -1,4 +1,8 @@
 {
+  "Male": "Pria",
+  "Female": "Perempuan",
+  "Direct Deposit": "Deposit langsung",
+  "Cash": "Uang tunai",
   "Permissions": "Izin",
   "Roles": "Peran",
   "Reports": "Laporan",
@@ -54,6 +58,9 @@
   "Journal Entry": "Journal Entry",
   "Statement": "Statement",
   "Inventory Qty Adjustment": "Inventory Qty Adjustment",
+  "document": {
+    "contactRequired": "mitra bisnis diperlukan"
+  },
   "auth": {
     "failed": "These credentials do not match our records.",
     "password": "The provided password is incorrect.",

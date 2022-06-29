@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Services\Documents;
+namespace App\Services\Transactions;
 
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
-use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
 use IFRS\Models\ReportingPeriod;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class DocumentService
+class TransactionService
 {
     use ApiResponse;
     use Financial;
@@ -35,21 +33,9 @@ class DocumentService
         $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
+        $model = $this->mappingTable($type);
         $result = [];
-        $query = Document::select(
-            'documents.*',
-            DB::raw("'actions' as actions"),
-            DB::raw('CONVERT(issued_at, date) as issued_at'),
-            DB::raw('CONVERT(due_at, date) as due_at'),
-            DB::raw("
-                CASE
-                    WHEN documents.due_at < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
-                    ELSE documents.status
-                END as status
-            ")
-        )
-            ->with(['items', 'taxDetails', 'entity'])
-            ->where('type', 'LIKE', '%' . $type . '%');
+        $query = $model::with(['entity', 'lineItems']);
 
         $result['total'] = $query->count();
 
@@ -78,8 +64,6 @@ class DocumentService
         $form['withholding_info'] = false;
         $form['price_include_tax'] = false;
         $form['type'] = $type;
-        $form['issued_at'] = Carbon::now()->format('Y-m-d');
-        $form['due_at'] = Carbon::now()->addDay(30)->format('Y-m-d');
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
@@ -89,10 +73,8 @@ class DocumentService
         $form['shipping_fee'] = 0;
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
-        $form['currency_rate'] = 0;
         $form['id'] = 0;
         $form['document_number'] = $this->generateDocNum(Carbon::now(), $type);
-        $form['temp_id'] = mt_rand(100000, 999999999999);
 
         return $form;
     }
@@ -106,16 +88,16 @@ class DocumentService
     protected function generateDocNum($sysDate, $alias): string
     {
         $alias = Str::limit($alias, 2);
-
-        $data_date = strtotime($sysDate);
-        $month = date('m', $data_date);
-
         $entity = Auth::user()->entity;
+        $month = Carbon::now()->format('m');
+
         $periodCount = ReportingPeriod::getPeriod($sysDate, $entity)->period_count;
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
 
-        $nextId = Document::where(DB::raw("CONVERT(issued_at, date) >= '$periodStart'"))
-                ->where('type', $alias)
+        $nextId = \IFRS\Models\Transaction::withTrashed()
+                ->where("transaction_type", $alias)
+                ->where("transaction_date", ">=", $periodStart)
+                ->where("entity_id", '=', $entity->id)
                 ->count() + 1;
 
         return $alias . "-" . str_pad((string)$periodCount, 2, "0", STR_PAD_LEFT)
@@ -128,46 +110,25 @@ class DocumentService
      * @param $type
      * @param null $id
      * @return array
-     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function formData($request, $type, $id = null): array
     {
-        $contact = Contact::where('id', $request->contact_id)->first();
+        $request->request->remove('items');
+        $request->request->remove('tax_details');
+        $request->request->remove('id');
+        $request->request->remove('created_at');
+        $request->request->remove('updated_at');
+        $request->request->remove('deleted_at');
+        $request->request->remove('currency');
+        $request->request->remove('entity');
+        $request->request->remove('parent');
+        $request->request->remove('child');
 
-        $request->merge([
-            'currency_code' => $request->user()->entity->currency->currency_code,
-            // 'currency_rate' => $currency->rate,
-            'currency_rate' => 0,
-            'contact_name' => $contact->name,
-            'contact_email' => $contact->email,
-            'contact_tax_number' => $contact->tax_number,
-            'contact_phone' => $contact->phone,
-            'contact_zip_code' => $contact->zip_code,
-            'contact_city' => $contact->city,
-        ]);
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
         $data = $request->all();
-
-        Arr::forget($data, 'items');
-        Arr::forget($data, 'tax_details');
-        Arr::forget($data, 'tags');
-        Arr::forget($data, 'id');
-        Arr::forget($data, 'created_at');
-        Arr::forget($data, 'updated_at');
-        Arr::forget($data, 'deleted_at');
-        Arr::forget($data, 'currency');
-        Arr::forget($data, 'entity');
-        Arr::forget($data, 'parent');
-        Arr::forget($data, 'child');
-        Arr::forget($data, 'default_currency_code');
-        Arr::forget($data, 'default_currency_symbol');
-        Arr::forget($data, 'sales_person');
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
-            $data['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
-            $data['status'] = 'open';
+            $data['status'] = 'draft';
         }
 
         return $data;
@@ -218,7 +179,7 @@ class DocumentService
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
             'unit' => $item['unit'],
-            'tax_name' => (array_key_exists('tax_name', $item)) ? $item['tax_name'] : null,
+            'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
             'total' => floatval($item['total']),
@@ -261,21 +222,25 @@ class DocumentService
     }
 
     /**
-     * @param $sales_persons
-     * @param $document
-     * @return void
+     * @param $type
+     * @return string|void
      */
-    public function processSalesPerson($sales_persons, $document)
+    public function mappingTable($type)
     {
-        if ($sales_persons) {
-            foreach ($sales_persons as $sales_person) {
-                $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;
-                SalesPerson::updateOrCreate([
-                    'document_type' => $document->type,
-                    'user_id' => $user_id,
-                    'document_id' => $document->id,
-                ]);
-            }
+        switch ($type) {
+            case 'IN':
+                return "\\App\\Models\\Transactions\\SalesInvoice";
+            case 'CN':
+                return "\\App\\Models\\Transactions\\SalesNote";
+            case 'RC':
+                return "\\App\\Models\\Transactions\\SalesPayment";
+            case 'BL':
+                return "\\App\\Models\\Transactions\\PurchaseInvoice";
+            case 'DN':
+                return "\\App\\Models\\Transactions\\PurchaseNote";
+            case 'PY':
+                return "\\App\\Models\\Transactions\\PurchasePayment";
+
         }
     }
 
@@ -305,6 +270,26 @@ class DocumentService
             ],
         };
     }
+
+    /**
+     * @param $sales_persons
+     * @param $document
+     * @return void
+     */
+    public function processSalesPerson($sales_persons, $document)
+    {
+        if ($sales_persons) {
+            foreach ($sales_persons as $sales_person) {
+                $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;
+                SalesPerson::updateOrCreate([
+                    'document_type' => $document->type,
+                    'user_id' => $user_id,
+                    'document_id' => $document->id,
+                ]);
+            }
+        }
+    }
+
 
     /**
      * @param $title
