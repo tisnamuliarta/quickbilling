@@ -36,6 +36,25 @@ class Transaction extends TransactionModel implements Auditable
         'transaction_type',
         'transaction_no',
         'entity_id',
+        'contact_id',
+        'payment_term_id',
+        'deposit_account_id',
+        'due_date',
+        'shipping_date',
+        'receipt_date',
+        'tracking_no',
+        'notes',
+        'shipping_address',
+        'billing_address',
+        'ship_via',
+        'discount_type',
+        'discount_rate',
+        'discount_amount',
+        'shipping_fee',
+        'deposit',
+        'balance_due',
+        'status',
+        'classification_id',
     ];
 
     /**
@@ -88,7 +107,7 @@ class Transaction extends TransactionModel implements Auditable
         if (!isset($this->currency_id)) {
             $this->currency_id = $this->account->currency_id;
         }
-
+        throw new \Exception($this->transaction_type);
         if (is_null($this->transaction_no)) {
             $this->transaction_no = Transaction::transactionNo(
                 $this->transaction_type,
@@ -123,7 +142,7 @@ class Transaction extends TransactionModel implements Auditable
      * @return string
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    public static function transactionNo(string $type, Carbon $transaction_date = null, Entity $entity = null)
+    public static function transactionNo(string $type, Carbon $transaction_date = null, Entity $entity = null): string
     {
         if (is_null($entity)) {
             $entity = Auth::user()->entity;

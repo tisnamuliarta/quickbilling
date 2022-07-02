@@ -113,14 +113,17 @@ class DocumentService
         $entity = Auth::user()->entity;
         $periodCount = ReportingPeriod::getPeriod($sysDate, $entity)->period_count;
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
+        $periodStart = date('Y-m-d', strtotime($periodStart));
 
-        $nextId = Document::where(DB::raw("CONVERT(issued_at, date) >= '$periodStart'"))
+        $nextId = Document::where("issued_at", ">=", $periodStart)
                 ->where('type', $alias)
-                ->count() + 1;
+                ->count();
+
+        $nextId = $nextId + 1;
 
         return $alias . "-" . str_pad((string)$periodCount, 2, "0", STR_PAD_LEFT)
             . $month .
-            str_pad((string)$nextId, 5, "0", STR_PAD_LEFT);
+            str_pad((string)$nextId, 4, "0", STR_PAD_LEFT);
     }
 
     /**

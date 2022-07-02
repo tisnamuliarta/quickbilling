@@ -11,7 +11,6 @@ use App\Traits\Financial;
 use Carbon\Carbon;
 use IFRS\Models\ReportingPeriod;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TransactionService
@@ -53,12 +52,35 @@ class TransactionService
 
     /**
      * @param $type
+     * @return string|void
+     */
+    public function mappingTable($type)
+    {
+        switch ($type) {
+            case 'IN':
+                return "\\App\\Models\\Transactions\\SalesInvoice";
+            case 'CN':
+                return "\\App\\Models\\Transactions\\SalesNote";
+            case 'RC':
+                return "\\App\\Models\\Transactions\\SalesPayment";
+            case 'BL':
+                return "\\App\\Models\\Transactions\\PurchaseInvoice";
+            case 'DN':
+                return "\\App\\Models\\Transactions\\PurchaseNote";
+            case 'PY':
+                return "\\App\\Models\\Transactions\\PurchasePayment";
+
+        }
+    }
+
+    /**
+     * @param $type
      * @return array
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function getForm($type): array
     {
-        $form = $this->form('documents');
+        $form = $this->form('transactions');
         $form['deposit_info'] = false;
         $form['shipping_info'] = false;
         $form['withholding_info'] = false;
@@ -74,6 +96,7 @@ class TransactionService
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
         $form['id'] = 0;
+        $form['account_id'] = 5;
         $form['document_number'] = $this->generateDocNum(Carbon::now(), $type);
 
         return $form;
@@ -170,11 +193,11 @@ class TransactionService
     {
         $form = [
             'entity_id' => $document->entity_id,
-            'type' => $document->type,
-            'document_id' => $document->id,
+            'account_id' => 45,
+            'transaction_id' => $document->id,
             'item_id' => $item['item_id'],
             'name' => $item['name'],
-            'description' => $item['description'],
+            'narration' => $item['description'],
             'sku' => $item['sku'],
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
@@ -182,7 +205,7 @@ class TransactionService
             'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'total' => floatval($item['total']),
+            'amount' => floatval($item['total']),
         ];
 
         $merge = [];
@@ -218,29 +241,6 @@ class TransactionService
                     'amount' => floatval($tax['amount']),
                 ]
             );
-        }
-    }
-
-    /**
-     * @param $type
-     * @return string|void
-     */
-    public function mappingTable($type)
-    {
-        switch ($type) {
-            case 'IN':
-                return "\\App\\Models\\Transactions\\SalesInvoice";
-            case 'CN':
-                return "\\App\\Models\\Transactions\\SalesNote";
-            case 'RC':
-                return "\\App\\Models\\Transactions\\SalesPayment";
-            case 'BL':
-                return "\\App\\Models\\Transactions\\PurchaseInvoice";
-            case 'DN':
-                return "\\App\\Models\\Transactions\\PurchaseNote";
-            case 'PY':
-                return "\\App\\Models\\Transactions\\PurchasePayment";
-
         }
     }
 

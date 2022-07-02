@@ -60,7 +60,6 @@ class TransactionController extends Controller
 
         DB::beginTransaction();
         try {
-            // return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = $model::create($this->service->formData($request, 'store'));
 
             if ($document->parent_id !== 0) {
