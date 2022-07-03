@@ -26,6 +26,7 @@
     "maatwebsite/excel": "^3.1",
     "madnest/madzipper": "^1.3",
     "owen-it/laravel-auditing": "^12.2",
+    "phpoffice/phpword": "^0.18.3",
     "psr/simple-cache": "^1.0",
     "scottlaurent/accounting": "^0.3.3",
     "simplesoftwareio/simple-qrcode": "^4.2",
@@ -43,10 +44,12 @@
     "phpunit/phpunit": "^9.5.10"
   },
   "autoload": {
+    "exclude-from-classmap": ["/vendor/ekmungai/eloquent-ifrs/src/Models/Transaction.php"],
     "psr-4": {
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/"
+      "Database\\Seeders\\": "database/seeders/",
+      "IFRS\\Models\\": "app/Overrides/"
     }
   },
   "autoload-dev": {

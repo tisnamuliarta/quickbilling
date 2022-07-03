@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
-use App\Models\Transactions\Transaction;
 use App\Services\Transactions\TransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

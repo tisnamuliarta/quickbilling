@@ -71,6 +71,11 @@ class Document extends Model implements Auditable
         return $this->hasMany(DocumentItem::class);
     }
 
+    public function lineItems()
+    {
+        return $this->hasMany(DocumentItem::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

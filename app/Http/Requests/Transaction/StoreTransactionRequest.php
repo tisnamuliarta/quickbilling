@@ -26,6 +26,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'document_number' => 'required',
             'contact_id' => 'required',
+            'notes' => 'required',
         ];
     }
 
@@ -39,6 +40,7 @@ class StoreTransactionRequest extends FormRequest
         return [
             'document_number.required' => __('validation')['required'],
             'contact_id.required' => __('document')['contactRequired'],
+            'notes.required' => __('document')['narrationRequired'],
         ];
     }
 }

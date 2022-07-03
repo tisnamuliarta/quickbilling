@@ -7,6 +7,7 @@ use App\Models\Inventory\ItemCategory;
 use App\Traits\Categories;
 use App\Traits\FileUpload;
 use App\Traits\Financial;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -79,24 +80,24 @@ class ItemService
         $request->mergeIfMissing([
             'entity_id' => auth()->user()->entity_id,
         ]);
-
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
-        $request->request->remove('category');
-        $request->request->remove('categories');
-        $request->request->remove('sales_account');
-        $request->request->remove('purchase_account');
-        $request->request->remove('ACTIONS');
-        $request->request->remove('average_price');
-        $request->request->remove('last_buy_price');
-        $request->request->remove('sell_tax_name');
-        $request->request->remove('buy_tax_name');
-        $request->request->remove('updated_at');
-        $request->request->remove('created_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('group_name');
-        $request->request->remove('inventory_account_name');
         $data = $request->all();
+
+        Arr::forget($data, 'default_currency_code');
+        Arr::forget($data, 'default_currency_symbol');
+        Arr::forget($data, 'category');
+        Arr::forget($data, 'categories');
+        Arr::forget($data, 'sales_account');
+        Arr::forget($data, 'purchase_account');
+        Arr::forget($data, 'ACTIONS');
+        Arr::forget($data, 'average_price');
+        Arr::forget($data, 'last_buy_price');
+        Arr::forget($data, 'sell_tax_name');
+        Arr::forget($data, 'buy_tax_name');
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'group_name');
+        Arr::forget($data, 'inventory_account_name');
 
         $data['image'] = '';
         $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;

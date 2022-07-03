@@ -59,7 +59,8 @@
   "Statement": "Statement",
   "Inventory Qty Adjustment": "Inventory Qty Adjustment",
   "document": {
-    "contactRequired": "mitra bisnis diperlukan"
+    "contactRequired": "mitra bisnis tidak boleh kosong",
+    "narrationRequired": "keterangan dan memo tidak boleh kosong"
   },
   "auth": {
     "failed": "These credentials do not match our records.",

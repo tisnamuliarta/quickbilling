@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Financial\Account;
 use App\Models\Master\Bank;
 
 trait Accounting
@@ -17,6 +18,19 @@ trait Accounting
             return $data->id;
         }
 
+        return 0;
+    }
+
+    /**
+     * @param $name
+     * @return int
+     */
+    public function accountByName($name): int
+    {
+        $data = Account::where('name', $name)->first();
+        if ($data) {
+            return $data->id;
+        }
         return 0;
     }
 }

@@ -59,7 +59,8 @@
   "Statement": "Statement",
   "Inventory Qty Adjustment": "Inventory Qty Adjustment",
   "document": {
-    "contactRequired": "Business partner is required"
+    "contactRequired": "Business partner is required",
+    "narrationRequired": "Description and memo is required"
   },
   "auth": {
     "failed": "These credentials do not match our records.",

@@ -3,13 +3,15 @@
 namespace App\Services\Transactions;
 
 use App\Models\Documents\Document;
-use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
+use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
+use App\Models\Transactions\LineItem;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
 use IFRS\Models\ReportingPeriod;
+use IFRS\Models\Vat;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -21,6 +23,7 @@ class TransactionService
     /**
      * @param $request
      * @return array
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function index($request): array
     {
@@ -28,13 +31,13 @@ class TransactionService
         $options = $request->options;
         $pages = isset($options->page) ? (int)$options->page : 1;
         $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'document_number';
+        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'transaction_no';
         $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'desc';
         $offset = ($pages - 1) * $row_data;
 
         $model = $this->mappingTable($type);
         $result = [];
-        $query = $model::with(['entity', 'lineItems']);
+        $query = $model::with(['entity', 'lineItems', 'contact']);
 
         $result['total'] = $query->count();
 
@@ -57,18 +60,26 @@ class TransactionService
     public function mappingTable($type)
     {
         switch ($type) {
+            case 'CS':
+                return "\\IFRS\\Transactions\\CashSale";
             case 'IN':
-                return "\\App\\Models\\Transactions\\SalesInvoice";
+                return "\\IFRS\\Transactions\\ClientInvoice";
             case 'CN':
-                return "\\App\\Models\\Transactions\\SalesNote";
+                return "\\IFRS\\Transactions\\CreditNote";
             case 'RC':
-                return "\\App\\Models\\Transactions\\SalesPayment";
+                return "\\IFRS\\Transactions\\ClientReceipt";
             case 'BL':
-                return "\\App\\Models\\Transactions\\PurchaseInvoice";
+                return "\\IFRS\\Transactions\\SupplierBill";
             case 'DN':
-                return "\\App\\Models\\Transactions\\PurchaseNote";
+                return "\\IFRS\\Transactions\\DebitNote";
             case 'PY':
-                return "\\App\\Models\\Transactions\\PurchasePayment";
+                return "\\IFRS\\Transactions\\SupplierPayment";
+            case 'CP':
+                return "\\IFRS\\Transactions\\CashPurchase";
+            case 'CE':
+                return "\\IFRS\\Transactions\\ContraEntry";
+            case 'JN':
+                return "\\IFRS\\Transactions\\JournalEntry";
 
         }
     }
@@ -85,21 +96,47 @@ class TransactionService
         $form['shipping_info'] = false;
         $form['withholding_info'] = false;
         $form['price_include_tax'] = false;
+        $form['compound'] = false;
+        $form['transaction_type'] = $type;
         $form['type'] = $type;
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
+        $form['issued_at'] = date('Y-m-d');
+        $form['due_at'] = Carbon::parse(date('Y-m-d'))->addDay(15)->format('Y-m-d');
         $form['status'] = 'draft';
         $form['tax_details'] = [];
         $form['items'] = [];
         $form['shipping_fee'] = 0;
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
+        $form['discount_rate'] = 0;
+        $form['deposit'] = 0;
         $form['id'] = 0;
-        $form['account_id'] = 5;
+        $form['account_id'] = $this->defaultHeaderAccount($type);
         $form['document_number'] = $this->generateDocNum(Carbon::now(), $type);
 
+        if (Str::contains($type, ['CP', 'RC', 'CN', 'BL'])) {
+            $form['credited'] = true;
+        } else {
+            $form['credited'] = false;
+        }
+
         return $form;
+    }
+
+    /**
+     * @param $type
+     * @return int
+     */
+    protected function defaultHeaderAccount($type): int
+    {
+        return match ($type) {
+            'CP', 'CS' => $this->getAccountIdByName('Cash on hand', 'BANK'),
+            'CN', 'RC', 'IN' => $this->getAccountIdByName('Accounts Receivable (A/R)', 'RECEIVABLE'),
+            'BL', 'DN', 'PY' => $this->getAccountIdByName('Accounts Payable (A/P)', 'PAYABLE'),
+            default => 0,
+        };
     }
 
     /**
@@ -136,6 +173,14 @@ class TransactionService
      */
     public function formData($request, $type, $id = null): array
     {
+        $contact = Contact::where('id', $request->contact_id)->first();
+
+        $request->merge([
+            'narration' => $request->notes,
+            'main_account_amount' => $request->amount,
+            'reference' => $request->reference_no,
+        ]);
+
         $request->request->remove('items');
         $request->request->remove('tax_details');
         $request->request->remove('id');
@@ -165,22 +210,38 @@ class TransactionService
      */
     public function processItems($items, $document, $tax_details)
     {
+        $line_item = [];
         foreach ($items as $item) {
+            // throw new \Exception($this->detailAccountId($document->transaction_type, $item));
             if (array_key_exists('id', $item) && $item['id']) {
-                $item_detail = DocumentItem::find($item['id']);
+                $item_detail = LineItem::find($item['id']);
                 $forms = $this->detailsForm($document, $item, 'update');
                 foreach ($forms as $index => $form) {
                     $item_detail->$index = $form;
                 }
                 $item_detail->save();
             } else {
-                $item_detail = DocumentItem::create($this->detailsForm($document, $item, 'store'));
+                $line_item[] = $this->detailsForm($document, $item, 'store');
+                // $item_detail = LineItem::create($this->detailsForm($document, $item, 'store'));
             }
+            // $line_item[] = LineItem::find($item_detail->id);
             // process tax details
-            foreach ($tax_details as $tax_detail) {
-                $this->processItemTax($document, $tax_detail, $item_detail);
-            }
+//            foreach ($tax_details as $tax_detail) {
+//                $this->processItemTax($document, $tax_detail, $item_detail);
+//            }
         }
+        LineItem::create($line_item);
+        $document->addLineItem($item)->post();
+//        foreach ($line_item as $item) {
+//            if ($item->vat_inclusive) {
+//                $vat = Vat::where('id', $item->tax)->first();
+//                if ($vat) {
+//                    $item->addVat($vat);
+//                }
+//            }
+//
+//            $document->addLineItem($item)->post();
+//        }
     }
 
     /**
@@ -189,11 +250,11 @@ class TransactionService
      * @param $type
      * @return array
      */
-    protected function detailsForm($document, $item, $type): array
+    public function detailsForm($document, $item, $type): array
     {
         $form = [
             'entity_id' => $document->entity_id,
-            'account_id' => 45,
+            'account_id' => $this->detailAccountId($document->transaction_type, $item),
             'transaction_id' => $document->id,
             'item_id' => $item['item_id'],
             'name' => $item['name'],
@@ -202,8 +263,8 @@ class TransactionService
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
             'unit' => $item['unit'],
-            'tax_name' => $item['tax_name'],
             'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'vat_inclusive' => array_key_exists('tax_name', $item),
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
             'amount' => floatval($item['total']),
         ];
@@ -215,6 +276,20 @@ class TransactionService
         }
 
         return $form;
+    }
+
+    /**
+     * @param $type
+     * @param $item
+     * @return int
+     */
+    protected function detailAccountId($type, $item): int
+    {
+        if (Str::contains($type, ['CS', 'CN', 'RC', 'IN'])) {
+            return $this->getAccountIdItem($item['item_id'], 'sales');
+        } else {
+            return $this->getAccountIdItem($item['item_id'], 'purchase');
+        }
     }
 
     /**
