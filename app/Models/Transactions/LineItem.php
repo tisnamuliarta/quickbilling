@@ -22,11 +22,13 @@ class LineItem extends LineItemModel
         'credited',
         'compound_vat',
         'item_id',
-        'tax_id',
+        'vat_id',
         'contact_id',
         'service_date',
         'sub_total',
-        'classification',
+        'classification_id',
         'status',
+        'sku',
+        'base_line_id',
     ];
 }

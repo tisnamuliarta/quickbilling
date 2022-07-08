@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Services\Transactions\TransactionService;
+use IFRS\Models\LineItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
@@ -53,7 +55,7 @@ class TransactionController extends Controller
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);
-        $items = collect($request->items);
+        $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
@@ -108,7 +110,9 @@ class TransactionController extends Controller
                 }
             }
             $model = $this->service->mappingTable($type);
-            $data = $model::find($id);
+            $data = $model::where('id', $id)
+                ->with(['entity', 'lineItems', 'contact'])
+                ->first();
 
             return $this->success([
                 'rows' => $data,
@@ -136,7 +140,7 @@ class TransactionController extends Controller
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);
-        $items = collect($request->items);
+        $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
@@ -172,12 +176,15 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, int $id)
     {
-        $document = Transaction::find($id);
+        $type = $request->type;
+        $model = $this->service->mappingTable($type);
+        $document = $model::find($id);
         if ($document) {
             $document->delete();
 

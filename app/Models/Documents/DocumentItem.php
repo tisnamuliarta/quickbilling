@@ -2,6 +2,9 @@
 
 namespace App\Models\Documents;
 
+use App\Models\Inventory\Item;
+use App\Models\Transactions\Classification;
+use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,6 +27,38 @@ class DocumentItem extends Model implements Auditable
         'discount_rate' => 'double',
         'price' => 'double',
         'quantity' => 'double',
-        'total' => 'double',
+        'amount' => 'double',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function document()
+    {
+        return $this->belongsTo(Document::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function vat()
+    {
+        return $this->belongsTo(Vat::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function classification()
+    {
+        return $this->belongsTo(Classification::class);
+    }
 }

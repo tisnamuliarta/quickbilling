@@ -11,6 +11,7 @@
 namespace IFRS\Models;
 
 use App\Models\Inventory\Contact;
+use App\Models\Sales\SalesPerson;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
@@ -373,6 +374,14 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function salesPerson()
+    {
+        return $this->hasMany(SalesPerson::class, 'document_id');
     }
 
     /**

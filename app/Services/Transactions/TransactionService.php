@@ -6,12 +6,13 @@ use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
-use App\Models\Transactions\LineItem;
+use IFRS\Models\LineItem;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
 use IFRS\Models\ReportingPeriod;
 use IFRS\Models\Vat;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -37,7 +38,8 @@ class TransactionService
 
         $model = $this->mappingTable($type);
         $result = [];
-        $query = $model::with(['entity', 'lineItems', 'contact']);
+        $query = $model::with(['entity', 'lineItems', 'contact', 'account', 'ledgers'])
+            ->where('transaction_type', $type);
 
         $result['total'] = $query->count();
 
@@ -80,7 +82,6 @@ class TransactionService
                 return "\\IFRS\\Transactions\\ContraEntry";
             case 'JN':
                 return "\\IFRS\\Transactions\\JournalEntry";
-
         }
     }
 
@@ -106,7 +107,7 @@ class TransactionService
         $form['due_at'] = Carbon::parse(date('Y-m-d'))->addDay(15)->format('Y-m-d');
         $form['status'] = 'draft';
         $form['tax_details'] = [];
-        $form['items'] = [];
+        $form['line_items'] = [];
         $form['shipping_fee'] = 0;
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
@@ -212,36 +213,34 @@ class TransactionService
     {
         $line_item = [];
         foreach ($items as $item) {
+            if (!array_key_exists('tax_name', $item)) {
+                $item['tax_name'] = null;
+            }
+
             // throw new \Exception($this->detailAccountId($document->transaction_type, $item));
             if (array_key_exists('id', $item) && $item['id']) {
                 $item_detail = LineItem::find($item['id']);
+                //$line_item[] = $this->detailsForm($document, $item, 'update');
                 $forms = $this->detailsForm($document, $item, 'update');
                 foreach ($forms as $index => $form) {
                     $item_detail->$index = $form;
                 }
                 $item_detail->save();
             } else {
-                $line_item[] = $this->detailsForm($document, $item, 'store');
-                // $item_detail = LineItem::create($this->detailsForm($document, $item, 'store'));
+                //$line_item[] = $this->detailsForm($document, $item, 'store');
+                $item_detail = LineItem::create($this->detailsForm($document, $item, 'store'));
+                $vat = Vat::where('id', $item_detail->vat_id)->first();
+                if ($vat) {
+                    $item_detail->addVat($vat);
+                }
             }
-            // $line_item[] = LineItem::find($item_detail->id);
+            $document->addLineItem($item_detail);
             // process tax details
-//            foreach ($tax_details as $tax_detail) {
-//                $this->processItemTax($document, $tax_detail, $item_detail);
-//            }
+            foreach ($tax_details as $tax_detail) {
+                $this->processItemTax($document, $tax_detail, $item_detail);
+            }
         }
-        LineItem::create($line_item);
-        $document->addLineItem($item)->post();
-//        foreach ($line_item as $item) {
-//            if ($item->vat_inclusive) {
-//                $vat = Vat::where('id', $item->tax)->first();
-//                if ($vat) {
-//                    $item->addVat($vat);
-//                }
-//            }
-//
-//            $document->addLineItem($item)->post();
-//        }
+        $document->post();
     }
 
     /**
@@ -250,7 +249,7 @@ class TransactionService
      * @param $type
      * @return array
      */
-    public function detailsForm($document, $item, $type): array
+    public function detailsForm($document, $item, $type)
     {
         $form = [
             'entity_id' => $document->entity_id,
@@ -263,10 +262,10 @@ class TransactionService
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
             'unit' => $item['unit'],
-            'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'vat_id' => (Arr::exists($item, 'tax_name')) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'vat_inclusive' => array_key_exists('tax_name', $item),
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => floatval($item['total']),
+            'amount' => floatval($item['amount']),
         ];
 
         $merge = [];
@@ -283,7 +282,7 @@ class TransactionService
      * @param $item
      * @return int
      */
-    protected function detailAccountId($type, $item): int
+    public function detailAccountId($type, $item): int
     {
         if (Str::contains($type, ['CS', 'CN', 'RC', 'IN'])) {
             return $this->getAccountIdItem($item['item_id'], 'sales');
@@ -328,10 +327,22 @@ class TransactionService
     {
         return match ($type) {
             'SQ' => [
-                ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
-                ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],
-                ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
-                ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
+                [
+                    'title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange',
+                    'button' => true, 'icon' => 'mdi-sale'
+                ],
+                [
+                    'title' => 'Delivery', 'action' => 'SO', 'color' => 'blue',
+                    'button' => false, 'icon' => 'mdi-truck-delivery'
+                ],
+                [
+                    'title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal',
+                    'button' => true, 'icon' => 'mdi-receipt'
+                ],
+                [
+                    'title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green',
+                    'button' => false, 'icon' => 'mdi-currency-usd'
+                ],
                 ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
                 ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
             ],

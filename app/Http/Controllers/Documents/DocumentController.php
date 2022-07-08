@@ -87,7 +87,7 @@ class DocumentController extends Controller
      */
     public function store(StoreDocumentRequest $request): \Illuminate\Http\JsonResponse
     {
-        $items = collect($request->items);
+        $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
@@ -180,7 +180,7 @@ class DocumentController extends Controller
             }
 
             $data = Document::where('id', '=', $id)
-                ->with(['items', 'taxDetails', 'entity', 'parent', 'child', 'salesPerson'])
+                ->with(['lineItems', 'taxDetails', 'entity', 'parent', 'child', 'salesPerson'])
                 ->first();
 
             $form = $this->service->getForm(($data) ? $data->type : $type);
@@ -223,7 +223,7 @@ class DocumentController extends Controller
      */
     public function update(StoreDocumentRequest $request, int $id): \Illuminate\Http\JsonResponse
     {
-        $items = collect($request->items);
+        $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 

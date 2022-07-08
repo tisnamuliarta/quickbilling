@@ -58,6 +58,9 @@ class Document extends Model implements Auditable
         return Carbon::parse($value)->format('Y-m-d');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function contact()
     {
         return $this->belongsTo(Contact::class);
@@ -71,6 +74,9 @@ class Document extends Model implements Auditable
         return $this->hasMany(DocumentItem::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function lineItems()
     {
         return $this->hasMany(DocumentItem::class);
@@ -84,52 +90,83 @@ class Document extends Model implements Auditable
         return $this->hasMany(DocumentItemTax::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function currency()
     {
         return $this->belongsTo(Currency::class, 'currency_code', 'currency_code');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function entity()
     {
         return $this->belongsTo(Entity::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function histories()
     {
         return $this->hasMany(DocumentHistory::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function totals()
     {
         return $this->hasMany(DocumentTotal::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 
     public function parent()
     {
         return $this->belongsTo(Document::class, 'parent_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function child()
     {
         return $this->hasMany(Document::class, 'parent_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function salesOrder()
     {
         return $this->hasMany(Document::class, 'parent_id', 'id')
             ->where('type', '=', 'SO');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function salesPerson()
     {
         return $this->hasMany(SalesPerson::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefaultCurrencyCodeAttribute()
     {
         return $this->currency->code;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefaultCurrencySymbolAttribute()
     {
         return $this->currency->symbol;

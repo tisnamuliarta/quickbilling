@@ -24,6 +24,7 @@ class DocumentService
     /**
      * @param $request
      * @return array
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function index($request): array
     {
@@ -39,16 +40,16 @@ class DocumentService
         $query = Document::select(
             'documents.*',
             DB::raw("'actions' as actions"),
-            DB::raw('CONVERT(issued_at, date) as issued_at'),
-            DB::raw('CONVERT(due_at, date) as due_at'),
+            DB::raw('CONVERT(transaction_date, date) as transaction_date'),
+            DB::raw('CONVERT(due_date, date) as due_date'),
             DB::raw("
                 CASE
-                    WHEN documents.due_at < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
+                    WHEN documents.due_date < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
                     ELSE documents.status
                 END as status
             ")
         )
-            ->with(['items', 'taxDetails', 'entity'])
+            ->with(['lineItems', 'taxDetails', 'entity'])
             ->where('type', 'LIKE', '%' . $type . '%');
 
         $result['total'] = $query->count();
@@ -78,14 +79,14 @@ class DocumentService
         $form['withholding_info'] = false;
         $form['price_include_tax'] = false;
         $form['type'] = $type;
-        $form['issued_at'] = Carbon::now()->format('Y-m-d');
-        $form['due_at'] = Carbon::now()->addDay(30)->format('Y-m-d');
+        $form['transaction_date'] = Carbon::now()->format('Y-m-d');
+        $form['due_date'] = Carbon::now()->addDay(30)->format('Y-m-d');
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
         $form['status'] = 'draft';
         $form['tax_details'] = [];
-        $form['items'] = [];
+        $form['line_items'] = [];
         $form['shipping_fee'] = 0;
         $form['category_id'] = 0;
         $form['parent_id'] = 0;
@@ -115,9 +116,9 @@ class DocumentService
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
         $periodStart = date('Y-m-d', strtotime($periodStart));
 
-        $nextId = Document::where("issued_at", ">=", $periodStart)
-                ->where('type', $alias)
-                ->count();
+        $nextId = Document::where("transaction_date", ">=", $periodStart)
+            ->where('type', $alias)
+            ->count();
 
         $nextId = $nextId + 1;
 
@@ -152,7 +153,7 @@ class DocumentService
         $request->request->remove('default_currency_symbol');
         $data = $request->all();
 
-        Arr::forget($data, 'items');
+        Arr::forget($data, 'line_items');
         Arr::forget($data, 'tax_details');
         Arr::forget($data, 'tags');
         Arr::forget($data, 'id');
@@ -195,9 +196,10 @@ class DocumentService
             } else {
                 $item_detail = DocumentItem::create($this->detailsForm($document, $item, 'store'));
             }
+
             // process tax details
-            foreach ($tax_details as $tax_detail) {
-                $this->processItemTax($document, $tax_detail, $item_detail);
+            if ($item_detail->vat_id != 0) {
+                $this->processItemTax($document, $item_detail);
             }
         }
     }
@@ -216,15 +218,15 @@ class DocumentService
             'document_id' => $document->id,
             'item_id' => $item['item_id'],
             'name' => $item['name'],
-            'description' => $item['description'],
+            'narration' => $item['narration'],
             'sku' => $item['sku'],
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
             'unit' => $item['unit'],
             'tax_name' => (array_key_exists('tax_name', $item)) ? $item['tax_name'] : null,
-            'tax' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'vat_id' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'total' => floatval($item['total']),
+            'amount' => floatval($item['amount']),
         ];
 
         $merge = [];
@@ -242,25 +244,24 @@ class DocumentService
      * @param $item_detail
      * @return void
      */
-    public function processItemTax($document, $tax, $item_detail)
+    public function processItemTax($document, $item_detail)
     {
-        if (count($tax) > 0) {
-            DocumentItemTax::updateOrCreate(
-                [
-                    'document_id' => $document->id,
-                    'document_item_id' => $item_detail->id,
-                ],
-                [
-                    'entity_id' => $document->entity_id,
-                    'type' => $document->type,
-                    'document_id' => $document->id,
-                    'document_item_id' => $item_detail->id,
-                    'tax_id' => $this->getTaxIdByName($tax['name']),
-                    'name' => $tax['name'],
-                    'amount' => floatval($tax['amount']),
-                ]
-            );
-        }
+        $amount = $item_detail->vat->rate / 100 * $item_detail->amount;
+        DocumentItemTax::updateOrCreate(
+            [
+                'document_id' => $document->id,
+                'document_item_id' => $item_detail->id,
+            ],
+            [
+                'entity_id' => $document->entity_id,
+                'type' => $document->type,
+                'document_id' => $document->id,
+                'document_item_id' => $item_detail->id,
+                'tax_id' => $item_detail->vat_id,
+                'name' => $item_detail->vat->name,
+                'amount' => floatval($amount),
+            ]
+        );
     }
 
     /**
