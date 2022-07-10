@@ -5,6 +5,7 @@ namespace App\Services\Financial;
 use App\Models\Financial\Category;
 use App\Traits\Accounting;
 use App\Traits\Categories;
+use Illuminate\Support\Arr;
 
 class AccountCategoryService
 {
@@ -15,31 +16,17 @@ class AccountCategoryService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request)
     {
-        $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'category_type';
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'asc';
+        $pages = isset($request->page) ? (int)$request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
         $search = $request->search;
-        $offset = ($pages - 1) * $row_data;
-
-        $result = [];
         $query = Category::select('*')
             ->where('name', 'LIKE', '%' . $search . '%')
-            ->orWhere('category_type', 'LIKE', '%' . $search . '%');
+            ->orWhere('category_type', 'LIKE', '%' . $search . '%')
+            ->paginate($row_data);
 
-        $result['total'] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            //->offset($offset)
-            //->limit($row_data)
-            ->get();
-
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        return $query;
     }
 
     /**
@@ -48,12 +35,14 @@ class AccountCategoryService
      */
     public function formData($request): array
     {
-        $request->request->remove('updated_at');
-        $request->request->remove('created_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('destroyed_at');
-        $request->request->remove('id');
+        $data = $request->all();
 
-        return $request->all();
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'destroyed_at');
+        Arr::forget($data, 'id');
+
+        return $data;
     }
 }

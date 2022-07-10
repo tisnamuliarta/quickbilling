@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\StoreItemUnitRequest;
+use App\Http\Requests\Inventory\UpdateItemUnitRequest;
 use App\Models\Inventory\ItemUnit;
 use App\Services\Inventory\ItemUnitService;
 use Illuminate\Http\Request;
@@ -35,9 +36,10 @@ class ItemUnitController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('item_units');
-        $result = array_merge($result, $this->service->index($request));
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($collection);
 
-        return $this->success($result);
+        return $this->success($result->all());
     }
 
     /**
@@ -86,12 +88,12 @@ class ItemUnitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreItemUnitRequest $request
+     * @param UpdateItemUnitRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function update(StoreItemUnitRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(UpdateItemUnitRequest $request, $id): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {

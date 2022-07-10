@@ -5,6 +5,7 @@ namespace App\Services\Documents;
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
+use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
@@ -26,22 +27,16 @@ class DocumentService
      * @return array
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    public function index($request): array
+    public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'document_number';
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'desc';
-        $offset = ($pages - 1) * $row_data;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'document_number';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $result = [];
         $query = Document::select(
-            'documents.*',
-            DB::raw("'actions' as actions"),
-            DB::raw('CONVERT(transaction_date, date) as transaction_date'),
-            DB::raw('CONVERT(due_date, date) as due_date'),
+            '*',
             DB::raw("
                 CASE
                     WHEN documents.due_date < DATE(NOW()) AND documents.status <> 'closed' THEN 'overdue'
@@ -49,21 +44,17 @@ class DocumentService
                 END as status
             ")
         )
-            ->with(['lineItems', 'taxDetails', 'entity'])
-            ->where('type', 'LIKE', '%' . $type . '%');
+            ->with(['lineItems', 'taxDetails'])
+            ->where('type', 'LIKE', '%' . $type . '%')
+            ->orderBy($sorts, $order)
+            ->paginate($row_data);
 
-        $result['total'] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
-            ->get();
-
+        $collect = collect($query);
         $result['form'] = $this->getForm($type);
 
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        $result = $collect->merge($result);
+
+        return $result->all();
     }
 
     /**
@@ -73,6 +64,9 @@ class DocumentService
      */
     public function getForm($type): array
     {
+        $payment_term = PaymentTerm::orderBy('id')->first();
+        $payment_length = $payment_term->value;
+
         $form = $this->form('documents');
         $form['deposit_info'] = false;
         $form['shipping_info'] = false;
@@ -80,7 +74,7 @@ class DocumentService
         $form['price_include_tax'] = false;
         $form['type'] = $type;
         $form['transaction_date'] = Carbon::now()->format('Y-m-d');
-        $form['due_date'] = Carbon::now()->addDay(30)->format('Y-m-d');
+        $form['due_date'] = Carbon::now()->addDays($payment_length)->format('Y-m-d');
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
@@ -284,6 +278,22 @@ class DocumentService
     }
 
     /**
+     * @param $id
+     * @param $status
+     * @return void
+     */
+    public function updateStatus($id, $status)
+    {
+        $document = Document::find($id);
+        $document->status = $status;
+        $document->save();
+
+        $document->lineItems()->update([
+            'status' => $status
+        ]);
+    }
+
+    /**
      * @param $type
      * @param $parent_id
      * @return string[][]
@@ -292,11 +302,25 @@ class DocumentService
     {
         return match ($type) {
             'SQ' => [
-                ['title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange', 'button' => true, 'icon' => 'mdi-sale'],
-                ['title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false, 'icon' => 'mdi-truck-delivery'],
-                ['title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true, 'icon' => 'mdi-receipt'],
-                ['title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false, 'icon' => 'mdi-currency-usd'],
-                ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
+                [
+                    'title' => 'Sales Order',
+                    'action' => 'SO', 'color' => 'orange',
+                    'button' => true, 'icon' => 'mdi-sale'
+                ],
+                [
+                    'title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false,
+                    'icon' => 'mdi-truck-delivery'
+                ],
+                [
+                    'title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true,
+                    'icon' => 'mdi-receipt'
+                ],
+                [
+                    'title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false,
+                    'icon' => 'mdi-currency-usd'
+                ],
+                [
+                    'title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
                 ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
             ],
             'SO' => [

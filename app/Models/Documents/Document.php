@@ -20,20 +20,6 @@ class Document extends Model implements Auditable
 
     protected $guarded = [];
 
-    protected $appends = [
-        'default_currency_code',
-        'default_currency_symbol',
-        //        'attachment',
-        //        'amount_without_tax',
-        //        'discount',
-        //        'paid',
-        //        'received_at',
-        //        'status_label',
-        //        'sent_at',
-        //        'reconciled',
-        //        'contact_location'
-    ];
-
     /**
      * The attributes that should be cast.
      *
@@ -47,6 +33,9 @@ class Document extends Model implements Auditable
         'discount_per_line' => 'double',
         'discount_rate' => 'double',
         'sub_total' => 'double',
+        'main_account_amount' => 'double',
+        'transaction_date' => 'datetime:Y-m-d',
+        'due_date' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -154,22 +143,6 @@ class Document extends Model implements Auditable
     public function salesPerson()
     {
         return $this->hasMany(SalesPerson::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDefaultCurrencyCodeAttribute()
-    {
-        return $this->currency->code;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDefaultCurrencySymbolAttribute()
-    {
-        return $this->currency->symbol;
     }
 
     // this is a recommended way to declare event handlers

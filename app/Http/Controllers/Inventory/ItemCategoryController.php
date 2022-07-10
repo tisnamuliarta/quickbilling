@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Inventory\StoreItemCategoryRequest;
+use App\Http\Requests\Inventory\UpdateItemCategoryRequest;
 use App\Models\Inventory\ItemCategory;
 use App\Services\Inventory\ItemCategoryService;
 use Illuminate\Http\Request;
@@ -39,19 +39,21 @@ class ItemCategoryController extends Controller
         $result['form']['type'] = '-';
         $result['form']['color'] = '-';
         $result['form']['enabled'] = true;
-        $result = array_merge($result, $this->service->index($request));
 
-        return $this->success($result);
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
+
+        return $this->success($result->all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreItemCategoryRequest $request
+     * @param UpdateItemCategoryRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function store(StoreItemCategoryRequest $request): \Illuminate\Http\JsonResponse
+    public function store(UpdateItemCategoryRequest $request): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -90,12 +92,12 @@ class ItemCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreItemCategoryRequest $request
+     * @param UpdateItemCategoryRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function update(StoreItemCategoryRequest $request, int $id): \Illuminate\Http\JsonResponse
+    public function update(UpdateItemCategoryRequest $request, int $id): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {

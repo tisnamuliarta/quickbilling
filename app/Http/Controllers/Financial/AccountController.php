@@ -39,14 +39,16 @@ class AccountController extends Controller
             $result = [];
             $result['form'] = $this->form('accounts');
             $result['form']['account_type_list'] = $this->getEnumValues('accounts', 'account_type');
-            $result = array_merge($result, $this->service->index($request));
+            //$result = array_merge($result, $this->service->index($request));
+            $collection = collect($this->service->index($request));
+            $result = $collection->merge($result);
         } else {
             if ($type == 'All') {
                 $type = '';
             }
             $result = $this->service->dataByType($type);
-        }
 
+        }
         return $this->success($result);
     }
 

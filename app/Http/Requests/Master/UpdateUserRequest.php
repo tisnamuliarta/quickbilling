@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Financial;
+namespace App\Http\Requests\Master;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCurrencyRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,12 @@ class StoreCurrencyRequest extends FormRequest
     public function rules()
     {
         return [
+            'entity_id' => 'required',
+            'username' => 'required',
+            'email' => 'required',
             'name' => 'required',
-            'currency_code' => 'required',
+            'role' => 'required',
+            'enabled' => 'required',
         ];
     }
 
@@ -37,8 +41,12 @@ class StoreCurrencyRequest extends FormRequest
     public function messages()
     {
         return [
+            'entity_id.required' => __('validation')['required'],
+            'username.required' => __('validation')['required'],
+            'email.required' => __('validation')['required'],
             'name.required' => __('validation')['required'],
-            'currency_code.required' => __('validation')['required'],
+            'role.required' => __('validation')['required'],
+            'enabled.required' => __('validation')['required'],
         ];
     }
 }

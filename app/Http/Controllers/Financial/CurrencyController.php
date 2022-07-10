@@ -39,9 +39,11 @@ class CurrencyController extends Controller
         $result['form']['enabled'] = true;
         $result['form']['symbol_first'] = true;
         $result['form']['rate'] = 0;
-        $result = array_merge($result, $this->service->index($request));
 
-        return $this->success($result);
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
+
+        return $this->success($result->all());
     }
 
     /**

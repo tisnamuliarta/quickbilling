@@ -3,7 +3,7 @@
 namespace App\Services\Inventory;
 
 use App\Models\Inventory\ItemCategory;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class ItemCategoryService
 {
@@ -12,30 +12,20 @@ class ItemCategoryService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request)
     {
-        $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 1000;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'asc';
+        $pages = isset($request->page) ? (int)$request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = $request->search;
-        $offset = ($pages - 1) * $row_data;
 
-        $result = [];
         $query = ItemCategory::select('*')
-            ->where('name', 'LIKE', '%'.$search.'%');
+            ->where('name', 'LIKE', '%' . $search . '%')
+            ->orderBy($sorts, $order)
+            ->paginate($row_data);
 
-        $result['total'] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            //->offset($offset)
-            //->limit($row_data)
-            ->get();
-
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        return $query;
     }
 
     /**
@@ -45,20 +35,15 @@ class ItemCategoryService
      */
     public function formData($request, $type): array
     {
-        if ($type === 'store') {
-            $request->merge([
-                'code' => $this->generateDocNum(date('Y-m-d H:i:s'))
-            ]);
-        }
-        $request->request->remove('updated_at');
-        $request->request->remove('created_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('destroyed_at');
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
-        $request->request->remove('id');
+        $data = $request->all();
 
-        return $request->all();
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'destroyed_at');
+        Arr::forget($data, 'id');
+
+        return $data;
     }
 
     /**
@@ -72,7 +57,7 @@ class ItemCategoryService
             ->first();
 
         $number = empty($doc_num) ? '00000' : $doc_num->code;
-        $clear_doc_num = (int) substr($number, 0, 5);
+        $clear_doc_num = (int)substr($number, 0, 5);
         $number = $clear_doc_num + 1;
 
         return sprintf('%05s', $number);

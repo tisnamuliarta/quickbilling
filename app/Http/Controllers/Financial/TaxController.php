@@ -38,8 +38,8 @@ class TaxController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('ifrs_vats');
-        $result = array_merge($result, $this->service->index($request));
-
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
         return $this->success($result);
     }
 
@@ -83,7 +83,7 @@ class TaxController extends Controller
         $data = Vat::find($id);
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
         ]);
     }
 

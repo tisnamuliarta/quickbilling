@@ -25,7 +25,7 @@ class MasterUserDataController extends Controller
         $permissions = DB::select('call sp_user_permissions (' . $user->id . ')');
 
         return $this->success([
-            'rows' => $permissions,
+            'data' => $permissions,
         ]);
     }
 
@@ -73,7 +73,7 @@ class MasterUserDataController extends Controller
         $user = User::find($form->id);
 
         return $this->success([
-            'rows' => $user->roles,
+            'data' => $user->roles,
         ]);
     }
 }

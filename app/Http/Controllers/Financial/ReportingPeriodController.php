@@ -37,7 +37,8 @@ class ReportingPeriodController extends Controller
         $result['form']['status_list'] = $this->getEnumValues('reporting_periods', 'status');
 
         $result['form']['status'] = 'OPEN';
-        $result = array_merge($result, $this->service->index($request));
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
 
         return $this->success($result);
     }
@@ -45,8 +46,9 @@ class ReportingPeriodController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -60,7 +62,6 @@ class ReportingPeriodController extends Controller
         }
 
         DB::beginTransaction();
-        $form = $request->form;
         try {
             ReportingPeriod::create($this->service->formData($request));
 
@@ -90,7 +91,7 @@ class ReportingPeriodController extends Controller
         $data = ReportingPeriod::where('id', '=', $id)->get();
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
         ]);
     }
 

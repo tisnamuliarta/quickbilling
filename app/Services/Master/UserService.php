@@ -3,6 +3,7 @@
 namespace App\Services\Master;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class UserService
@@ -11,20 +12,16 @@ class UserService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request)
     {
-        $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 20;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'users.name';
-        $order = isset($options->sortDesc[0]) ? 'DESC' : 'ASC';
+        $pages = isset($request->page) ? (int) $request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'users.name';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'ASC';
         $search = isset($request->search) ? (string) $request->search : '';
         $select_data = isset($request->searchItem) ? (string) $request->searchItem : 'name';
         $select_role = isset($request->searchRole) ? (string) $request->searchRole : null;
 
-        $offset = ($pages - 1) * $row_data;
-
-        $result = [];
         $query = User::select(
             'users.*',
             DB::raw('
@@ -34,10 +31,6 @@ class UserService
                WHERE t2.model_id = users.id ) as role
             ')
         )
-            // ->leftJoin('model_has_roles as t1', 't1.model_id', 'users.id')
-            // ->leftJoin('roles as t2', 't2.id', 't1.role_id')
-            // ->where('roles.name', '<>', 'Personal')
-            // ->distinct()
             ->orderBy($sorts, $order)
             ->when($select_data, function ($query) use ($select_data, $search, $select_role) {
                 $data_query = $query;
@@ -46,8 +39,6 @@ class UserService
                         $data_query->where('username', 'LIKE', '%'.$search.'%');
                         break;
                     case 'Name':
-                        $data_query->where('name', 'LIKE', '%'.$search.'%');
-                        break;
                     default:
                         $data_query->where('name', 'LIKE', '%'.$search.'%');
                         break;
@@ -58,19 +49,11 @@ class UserService
                 }
 
                 return $data_query;
-            });
-
-        $result['total'] = $query->count();
-
-        $all_data = $query->offset($offset)
-            ->limit($row_data)
+            })
             ->with(['entity'])
-            ->get();
+            ->paginate($row_data);
 
-        return array_merge($result, [
-            'rows' => $all_data,
-            'filter' => ['Username', 'Name'],
-        ]);
+        return $query;
     }
 
     /**
@@ -80,17 +63,18 @@ class UserService
      */
     public function formData($request, $type): array
     {
-        $request->request->remove('id');
-        $request->request->remove('created_at');
-        $request->request->remove('updated_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('destroyed_at');
-        $request->request->remove('remember_token');
-        $request->request->remove('two_factor_secret');
-        $request->request->remove('two_factor_recovery_codes');
-        $request->request->remove('role');
-        $request->request->remove('entity');
+        $data = $request->all();
+        Arr::forget($data, 'id');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'destroyed_at');
+        Arr::forget($data, 'remember_token');
+        Arr::forget($data, 'two_factor_secret');
+        Arr::forget($data, 'two_factor_recovery_codes');
+        Arr::forget($data, 'role');
+        Arr::forget($data, 'entity');
 
-        return $request->all();
+        return $data;
     }
 }

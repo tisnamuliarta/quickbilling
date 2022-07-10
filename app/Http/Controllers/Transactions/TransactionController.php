@@ -115,7 +115,7 @@ class TransactionController extends Controller
                 ->first();
 
             return $this->success([
-                'rows' => $data,
+                'data' => $data,
                 'form' => $this->service->getForm(($data) ? $data->type : $type),
                 'count' => ($data) ? 1 : 0,
                 'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],

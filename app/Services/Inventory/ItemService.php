@@ -21,28 +21,18 @@ class ItemService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request)
     {
-        $pagination = (object)$request->options;
-        $pages = isset($pagination->page) ? (int)$pagination->page : 1;
-        $row_data = isset($pagination->itemsPerPage) ? (int)$pagination->itemsPerPage : 20;
-        $sorts = isset($pagination->sortBy[0]) ? (string)$pagination->sortBy[0] : 'name';
-        $order = isset($pagination->sortDesc[0]) ? 'DESC' : 'asc';
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
 
         $search = isset($request->q) ? (string)$request->q : '';
         $select_data = isset($request->selectData) ? (string)$request->selectData : 'name';
-        $offset = ($pages - 1) * $row_data;
 
-        $result = [];
         $query = Item::selectRaw("
                 items.*,
-                sell_tax.name as sell_tax_name,
-                buy_tax.name as buy_tax_name,
-                sale_account.name as sales_account,
-                buy_account.name as purchase_account,
-                inventory_accounts.name as inventory_account_name,
-                'actions' as ACTIONS,
                 CASE
                     WHEN items.item_group_id = 1 THEN 'Inventory'
                     WHEN items.item_group_id = 2 THEN 'Non inventory'
@@ -50,23 +40,13 @@ class ItemService
                     WHEN items.item_group_id = 4 THEN 'Bundle'
                 END as group_name
             ")
-            ->with(['category'])
-            ->leftJoin('accounts as sale_account', 'sale_account.id', 'items.sell_account_id')
-            ->leftJoin('accounts as buy_account', 'buy_account.id', 'items.buy_account_id')
-            ->leftJoin('accounts as inventory_accounts', 'inventory_accounts.id', 'items.inventory_account')
-            ->leftJoin('taxes as sell_tax', 'sell_tax.id', 'items.sell_tax_id')
-            ->leftJoin('taxes as buy_tax', 'buy_tax.id', 'items.buy_tax_id');
-
-        $result['total'] = $query->count();
-
-        $all_data = $query->offset($offset)
+            ->with([
+                'category', 'salesAccount', 'purchaseAccount', 'inventoryAccounts', 'salesTax', 'purchaseTax', 'contact'
+            ])
             ->orderBy($sorts, $order)
-            ->limit($row_data)
-            ->get();
+            ->paginate($row_data);
 
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        return $query;
     }
 
     /**
@@ -98,6 +78,10 @@ class ItemService
         Arr::forget($data, 'deleted_at');
         Arr::forget($data, 'group_name');
         Arr::forget($data, 'inventory_account_name');
+        Arr::forget($data, 'sales_tax');
+        Arr::forget($data, 'purchase_tax');
+        Arr::forget($data, 'contact');
+        Arr::forget($data, 'inventory_accounts');
 
         $data['image'] = '';
         $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;

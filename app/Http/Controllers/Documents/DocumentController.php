@@ -186,7 +186,7 @@ class DocumentController extends Controller
             $form = $this->service->getForm(($data) ? $data->type : $type);
 
             return $this->success([
-                'rows' => $data,
+                'data' => $data,
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
                 'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
@@ -223,29 +223,37 @@ class DocumentController extends Controller
      */
     public function update(StoreDocumentRequest $request, int $id): \Illuminate\Http\JsonResponse
     {
-        $items = collect($request->line_items);
-        $tax_details = collect($request->tax_details);
-        $sales_persons = collect($request->sales_persons);
-
-        $validate_details = $this->validateDetails($items);
-        if ($validate_details['error']) {
-            return $this->error($validate_details['message']);
-        }
-
         try {
-            // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
+            $action = $request->updateStatus;
 
             $document = Document::find($id);
-            $forms = collect($this->service->formData($request, 'update'));
-            //return $this->error('', 422, [$forms]);
-            foreach ($forms as $index => $form) {
-                $document->$index = $form;
+            switch ($action) {
+                case 'closed':
+                case 'cancel':
+                    $this->service->updateStatus($id, $action);
+                    break;
+
+                default:
+                    $items = collect($request->line_items);
+                    $tax_details = collect($request->tax_details);
+                    $sales_persons = collect($request->sales_persons);
+
+                    $validate_details = $this->validateDetails($items);
+                    if ($validate_details['error']) {
+                        return $this->error($validate_details['message']);
+                    }
+                    $forms = collect($this->service->formData($request, 'update'));
+                    //return $this->error('', 422, [$forms]);
+                    foreach ($forms as $index => $form) {
+                        $document->$index = $form;
+                    }
+                    $document->save();
+
+                    $this->service->processItems($items, $document, $tax_details);
+
+                    $this->service->processSalesPerson($sales_persons, $document);
+                    break;
             }
-            $document->save();
-
-            $this->service->processItems($items, $document, $tax_details);
-
-            $this->service->processSalesPerson($sales_persons, $document);
 
             DB::commit();
 

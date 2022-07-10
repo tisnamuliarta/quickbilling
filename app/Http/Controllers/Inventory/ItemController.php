@@ -46,9 +46,11 @@ class ItemController extends Controller
         $result['form']['sell_account_id'] = 124;
         $result['form']['buy_account_id'] = 125;
         $result['url'] = url('/');
-        $result = array_merge($result, $this->service->index($request));
 
-        return $this->success($result);
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
+
+        return response()->json($result->all());
     }
 
     /**

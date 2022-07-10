@@ -55,9 +55,10 @@ class ContactController extends Controller
             ],
         ];
         $result['form'] = array_merge($this->form('contacts'), $extra_list);
-        $result = array_merge($result, $this->service->index($request, $type));
+        $collection = collect($this->service->index($request, $type));
+        $result = $collection->merge($result);
 
-        return $this->success($result);
+        return $this->success($result->all());
     }
 
     /**

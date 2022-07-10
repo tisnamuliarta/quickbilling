@@ -35,29 +35,24 @@ class MasterRolesController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 20;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'name';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
-        $offset = ($pages - 1) * $row_data;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
+        $order = isset($request->sortDesc[0]) ? (($request->sortDesc[0]) ? 'desc' : 'asc') : 'asc';
 
         $result = [];
-        $query = Role::selectRaw("*, 'actions' as ACTIONS");
-
-        $result['total'] = $query->count();
-
-        $all_data = $query->offset($offset)
+        $query = Role::selectRaw("*, 'actions' as ACTIONS")
             ->orderBy($sorts, $order)
-            ->limit($row_data)
-            ->get();
+            ->paginate($row_data);
 
         $arr_rows = Role::pluck('name');
 
         $result = array_merge($result, [
-            'rows' => $all_data,
             'simple' => $arr_rows,
         ]);
+
+        $collection = collect($query);
+        $result = $collection->merge($result);
+        $result = $result->all();
 
         return $this->success($result);
     }
@@ -101,7 +96,7 @@ class MasterRolesController extends Controller
         $data = Role::find($id);
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
         ]);
     }
 
@@ -168,7 +163,7 @@ class MasterRolesController extends Controller
         $permissions = DB::select('call sp_role_permissions ('.$role->id.')');
 
         return $this->success([
-            'rows' => $permissions,
+            'data' => $permissions,
         ]);
     }
 

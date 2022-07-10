@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Financial;
+namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCurrencyRequest extends FormRequest
+class UpdateItemCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class StoreCurrencyRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'currency_code' => 'required',
         ];
     }
 
@@ -38,7 +37,6 @@ class StoreCurrencyRequest extends FormRequest
     {
         return [
             'name.required' => __('validation')['required'],
-            'currency_code.required' => __('validation')['required'],
         ];
     }
 }

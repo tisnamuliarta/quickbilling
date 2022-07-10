@@ -6,10 +6,10 @@ use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
-use IFRS\Models\LineItem;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
+use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
 use IFRS\Models\Vat;
 use Illuminate\Support\Arr;
@@ -26,33 +26,24 @@ class TransactionService
      * @return array
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    public function index($request): array
+    public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $options = $request->options;
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'transaction_no';
-        $order = isset($options->sortDesc[0]) ? (string)$options->sortDesc[0] : 'desc';
-        $offset = ($pages - 1) * $row_data;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $model = $this->mappingTable($type);
         $result = [];
         $query = $model::with(['entity', 'lineItems', 'contact', 'account', 'ledgers'])
-            ->where('transaction_type', $type);
-
-        $result['total'] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
-            ->get();
+            ->where('transaction_type', $type)
+            ->orderBy($sorts, $order)
+            ->paginate($row_data);
 
         $result['form'] = $this->getForm($type);
-
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        $collect = collect($query);
+        $result = $collect->merge($result);
+        return $result->all();
     }
 
     /**

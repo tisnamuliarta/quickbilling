@@ -25,15 +25,15 @@ class AuthController extends Controller
 
             $remember = $request->remember;
 
-            if (! Auth::attempt($attr, $remember)) {
+            if (!Auth::attempt($attr, $remember)) {
                 return $this->error('Credentials not match', 401);
             }
 
-            session(['locale' => $request->locale]);
+            session(['locale' => $request->localeApp]);
 
             $user = User::find(auth()->user()->id);
             $user->last_logged_in_at = Carbon::now();
-            $user->locale =  $request->locale;
+            $user->locale =  $request->localeApp;
             $user->save();
 
             return response()->json([
@@ -94,7 +94,9 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        $user = User::where('id', '=', $request->user()->id)->with('roles')->first();
+        $user = User::where('id', '=', $request->user()->id)
+            ->with(['roles', 'entity', 'entity.currency'])
+            ->first();
 
         return response()->json([
             'user' => $user,

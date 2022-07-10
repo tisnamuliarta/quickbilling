@@ -33,17 +33,14 @@ class MasterPermissionController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $options = json_decode($request->options);
-        $pages = isset($options->page) ? (int)$options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int)$options->itemsPerPage : 20;
-        $sorts = isset($options->sortBy[0]) ? (string)$options->sortBy[0] : 'order_line';
-        $order = isset($options->sortDesc[0]) ? (($options->sortDesc[0]) ? 'desc' : 'asc') : 'asc';
-        $offset = ($pages - 1) * $row_data;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'order_line';
+        $order = isset($request->sortDesc[0]) ? (($request->sortDesc[0]) ? 'desc' : 'asc') : 'asc';
 
         $result = [];
-        $query = ListPermission::select('*');
-
-        $result['total'] = $query->count();
+        $query = ListPermission::select('*')
+            ->orderBy($sorts, $order)
+            ->paginate($row_data);
 
         $parents = Permission::where('has_child', 'Y')
             //->whereIsNull('route_name')
@@ -55,11 +52,6 @@ class MasterPermissionController extends Controller
             $data_parent[] = $parent->menu_name;
         }
 
-        $all_data = $query->orderBy($sorts, $order)
-//            ->offset($offset)
-//            ->limit($row_data)
-            ->get();
-
         $all_rows = Permission::groupBy(['menu_name'])->select('menu_name')->get();
         $arr_rows = [];
         foreach ($all_rows as $item) {
@@ -67,12 +59,14 @@ class MasterPermissionController extends Controller
         }
 
         $result = array_merge($result, [
-            'rows' => $all_data,
             'simple' => $arr_rows,
             'parent' => $data_parent,
         ]);
 
-        return $this->success($result);
+        $collection = collect($query);
+        $merge = $collection->merge($result);
+
+        return $this->success($merge->all());
     }
 
     /**
@@ -191,7 +185,7 @@ class MasterPermissionController extends Controller
         $data = DB::select("call sp_single_permission('$menu_name') ");
 
         return $this->success([
-            'rows' => $data[0],
+            'data' => $data[0],
             'role_name' => ['superuser'],
         ]);
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Master\StoreUserRequest;
+use App\Http\Requests\Master\UpdateUserRequest;
 use App\Models\User;
 use App\Services\Master\UserService;
 use App\Traits\MasterData;
@@ -39,19 +39,21 @@ class MasterUserController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('users');
-        $result = array_merge($result, $this->service->index($request));
+        $result['filter'] = ['Username', 'Name'];
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
 
-        return $this->success($result);
+        return $this->success($result->all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreUserRequest $request
+     * @param UpdateUserRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function store(StoreUserRequest $request): \Illuminate\Http\JsonResponse
+    public function store(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -100,12 +102,12 @@ class MasterUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreUserRequest $request
+     * @param UpdateUserRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function update(StoreUserRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(UpdateUserRequest $request, $id): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {

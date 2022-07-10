@@ -94,10 +94,15 @@ export default {
     'nuxt-sweetalert2',
     'cookie-universal-nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/toast',
     // 'nuxt-seo-meta',
     // '@luxdamore/nuxt-prune-html',
     // 'nuxt-precompress',a
   ],
+
+  toast: {
+    position: 'top-center',
+  },
 
   i18n: {
     locales: [

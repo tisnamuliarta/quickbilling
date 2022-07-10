@@ -35,9 +35,10 @@ class PaymentTermController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('payment_terms');
-        $result = array_merge($result, $this->service->index($request));
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
 
-        return $this->success($result);
+        return $this->success($result->all());
     }
 
     /**
@@ -79,7 +80,7 @@ class PaymentTermController extends Controller
         $data = PaymentTerm::find($id);
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
         ]);
     }
 

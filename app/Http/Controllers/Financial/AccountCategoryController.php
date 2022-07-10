@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Financial\StoreAccountCategoryRequest;
+use App\Http\Requests\Financial\UpdateAccountCategoryRequest;
 use App\Models\Financial\Category;
 use App\Services\Financial\AccountCategoryService;
 use Illuminate\Http\Request;
@@ -36,19 +36,20 @@ class AccountCategoryController extends Controller
         $result = [];
         $result['form'] = $this->form('categories');
         $result['category_type_list'] = $this->getEnumValues('categories', 'category_type');
-        $result = array_merge($result, $this->service->index($request));
-
+        //$result = array_merge($result, $this->service->index($request));
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
         return $this->success($result);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreAccountCategoryRequest $request
+     * @param UpdateAccountCategoryRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function store(StoreAccountCategoryRequest $request): \Illuminate\Http\JsonResponse
+    public function store(UpdateAccountCategoryRequest $request): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -87,12 +88,12 @@ class AccountCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreAccountCategoryRequest $request
+     * @param UpdateAccountCategoryRequest $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function update(StoreAccountCategoryRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(UpdateAccountCategoryRequest $request, $id): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {

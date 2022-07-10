@@ -4,6 +4,7 @@ namespace App\Services\Settings;
 
 use App\Models\Settings\Setting;
 use IFRS\Models\Entity;
+use Illuminate\Support\Arr;
 
 class EntityService
 {
@@ -14,11 +15,11 @@ class EntityService
     public function index($request): array
     {
         $query = Entity::first();
-        $simple = Entity::select('id', 'name')->first();
+        $simple = Entity::select('id', 'name')->get();
         $logo = Setting::where('key', 'company_logo')->first();
 
         return [
-            'rows' => $query,
+            'data' => $query,
             'status' => ($query) ? 'update' : 'insert',
             'simple' => $simple,
             'logo' => $logo,
@@ -32,12 +33,14 @@ class EntityService
      */
     public function formData($request): array
     {
-        $request->request->remove('id');
-        $request->request->remove('created_at');
-        $request->request->remove('updated_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('destroyed_at');
+        $data = $request->all();
 
-        return $request->all();
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'destroyed_at');
+        Arr::forget($data, 'id');
+
+        return $data;
     }
 }

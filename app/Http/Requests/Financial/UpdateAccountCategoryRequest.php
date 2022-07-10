@@ -4,7 +4,7 @@ namespace App\Http\Requests\Financial;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCurrencyRequest extends FormRequest
+class UpdateAccountCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class StoreCurrencyRequest extends FormRequest
     public function rules()
     {
         return [
+            'category_type' => 'required',
             'name' => 'required',
-            'currency_code' => 'required',
         ];
     }
 
@@ -37,8 +37,8 @@ class StoreCurrencyRequest extends FormRequest
     public function messages()
     {
         return [
+            'category_type.required' => __('validation')['required'],
             'name.required' => __('validation')['required'],
-            'currency_code.required' => __('validation')['required'],
         ];
     }
 }

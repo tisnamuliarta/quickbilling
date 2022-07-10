@@ -36,9 +36,10 @@ class EntityController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('entities');
-        $result = array_merge($result, $this->service->index($request));
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
 
-        return $this->success($result);
+        return $this->success($result->all());
     }
 
     /**
