@@ -28,17 +28,19 @@ class MasterPermissionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 20;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'order_line';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'order_line';
         $order = isset($request->sortDesc[0]) ? (($request->sortDesc[0]) ? 'desc' : 'asc') : 'asc';
+        $search = (isset($request->search)) ? $request->search : '';
 
         $result = [];
         $query = ListPermission::select('*')
+            ->where('menu_name', 'LIKE', '%'.$search.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -72,8 +74,9 @@ class MasterPermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StorePermissionRequest $request
+     * @param  StorePermissionRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StorePermissionRequest $request): \Illuminate\Http\JsonResponse
@@ -114,7 +117,7 @@ class MasterPermissionController extends Controller
                 if ($line) {
                     $order_line = floatval($data_menu->order_line);
                     $decimal = strlen(strrchr($data_menu->order_line, '.')) - 1;
-                    $increment = '.' . str_repeat('0', $decimal - 1) . '1';
+                    $increment = '.'.str_repeat('0', $decimal - 1).'1';
                     $order_line += $increment;
                 } else {
                     $order_line = $data_menu->order_line + 1;
@@ -128,22 +131,22 @@ class MasterPermissionController extends Controller
         $order_line = $form['order_line'];
 
         if ($form['is_crud'] == 'Y') {
-            $this->generatePermission((object)$data, $order_line, '-index', 'Y');
+            $this->generatePermission((object) $data, $order_line, '-index', 'Y');
         } else {
             if (isset($form['index'])) {
-                $this->generatePermission((object)$data, $order_line, '-index', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-index', 'Y');
             }
 
             if (isset($form['store'])) {
-                $this->generatePermission((object)$data, $order_line, '-store', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-store', 'Y');
             }
 
             if (isset($form['edits'])) {
-                $this->generatePermission((object)$data, $order_line, '-edits', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-edits', 'Y');
             }
 
             if (isset($form['erase'])) {
-                $this->generatePermission((object)$data, $order_line, '-erase', 'Y');
+                $this->generatePermission((object) $data, $order_line, '-erase', 'Y');
             }
         }
     }
@@ -175,8 +178,8 @@ class MasterPermissionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
@@ -193,9 +196,10 @@ class MasterPermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StorePermissionRequest $request
-     * @param int $id
+     * @param  StorePermissionRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StorePermissionRequest $request, $id): \Illuminate\Http\JsonResponse

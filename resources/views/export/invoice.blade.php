@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <h2>{{ $doc['title']  }}<br>
-                  <span class="small">{{ $doc['number'] }}</span>
+                  <span class="small">{{ $data->transaction_no }}</span>
                 </h2>
               </div>
             </div>

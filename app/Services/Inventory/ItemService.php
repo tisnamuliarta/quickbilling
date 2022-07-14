@@ -23,13 +23,13 @@ class ItemService
      */
     public function index($request)
     {
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 20;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
-        $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
+        $data_status = isset($request->dataStatus) ? (string) $request->dataStatus : 'open';
 
-        $search = isset($request->q) ? (string)$request->q : '';
-        $select_data = isset($request->selectData) ? (string)$request->selectData : 'name';
+        $search = isset($request->q) ? (string) $request->q : '';
+        $select_data = isset($request->selectData) ? (string) $request->selectData : 'name';
 
         $query = Item::selectRaw("
                 items.*,
@@ -41,7 +41,7 @@ class ItemService
                 END as group_name
             ")
             ->with([
-                'category', 'salesAccount', 'purchaseAccount', 'inventoryAccounts', 'salesTax', 'purchaseTax', 'contact'
+                'category', 'salesAccount', 'purchaseAccount', 'inventoryAccounts', 'salesTax', 'purchaseTax', 'contact',
             ])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
@@ -52,7 +52,7 @@ class ItemService
     /**
      * @param $request
      * @param $type
-     * @param null $id
+     * @param  null  $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -111,11 +111,11 @@ class ItemService
 
         $day_val = date('j', $data_date);
 
-        if ((int)$day_val === 1) {
-            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
+        if ((int) $day_val === 1) {
+            $document = Str::upper($alias).'-'.sprintf('%05s', '1');
             $check_document = Item::where('code', '=', $document)->first();
-            if (!$check_document) {
-                return Str::upper($alias) . '-' . sprintf('%05s', '1');
+            if (! $check_document) {
+                return Str::upper($alias).'-'.sprintf('%05s', '1');
             } else {
                 //ITM-xxxxx
                 return $this->itemCode($data_date, $alias);
@@ -146,10 +146,10 @@ class ItemService
             ->first();
 
         $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int)substr($number, 4, 9);
+        $clear_doc_num = (int) substr($number, 4, 9);
         $number = $clear_doc_num + 1;
 
-        return Str::upper($alias) . '-' . sprintf('%05s', $number);
+        return Str::upper($alias).'-'.sprintf('%05s', $number);
     }
 
     /**

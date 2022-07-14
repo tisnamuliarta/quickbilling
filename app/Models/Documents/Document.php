@@ -114,7 +114,6 @@ class Document extends Model implements Auditable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-
     public function parent()
     {
         return $this->belongsTo(Document::class, 'parent_id');

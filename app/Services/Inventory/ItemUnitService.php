@@ -4,11 +4,9 @@ namespace App\Services\Inventory;
 
 use App\Models\Inventory\ItemUnit;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class ItemUnitService
 {
-
     /**
      * @param $request
      * @return array

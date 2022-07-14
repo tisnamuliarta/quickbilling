@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Services\Transactions\TransactionService;
-use IFRS\Models\LineItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
@@ -17,7 +15,7 @@ class TransactionController extends Controller
     /**
      * MasterUserController constructor.
      *
-     * @param TransactionService $service
+     * @param  TransactionService  $service
      */
     public function __construct(TransactionService $service)
     {
@@ -47,8 +45,9 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreTransactionRequest $request
+     * @param  StoreTransactionRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreTransactionRequest $request)
@@ -95,7 +94,7 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
@@ -131,9 +130,10 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreTransactionRequest $request
-     * @param int $id
+     * @param  StoreTransactionRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreTransactionRequest $request, $id)
@@ -176,8 +176,8 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, int $id)

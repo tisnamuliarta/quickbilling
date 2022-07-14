@@ -11,9 +11,9 @@ trait ApiResponse
     /**
      * Return a success JSON response.
      *
-     * @param array|string $data
-     * @param string|null $message
-     * @param int $code
+     * @param  array|string  $data
+     * @param  string|null  $message
+     * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
      */
     protected function success($data, string $message = null, int $code = 200): \Illuminate\Http\JsonResponse
@@ -21,10 +21,11 @@ trait ApiResponse
         $collection = collect([
             'status' => 'Success',
             'message' => $message,
-            'locale' => session('locale')
+            'locale' => session('locale'),
         ]);
 
         $merge = $collection->merge($data);
+
         return response()->json($merge->all(), $code);
     }
 
@@ -42,7 +43,7 @@ trait ApiResponse
             'status' => 'Error',
             'message' => $message,
             'data' => $data,
-            'locale' => session('locale')
+            'locale' => session('locale'),
         ], $code);
     }
 

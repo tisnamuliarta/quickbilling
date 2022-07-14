@@ -31,6 +31,7 @@ trait Accounting
         if ($data) {
             return $data->id;
         }
+
         return 0;
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Services\Payroll;
 
 use App\Models\Payroll\Employee;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -13,34 +12,24 @@ class EmployeeService
      * @param $request
      * @return array
      */
-    public function index($request): array
+    public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $options = $request->options;
-        $pages = isset($options->page) ? (int) $options->page : 1;
-        $row_data = isset($options->itemsPerPage) ? (int) $options->itemsPerPage : 10;
-        $sorts = isset($options->sortBy[0]) ? (string) $options->sortBy[0] : 'id';
-        $order = isset($options->sortDesc[0]) ? (string) $options->sortDesc[0] : 'desc';
-        $offset = ($pages - 1) * $row_data;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'id';
+        $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
+        $search = (isset($request->search)) ? $request->search : '';
 
-        $result = [];
         $query = Employee::select(
             'employees.*',
             'employees.id as user_id',
             DB::raw("'actions' as actions")
         )
-            ->with(['workLocation', 'bank', 'entity']);
+            ->with(['workLocation', 'bank', 'entity'])
+            ->orderBy($sorts, $order)
+            ->paginate($row_data);
 
-        $result['total'] = $query->count();
-
-        $all_data = $query->orderBy($sorts, $order)
-            ->offset($offset)
-            ->limit($row_data)
-            ->get();
-
-        return array_merge($result, [
-            'rows' => $all_data,
-        ]);
+        return collect($query);
     }
 
     /**
@@ -50,12 +39,6 @@ class EmployeeService
      */
     public function formData($request, $type): array
     {
-        $request->request->remove('id');
-        $request->request->remove('created_at');
-        $request->request->remove('updated_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('deleted_at');
-
         $data = $request->all();
 
         Arr::forget($data, 'default_currency_code');
@@ -64,6 +47,11 @@ class EmployeeService
         Arr::forget($data, 'work_location');
         Arr::forget($data, 'bank');
         Arr::forget($data, 'entity');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'id');
+        Arr::forget($data, 'user_id');
 
         return $data;
     }

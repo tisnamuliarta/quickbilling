@@ -32,7 +32,7 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -56,8 +56,9 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreItemRequest $request
+     * @param  StoreItemRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreItemRequest $request): \Illuminate\Http\JsonResponse
@@ -102,9 +103,10 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreItemRequest $request
+     * @param  StoreItemRequest  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreItemRequest $request, $id): \Illuminate\Http\JsonResponse

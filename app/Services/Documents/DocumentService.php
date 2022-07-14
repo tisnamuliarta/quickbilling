@@ -25,13 +25,14 @@ class DocumentService
     /**
      * @param $request
      * @return array
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'document_number';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $result = [];
@@ -44,8 +45,8 @@ class DocumentService
                 END as status
             ")
         )
-            ->with(['lineItems', 'taxDetails'])
-            ->where('type', 'LIKE', '%' . $type . '%')
+            ->with(['lineItems', 'taxDetails', 'contact'])
+            ->where('transaction_type', 'LIKE', '%'.$type.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -60,6 +61,7 @@ class DocumentService
     /**
      * @param $type
      * @return array
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function getForm($type): array
@@ -72,7 +74,7 @@ class DocumentService
         $form['shipping_info'] = false;
         $form['withholding_info'] = false;
         $form['price_include_tax'] = false;
-        $form['type'] = $type;
+        $form['transaction_type'] = $type;
         $form['transaction_date'] = Carbon::now()->format('Y-m-d');
         $form['due_date'] = Carbon::now()->addDays($payment_length)->format('Y-m-d');
         $form['payment_term_id'] = 1;
@@ -86,7 +88,7 @@ class DocumentService
         $form['parent_id'] = 0;
         $form['currency_rate'] = 0;
         $form['id'] = 0;
-        $form['document_number'] = $this->generateDocNum(Carbon::now(), $type);
+        $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
 
         return $form;
@@ -96,6 +98,7 @@ class DocumentService
      * @param $sysDate
      * @param $alias
      * @return string
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     protected function generateDocNum($sysDate, $alias): string
@@ -110,22 +113,23 @@ class DocumentService
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
         $periodStart = date('Y-m-d', strtotime($periodStart));
 
-        $nextId = Document::where("transaction_date", ">=", $periodStart)
-            ->where('type', $alias)
+        $nextId = Document::where('transaction_date', '>=', $periodStart)
+            ->where('transaction_type', $alias)
             ->count();
 
         $nextId = $nextId + 1;
 
-        return $alias . "-" . str_pad((string)$periodCount, 2, "0", STR_PAD_LEFT)
-            . $month .
-            str_pad((string)$nextId, 4, "0", STR_PAD_LEFT);
+        return $alias.'-'.str_pad((string) $periodCount, 2, '0', STR_PAD_LEFT)
+            .$month.
+            str_pad((string) $nextId, 4, '0', STR_PAD_LEFT);
     }
 
     /**
      * @param $request
      * @param $type
-     * @param null $id
+     * @param  null  $id
      * @return array
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function formData($request, $type, $id = null): array
@@ -148,6 +152,7 @@ class DocumentService
         $data = $request->all();
 
         Arr::forget($data, 'line_items');
+        Arr::forget($data, 'contact');
         Arr::forget($data, 'tax_details');
         Arr::forget($data, 'tags');
         Arr::forget($data, 'id');
@@ -164,7 +169,7 @@ class DocumentService
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
-            $data['document_number'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->type);
+            $data['transaction_no'] = $this->generateDocNum(date('Y-m-d H:i:s'), $request->transaction_type);
             $data['status'] = 'open';
         }
 
@@ -208,7 +213,7 @@ class DocumentService
     {
         $form = [
             'entity_id' => $document->entity_id,
-            'type' => $document->type,
+            'type' => $document->transaction_type,
             'document_id' => $document->id,
             'item_id' => $item['item_id'],
             'name' => $item['name'],
@@ -222,6 +227,11 @@ class DocumentService
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
             'amount' => floatval($item['amount']),
         ];
+
+        if ($document->base_id && $type == 'store') {
+            $merge['base_line_id'] = $item['id'];
+            $form = array_merge($form, $merge);
+        }
 
         $merge = [];
         if ($type == 'store') {
@@ -248,7 +258,7 @@ class DocumentService
             ],
             [
                 'entity_id' => $document->entity_id,
-                'type' => $document->type,
+                'type' => $document->transaction_type,
                 'document_id' => $document->id,
                 'document_item_id' => $item_detail->id,
                 'tax_id' => $item_detail->vat_id,
@@ -269,7 +279,7 @@ class DocumentService
             foreach ($sales_persons as $sales_person) {
                 $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;
                 SalesPerson::updateOrCreate([
-                    'document_type' => $document->type,
+                    'document_type' => $document->transaction_type,
                     'user_id' => $user_id,
                     'document_id' => $document->id,
                 ]);
@@ -289,49 +299,18 @@ class DocumentService
         $document->save();
 
         $document->lineItems()->update([
-            'status' => $status
+            'status' => $status,
         ]);
     }
 
-    /**
-     * @param $type
-     * @param $parent_id
-     * @return string[][]
-     */
-    public function mappingAction($type, $parent_id): array
+    public function updateBaseDocument($document)
     {
-        return match ($type) {
-            'SQ' => [
-                [
-                    'title' => 'Sales Order',
-                    'action' => 'SO', 'color' => 'orange',
-                    'button' => true, 'icon' => 'mdi-sale'
-                ],
-                [
-                    'title' => 'Delivery', 'action' => 'SO', 'color' => 'blue', 'button' => false,
-                    'icon' => 'mdi-truck-delivery'
-                ],
-                [
-                    'title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal', 'button' => true,
-                    'icon' => 'mdi-receipt'
-                ],
-                [
-                    'title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green', 'button' => false,
-                    'icon' => 'mdi-currency-usd'
-                ],
-                [
-                    'title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
-                ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
-            ],
-            'SO' => [
-                ['title' => 'Create Invoice', 'action' => 'SI', 'icon' => 'mdi-receipt'],
-                ['title' => 'Clone', 'action' => 'SO', 'icon' => 'mdi-content-copy'],
-                ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
-            ],
-            default => [
-                ['title' => 'Cancel', 'action' => 'C', 'icon' => 'mdi-cancel'],
-            ],
-        };
+        $base_doc = Document::find($document->base_id);
+
+        foreach ($document->lineItems as $item) {
+        }
+        foreach ($base_doc->lineItems as $base_item) {
+        }
     }
 
     /**
@@ -345,8 +324,8 @@ class DocumentService
      */
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
-        $query = Document::where('type', $action)
-            ->whereIn('parent_id', (array)$parent_id);
+        $query = Document::where('transaction_type', $action)
+            ->whereIn('parent_id', (array) $parent_id);
 
         return [
             'title' => $title,

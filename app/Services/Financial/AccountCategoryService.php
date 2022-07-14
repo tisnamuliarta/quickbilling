@@ -18,12 +18,12 @@ class AccountCategoryService
      */
     public function index($request)
     {
-        $pages = isset($request->page) ? (int)$request->page : 1;
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
+        $pages = isset($request->page) ? (int) $request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
         $search = $request->search;
         $query = Category::select('*')
-            ->where('name', 'LIKE', '%' . $search . '%')
-            ->orWhere('category_type', 'LIKE', '%' . $search . '%')
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orWhere('category_type', 'LIKE', '%'.$search.'%')
             ->paginate($row_data);
 
         return $query;

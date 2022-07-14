@@ -29,7 +29,7 @@ class EntityController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -45,8 +45,9 @@ class EntityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreEntityRequest $request
+     * @param  StoreEntityRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreEntityRequest $request): \Illuminate\Http\JsonResponse
@@ -78,7 +79,7 @@ class EntityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -93,9 +94,10 @@ class EntityController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreEntityRequest $request
-     * @param int $id
+     * @param  StoreEntityRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreEntityRequest $request, $id)
@@ -110,11 +112,13 @@ class EntityController extends Controller
                     'value' => $request->name,
                 ]);
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -125,7 +129,7 @@ class EntityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse

@@ -8,6 +8,7 @@ use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
+use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Transactions\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             'item-units' => ItemUnitController::class,
             'item-category' => ItemCategoryController::class,
             'item-groups' => ItemGroupController::class,
+            'warehouse' => WarehouseController::class,
         ]);
     });
 
@@ -46,7 +48,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('master')
-        ->group(__DIR__ . '/master.php');
+        ->group(__DIR__.'/master.php');
 
     // payroll route
     Route::group(['prefix' => 'payroll'], function () {
@@ -74,6 +76,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'document'], function () {
         // Route::get('form/arrow', [DocumentController::class, 'arrowAction']);
         Route::get('audit/{id}', [DocumentController::class, 'getAudit']);
+        Route::get('copy/{id}', [\App\Http\Controllers\Common\CopyDocumentController::class, 'copyDocument']);
         Route::get('print', [\App\Http\Controllers\Documents\DocumentExportController::class, 'print']);
         Route::post('email', [\App\Http\Controllers\Documents\DocumentExportController::class, 'email']);
     });
@@ -82,7 +85,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('financial')
-        ->group(__DIR__ . '/financial.php');
+        ->group(__DIR__.'/financial.php');
 
     // Route Resource for settings
     Route::apiResources([

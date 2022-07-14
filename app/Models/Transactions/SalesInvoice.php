@@ -17,13 +17,12 @@ class SalesInvoice extends Transaction implements Sells, Clearable
      *
      * @var string
      */
-
     const PREFIX = Transaction::IN;
 
     /**
      * Construct new ClientInvoice
      *
-     * @param array $attributes
+     * @param  array  $attributes
      */
     public function __construct($attributes = [])
     {

@@ -28,7 +28,7 @@ class AccountCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -39,14 +39,16 @@ class AccountCategoryController extends Controller
         //$result = array_merge($result, $this->service->index($request));
         $collection = collect($this->service->index($request));
         $result = $collection->merge($result);
+
         return $this->success($result);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param UpdateAccountCategoryRequest $request
+     * @param  UpdateAccountCategoryRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(UpdateAccountCategoryRequest $request): \Illuminate\Http\JsonResponse
@@ -73,7 +75,7 @@ class AccountCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -88,9 +90,10 @@ class AccountCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateAccountCategoryRequest $request
-     * @param int $id
+     * @param  UpdateAccountCategoryRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(UpdateAccountCategoryRequest $request, $id): \Illuminate\Http\JsonResponse
@@ -100,11 +103,13 @@ class AccountCategoryController extends Controller
             Category::where('id', '=', $id)->update($this->service->formData($request));
 
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -115,7 +120,7 @@ class AccountCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

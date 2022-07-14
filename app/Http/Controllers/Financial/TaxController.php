@@ -31,7 +31,7 @@ class TaxController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -40,14 +40,16 @@ class TaxController extends Controller
         $result['form'] = $this->form('ifrs_vats');
         $collection = collect($this->service->index($request));
         $result = $collection->merge($result);
+
         return $this->success($result);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreTaxRequest $request
+     * @param  StoreTaxRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreTaxRequest $request): \Illuminate\Http\JsonResponse
@@ -74,8 +76,8 @@ class TaxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id): \Illuminate\Http\JsonResponse
@@ -90,9 +92,10 @@ class TaxController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreTaxRequest $request
-     * @param int $id
+     * @param  StoreTaxRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreTaxRequest $request, $id): \Illuminate\Http\JsonResponse
@@ -102,11 +105,13 @@ class TaxController extends Controller
             Vat::where('id', '=', $id)
                 ->update($this->service->formData($request));
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -117,7 +122,7 @@ class TaxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

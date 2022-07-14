@@ -16,7 +16,7 @@ class DocumentController extends Controller
     /**
      * MasterUserController constructor.
      *
-     * @param \App\Services\Documents\DocumentService $service
+     * @param  \App\Services\Documents\DocumentService  $service
      */
     public function __construct(DocumentService $service)
     {
@@ -30,7 +30,7 @@ class DocumentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -45,7 +45,7 @@ class DocumentController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function arrowAction(Request $request)
@@ -65,7 +65,7 @@ class DocumentController extends Controller
                 $row = $query->where('id', '>', $document)->first();
             }
 
-            if (!$row) {
+            if (! $row) {
                 return $this->error('Document not found', 404);
             }
 
@@ -80,7 +80,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreDocumentRequest $request
+     * @param  StoreDocumentRequest  $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -101,17 +101,17 @@ class DocumentController extends Controller
             // return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = Document::create($this->service->formData($request, 'store'));
 
-            if ($document->parent_id !== 0) {
-                $doc = Document::find($document->parent_id);
+            $this->service->processItems($items, $document, $tax_details);
+
+            $this->service->processSalesPerson($sales_persons, $document);
+
+            if ($document->base_id) {
+                $doc = Document::find($document->base_id);
                 if ($doc) {
                     $doc->status = 'closed';
                     $doc->save();
                 }
             }
-
-            $this->service->processItems($items, $document, $tax_details);
-
-            $this->service->processSalesPerson($sales_persons, $document);
 
             DB::commit();
 
@@ -143,7 +143,7 @@ class DocumentController extends Controller
         foreach ($details as $index => $detail) {
             $lines = $index + 1;
 
-            if (!array_key_exists('item_id', $detail)) {
+            if (! array_key_exists('item_id', $detail)) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
             } elseif (empty($detail['item_id'])) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
@@ -163,7 +163,7 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -183,13 +183,12 @@ class DocumentController extends Controller
                 ->with(['lineItems', 'taxDetails', 'entity', 'parent', 'child', 'salesPerson'])
                 ->first();
 
-            $form = $this->service->getForm(($data) ? $data->type : $type);
+            $form = $this->service->getForm(($data) ? $data->transaction_type : $type);
 
             return $this->success([
                 'data' => $data,
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
-                'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
                 'audits' => ($id != 0) ? $data->audits()->with('user')->get() : [],
             ]);
         } catch (\Exception $exception) {
@@ -215,8 +214,8 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreDocumentRequest $request
-     * @param int $id
+     * @param  StoreDocumentRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -260,7 +259,7 @@ class DocumentController extends Controller
             return $this->success([
                 'id' => $document->id,
                 'status' => 'update',
-                'type' => $request->type,
+                'type' => $request->transaction_type,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
@@ -273,18 +272,23 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
         $document = Document::find($id);
         if ($document) {
-            $document->delete();
+            $have_child = Document::where('base_id', $document->id)->count();
+            if ($have_child > 0) {
+                return $this->error('Cannot delete because document have relationship with other document!');
+            } else {
+                $document->delete();
 
-            return $this->success([
-                'errors' => false,
-            ], 'Row deleted!');
+                return $this->success([
+                    'errors' => false,
+                ], 'Row deleted!');
+            }
         }
 
         return $this->error('Row not found', 422, [

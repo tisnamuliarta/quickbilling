@@ -13,15 +13,15 @@ class ContactService
      */
     public function index($request, $type)
     {
-        $pages = isset($request->page) ? (int)$request->page : 1;
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $pages = isset($request->page) ? (int) $request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $type = $request->contactType;
         $offset = ($pages - 1) * $row_data;
 
         $result = [];
-        $query = Contact::where('contacts.type', 'LIKE', '%' . $type . '%')
+        $query = Contact::where('contacts.type', 'LIKE', '%'.$type.'%')
             ->with(['banks', 'emails', 'sellAccount', 'purchaseAccount'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);

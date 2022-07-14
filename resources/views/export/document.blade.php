@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>Billing Export</title>
+  <title>{{ $type }}</title>
+
   <style>
+    @font-face {
+      font-family: 'founder';
+      src: url({{ storage_path('fonts/founder.ttf') }}) format("truetype");
+      font-weight: 500;
+    }
+
+    * {
+      font-family: 'founder';
+    }
+
+    .simsun {
+      font-family: 'founder';
+    }
+
     body {
       color: #000000;
-      font-size: .8rem;
+      font-size: .75rem;
       font-weight: 400;
       line-height: 1.3;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
 
     .text-lowercase {
@@ -392,10 +407,10 @@
 
     .header {
       position: absolute;
-      top: -30px;
+      top: -80px;
       left: 20px;
       right: 20px;
-      height: 90px;
+      height: 30px;
       /*margin-bottom: 10px;*/
       /*border-bottom: 2px solid #2e2e2e;*/
     }
@@ -407,40 +422,25 @@
       right: 20px;
       height: 50px;
     }
+
+    .disable-wrap {
+      white-space: nowrap !important;
+    }
   </style>
 </head>
 <body>
 <!-- Define header and footer blocks before your content -->
 <div class="header">
   <table class=" table-borderless table-sm">
-    <tr>
-      <td>
-        <img style="width: 160px; height: auto; padding-bottom: 10px;"
-             src="{{ public_path("files/logo/") . $company['company_logo'] }}" alt="">
-      </td>
-      <td>
-        <table class=" table-borderless table-sm text-right">
-          <tr>
-            <td>
-              <strong>{{ strtoupper($company['company_name'])  }}</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>{{ $company['company_address'] }}</td>
-          </tr>
-          <tr>
-            <td>{{ $company['company_phone'] }}</td>
-          </tr>
-          <tr>
-            <td>{{ $company['company_email'] }}</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
   </table>
 </div>
 
 <div style="font-size: 10px!important" class="text-center footer">
+  <span class="text-center">
+    <strong>{{ strtoupper($company['company_name'])  }}</strong> <br>
+    {{ $company['company_address'] }} <br>
+    Phone {{ $company['company_phone'] }} | E-mail {{ $company['company_email'] }}
+  </span>
   <span class="num-page">
       <script type="text/php">
         $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
@@ -452,106 +452,141 @@
             $pdf->page_text($x, $y, $text, $font, $size);
       </script>
   </span>
-  <p style="margin-top: 10px;" class="text-left">{{ $documents->document_number }}</p>
 </div>
 
-<table class=" table-borderless table-sm" style="margin-bottom: 20px; margin-top: 30px;">
+<div class="text-center" style="margin-top: -30px">
+  <span style="font-size: 20px; font-weight: bold;">{{ $type }}</span>
+</div>
+
+<table class=" table-borderless table-sm" style="margin-bottom: 20px; width: 50%; margin-top: 50px">
   <tr>
-    <td style="width: 60%">
-      <table class=" table-borderless table-sm">
-        <tr>
-          <td>
-            <strong>{{ strtoupper($documents->contact_name)  }}</strong>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ $documents->contact_address  }}</td>
-        </tr>
-        <tr>
-          <td>{{ $documents->contact_phone  }}</td>
-        </tr>
-        <tr>
-          <td>{{ $documents->contact_email  }}</td>
-        </tr>
-      </table>
+    <td>{{ __('No Contract') }}</td>
+    <td>:</td>
+    <td style="font-weight: bold">
+      {{ strtoupper($documents->reference_no) }}
     </td>
-    <td style="width: 40%">
-      <table class="table-borderless table-sm text-right table-active">
-        <tr>
-          <td>
-            <span style="font-size: 16px; font-weight: bold; padding-top: 6px;">{{ $type }}</span>
-          </td>
-        </tr>
-        <tr>
-          <td><strong>{{ $documents->document_number }}</strong></td>
-        </tr>
-        <tr>
-          <td>{{ \Carbon\Carbon::parse($documents->issued_at)->format('Y-m-d')  }}</td>
-        </tr>
-        <tr>
-          <td>Due Date : {{ \Carbon\Carbon::parse($documents->due_at)->format('Y-m-d') }}</td>
-        </tr>
-        <tr>
-          <td>
-            <span style="font-size: 16px; font-weight: bold; padding-bottom: 6px;">
-              {{ $documents->currency->symbol . ' '. number_format($documents->amount, 2) }}
-            </span>
-          </td>
-        </tr>
-      </table>
+  </tr>
+  <tr>
+    <td>{{ __('No Document') }}</td>
+    <td>:</td>
+    <td style="font-weight: bold">
+      {{ strtoupper($documents->transaction_no) }}
     </td>
+  </tr>
+  <tr>
+    <td>{{ __('Bill To') }}</td>
+    <td>:</td>
+    <td style="font-weight: bold">{{ strtoupper($documents->contact_name) }}</td>
   </tr>
 </table>
 
-@switch($documents->type)
-  @case('SQ')
-  @include('export.partials.sales.sq')
-  @break
+<span>Berikut merupakan hasil rekapan Invoice:</span>
 
-  @case('SO')
-  @include('export.partials.sales.sq')
-  @break
+<table class='table  table-sm' style="width: 100%; margin-bottom: 30px; margin-top: 10px;">
+  <thead>
+  <tr style="font-weight: 500">
+    <td class="text-left">{{ __('NO')  }}</td>
+    <td class="text-center">{{ __('ITEM NAME') }}</td>
+    <td class="text-center">{{ __('SPECIFICATION') }}</td>
+    <td class="text-center">{{ __('UOM') }}</td>
+    <td class="text-right">{{ __('QTY') }}</td>
+    <td class="text-right">{{ __('PRICE') }}</td>
+    <td class="text-right">{{ __('AMOUNT') }}</td>
+  </tr>
+  </thead>
 
-  @case('SD')
-  @include('export.partials.sales.sq')
-  @break
+  <tbody>
+  @foreach($documents->lineItems as $index => $row)
+    <tr>
+      <td>{{ ++$index }}</td>
+      <td width="150px">{{ $row->name . ' - '. $row->narration }}</td>
+      <td></td>
+      <td >{{ $row->unit }}</td>
+      <td class="text-right">{{ number_format($row->quantity, 0) }}</td>
+      <td class="text-right">{{ number_format($row->price, 2) }}</td>
+      <td class="text-right">{{ number_format($row->amount, 2)  }}</td>
+    </tr>
+  @endforeach
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="3" rowspan="5" style="border-left: none !important; border-bottom: none !important;">
+      <table class=" table-borderless table-sm" style="margin: 30px 0">
+        <tr>
+          <td>{{ __('Amount In Word')  }}</td>
+        </tr>
+        <tr>
+          <td>{{ $amount }}</td>
+        </tr>
+      </table>
+    </td>
+    <td class="text-right" colspan="3">{{ strtoupper('Sub Total') }}</td>
+    <td class="text-right">{{ number_format($documents->sub_total, 2) }}</td>
+  </tr>
 
-  @case('SI')
-  @include('export.partials.sales.sq')
-  @break
+  @if($documents->discount_per_line > 0)
+    <tr>
+      <td class="text-right" colspan="3">{{ strtoupper('Discount per Item') }}</td>
+      <td class="text-right">{{ number_format($documents->discount_per_line, 2) }}</td>
+    </tr>
+  @endif
 
-  @case('SR')
-  @include('export.partials.sales.sq')
-  @break
+  @if($documents->discount_rate > 0)
+    <tr>
+      <td class="text-right" colspan="3">DISCOUNT {{ number_format($documents->discount_rate, 0) . ' %' }}</td>
+      <td class="text-right">{{ number_format($documents->discount_amount, 2) }}</td>
+    </tr>
+  @endif
 
-  @case('SP')
-  @include('export.partials.sales.sq')
-  @break
+  @foreach($documents->taxDetails as $tax)
+    <tr>
+      <td class="text-right" colspan="3">{{ $tax->name }}</td>
+      <td class="text-right">{{ number_format($tax->amount, 2) }}</td>
+    </tr>
+  @endforeach
+  <tr class="table-active">
+    <td class="text-right" colspan="3">{{ __('TOTAL') }}</td>
+    <td class="text-right" style="font-size: 1rem"><b>{{ number_format($documents->main_account_amount, 2) }}</b></td>
+  </tr>
+  </tfoot>
+</table>
 
-  @case('PQ')
-  @include('export.partials.sales.sq')
-  @break
 
-  @case('PO')
-  @include('export.partials.sales.sq')
-  @break
+<table class=" table-borderless table-sm table-active" style="text-align: left; width: 40%; float: left;">
+  <tr>
+    <td colspan="3">
+      <span>TRANSFER KE REKENING</span>
+    </td>
+  </tr>
+  <tr>
+    <td width="30">{{ __('Issue Bank') }}</td>
+    <td width="5">:</td>
+    <td width="65">{{ $company['company_bank_name'] }}</td>
+  </tr>
+  <tr>
+    <td width="30">{{ __('Beneficiary') }}</td>
+    <td width="5">:</td>
+    <td width="65">{{ $company['company_bank_account_name'] }}</td>
+  </tr>
+  <tr>
+    <td width="30">{{ __('Bank Account') }}</td>
+    <td width="5">:</td>
+    <td width="65">{{ $company['company_bank_account_number'] }}</td>
+  </tr>
+</table>
 
-  @case('PR')
-  @include('export.partials.sales.sq')
-  @break
-
-  @case('PI')
-  @include('export.partials.sales.sq')
-  @break
-
-  @case('PP')
-  @include('export.partials.sales.sq')
-  @break
-
-  @case('PN')
-  @include('export.partials.sales.sq')
-  @break
-@endswitch
+<table class=" table-borderless table-sm" style="text-align: right; width: 31%; float: right;">
+  <tr>
+    <th>Morowali, {{ $document_date }}</th>
+  </tr>
+  <tr>
+    <td style="border-bottom: 1px solid #222222 !important; height: 120px;">
+    </td>
+  </tr>
+  <tr class="text-center">
+    <td>{{ strtoupper($company['company_name'])  }}</td>
+  </tr>
+</table>
 
 </body>
 </html>

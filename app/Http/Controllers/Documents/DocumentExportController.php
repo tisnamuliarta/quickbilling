@@ -9,7 +9,10 @@ use App\Traits\CompanyField;
 use App\Traits\DocumentHelper;
 use App\Traits\FileUpload;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use IFRS\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -30,7 +33,19 @@ class DocumentExportController extends Controller
      */
     public function print(Request $request): \Illuminate\Http\Response
     {
-        $documents = Document::find($request->id);
+        $transaction_type = $request->type;
+        $id = $request->id;
+        $documents = Document::where('id', $id)
+            ->with(['lineItems'])
+            ->where('transaction_type', $transaction_type)
+            ->first();
+        if (! $documents) {
+            $documents = Transaction::where('id', $id)
+                ->with(['lineItems'])
+                ->where('transaction_type', $transaction_type)
+                ->first();
+        }
+
         $pdf = $this->pdfInstance($documents);
 
 //        $destination_path = public_path("files/export/");
@@ -47,7 +62,7 @@ class DocumentExportController extends Controller
 
 //        file_put_contents($destination_path . $file_name, $pdf->output());
 //        return response()->download($destination_path . $file_name);
-        return $pdf->download($file_name);
+        return $pdf->stream($file_name);
     }
 
     /**
@@ -61,11 +76,21 @@ class DocumentExportController extends Controller
     {
         $company = $this->company();
         $numberToWords = new NumberToWords();
-        $currencyTransformer = $numberToWords->getNumberTransformer('en');
-        $amount = Str::upper($currencyTransformer->toWords(floatval($documents->amount)));
-        $type = Str::upper($this->mapping($documents->type));
+        $currencyTransformer = $numberToWords->getNumberTransformer((auth()->user()->locale));
+        $amount = Str::upper($currencyTransformer->toWords(floatval($documents->main_account_amount)));
+        $type = Str::upper($this->mapping($documents->transaction_type));
 
-        return Pdf::loadView('export.document', compact('documents', 'company', 'amount', 'type'));
+        App::setLocale(auth()->user()->locale);
+        Carbon::setLocale(auth()->user()->locale);
+        $document_date = Carbon::parse($documents->transaction_date)->isoFormat('D MMMM Y');
+
+        return Pdf::loadView('export.document', compact(
+            'documents',
+            'company',
+            'amount',
+            'type',
+            'document_date'
+        ));
     }
 
     /**

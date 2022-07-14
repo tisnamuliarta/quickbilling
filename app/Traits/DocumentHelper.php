@@ -12,29 +12,44 @@ trait DocumentHelper
     {
         switch ($type) {
             case 'SQ':
-                return 'Sales quotations';
+                return 'Sales Quotations';
             case 'SO':
-                return 'sales order';
+                return 'Sales Order';
             case 'SD':
-                return 'sales delivery';
-            case 'SI':
-                return 'A/R invoice';
-            case 'SP':
-                return 'incoming payment';
+                return 'Sales Delivery';
+            case 'BL':
+            case 'IN':
+                return 'Invoice';
+            case 'RC':
+                return 'Incoming Payment';
+            case 'CN':
+                return 'Credit Note';
             case 'SR':
-                return 'sales return';
+                return 'Sales Return';
             case 'PQ':
-                return 'purchase quotations';
+                return 'Purchase Quotations';
             case 'PO':
-                return 'purchase order';
-            case 'PR':
-                return 'goods receipt';
-            case 'PI':
-                return 'A/P invoice';
-            case 'PP':
-                return 'outgoing payment';
-            case 'PN':
-                return 'goods return';
+                return 'Purchase Order';
+            case 'GR':
+                return 'Goods Receipt Purchase Order';
+            case 'PY':
+                return 'Outgoing Payment';
+            case 'DN':
+                return 'Debit Note';
+            case 'GN':
+                return 'Goods Return';
+            case 'GI':
+                return 'Goods Issue';
+            case 'GC':
+                return 'Goods Receipt';
+            case 'CS':
+                return 'Cash Sale';
+            case 'CP':
+                return 'Cash Purchase';
+            case 'JN':
+                return 'Journal Entry';
+            case 'CE':
+                return 'Bank Transfer';
         }
     }
 }

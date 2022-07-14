@@ -18,13 +18,12 @@ class SupplierBill extends Transaction implements Buys, Clearable
      *
      * @var string
      */
-
     const PREFIX = Transaction::BL;
 
     /**
      * Construct new ContraEntry
      *
-     * @param array $attributes
+     * @param  array  $attributes
      */
     public function __construct($attributes = [])
     {

@@ -36,7 +36,7 @@ class StoreRoleRequest extends FormRequest
     public function messages()
     {
         return [
-            'form.name.required' => __('validation')['required']
+            'form.name.required' => __('validation')['required'],
         ];
     }
 }

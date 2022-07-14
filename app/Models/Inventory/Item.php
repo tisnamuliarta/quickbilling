@@ -19,7 +19,7 @@ class Item extends Model
         'sale_price' => 'decimal:2',
         'purchase_price' => 'decimal:2',
         'commision_rate' => 'decimal:2',
-        'minimum_stock' => 'double'
+        'minimum_stock' => 'double',
     ];
 
     /**

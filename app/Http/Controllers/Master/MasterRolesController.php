@@ -60,7 +60,7 @@ class MasterRolesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreRoleRequest $request
+     * @param  StoreRoleRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreRoleRequest $request): \Illuminate\Http\JsonResponse
@@ -103,8 +103,8 @@ class MasterRolesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreRoleRequest $request
-     * @param int $id
+     * @param  StoreRoleRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(StoreRoleRequest $request, $id)
@@ -168,8 +168,9 @@ class MasterRolesController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function storePermissionRole(Request $request): \Illuminate\Http\JsonResponse

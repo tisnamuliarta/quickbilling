@@ -19,13 +19,14 @@ class AccountService
      */
     public function index($request)
     {
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 150;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'code';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 150;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'code';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
-        $search = isset($request->search) ? (string)$request->search : '';
+        $search = isset($request->search) ? (string) $request->search : '';
 
         $query = Account::with(['currency', 'category', 'balances'])
-            ->where('name', 'LIKE', "%" . $search . "%")
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orderBy($sorts, $order)
             ->paginate($row_data);
 
         return $query;
@@ -35,19 +36,20 @@ class AccountService
      * @param $type
      * @return array
      */
-    #[ArrayShape(['data' => "mixed"])] public function dataByType($type): array
-    {
-        $query = Account::selectRaw(
+    #[ArrayShape(['data' => 'mixed'])]
+ public function dataByType($type): array
+ {
+     $query = Account::selectRaw(
             " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
         )
-            ->where('account_type', 'LIKE', '%' . $type . '%')
+            ->where('account_type', 'LIKE', '%'.$type.'%')
             ->orderBy('code')
             ->get();
 
-        return [
-            'data' => $query,
-        ];
-    }
+     return [
+         'data' => $query,
+     ];
+ }
 
     /**
      * @param $request

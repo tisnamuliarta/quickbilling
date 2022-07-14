@@ -28,7 +28,7 @@ class ItemCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -49,8 +49,9 @@ class ItemCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param UpdateItemCategoryRequest $request
+     * @param  UpdateItemCategoryRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(UpdateItemCategoryRequest $request): \Illuminate\Http\JsonResponse
@@ -77,7 +78,7 @@ class ItemCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -92,9 +93,10 @@ class ItemCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateItemCategoryRequest $request
-     * @param int $id
+     * @param  UpdateItemCategoryRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(UpdateItemCategoryRequest $request, int $id): \Illuminate\Http\JsonResponse
@@ -103,11 +105,13 @@ class ItemCategoryController extends Controller
         try {
             ItemCategory::where('id', '=', $id)->update($this->service->formData($request, 'update'));
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -118,7 +122,7 @@ class ItemCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id): \Illuminate\Http\JsonResponse

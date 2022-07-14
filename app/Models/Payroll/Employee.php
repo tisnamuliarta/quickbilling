@@ -20,24 +20,40 @@ class Employee extends Model implements Auditable
     protected $casts = [
         'gender' => 'integer',
         'payment_method' => 'integer',
+        'salary' => 'double',
+        'per_hour_rate' => 'double',
+        'hour_per_day' => 'double',
+        'day_per_week' => 'double',
         'hire_date' => 'datetime:Y-m-d',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function entity()
     {
         return $this->belongsTo(Entity::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function workLocation()
     {
         return $this->belongsTo(workLocation::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function payDetails()
     {
         return $this->hasMany(EmployeeDetail::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function bank()
     {
         return $this->belongsTo(Bank::class);

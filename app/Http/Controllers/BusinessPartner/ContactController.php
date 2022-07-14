@@ -33,12 +33,12 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $type = isset($request->type) ? (string)$request->type : 'index';
+        $type = isset($request->type) ? (string) $request->type : 'index';
         $result = [];
         $extra_list['emails'] = [
             [
@@ -64,8 +64,9 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreContactRequest $request
+     * @param  StoreContactRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreContactRequest $request): \Illuminate\Http\JsonResponse
@@ -115,7 +116,7 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -147,9 +148,10 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreContactRequest $request
-     * @param int $id
+     * @param  StoreContactRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreContactRequest $request, int $id)
@@ -181,7 +183,7 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

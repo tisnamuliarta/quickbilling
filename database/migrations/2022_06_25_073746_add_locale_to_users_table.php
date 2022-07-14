@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::table('line_items', function (Blueprint $table) {
             $table->renameColumn('qty', 'sub_total');
         });
-        
+
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropColumn('ship_vie');
         });

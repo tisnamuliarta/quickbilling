@@ -12,27 +12,21 @@ namespace IFRS\Models;
 
 use App\Models\Inventory\Item;
 use App\Models\Transactions\Classification;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-use IFRS\Interfaces\Recyclable;
-use IFRS\Interfaces\Segregatable;
-
-use IFRS\Traits\Recycling;
-use IFRS\Traits\Segregating;
-use IFRS\Traits\ModelTablePrefix;
-
-use IFRS\Models\AppliedVat;
-
+use IFRS\Exceptions\MultipleVatError;
 use IFRS\Exceptions\NegativeAmount;
 use IFRS\Exceptions\NegativeQuantity;
 use IFRS\Exceptions\PostedTransaction;
-use IFRS\Exceptions\MultipleVatError;
+use IFRS\Interfaces\Recyclable;
+use IFRS\Interfaces\Segregatable;
+use IFRS\Traits\ModelTablePrefix;
+use IFRS\Traits\Recycling;
+use IFRS\Traits\Segregating;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LineItem
  *
- * @package Ekmungai\Eloquent-IFRS
  *
  * @property Entity $entity
  * @property Transaction $transaction
@@ -80,15 +74,14 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * Line Item Vats
      *
-     * @var array $vats
+     * @var array
      */
     private $vats = [];
 
     /**
      * Check if Vat already exists.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return int|false
      */
     private function vatExists(int $id = null)
@@ -116,7 +109,7 @@ class LineItem extends Model implements Recyclable, Segregatable
             AppliedVat::firstOrCreate([
                 'vat_id' => $vat->id,
                 'line_item_id' => $this->id,
-                'amount' => $tax
+                'amount' => $tax,
             ]);
             $itemAmount += $this->compound_vat ? $tax : 0;
         }
@@ -125,14 +118,14 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * Construct new LineItem
      *
-     * @param array $attributes
+     * @param  array  $attributes
      */
     public function __construct(array $attributes = [])
     {
-        if (!isset($attributes['credited'])) {
+        if (! isset($attributes['credited'])) {
             $attributes['credited'] = false;
         }
-        if (!isset($attributes['quantity'])) {
+        if (! isset($attributes['quantity'])) {
             $attributes['quantity'] = 1;
         }
         parent::__construct($attributes);
@@ -146,8 +139,9 @@ class LineItem extends Model implements Recyclable, Segregatable
     public function toString($type = false)
     {
         $classname = explode('\\', self::class);
-        $description = $this->account->toString() . ' for ' . $this->amount * $this->quantity;
-        return $type ? array_pop($classname) . ': ' . $description : $description;
+        $description = $this->account->toString().' for '.$this->amount * $this->quantity;
+
+        return $type ? array_pop($classname).': '.$description : $description;
     }
 
     /**
@@ -230,6 +224,7 @@ class LineItem extends Model implements Recyclable, Segregatable
                 $vats[$appliedVat->vat->code] = $appliedVat->amount;
             }
         }
+
         return $vats;
     }
 
@@ -240,21 +235,22 @@ class LineItem extends Model implements Recyclable, Segregatable
      */
     public function attributes()
     {
-        return (object)$this->attributes;
+        return (object) $this->attributes;
     }
 
     /**
      * Add Vat to LineItem Vats.
      *
-     * @param Vat $vat
+     * @param  Vat  $vat
      * @return bool
+     *
      * @throws MultipleVatError
      * @throws PostedTransaction
      */
     public function addVat(Vat $vat): bool
     {
         if (count($this->ledgers) > 0) {
-            throw new PostedTransaction("add Vat to");
+            throw new PostedTransaction('add Vat to');
         }
 
         if ($vat->rate == 0 && $this->compound_vat) {
@@ -273,8 +269,10 @@ class LineItem extends Model implements Recyclable, Segregatable
 
         if ($this->vatExists($vat->id) === false) {
             $this->vats[] = $vat;
+
             return true;
         }
+
         return false;
     }
 
@@ -290,19 +288,21 @@ class LineItem extends Model implements Recyclable, Segregatable
                 $this->vats[] = $appliedVat->vat;
             }
         }
+
         return $this->vats;
     }
 
     /**
      * Remove Vat from LineItem Vats.
      *
-     * @param Vat $vat
+     * @param  Vat  $vat
+     *
      * @throws PostedTransaction
      */
     public function removeVat(Vat $vat): void
     {
         if (count($this->ledgers) > 0) {
-            throw new PostedTransaction("remove Vat from");
+            throw new PostedTransaction('remove Vat from');
         }
 
         if ($this->compound_vat) {
@@ -316,7 +316,7 @@ class LineItem extends Model implements Recyclable, Segregatable
 
             AppliedVat::where([
                 'line_item_id' => $this->id,
-                'vat_id' => $vat->id
+                'vat_id' => $vat->id,
             ])->first()->delete();
         }
 
@@ -326,8 +326,10 @@ class LineItem extends Model implements Recyclable, Segregatable
 
     /**
      * Validate LineItem.
-     * @param array $options
+     *
+     * @param  array  $options
      * @return bool
+     *
      * @throws NegativeAmount
      * @throws NegativeQuantity
      * @throws PostedTransaction
@@ -335,15 +337,15 @@ class LineItem extends Model implements Recyclable, Segregatable
     public function save(array $options = []): bool
     {
         if ($this->amount < 0) {
-            throw new NegativeAmount("LineItem");
+            throw new NegativeAmount('LineItem');
         }
 
         if ($this->quantity < 0) {
             throw new NegativeQuantity();
         }
 
-        if (!is_null($this->transaction) && count($this->transaction->ledgers) > 0 && $this->isDirty()) {
-            throw new PostedTransaction("change a LineItem of");
+        if (! is_null($this->transaction) && count($this->transaction->ledgers) > 0 && $this->isDirty()) {
+            throw new PostedTransaction('change a LineItem of');
         }
 
         $save = parent::save();

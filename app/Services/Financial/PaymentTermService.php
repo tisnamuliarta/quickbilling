@@ -32,6 +32,7 @@ class PaymentTermService
 
         $collect = collect($query);
         $result = $collect->merge($result);
+
         return  $result->all();
     }
 

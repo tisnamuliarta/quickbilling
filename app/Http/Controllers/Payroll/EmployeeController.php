@@ -28,35 +28,41 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request)
     {
         $result = [];
         $result['form'] = $this->form('employees');
         $result['form']['status'] = 'active';
 
         $result['itemGender'] = [
-            ['id' => 1, 'name'=> __("Male")],
-            ['id' => 2, 'name'=> __("Female")],
+            ['id' => 1, 'name' => __('Male')],
+            ['id' => 2, 'name' => __('Female')],
         ];
 
         $result['paymentMethod'] = [
-            ['id' => 1, 'name'=> __("Cash")],
-            ['id' => 2, 'name'=> __("Direct Deposit")],
+            ['id' => 1, 'name' => __('Cash')],
+            ['id' => 2, 'name' => __('Direct Deposit')],
         ];
 
-        $result = array_merge($result, $this->service->index($request));
+        $result['payFrequency'] = ['Per Week', 'Per Month', 'Per Quarter'];
 
-        return $this->success($result);
+        $result['payType'] = ['Salary', 'Per Hour'];
+
+        $collection = collect($this->service->index($request));
+        $result = $collection->merge($result);
+
+        return $this->success($result->all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreEmployeeRequest $request
+     * @param  StoreEmployeeRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(StoreEmployeeRequest $request): \Illuminate\Http\JsonResponse
@@ -83,7 +89,7 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -91,16 +97,17 @@ class EmployeeController extends Controller
         $data = Employee::find($id);
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreEmployeeRequest $request
-     * @param int $id
+     * @param  StoreEmployeeRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(StoreEmployeeRequest $request, $id)
@@ -109,11 +116,13 @@ class EmployeeController extends Controller
         try {
             Employee::where('id', '=', $id)->update($this->service->formData($request, 'update'));
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -124,7 +133,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

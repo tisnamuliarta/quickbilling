@@ -4,6 +4,7 @@ namespace App\Services\Transactions;
 
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
+use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
@@ -24,13 +25,14 @@ class TransactionService
     /**
      * @param $request
      * @return array
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $model = $this->mappingTable($type);
@@ -43,6 +45,7 @@ class TransactionService
         $result['form'] = $this->getForm($type);
         $collect = collect($query);
         $result = $collect->merge($result);
+
         return $result->all();
     }
 
@@ -54,35 +57,39 @@ class TransactionService
     {
         switch ($type) {
             case 'CS':
-                return "\\IFRS\\Transactions\\CashSale";
+                return '\\IFRS\\Transactions\\CashSale';
             case 'IN':
-                return "\\IFRS\\Transactions\\ClientInvoice";
+                return '\\IFRS\\Transactions\\ClientInvoice';
             case 'CN':
-                return "\\IFRS\\Transactions\\CreditNote";
+                return '\\IFRS\\Transactions\\CreditNote';
             case 'RC':
-                return "\\IFRS\\Transactions\\ClientReceipt";
+                return '\\IFRS\\Transactions\\ClientReceipt';
             case 'BL':
-                return "\\IFRS\\Transactions\\SupplierBill";
+                return '\\IFRS\\Transactions\\SupplierBill';
             case 'DN':
-                return "\\IFRS\\Transactions\\DebitNote";
+                return '\\IFRS\\Transactions\\DebitNote';
             case 'PY':
-                return "\\IFRS\\Transactions\\SupplierPayment";
+                return '\\IFRS\\Transactions\\SupplierPayment';
             case 'CP':
-                return "\\IFRS\\Transactions\\CashPurchase";
+                return '\\IFRS\\Transactions\\CashPurchase';
             case 'CE':
-                return "\\IFRS\\Transactions\\ContraEntry";
+                return '\\IFRS\\Transactions\\ContraEntry';
             case 'JN':
-                return "\\IFRS\\Transactions\\JournalEntry";
+                return '\\IFRS\\Transactions\\JournalEntry';
         }
     }
 
     /**
      * @param $type
      * @return array
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function getForm($type): array
     {
+        $payment_term = PaymentTerm::orderBy('id')->first();
+        $payment_length = $payment_term->value;
+
         $form = $this->form('transactions');
         $form['deposit_info'] = false;
         $form['shipping_info'] = false;
@@ -94,8 +101,8 @@ class TransactionService
         $form['payment_term_id'] = 1;
         $form['discount_type'] = 'Percent';
         $form['withholding_type'] = 'Percent';
-        $form['issued_at'] = date('Y-m-d');
-        $form['due_at'] = Carbon::parse(date('Y-m-d'))->addDay(15)->format('Y-m-d');
+        $form['transaction_date'] = Carbon::now()->format('Y-m-d');
+        $form['due_date'] = Carbon::now()->addDays($payment_length)->format('Y-m-d');
         $form['status'] = 'draft';
         $form['tax_details'] = [];
         $form['line_items'] = [];
@@ -106,7 +113,7 @@ class TransactionService
         $form['deposit'] = 0;
         $form['id'] = 0;
         $form['account_id'] = $this->defaultHeaderAccount($type);
-        $form['document_number'] = $this->generateDocNum(Carbon::now(), $type);
+        $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
 
         if (Str::contains($type, ['CP', 'RC', 'CN', 'BL'])) {
             $form['credited'] = true;
@@ -135,6 +142,7 @@ class TransactionService
      * @param $sysDate
      * @param $alias
      * @return string
+     *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     protected function generateDocNum($sysDate, $alias): string
@@ -147,20 +155,20 @@ class TransactionService
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
 
         $nextId = \IFRS\Models\Transaction::withTrashed()
-                ->where("transaction_type", $alias)
-                ->where("transaction_date", ">=", $periodStart)
-                ->where("entity_id", '=', $entity->id)
+                ->where('transaction_type', $alias)
+                ->where('transaction_date', '>=', $periodStart)
+                ->where('entity_id', '=', $entity->id)
                 ->count() + 1;
 
-        return $alias . "-" . str_pad((string)$periodCount, 2, "0", STR_PAD_LEFT)
-            . $month .
-            str_pad((string)$nextId, 5, "0", STR_PAD_LEFT);
+        return $alias.'-'.str_pad((string) $periodCount, 2, '0', STR_PAD_LEFT)
+            .$month.
+            str_pad((string) $nextId, 5, '0', STR_PAD_LEFT);
     }
 
     /**
      * @param $request
      * @param $type
-     * @param null $id
+     * @param  null  $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
@@ -204,7 +212,7 @@ class TransactionService
     {
         $line_item = [];
         foreach ($items as $item) {
-            if (!array_key_exists('tax_name', $item)) {
+            if (! array_key_exists('tax_name', $item)) {
                 $item['tax_name'] = null;
             }
 
@@ -320,19 +328,19 @@ class TransactionService
             'SQ' => [
                 [
                     'title' => 'Sales Order', 'action' => 'SO', 'color' => 'orange',
-                    'button' => true, 'icon' => 'mdi-sale'
+                    'button' => true, 'icon' => 'mdi-sale',
                 ],
                 [
                     'title' => 'Delivery', 'action' => 'SO', 'color' => 'blue',
-                    'button' => false, 'icon' => 'mdi-truck-delivery'
+                    'button' => false, 'icon' => 'mdi-truck-delivery',
                 ],
                 [
                     'title' => 'Sales Invoice', 'action' => 'SI', 'color' => 'teal',
-                    'button' => true, 'icon' => 'mdi-receipt'
+                    'button' => true, 'icon' => 'mdi-receipt',
                 ],
                 [
                     'title' => 'Incoming Payment', 'action' => 'SI', 'color' => 'green',
-                    'button' => false, 'icon' => 'mdi-currency-usd'
+                    'button' => false, 'icon' => 'mdi-currency-usd',
                 ],
                 ['title' => 'Clone', 'action' => 'SQ', 'color' => 'blue-grey', 'button' => true],
                 ['title' => 'Cancel', 'action' => 'C', 'color' => 'red', 'button' => true],
@@ -367,7 +375,6 @@ class TransactionService
         }
     }
 
-
     /**
      * @param $title
      * @param $action
@@ -380,7 +387,7 @@ class TransactionService
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
         $query = Document::where('type', $action)
-            ->whereIn('parent_id', (array)$parent_id);
+            ->whereIn('parent_id', (array) $parent_id);
 
         return [
             'title' => $title,

@@ -21,7 +21,6 @@ Route::apiResources([
     'permissions' => MasterPermissionController::class,
     'roles' => MasterRolesController::class,
     'users' => MasterUserController::class,
-
     'banks' => BankController::class,
     'categories' => CategoryController::class,
 ]);

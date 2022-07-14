@@ -7,21 +7,20 @@ use Illuminate\Support\Arr;
 
 class ItemCategoryService
 {
-
     /**
      * @param $request
      * @return array
      */
     public function index($request)
     {
-        $pages = isset($request->page) ? (int)$request->page : 1;
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $pages = isset($request->page) ? (int) $request->page : 1;
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = $request->search;
 
         $query = ItemCategory::select('*')
-            ->where('name', 'LIKE', '%' . $search . '%')
+            ->where('name', 'LIKE', '%'.$search.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -57,7 +56,7 @@ class ItemCategoryService
             ->first();
 
         $number = empty($doc_num) ? '00000' : $doc_num->code;
-        $clear_doc_num = (int)substr($number, 0, 5);
+        $clear_doc_num = (int) substr($number, 0, 5);
         $number = $clear_doc_num + 1;
 
         return sprintf('%05s', $number);

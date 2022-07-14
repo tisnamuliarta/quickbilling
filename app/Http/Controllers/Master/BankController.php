@@ -37,7 +37,7 @@ class BankController extends Controller
         $simple = Bank::pluck('name');
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
             'header' => $header,
             'simple' => $simple,
         ]);

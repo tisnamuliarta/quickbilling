@@ -32,7 +32,7 @@ class MasterUserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -49,8 +49,9 @@ class MasterUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param UpdateUserRequest $request
+     * @param  UpdateUserRequest  $request
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function store(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
@@ -89,7 +90,7 @@ class MasterUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -102,9 +103,10 @@ class MasterUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateUserRequest $request
-     * @param int $id
+     * @param  UpdateUserRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
+     *
      * @throws \Throwable
      */
     public function update(UpdateUserRequest $request, $id): \Illuminate\Http\JsonResponse
@@ -121,11 +123,13 @@ class MasterUserController extends Controller
 
             $this->storeUserDetails($role, $user);
             DB::commit();
+
             return $this->success([
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
@@ -136,7 +140,7 @@ class MasterUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

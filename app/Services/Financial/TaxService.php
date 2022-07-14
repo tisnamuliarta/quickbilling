@@ -13,8 +13,8 @@ class TaxService
      */
     public function index($request): array
     {
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
+        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $result = [];
@@ -29,6 +29,7 @@ class TaxService
 
         $collection = collect($query);
         $result = $collection->merge($result);
+
         return $result->all();
     }
 
