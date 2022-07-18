@@ -5,13 +5,14 @@ namespace App\Models\Inventory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductPriceList extends Model
+class PriceList extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    protected $primaryKey = 'product_price_list_id';
-
-    protected $table = 'product_price_list';
+    public function basePrice()
+    {
+        return $this->belongsTo(PriceList::class, 'base_id');
+    }
 }

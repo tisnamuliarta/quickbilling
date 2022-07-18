@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessPartner\ContactController;
+use App\Http\Controllers\BusinessPartner\ContactTransactionController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\File\FileController;
 use App\Http\Controllers\Inventory\ItemCategoryController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\ItemGroupController;
 use App\Http\Controllers\Inventory\ItemUnitController;
+use App\Http\Controllers\Inventory\PriceListController;
 use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Transactions\TransactionController;
@@ -34,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             'item-units' => ItemUnitController::class,
             'item-category' => ItemCategoryController::class,
             'item-groups' => ItemGroupController::class,
+            'price-list' => PriceListController::class,
             'warehouse' => WarehouseController::class,
         ]);
     });
@@ -41,6 +44,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'bp'], function () {
         Route::delete('delete-bank/{id}', [ContactController::class, 'deleteBank']);
         Route::delete('delete-email/{id}', [ContactController::class, 'deleteEmail']);
+        Route::get('transaction/{id}', [ContactTransactionController::class, 'index']);
         Route::apiResources([
             'contacts' => ContactController::class,
         ]);
@@ -54,7 +58,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'payroll'], function () {
         Route::apiResources([
             'employees' => \App\Http\Controllers\Payroll\EmployeeController::class,
-            'contractors' => \App\Http\Controllers\Payroll\ContractorController::class,
+            // 'contractors' => \App\Http\Controllers\Payroll\ContractorController::class,
             'work-locations' => \App\Http\Controllers\Payroll\WorkLocationController::class,
         ]);
     });

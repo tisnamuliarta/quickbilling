@@ -12,6 +12,7 @@ use App\Traits\Financial;
 use Carbon\Carbon;
 use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
+use IFRS\Models\Transaction;
 use IFRS\Models\Vat;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,7 @@ class TransactionService
 
         $model = $this->mappingTable($type);
         $result = [];
-        $query = $model::with(['entity', 'lineItems', 'contact', 'account', 'ledgers'])
+        $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
             ->where('transaction_type', $type)
             ->orderBy($sorts, $order)
             ->paginate($row_data);

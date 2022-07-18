@@ -16,7 +16,7 @@ type Query {
     users(
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
-    ): [User!]! @paginate(defaultCount: 10)
+    ): [User!]! @paginate(type: "paginator" model: "User" defaultCount: 10)
 }
 
 "Account of a person who utilizes this application."

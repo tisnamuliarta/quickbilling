@@ -143,6 +143,21 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'transaction_date',
     ];
 
+    protected $appends = [
+        'amount',
+        'date',
+        'type',
+        // 'assignments',
+        // 'clearances',
+        'isPosted',
+        'isCredited',
+        // 'clearedType',
+        'vat',
+        'assignable',
+        'clearable',
+        'hasIntegrity',
+    ];
+
     protected $casts = [
         'balance_due' => 'double',
         'currency_rate' => 'double',

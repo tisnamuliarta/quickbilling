@@ -18,6 +18,10 @@ class DocumentItem extends Model implements Auditable
 
     protected $guarded = [];
 
+    protected $appends = [
+        'code'
+    ];
+
     /**
      * The attributes that should be cast.
      *
@@ -60,5 +64,10 @@ class DocumentItem extends Model implements Auditable
     public function classification()
     {
         return $this->belongsTo(Classification::class);
+    }
+
+    public function getCodeAttribute()
+    {
+        return $this->item->code;
     }
 }

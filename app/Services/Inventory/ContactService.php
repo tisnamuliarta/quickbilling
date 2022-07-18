@@ -3,6 +3,7 @@
 namespace App\Services\Inventory;
 
 use App\Models\Inventory\Contact;
+use Illuminate\Support\Arr;
 
 class ContactService
 {
@@ -22,7 +23,7 @@ class ContactService
 
         $result = [];
         $query = Contact::where('contacts.type', 'LIKE', '%'.$type.'%')
-            ->with(['banks', 'emails', 'sellAccount', 'purchaseAccount'])
+            ->with(['banks', 'emails', 'sellAccount.balances', 'purchaseAccount.balances'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -36,14 +37,17 @@ class ContactService
      */
     public function formData($request, $type): array
     {
-        $request->request->remove('id');
-        $request->request->remove('created_at');
-        $request->request->remove('updated_at');
-        $request->request->remove('deleted_at');
-
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
         $data = $request->all();
+
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'destroyed_at');
+        Arr::forget($data, 'id');
+        Arr::forget($data, 'banks');
+        Arr::forget($data, 'emails');
+        Arr::forget($data, 'sell_account');
+        Arr::forget($data, 'purchase_account');
 
         return $data;
     }

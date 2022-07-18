@@ -13,6 +13,11 @@ class Item extends Model
 
     protected $guarded = [];
 
+    /**
+     * cast attribute
+     *
+     * @var array
+     */
     protected $casts = [
         'reorder_point' => 'decimal:2',
         'onhand' => 'decimal:2',
@@ -20,6 +25,10 @@ class Item extends Model
         'purchase_price' => 'decimal:2',
         'commision_rate' => 'decimal:2',
         'minimum_stock' => 'double',
+    ];
+
+    protected $appends = [
+        'whs_name'
     ];
 
     /**
@@ -35,7 +44,7 @@ class Item extends Model
      */
     public function salesAccount()
     {
-        return $this->belongsTo(Account::class, 'sell_account_id');
+        return $this->belongsTo(Account::class, 'revenue_account_id');
     }
 
     /**
@@ -43,7 +52,7 @@ class Item extends Model
      */
     public function purchaseAccount()
     {
-        return $this->belongsTo(Account::class, 'buy_account_id');
+        return $this->belongsTo(Account::class, 'expense_account_id');
     }
 
     /**
@@ -76,5 +85,11 @@ class Item extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    public function getWhsNameAttribute()
+    {
+        $warehouse = Warehouse::first();
+        return $warehouse->code;
     }
 }

@@ -74,4 +74,28 @@ class AccountService
 
         return $data;
     }
+
+    /**
+     * create new account
+     *
+     * @param string $name
+     * @param string $accountType
+     * @param int $subType
+     *
+     */
+    public function createAccount(string $name, string $accountType, int $subType)
+    {
+        try {
+            Account::updateOrCreate([
+                'name' => $name,
+                'entity_id' => auth()->user()->entity->id,
+                'currency_id' => auth()->user()->entity->currency_id,
+                'account_type' => $accountType,
+                'category_id' => $subType
+            ]);
+            return;
+        } catch (\Exception $e) {
+            return throw new \Exception($e->getMessage());
+        }
+    }
 }

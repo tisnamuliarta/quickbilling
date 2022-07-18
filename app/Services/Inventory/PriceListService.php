@@ -2,12 +2,12 @@
 
 namespace App\Services\Inventory;
 
-use App\Models\Inventory\Warehouse;
+use App\Models\Inventory\PriceList;
 use App\Traits\Accounting;
 use App\Traits\Categories;
 use Illuminate\Support\Arr;
 
-class WarehouseService
+class PriceListService
 {
     use Categories;
     use Accounting;
@@ -18,14 +18,15 @@ class WarehouseService
     public function index($request)
     {
         $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'price_list_name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
-        $query = Warehouse::select('*')
+        $query = PriceList::select('*')
+            ->with(['basePrice'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
-        $result['simple'] = Warehouse::pluck('code');
+        $result['simple'] = PriceList::pluck('price_list_name');
 
         $collect = collect($query);
         $result = $collect->merge($result);
@@ -40,14 +41,6 @@ class WarehouseService
     public function formData($request, $type): array
     {
         $data = $request->all();
-
-        if ($type == 'store') {
-            $merge = [
-                'created_by' => auth()->user()->id,
-            ];
-            $data = array_merge($data, $merge);
-        }
-
         Arr::forget($data, 'updated_at');
         Arr::forget($data, 'created_at');
         Arr::forget($data, 'deleted_at');

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\BusinessPartner;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BusinessPartner\StoreContactRequest;
+use App\Models\Financial\Category;
 use App\Models\Inventory\Contact;
 use App\Models\Inventory\ContactBank;
 use App\Models\Inventory\ContactEmail;
+use App\Services\Financial\AccountService;
 use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
 use Illuminate\Http\Request;
@@ -77,6 +79,12 @@ class ContactController extends Controller
 
             $this->processDetails($request, $contact);
 
+            // $accountService = new AccountService();
+            // $accountType = ($request->type == 'Customer') ? 'RECEIVABLE' : 'PAYABLE';
+            // $accountCategory = Category::where('category_type', $accountType)->first();
+
+            // $accountService->createAccount($request->name, $accountType, $accountCategory->id);
+
             DB::commit();
 
             return $this->success([
@@ -100,15 +108,21 @@ class ContactController extends Controller
      */
     protected function processDetails($request, $contact)
     {
-        if ($request->banks) {
+        $accountService = new AccountService();
+        $accountType = ($request->type == 'Customer') ? 'RECEIVABLE' : 'PAYABLE';
+        $accountCategory = Category::where('category_type', $accountType)->first();
+
+        $accountService->createAccount($request->name, $accountType, $accountCategory->id);
+
+        if (!empty($request->banks)) {
             $this->storeContactBank($request->banks, $contact['id']);
         }
 
-        if ($request->emails) {
+        if (!empty($request->emails)) {
             $this->storeContactEmail($request->emails, $contact['id']);
         }
 
-        if ($request->can_login) {
+        if (!empty($request->can_login)) {
             $this->createUser($request->all());
         }
     }
@@ -121,7 +135,9 @@ class ContactController extends Controller
      */
     public function show($id): \Illuminate\Http\JsonResponse
     {
-        $data = Contact::where('id', '=', $id)->first();
+        $data = Contact::where('id', '=', $id)
+            ->first();
+
         $extra_list['emails'] = [
             [
                 'email' => null,
@@ -139,9 +155,8 @@ class ContactController extends Controller
         $form = array_merge($this->form('contacts'), $extra_list);
 
         return $this->success([
-            'rows' => $data,
+            'data' => $data,
             'form' => $form,
-            'count' => ($data) ? 1 : 0,
         ]);
     }
 
@@ -156,7 +171,7 @@ class ContactController extends Controller
      */
     public function update(StoreContactRequest $request, int $id)
     {
-        DB::transaction();
+        DB::beginTransaction();
         try {
             $formData = $this->service->formData($request, 'update');
             $contact = Contact::find($id);
@@ -173,6 +188,7 @@ class ContactController extends Controller
                 'errors' => false,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
