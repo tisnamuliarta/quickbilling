@@ -5,7 +5,6 @@ namespace App\Services\Transactions;
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
-use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
@@ -155,7 +154,7 @@ class TransactionService
         $periodCount = ReportingPeriod::getPeriod($sysDate, $entity)->period_count;
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
 
-        $nextId = \IFRS\Models\Transaction::withTrashed()
+        $nextId = Transaction::withTrashed()
                 ->where('transaction_type', $alias)
                 ->where('transaction_date', '>=', $periodStart)
                 ->where('entity_id', '=', $entity->id)
@@ -174,8 +173,6 @@ class TransactionService
      */
     public function formData($request, $type, $id = null): array
     {
-        $contact = Contact::where('id', $request->contact_id)->first();
-
         $request->merge([
             'narration' => $request->notes,
             'main_account_amount' => $request->amount,
@@ -211,7 +208,6 @@ class TransactionService
      */
     public function processItems($items, $document, $tax_details)
     {
-        $line_item = [];
         foreach ($items as $item) {
             if (! array_key_exists('tax_name', $item)) {
                 $item['tax_name'] = null;
@@ -249,7 +245,7 @@ class TransactionService
      * @param $type
      * @return array
      */
-    public function detailsForm($document, $item, $type)
+    public function detailsForm($document, $item, $type): array
     {
         $form = [
             'entity_id' => $document->entity_id,

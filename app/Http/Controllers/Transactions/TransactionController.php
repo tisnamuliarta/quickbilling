@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Services\Transactions\TransactionService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,9 +30,10 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         try {
             return $this->success($this->service->index($request));
@@ -46,11 +48,11 @@ class TransactionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreTransactionRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreTransactionRequest $request)
+    public function store(StoreTransactionRequest $request): JsonResponse
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);
@@ -94,10 +96,11 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id): JsonResponse
     {
         try {
             $type = $request->type;
@@ -132,11 +135,11 @@ class TransactionController extends Controller
      *
      * @param  StoreTransactionRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreTransactionRequest $request, $id)
+    public function update(StoreTransactionRequest $request, int $id): JsonResponse
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);
@@ -178,9 +181,9 @@ class TransactionController extends Controller
      *
      * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy(Request $request, int $id)
+    public function destroy(Request $request, int $id): JsonResponse
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);

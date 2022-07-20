@@ -17,7 +17,7 @@ class AccountService
      * @param $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index($request)
+    public function index($request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 150;
         $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'code';
@@ -37,19 +37,19 @@ class AccountService
      * @return array
      */
     #[ArrayShape(['data' => 'mixed'])]
- public function dataByType($type): array
- {
-     $query = Account::selectRaw(
+    public function dataByType($type): array
+    {
+        $query = Account::selectRaw(
             " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
         )
             ->where('account_type', 'LIKE', '%'.$type.'%')
             ->orderBy('code')
             ->get();
 
-     return [
-         'data' => $query,
-     ];
- }
+        return [
+            'data' => $query,
+        ];
+    }
 
     /**
      * @param $request
@@ -78,10 +78,12 @@ class AccountService
     /**
      * create new account
      *
-     * @param string $name
-     * @param string $accountType
-     * @param int $subType
+     * @param  string  $name
+     * @param  string  $accountType
+     * @param  int  $subType
+     * @return int
      *
+     * @throws \Exception
      */
     public function createAccount(string $name, string $accountType, int $subType)
     {
@@ -91,9 +93,10 @@ class AccountService
                 'entity_id' => auth()->user()->entity->id,
                 'currency_id' => auth()->user()->entity->currency_id,
                 'account_type' => $accountType,
-                'category_id' => $subType
+                'category_id' => $subType,
             ]);
-            return;
+
+            return 0;
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
         }

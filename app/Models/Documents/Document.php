@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use IFRS\Models\Entity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -42,104 +44,104 @@ class Document extends Model implements Auditable
      * @param $value
      * @return string
      */
-    public function getIssueAtAttribute($value)
+    public function getIssueAtAttribute($value): string
     {
         return Carbon::parse($value)->format('Y-m-d');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(DocumentItem::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function lineItems()
+    public function lineItems(): HasMany
     {
         return $this->hasMany(DocumentItem::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function taxDetails()
+    public function taxDetails(): HasMany
     {
         return $this->hasMany(DocumentItemTax::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class, 'currency_code', 'currency_code');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function entity()
+    public function entity(): BelongsTo
     {
         return $this->belongsTo(Entity::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function histories()
+    public function histories(): HasMany
     {
         return $this->hasMany(DocumentHistory::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function totals()
+    public function totals(): HasMany
     {
         return $this->hasMany(DocumentTotal::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Document::class, 'parent_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function child()
+    public function child(): HasMany
     {
         return $this->hasMany(Document::class, 'parent_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function salesOrder()
+    public function salesOrder(): HasMany
     {
         return $this->hasMany(Document::class, 'parent_id', 'id')
             ->where('type', '=', 'SO');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function salesPerson()
+    public function salesPerson(): HasMany
     {
         return $this->hasMany(SalesPerson::class);
     }

@@ -114,15 +114,15 @@ class ContactController extends Controller
 
         $accountService->createAccount($request->name, $accountType, $accountCategory->id);
 
-        if (!empty($request->banks)) {
+        if (! empty($request->banks)) {
             $this->storeContactBank($request->banks, $contact['id']);
         }
 
-        if (!empty($request->emails)) {
+        if (! empty($request->emails)) {
             $this->storeContactEmail($request->emails, $contact['id']);
         }
 
-        if (!empty($request->can_login)) {
+        if (! empty($request->can_login)) {
             $this->createUser($request->all());
         }
     }
@@ -189,6 +189,7 @@ class ContactController extends Controller
             ], 'Data updated!');
         } catch (\Exception $exception) {
             DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),

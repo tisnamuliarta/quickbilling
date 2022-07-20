@@ -13,7 +13,7 @@ trait RolePermission
      * @param $menu_name
      * @return mixed
      */
-    protected function getLatestMenuByParent($parent_id, $menu_name)
+    protected function getLatestMenuByParent($parent_id, $menu_name): mixed
     {
         return Permission::where('parent_id', '=', $parent_id)
             // ->where('menu_name', '=', $menu_name)

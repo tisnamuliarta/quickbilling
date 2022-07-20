@@ -12,6 +12,7 @@ namespace IFRS\Models;
 
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
+use App\Overrides\Models\Account;
 use Carbon\Carbon;
 use IFRS\Exceptions\AdjustingReportingPeriod;
 use IFRS\Exceptions\ClosedReportingPeriod;
@@ -34,6 +35,8 @@ use IFRS\Traits\ModelTablePrefix;
 use IFRS\Traits\Recycling;
 use IFRS\Traits\Segregating;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -324,9 +327,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Ledgers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function ledgers()
+    public function ledgers(): HasMany
     {
         return $this->hasMany(Ledger::class, 'transaction_id', 'id');
     }
@@ -334,9 +337,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Currency.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function currency()
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
@@ -344,9 +347,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Account.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
@@ -354,9 +357,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Exchange Rate.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function exchangeRate()
+    public function exchangeRate(): BelongsTo
     {
         return $this->belongsTo(ExchangeRate::class);
     }
@@ -364,9 +367,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Assignments.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function assignments()
+    public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class, 'transaction_id', 'id');
     }
@@ -374,25 +377,25 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Transaction Saved Line Items.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function lineItems()
+    public function lineItems(): HasMany
     {
         return $this->hasMany(LineItem::class, 'transaction_id', 'id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function salesPerson()
+    public function salesPerson(): HasMany
     {
         return $this->hasMany(SalesPerson::class, 'document_id');
     }
@@ -402,7 +405,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return string
      */
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         return Transaction::getType($this->transaction_type);
     }
@@ -478,7 +481,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return array
      */
-    public function getCompoundEntries()
+    public function getCompoundEntries(): array
     {
         if ($this->compound) {
             $this->compoundEntries[
@@ -500,7 +503,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return array
      */
-    public function getLineItems()
+    public function getLineItems(): array
     {
         foreach ($this->lineItems as $lineItem) {
             if ($this->lineItemExists($lineItem->id) === false) {
@@ -567,7 +570,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return object
      */
-    public function attributes()
+    public function attributes(): object
     {
         return (object) $this->attributes;
     }
@@ -654,7 +657,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return array
      */
-    public function getAssigned()
+    public function getAssigned(): array
     {
         return $this->assigned;
     }
@@ -673,9 +676,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         }
 
         $existing = $this->assignments->where('cleared_id', $toBeAssigned['id'])->first();
-        if ($existing) {
-            $existing->delete();
-        }
+        $existing?->delete();
 
         if ($this->assignedTransactionExists($toBeAssigned['id']) === false && $toBeAssigned['amount'] > 0) {
             if ($this->assignedAmountBalance() > $toBeAssigned['amount']) {
@@ -694,7 +695,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      *
      * @return float
      */
-    private function assignedAmountBalance()
+    private function assignedAmountBalance(): float
     {
         $balance = $this->balance;
         foreach ($this->assigned as $assignedSoFar) {
@@ -707,8 +708,8 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Create assignments for the assigned transactions being staged.
      *
-     * @param  int  $forexAccountId
-     * @return null
+     * @param  int|null  $forexAccountId
+     * @return void
      */
     public function processAssigned(int $forexAccountId = null): void
     {
@@ -879,6 +880,11 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
 
     /**
      * Check Transaction Relationships.
+     *
+     * @return bool
+     *
+     * @throws HangingClearances
+     * @throws PostedTransaction
      */
     public function delete(): bool
     {

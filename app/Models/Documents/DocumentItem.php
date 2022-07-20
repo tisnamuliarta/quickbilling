@@ -3,10 +3,12 @@
 namespace App\Models\Documents;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\Warehouse;
 use App\Models\Transactions\Classification;
 use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -19,7 +21,8 @@ class DocumentItem extends Model implements Auditable
     protected $guarded = [];
 
     protected $appends = [
-        'code'
+        'code',
+        'whs_name',
     ];
 
     /**
@@ -35,39 +38,58 @@ class DocumentItem extends Model implements Auditable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function document()
+    public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function vat()
+    public function vat(): BelongsTo
     {
         return $this->belongsTo(Vat::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function classification()
+    public function classification(): BelongsTo
     {
         return $this->belongsTo(Classification::class);
     }
 
-    public function getCodeAttribute()
+    /**
+     * @return BelongsTo
+     */
+    public function warehouse(): BelongsTo
     {
-        return $this->item->code;
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWhsNameAttribute(): mixed
+    {
+        return ($this->warehouse) ? $this->warehouse->code : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodeAttribute(): mixed
+    {
+        return ($this->item) ? $this->item->code : null;
     }
 }

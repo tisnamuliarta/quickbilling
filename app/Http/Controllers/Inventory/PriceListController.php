@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Inventory\StorePriceListRequest;
+use App\Http\Requests\Inventory\UpdatePriceListRequest;
 use App\Models\Inventory\PriceList;
 use App\Services\Inventory\PriceListService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Inventory\StorePriceListRequest;
-use App\Http\Requests\Inventory\UpdatePriceListRequest;
 
 class PriceListController extends Controller
 {

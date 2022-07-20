@@ -12,9 +12,8 @@ class ContactTransactionController extends Controller
     /**
      * get contact transactions
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      */
     public function index(Request $request, int $id)
     {
@@ -47,7 +46,7 @@ class ContactTransactionController extends Controller
             )->get();
 
         return $this->success([
-            'data' => $transactions
+            'data' => $transactions,
         ]);
     }
 }

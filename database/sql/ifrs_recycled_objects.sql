@@ -10,4 +10,4 @@
 SET NAMES 'utf8';
 
 INSERT INTO quickbilling.recycled_objects(id, entity_id, user_id, recyclable_id, recyclable_type, destroyed_at, deleted_at, created_at, updated_at) VALUES
-(1, 1, 1, 71, 'IFRS\\Models\\Account', NULL, NULL, '2022-04-11 03:42:28', '2022-04-11 03:42:28');
+(1, 1, 1, 71, 'App\\Overrides\\Models\\Account', NULL, NULL, '2022-04-11 03:42:28', '2022-04-11 03:42:28');

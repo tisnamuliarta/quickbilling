@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\Warehouse;
 use IFRS\Models\Account;
 use IFRS\Models\Vat;
 
@@ -15,6 +16,20 @@ trait Financial
     public function getTaxIdByName($name): int
     {
         $tax = Vat::where('name', $name)->first();
+        if ($tax) {
+            return $tax->id;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param $name
+     * @return int
+     */
+    public function getWhsIdByName($name): int
+    {
+        $tax = Warehouse::where('code', $name)->first();
         if ($tax) {
             return $tax->id;
         }

@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Financial\AccountMapping;
-use Illuminate\Console\Command;
 use IFRS\Models\ReportingPeriod;
+use Illuminate\Console\Command;
 
 class CreateMapping extends Command
 {
@@ -51,12 +51,13 @@ class CreateMapping extends Command
                 'name' => $option_name,
                 'type' => $option_type,
                 'account_id' => 0,
-                'reporting_period_id' => $reporting_period->id
+                'reporting_period_id' => $reporting_period->id,
             ]);
             $this->info('Account mapping created successfully!');
         } else {
             $this->error('Account mapping name already exist!');
         }
+
         return 0;
     }
 }

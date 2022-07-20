@@ -27,7 +27,7 @@ class ProspectiveStudentGeneralExport implements FromView, WithTitle, ShouldAuto
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function view(): View
     {

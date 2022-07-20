@@ -6,6 +6,7 @@ use App\Models\Financial\Account;
 use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Item extends Model
 {
@@ -28,61 +29,61 @@ class Item extends Model
     ];
 
     protected $appends = [
-        'whs_name'
+        'whs_name',
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(ItemCategory::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function salesAccount()
+    public function salesAccount(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'revenue_account_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function purchaseAccount()
+    public function purchaseAccount(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'expense_account_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function inventoryAccounts()
+    public function inventoryAccounts(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'inventory_account');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function salesTax()
+    public function salesTax(): BelongsTo
     {
         return $this->belongsTo(Vat::class, 'sell_tax_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function purchaseTax()
+    public function purchaseTax(): BelongsTo
     {
         return $this->belongsTo(Vat::class, 'buy_tax_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function contact()
+    public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
     }
@@ -90,6 +91,7 @@ class Item extends Model
     public function getWhsNameAttribute()
     {
         $warehouse = Warehouse::first();
+
         return $warehouse->code;
     }
 }

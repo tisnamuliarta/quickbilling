@@ -15,9 +15,9 @@ return [
     'font_path' => storage_path('fonts/'),
     'font_data' => [
         'notosanssc' => [
-            'R'  => 'NotoSansSC-Regular.otf',    // regular font
-            'B'  => 'NotoSansSC-Bold.otf',       // optional: bold font
-            'I'  => 'NotoSansSC-Italic.otf',     // optional: italic font
+            'R' => 'NotoSansSC-Regular.otf',    // regular font
+            'B' => 'NotoSansSC-Bold.otf',       // optional: bold font
+            'I' => 'NotoSansSC-Italic.otf',     // optional: italic font
             //'useOTL' => 0xFF,    // required for complicated langs like Persian, Arabic and Chinese
             //'useKashida' => 75,  // required for complicated langs like Persian, Arabic and Chinese
         ],

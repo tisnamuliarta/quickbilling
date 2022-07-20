@@ -28,7 +28,7 @@ class DocumentService
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    public function index($request)
+    public function index($request): array
     {
         $type = (isset($request->type)) ? $request->type : '';
         $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
@@ -224,6 +224,7 @@ class DocumentService
             'unit' => $item['unit'],
             'tax_name' => (array_key_exists('tax_name', $item)) ? $item['tax_name'] : null,
             'vat_id' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'warehouse_id' => (array_key_exists('whs_name', $item)) ? $this->getWhsIdByName($item['whs_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
             'amount' => floatval($item['amount']),
         ];
@@ -244,7 +245,6 @@ class DocumentService
 
     /**
      * @param $document
-     * @param $tax
      * @param $item_detail
      * @return void
      */

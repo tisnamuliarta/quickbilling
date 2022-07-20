@@ -11,7 +11,9 @@
 namespace IFRS\Models;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\Warehouse;
 use App\Models\Transactions\Classification;
+use Carbon\Carbon;
 use IFRS\Exceptions\MultipleVatError;
 use IFRS\Exceptions\NegativeAmount;
 use IFRS\Exceptions\NegativeQuantity;
@@ -22,6 +24,8 @@ use IFRS\Traits\ModelTablePrefix;
 use IFRS\Traits\Recycling;
 use IFRS\Traits\Segregating;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -71,20 +75,25 @@ class LineItem extends Model implements Recyclable, Segregatable
         'base_line_id',
     ];
 
+    protected $appends = [
+        'code',
+        'whs_name',
+    ];
+
     /**
      * Line Item Vats
      *
      * @var array
      */
-    private $vats = [];
+    private array $vats = [];
 
     /**
      * Check if Vat already exists.
      *
-     * @param  int  $id
+     * @param  int|null  $id
      * @return int|false
      */
-    private function vatExists(int $id = null)
+    private function vatExists(int $id = null): bool|int
     {
         return collect($this->vats)->search(
             function ($vat, $key) use ($id) {
@@ -134,9 +143,10 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * Instance Identifier.
      *
+     * @param  bool  $type
      * @return string
      */
-    public function toString($type = false)
+    public function toString(bool $type = false): string
     {
         $classname = explode('\\', self::class);
         $description = $this->account->toString().' for '.$this->amount * $this->quantity;
@@ -147,9 +157,9 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * LineItem Ledgers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function ledgers()
+    public function ledgers(): HasMany
     {
         return $this->hasMany(Ledger::class, 'line_item_id', 'id');
     }
@@ -157,9 +167,9 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * LineItem Transaction.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
@@ -167,33 +177,33 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * LineItem Account.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function vat()
+    public function vat(): BelongsTo
     {
         return $this->belongsTo(Vat::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function classification()
+    public function classification(): BelongsTo
     {
         return $this->belongsTo(Classification::class);
     }
@@ -201,11 +211,35 @@ class LineItem extends Model implements Recyclable, Segregatable
     /**
      * LineItem Applied VATs.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function appliedVats()
+    public function appliedVats(): HasMany
     {
         return $this->hasMany(AppliedVat::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWhsNameAttribute(): mixed
+    {
+        return ($this->warehouse) ? $this->warehouse->code : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodeAttribute(): mixed
+    {
+        return ($this->item) ? $this->item->code : null;
     }
 
     /**
@@ -233,7 +267,7 @@ class LineItem extends Model implements Recyclable, Segregatable
      *
      * @return object
      */
-    public function attributes()
+    public function attributes(): object
     {
         return (object) $this->attributes;
     }
@@ -281,7 +315,7 @@ class LineItem extends Model implements Recyclable, Segregatable
      *
      * @return array
      */
-    public function getVats()
+    public function getVats(): array
     {
         foreach ($this->appliedVats as $appliedVat) {
             if ($this->vatExists($appliedVat->vat_id) === false) {

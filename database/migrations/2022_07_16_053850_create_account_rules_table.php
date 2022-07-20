@@ -37,7 +37,6 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
         });
 
-
         Schema::table('items', function (Blueprint $table) {
             $table->unsignedBigInteger('price_list_id')->nullable();
         });

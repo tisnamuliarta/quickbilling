@@ -103,8 +103,8 @@ function install_font_family($dompdf, $fontname, $normal, $bold = null, $italic 
     $path = "$dir/$file";
 
     $patterns = [
-        'bold'        => ['_Bold', 'b', 'B', 'bd', 'BD'],
-        'italic'      => ['_Italic', 'i', 'I'],
+        'bold' => ['_Bold', 'b', 'B', 'bd', 'BD'],
+        'italic' => ['_Italic', 'i', 'I'],
         'bold_italic' => ['_Bold_Italic', 'bi', 'BI', 'ib', 'IB'],
     ];
 

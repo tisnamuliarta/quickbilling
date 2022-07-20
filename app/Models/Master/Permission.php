@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends SpatiePermission
@@ -13,7 +14,7 @@ class Permission extends SpatiePermission
      */
     protected $guarded = [];
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(Permission::class, 'parent_id');
     }

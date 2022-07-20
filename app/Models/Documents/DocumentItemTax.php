@@ -5,6 +5,7 @@ namespace App\Models\Documents;
 use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -25,7 +26,10 @@ class DocumentItemTax extends Model implements Auditable
         'amount' => 'double',
     ];
 
-    public function tax()
+    /**
+     * @return BelongsTo
+     */
+    public function tax(): BelongsTo
     {
         return $this->belongsTo(Vat::class, 'tax_id', 'id');
     }

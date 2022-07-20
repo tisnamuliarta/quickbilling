@@ -12,21 +12,19 @@
     "ext-json": "*",
     "barryvdh/laravel-dompdf": "^1.0",
     "barryvdh/laravel-ide-helper": "^2.12",
-    "cknow/laravel-money": "^6.5",
     "ekmungai/eloquent-ifrs": "^5.0",
     "fruitcake/laravel-cors": "^2.0",
     "guzzlehttp/guzzle": "^7.2",
     "intervention/image": "^2.7",
     "kwn/number-to-words": "^2.2",
     "laravel/cashier": "^13.11",
-    "laravel/framework": "^9.13.0",
+    "laravel/framework": "^9.21.0",
     "laravel/sanctum": "^2.14",
     "laravel/scout": "^9.4",
     "laravel/tinker": "^2.7",
     "maatwebsite/excel": "^3.1",
     "madnest/madzipper": "^1.3",
-    "mll-lab/laravel-graphql-playground": "^2.6",
-    "niklasravnsborg/laravel-pdf": "^4.1",
+    "nunomaduro/larastan": "^2.1",
     "nuwave/lighthouse": "^5.57",
     "owen-it/laravel-auditing": "^12.2",
     "phpoffice/phpword": "^0.18.3",
@@ -35,14 +33,13 @@
     "scottlaurent/accounting": "^0.3.3",
     "simplesoftwareio/simple-qrcode": "^4.2",
     "spatie/laravel-backup": "^8.1",
-    "spatie/laravel-json-api-paginate": "^1.12",
     "spatie/laravel-permission": "^5.5",
     "spatie/laravel-tags": "^4.3",
     "squizlabs/php_codesniffer": "^3.6"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.1",
-    "laravel/pint": "^0.2.0",
+    "laravel/pint": "^1.0.0",
     "laravel/sail": "^1.0.1",
     "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^6.1",
@@ -53,13 +50,15 @@
       "/vendor/ekmungai/eloquent-ifrs/src/Models/Transaction.php",
       "/vendor/ekmungai/eloquent-ifrs/src/Models/LineItem.php",
       "/vendor/ekmungai/eloquent-ifrs/src/Models/Balance.php",
-      "/vendor/ekmungai/eloquent-ifrs/src/Models/Account.php"
+      "/vendor/ekmungai/eloquent-ifrs/src/Models/Account.php",
+      "/vendor/ekmungai/eloquent-ifrs/src/Reports/FinancialStatement.php"
     ],
     "psr-4": {
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/",
-      "IFRS\\Models\\": "app/Overrides/"
+      "IFRS\\Models\\": "app/Overrides/Models/",
+      "IFRS\\Reports\\": "app/Overrides/Reports/"
     }
   },
   "autoload-dev": {

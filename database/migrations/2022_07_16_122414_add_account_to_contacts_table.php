@@ -19,7 +19,6 @@ return new class extends Migration
             $table->boolean('is_clearing')->default(false);
         });
 
-
         Schema::table('resources', function (Blueprint $table) {
             $table->unsignedBigInteger('std_cost_account_1')->nullable();
             $table->unsignedBigInteger('std_cost_account_2')->nullable();

@@ -115,13 +115,13 @@ return [
      |
      */
     'aging_schedule_brackets' => [
-        'current'           => 30,
-        '1 - 15 days'      => 15,
-        '31 - 90 days'      => 90,
-        '91 - 180 days'     => 180,
-        '181 - 270 days'    => 270,
-        '271 - 365 days'    => 365,
-        '365+ (bad debts)' =>  null,
+        'current' => 30,
+        '1 - 15 days' => 15,
+        '31 - 90 days' => 90,
+        '91 - 180 days' => 180,
+        '181 - 270 days' => 270,
+        '271 - 365 days' => 365,
+        '365+ (bad debts)' => null,
     ],
 
     /*

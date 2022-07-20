@@ -35,18 +35,18 @@ return [
 
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_PDF_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64')),
+        'binary' => env('WKHTML_PDF_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64')),
         'timeout' => false,
         'options' => [],
-        'env'     => [],
+        'env' => [],
     ],
 
     'image' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_IMG_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64')),
+        'binary' => env('WKHTML_IMG_BINARY', base_path('vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64')),
         'timeout' => false,
         'options' => [],
-        'env'     => [],
+        'env' => [],
     ],
 
 ];

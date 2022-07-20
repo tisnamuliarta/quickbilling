@@ -11,7 +11,5 @@ class SalesPerson extends Model
 
     protected $guarded = [];
 
-    protected $primaryKey = 'sales_person_id';
-
     protected $table = 'sales_persons';
 }

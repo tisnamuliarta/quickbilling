@@ -8,6 +8,7 @@ use IFRS\Traits\IFRSUser;
 use IFRS\Traits\ModelTablePrefix;
 use IFRS\Traits\Recycling;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,7 +59,10 @@ class User extends Authenticatable implements Recyclable
         'email_verified_at' => 'datetime',
     ];
 
-    public function companies()
+    /**
+     * @return MorphToMany
+     */
+    public function companies(): MorphToMany
     {
         return $this->morphToMany(Company::class, 'user', 'user_companies', 'user_id', 'company_id');
     }
