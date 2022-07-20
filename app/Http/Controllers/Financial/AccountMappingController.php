@@ -5,19 +5,19 @@ namespace App\Http\Controllers\Financial;
 use App\Http\Controllers\Controller;
 use App\Models\Financial\Account;
 use App\Models\Financial\AccountMapping;
-use App\Services\Financial\AccountService;
+use App\Services\Financial\AccountMappingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccountMappingController extends Controller
 {
-    public AccountService $service;
+    public AccountMappingService $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(AccountService $service)
+    public function __construct(AccountMappingService $service)
     {
         $this->service = $service;
         //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -29,27 +29,37 @@ class AccountMappingController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        $mapping = AccountMapping::distinct()->select('type')->get();
+        $mapping = AccountMapping::select('*')
+            ->orderBy('type')
+            ->get();
         $result = [];
         foreach ($mapping as $item) {
             $result[] = [
+                'id' => $item->id,
+                'account_id' => $item->account_id,
                 'type' => $item->type,
-                'items' => AccountMapping::where('type', $item->type)->get(),
+                'name' => $item->name,
+                'account' => ($item->account) ? $item->account->code : null,
+                'account_name' => ($item->account) ? $item->account->name : null
             ];
         }
 
-        return $this->success($result);
+        return $this->success([
+            'data' => $result,
+            'colHeaders' => $this->service->colHeaders(),
+            'columns' => $this->service->columns(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -59,10 +69,13 @@ class AccountMappingController extends Controller
         DB::beginTransaction();
         $form = $request->all();
         try {
-            foreach ($form as $index => $item) {
-                AccountMapping::where('name', $index)
+            foreach ($form as $item) {
+                // throw new \Exception($item['id'], 1);
+                AccountMapping::where('id', $item['id'])
                     ->update([
-                        'account_id' => $item,
+                        'account_id' => $item['account_id'],
+                        'name' => $item['name'],
+                        'type' => $item['type'],
                     ]);
             }
 
@@ -84,7 +97,7 @@ class AccountMappingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return JsonResponse
      */
     public function show($id): JsonResponse
@@ -99,8 +112,8 @@ class AccountMappingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -117,7 +130,7 @@ class AccountMappingController extends Controller
 
         $form = $request->form;
         try {
-            Account::where('id', '=', $id)->update($this->service->formData($form));
+            Account::where('id', '=', $id)->update($this->service->formData($request));
 
             return $this->success([
                 'errors' => false,
@@ -133,7 +146,7 @@ class AccountMappingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse

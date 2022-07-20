@@ -6,6 +6,7 @@ use App\Traits\Accounting;
 use App\Traits\Categories;
 use IFRS\Models\Account;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 
 class AccountService
@@ -25,7 +26,7 @@ class AccountService
         $search = isset($request->search) ? (string) $request->search : '';
 
         $query = Account::with(['currency', 'category', 'balances'])
-            ->where('name', 'LIKE', '%'.$search.'%')
+            ->where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%'.$search.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
