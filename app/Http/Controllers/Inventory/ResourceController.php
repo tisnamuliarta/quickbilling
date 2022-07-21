@@ -4,24 +4,20 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\StoreItemRequest;
-use App\Models\File\File;
-use App\Models\Inventory\Item;
-use App\Services\Inventory\ItemService;
+use App\Models\Inventory\Resource;
 use App\Services\Inventory\ResourceService;
-use App\Traits\FileUpload;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ItemController extends Controller
+class ResourceController extends Controller
 {
-    use FileUpload;
-
-    public ItemService $service;
+    public ResourceService $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(ItemService $service)
+    public function __construct(ResourceService $service)
     {
         $this->service = $service;
         //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -34,9 +30,9 @@ class ItemController extends Controller
      * Display a listing of the resource.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $result = [];
         $result['form'] = $this->form('items');
@@ -58,17 +54,15 @@ class ItemController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreItemRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreItemRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreItemRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $category = $request->category;
-
-            $item = Item::create($this->service->formData($request, 'store'));
+            $item = Resource::create($this->service->formData($request, 'store'));
 
             // $this->processItemDetails($category, $item['id']);
 
@@ -90,11 +84,11 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show($product)
     {
-        $data = Item::find($product);
+        $data = Resource::find($product);
 
         return $this->success([
             'rows' => $data,
@@ -106,15 +100,15 @@ class ItemController extends Controller
      *
      * @param  StoreItemRequest  $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreItemRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(StoreItemRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $item = Item::where('id', '=', $id)
+            $item = Resource::where('id', '=', $id)
                 ->update($this->service->formData($request, 'update', $id));
 
             // $this->processItemDetails($category, $id);
@@ -138,11 +132,11 @@ class ItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy($id): JsonResponse
     {
-        $details = Item::find($id);
+        $details = Resource::find($id);
         if ($details) {
             $details->delete();
 
@@ -154,27 +148,5 @@ class ItemController extends Controller
         return $this->error('Row not found', 422, [
             'errors' => true,
         ]);
-    }
-
-    /**
-     * @param $category
-     * @param $id
-     * @return void
-     */
-    protected function processItemDetails($category, $id)
-    {
-        $this->service->processItemCategory($category, $id);
-
-        // this->checkFile($category, $id);
-    }
-
-    /**
-     * @param $request
-     * @param $id
-     * @return void
-     */
-    protected function checkFile($request, $id)
-    {
-        $file = File::where('fileable_type', 'item');
     }
 }

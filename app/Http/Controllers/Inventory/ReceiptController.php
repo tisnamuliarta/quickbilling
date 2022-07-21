@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Payroll;
+namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Payrolls\StoreEmployeeRequest;
-use App\Models\Payroll\Employee;
-use App\Services\Payroll\EmployeeService;
+use App\Models\Inventory\ReceiptProduction;
 use Illuminate\Http\Request;
+use App\Services\Inventory\ReceiptService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
 
-class EmployeeController extends Controller
+class ReceiptController extends Controller
 {
-    public EmployeeService $service;
+    public ReceiptService $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(EmployeeService $service)
+    public function __construct(ReceiptService $service)
     {
         $this->service = $service;
         //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -31,28 +31,13 @@ class EmployeeController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('employees');
-        $result['form']['status'] = 'active';
-
-        $result['itemGender'] = [
-            ['id' => 1, 'name' => __('Male')],
-            ['id' => 2, 'name' => __('Female')],
-        ];
-
-        $result['paymentMethod'] = [
-            ['id' => 1, 'name' => __('Cash')],
-            ['id' => 2, 'name' => __('Direct Deposit')],
-        ];
-
-        $result['payFrequency'] = ['Per Week', 'Per Month', 'Per Quarter'];
-
-        $result['payType'] = ['Salary', 'Per Hour', 'Commission'];
-
+        $result['form'] = $this->form('production_receipts');
+        $result['form']['transaction_type'] = 'receipt';
         $collection = collect($this->service->index($request));
-        $result = $collection->merge($result);
+        $result = $collection->merge($collection);
 
         return $this->success($result->all());
     }
@@ -60,16 +45,16 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreEmployeeRequest  $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreEmployeeRequest $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): JsonResponse
     {
         DB::beginTransaction();
         try {
-            Employee::create($this->service->formData($request, 'store'));
+            ReceiptProduction::create($this->service->formData($request, 'store'));
 
             DB::commit();
 
@@ -92,29 +77,30 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
-        $data = Employee::find($id);
+        $data = ReceiptProduction::find($id);
 
         return $this->success([
-            'data' => $data,
+            'rows' => $data,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreEmployeeRequest  $request
+     * @param  Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreEmployeeRequest $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
-            Employee::where('id', '=', $id)->update($this->service->formData($request, 'update'));
+            ReceiptProduction::where('id', '=', $id)->update($this->service->formData($request, 'update'));
+
             DB::commit();
 
             return $this->success([
@@ -136,9 +122,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy($id): JsonResponse
     {
-        $details = Employee::find($id);
+        $details = ReceiptProduction::find($id);
         if ($details) {
             $details->delete();
 

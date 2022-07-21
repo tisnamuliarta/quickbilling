@@ -5,21 +5,15 @@ namespace App\Models\Inventory;
 use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Resource extends Model
+class ReceiptLine extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function account(): BelongsTo
+    public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    public function warehouse(): BelongsTo
-    {
-        return $this->belongsTo(Warehouse::class);
     }
 }

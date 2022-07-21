@@ -17,12 +17,17 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('item_id');
             $table->unsignedBigInteger('price_list_id');
-            $table->decimal('');
+            $table->decimal('price', 13, 4);
             $table->timestamps();
         });
 
         Schema::table('items', function (Blueprint $table) {
             $table->enum('item_type', ['purchase', 'sales', 'inventory'])->nullable();
+            $table->unsignedBigInteger('resource_id')->nullable();
+        });
+
+        Schema::table('resources', function (Blueprint $table) {
+            $table->unsignedBigInteger('employee_id')->nullable();
         });
     }
 
