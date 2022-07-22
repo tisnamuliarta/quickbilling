@@ -12,6 +12,8 @@ class ReceiptLine extends Model
 
     protected $guarded = [];
 
+    protected $table = 'receipt_items';
+
     public function account()
     {
         return $this->belongsTo(Account::class);

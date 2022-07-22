@@ -3,6 +3,7 @@
 namespace App\Models\Productions;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\Resource;
 use App\Models\Inventory\Warehouse;
 use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +21,16 @@ class ProductionItem extends Model
         'account_code',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'amount' => 'double',
+        'price' => 'double',
+    ];
+
     public function account()
     {
         return $this->belongsTo(Account::class);
@@ -32,7 +43,7 @@ class ProductionItem extends Model
 
     public function item()
     {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(Resource::class, 'item_id');
     }
 
     /**

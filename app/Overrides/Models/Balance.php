@@ -10,7 +10,6 @@
 
 namespace IFRS\Models;
 
-use App\Overrides\Models\Account;
 use Carbon\Carbon;
 use IFRS\Exceptions\InvalidAccountClassBalance;
 use IFRS\Exceptions\InvalidBalanceDate;
@@ -99,11 +98,11 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
      */
     public function __construct($attributes = [])
     {
-        if (! isset($attributes['transaction_type'])) {
+        if (!isset($attributes['transaction_type'])) {
             $attributes['transaction_type'] = Transaction::JN;
         }
 
-        if (! isset($attributes['balance_type'])) {
+        if (!isset($attributes['balance_type'])) {
             $attributes['balance_type'] = Balance::DEBIT;
         }
 
@@ -111,20 +110,9 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
     }
 
     /**
-     * Get Human Readable Balance Type.
-     *
-     * @param  string  $type
-     * @return string
-     */
-    public static function getType(string $type): string
-    {
-        return config('ifrs')['balances'][$type];
-    }
-
-    /**
      * Get Human Readable Balance types
      *
-     * @param  array  $types
+     * @param array $types
      * @return array
      */
     public static function getTypes(array $types): array
@@ -139,17 +127,28 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
     }
 
     /**
+     * Get Human Readable Balance Type.
+     *
+     * @param string $type
+     * @return string
+     */
+    public static function getType(string $type): string
+    {
+        return config('ifrs')['balances'][$type];
+    }
+
+    /**
      * Instance Identifier.
      *
-     * @param  bool  $type
+     * @param bool $type
      * @return string
      */
     public function toString(bool $type = false): string
     {
         $classname = explode('\\', self::class);
-        $description = $this->account->toString().' for year '.$this->reportingPeriod->calendar_year;
+        $description = $this->account->toString() . ' for year ' . $this->reportingPeriod->calendar_year;
 
-        return $type ? $this->type.' '.array_pop($classname).': '.$description : $description;
+        return $type ? $this->type . ' ' . array_pop($classname) . ': ' . $description : $description;
     }
 
     /**
@@ -257,13 +256,13 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
      */
     public function attributes(): object
     {
-        return (object) $this->attributes;
+        return (object)$this->attributes;
     }
 
     /**
      * Balance Validation.
      *
-     * @param  array  $options
+     * @param array $options
      * @return bool
      *
      * @throws InvalidAccountClassBalance
@@ -281,14 +280,14 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
             $entity = Entity::where('id', '=', $this->entity_id)->first();
         }
 
-        if (! is_null($entity)) {
+        if (!is_null($entity)) {
             $reportingPeriod = $entity->current_reporting_period;
 
-            if (! isset($this->reporting_period_id)) {
+            if (!isset($this->reporting_period_id)) {
                 $this->reporting_period_id = $reportingPeriod->id;
             }
 
-            if (! isset($this->exchange_rate_id)) {
+            if (!isset($this->exchange_rate_id)) {
                 $this->exchange_rate_id = $entity->default_rate->id;
             }
         }
@@ -297,11 +296,11 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
             throw new NegativeAmount('Balance');
         }
 
-        if (! in_array($this->transaction_type, Assignment::CLEARABLES)) {
+        if (!in_array($this->transaction_type, Assignment::CLEARABLES)) {
             throw new InvalidBalanceTransaction(Assignment::CLEARABLES);
         }
 
-        if (! in_array($this->balance_type, [Balance::DEBIT, Balance::CREDIT])) {
+        if (!in_array($this->balance_type, [Balance::DEBIT, Balance::CREDIT])) {
             throw new InvalidBalanceType([Balance::DEBIT, Balance::CREDIT]);
         }
 
@@ -314,18 +313,18 @@ class Balance extends Model implements Recyclable, Clearable, Segregatable
             throw new InvalidCurrency('Balance', $this->account);
         }
 
-        if (ReportingPeriod::periodStart(null, $entity)->lt($this->transaction_date) && ! $entity->mid_year_balances) {
+        if (ReportingPeriod::periodStart(null, $entity)->lt($this->transaction_date) && !$entity->mid_year_balances) {
             throw new InvalidBalanceDate();
         }
 
-        if (! isset($this->currency_id)) {
+        if (!isset($this->currency_id)) {
             $this->currency_id = $this->account->currency_id;
         }
 
-        if (! isset($this->transaction_no)) {
+        if (!isset($this->transaction_no)) {
             $currency = $this->currency->currency_code;
             $year = ReportingPeriod::find($this->reporting_period_id)->calendar_year;
-            $this->transaction_no = $this->account_id.$currency.$year;
+            $this->transaction_no = $this->account_id . $currency . $year;
         }
 
         $this->balance *= $this->exchangeRate->rate;

@@ -2,7 +2,6 @@
 
 namespace App\Services\Inventory;
 
-use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemCategory;
 use App\Models\Inventory\Resource;
 use App\Traits\Categories;
@@ -24,17 +23,18 @@ class ResourceService
      */
     public function index($request)
     {
-        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 20;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 20;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
-        $data_status = isset($request->dataStatus) ? (string) $request->dataStatus : 'open';
+        $data_status = isset($request->dataStatus) ? (string)$request->dataStatus : 'open';
 
-        $search = isset($request->q) ? (string) $request->q : '';
-        $select_data = isset($request->selectData) ? (string) $request->selectData : 'name';
+        $search = isset($request->q) ? (string)$request->q : '';
+        $select_data = isset($request->selectData) ? (string)$request->selectData : 'name';
 
         $query = Resource::with([
-                'warehouse', 'account',
-            ])
+            'warehouse', 'account',
+        ])
+            ->where(DB::raw("CONCAT(name, ' ', code)"), 'LIKE', '%'.$search.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -44,49 +44,29 @@ class ResourceService
     /**
      * @param $request
      * @param $type
-     * @param  null  $id
+     * @param null $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
     {
-        $request->mergeIfMissing([
-            'entity_id' => auth()->user()->entity_id,
-        ]);
         $data = $request->all();
 
         Arr::forget($data, 'default_currency_code');
         Arr::forget($data, 'default_currency_symbol');
-        Arr::forget($data, 'category');
-        Arr::forget($data, 'categories');
-        Arr::forget($data, 'sales_account');
-        Arr::forget($data, 'purchase_account');
-        Arr::forget($data, 'ACTIONS');
-        Arr::forget($data, 'average_price');
-        Arr::forget($data, 'last_buy_price');
-        Arr::forget($data, 'sell_tax_name');
-        Arr::forget($data, 'buy_tax_name');
-        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'id');
         Arr::forget($data, 'created_at');
+        Arr::forget($data, 'updated_at');
         Arr::forget($data, 'deleted_at');
-        Arr::forget($data, 'group_name');
-        Arr::forget($data, 'inventory_account_name');
-        Arr::forget($data, 'sales_tax');
-        Arr::forget($data, 'purchase_tax');
-        Arr::forget($data, 'contact');
-        Arr::forget($data, 'inventory_accounts');
+        Arr::forget($data, 'warehouse');
+        Arr::forget($data, 'account');
+        Arr::forget($data, 'whs_code');
 
-        $data['image'] = '';
-        $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;
-        $data['quantity'] = (isset($request->quantity)) ? $request->quantity : 0;
-        $data['minimum_stock'] = (isset($request->minimum_stock)) ? $request->minimum_stock : 0;
-        $data['tract_stock'] = (isset($request->tract_stock)) ? $request->tract_stock : 0;
-        $data['enabled'] = (isset($request->enabled)) ? $request->enabled : true;
-        $data['sell_tax_id'] = (isset($request->sell_tax_id)) ? $request->sell_tax_id : 0;
+        $data['account_id'] = $data['std_cost_account_1'];
 
         if ($type == 'store') {
-            $data['created_by'] = $request->user()->id;
+            $data['issue_method'] = 'backflush';
             $data['code'] = (isset($request->code)) ? $request->code :
-                $this->generateDocNum(date('Y-m-d H:i:s'), 'ITM');
+                $this->generateDocNum(date('Y-m-d H:i:s'), 'RS');
         }
 
         return $data;
@@ -103,11 +83,11 @@ class ResourceService
 
         $day_val = date('j', $data_date);
 
-        if ((int) $day_val === 1) {
-            $document = Str::upper($alias).'-'.sprintf('%05s', '1');
-            $check_document = Item::where('code', '=', $document)->first();
-            if (! $check_document) {
-                return Str::upper($alias).'-'.sprintf('%05s', '1');
+        if ((int)$day_val === 1) {
+            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
+            $check_document = Resource::where('code', '=', $document)->first();
+            if (!$check_document) {
+                return Str::upper($alias) . '-' . sprintf('%05s', '1');
             } else {
                 //ITM-xxxxx
                 return $this->itemCode($data_date, $alias);
@@ -132,16 +112,16 @@ class ResourceService
         $first_date = "${full_year}-${month}-01";
         $second_date = "${full_year}-${month}-${end_date}";
 
-        $doc_num = Item::selectRaw('code')
+        $doc_num = Resource::selectRaw('code')
             ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
             ->orderBy('code', 'DESC')
             ->first();
 
         $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int) substr($number, 4, 9);
+        $clear_doc_num = (int)substr($number, 4, 9);
         $number = $clear_doc_num + 1;
 
-        return Str::upper($alias).'-'.sprintf('%05s', $number);
+        return Str::upper($alias) . '-' . sprintf('%05s', $number);
     }
 
     /**

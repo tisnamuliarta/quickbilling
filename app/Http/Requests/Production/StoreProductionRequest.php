@@ -25,6 +25,7 @@ class StoreProductionRequest extends FormRequest
     {
         return [
             'transaction_no' => 'required',
+            'narration' => 'required',
         ];
     }
 
@@ -37,6 +38,7 @@ class StoreProductionRequest extends FormRequest
     {
         return [
             'transaction_no.required' => __('validation')['required'],
+            'narration.required' => __('validation')['required'],
         ];
     }
 }

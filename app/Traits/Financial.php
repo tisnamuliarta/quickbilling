@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Inventory\Item;
+use App\Models\Inventory\Resource;
 use App\Models\Inventory\Warehouse;
 use IFRS\Models\Account;
 use IFRS\Models\Vat;
@@ -55,6 +56,16 @@ trait Financial
     }
 
     /**
+     * @param $name
+     * @return mixed
+     */
+    public function getResourceById($name): mixed
+    {
+        return Resource::where('id', $name)
+            ->first();
+    }
+
+    /**
      * @param $item_id
      * @param $type
      * @return int
@@ -63,9 +74,9 @@ trait Financial
     {
         $item = Item::where('id', $item_id)->first();
         if ($type == 'purchase') {
-            $item_type = $item->buy_account_id;
+            $item_type = $item->expense_account_id;
         } else {
-            $item_type = $item->sell_account_id;
+            $item_type = $item->revenue_account_id;
         }
         $account = Account::where('id', $item_type)
             ->first();

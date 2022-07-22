@@ -8,6 +8,7 @@ use App\Models\File\File;
 use App\Models\Inventory\Item;
 use App\Services\Inventory\ItemService;
 use App\Services\Inventory\ResourceService;
+use App\Traits\Accounting;
 use App\Traits\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ItemController extends Controller
 {
     use FileUpload;
+    use Accounting;
 
     public ItemService $service;
 
@@ -43,9 +45,9 @@ class ItemController extends Controller
         $result['form']['temp_id'] = mt_rand(100000, 999999999999);
         $result['form']['is_sell'] = true;
         $result['form']['is_purchase'] = false;
-        $result['form']['inventory_account'] = 8;
-        $result['form']['sell_account_id'] = 124;
-        $result['form']['buy_account_id'] = 125;
+        $result['form']['inventory_account'] = $this->accountByName('Inventory Account');
+        $result['form']['revenue_account_id'] = $this->accountByName('Sales of Product Income');
+        $result['form']['expense_account_id'] = $this->accountByName('Cost of Goods Sold');
         $result['url'] = url('/');
 
         $collection = collect($this->service->index($request));

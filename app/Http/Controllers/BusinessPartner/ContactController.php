@@ -11,6 +11,7 @@ use App\Models\Inventory\ContactEmail;
 use App\Services\Financial\AccountService;
 use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,9 +37,9 @@ class ContactController extends Controller
      * Display a listing of the resource.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $type = isset($request->type) ? (string) $request->type : 'index';
         $result = [];
@@ -67,11 +68,11 @@ class ContactController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreContactRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreContactRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreContactRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -105,6 +106,7 @@ class ContactController extends Controller
      *
      * @param request The request object
      * @param contact The contact array returned from the storeContact method.
+     * @throws \Exception
      */
     protected function processDetails($request, $contact)
     {
@@ -131,9 +133,9 @@ class ContactController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
         $data = Contact::where('id', '=', $id)
             ->first();
@@ -165,11 +167,11 @@ class ContactController extends Controller
      *
      * @param  StoreContactRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreContactRequest $request, int $id)
+    public function update(StoreContactRequest $request, int $id): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -201,9 +203,9 @@ class ContactController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy($id): JsonResponse
     {
         $details = Contact::where('id', '=', $id)->first();
         if ($details) {

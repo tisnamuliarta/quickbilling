@@ -13,6 +13,10 @@ class Resource extends Model
 
     protected $guarded = [];
 
+    protected $appends = [
+        'whs_code',
+    ];
+
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
@@ -21,5 +25,10 @@ class Resource extends Model
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function getWhsCodeAttribute()
+    {
+        return ($this->warehouse) ? $this->warehouse->code : null;
     }
 }

@@ -43,6 +43,10 @@ class ItemUnitService
         Arr::forget($data, 'destroyed_at');
         Arr::forget($data, 'id');
 
+        if ($type == 'store') {
+            $data['price_list_id'] = 0;
+        }
+
         return $data;
     }
 

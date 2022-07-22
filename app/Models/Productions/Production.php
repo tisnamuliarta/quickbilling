@@ -21,6 +21,16 @@ class Production extends Model implements Auditable
 
     protected $appends = [
         'item_name',
+        'commission_rate'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'main_account_amount' => 'double',
     ];
 
     /**
@@ -55,5 +65,10 @@ class Production extends Model implements Auditable
     public function getItemNameAttribute(): mixed
     {
         return ($this->item) ? $this->item->name : null;
+    }
+
+    public function getCommissionRateAttribute()
+    {
+        return ($this->item) ? $this->item->commision_rate : null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Financial;
 
+use App\Models\Financial\AccountMapping;
 use IFRS\Models\Currency;
 use Illuminate\Support\Arr;
 
@@ -18,19 +19,25 @@ class AccountMappingService
         $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
-        $query = Currency::select('*')
+        $query = AccountMapping::select('*')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
         return $query;
     }
 
-    public function colHeaders()
+    /**
+     * @return string[]
+     */
+    public function colHeaders(): array
     {
         return ['ID', 'ACCOUNT ID', 'TYPE', 'NAME', '', 'ACCOUNT', 'ACCOUNT NAME'];
     }
 
-    public function columns()
+    /**
+     * @return array
+     */
+    public function columns(): array
     {
         return [
             [
@@ -73,7 +80,6 @@ class AccountMappingService
 
     /**
      * @param $request
-     * @param $type
      * @return array
      */
     public function formData($request): array
@@ -93,5 +99,14 @@ class AccountMappingService
         Arr::forget($data, 'entity');
 
         return $data;
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getAccountByName($name): mixed
+    {
+        return AccountMapping::where('name', $name)->first();
     }
 }

@@ -49,6 +49,7 @@ class ItemService
                 'purchaseTax',
                 'contact',
             ])
+            ->where(DB::raw("CONCAT(name, ' ', code)"), 'LIKE', '%'.$search.'%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 

@@ -35,13 +35,7 @@ class ResourceController extends Controller
     public function index(Request $request): JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('items');
-        $result['form']['temp_id'] = mt_rand(100000, 999999999999);
-        $result['form']['is_sell'] = true;
-        $result['form']['is_purchase'] = false;
-        $result['form']['inventory_account'] = 8;
-        $result['form']['sell_account_id'] = 124;
-        $result['form']['buy_account_id'] = 125;
+        $result['form'] = $this->form('resources');
         $result['url'] = url('/');
 
         $collection = collect($this->service->index($request));

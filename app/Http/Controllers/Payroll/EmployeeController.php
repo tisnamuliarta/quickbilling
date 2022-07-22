@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payrolls\StoreEmployeeRequest;
+use App\Models\Financial\Category;
 use App\Models\Payroll\Employee;
+use App\Services\Financial\AccountService;
 use App\Services\Payroll\EmployeeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,8 +31,8 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function index(Request $request)
     {
@@ -60,16 +63,18 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreEmployeeRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param StoreEmployeeRequest $request
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreEmployeeRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreEmployeeRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
             Employee::create($this->service->formData($request, 'store'));
+
+            $this->processDetails($request);
 
             DB::commit();
 
@@ -89,10 +94,10 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
         $data = Employee::find($id);
 
@@ -104,17 +109,20 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreEmployeeRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param StoreEmployeeRequest $request
+     * @param int $id
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreEmployeeRequest $request, $id)
+    public function update(StoreEmployeeRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
             Employee::where('id', '=', $id)->update($this->service->formData($request, 'update'));
+
+            $this->processDetails($request);
+
             DB::commit();
 
             return $this->success([
@@ -133,10 +141,10 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy($id): JsonResponse
     {
         $details = Employee::find($id);
         if ($details) {
@@ -150,5 +158,21 @@ class EmployeeController extends Controller
         return $this->error('Row not found', 422, [
             'errors' => true,
         ]);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function processDetails($request)
+    {
+        $accountService = new AccountService();
+        $accountType = 'OPERATING_EXPENSE';
+        $accountCategory = Category::where('name', 'Cost of labor - COS')->first();
+
+        $accountService->createAccount(
+            $request->first_name . ' ' . $request->last_name,
+            $accountType,
+            $accountCategory->id
+        );
     }
 }

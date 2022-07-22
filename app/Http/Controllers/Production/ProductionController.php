@@ -94,8 +94,6 @@ class ProductionController extends Controller
     public function store(StoreProductionRequest $request): JsonResponse
     {
         $items = collect($request->line_items);
-        $tax_details = collect($request->tax_details);
-        $sales_persons = collect($request->sales_persons);
 
         $validate_details = $this->validateDetails($items);
         if ($validate_details['error']) {
@@ -107,7 +105,7 @@ class ProductionController extends Controller
             // return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = Production::create($this->service->formData($request, 'store'));
 
-            $this->service->processItems($items, $document, $tax_details);
+            $this->service->processItems($items, $document);
 
             if ($document->base_id) {
                 $doc = Production::find($document->base_id);
@@ -115,6 +113,10 @@ class ProductionController extends Controller
                     $doc->status = 'closed';
                     $doc->save();
                 }
+            }
+
+            if ($document->status == 'closed') {
+                $this->service->processIssue($document, $items);
             }
 
             DB::commit();
@@ -153,10 +155,10 @@ class ProductionController extends Controller
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
             }
 
-            if (empty($detail['quantity'])) {
+            if (empty($detail['base_qty'])) {
                 return ['error' => true, 'message' => "Line ${lines}: Quantity cannot empty!"];
             }
-            if ($detail['quantity'] == 0) {
+            if ($detail['base_qty'] == 0) {
                 return ['error' => true, 'message' => "Line ${lines}: Quantity cannot 0!"];
             }
         }
@@ -227,7 +229,6 @@ class ProductionController extends Controller
         try {
             $document = Production::find($id);
             $items = collect($request->line_items);
-            $tax_details = collect($request->tax_details);
 
             $validate_details = $this->validateDetails($items);
             if ($validate_details['error']) {
@@ -240,7 +241,12 @@ class ProductionController extends Controller
             }
             $document->save();
 
-            $this->service->processItems($items, $document, $tax_details);
+            $this->service->processItems($items, $document);
+
+            if ($document->status == 'closed') {
+                $this->service->processIssue($document, $items);
+            }
+
             DB::commit();
 
             return $this->success([
