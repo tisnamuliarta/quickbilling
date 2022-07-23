@@ -31,8 +31,8 @@ class TransactionService
     public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'transaction_no';
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $model = $this->mappingTable($type);
@@ -160,42 +160,63 @@ class TransactionService
                 ->where('entity_id', '=', $entity->id)
                 ->count() + 1;
 
-        return $alias.'-'.str_pad((string) $periodCount, 2, '0', STR_PAD_LEFT)
-            .$month.
-            str_pad((string) $nextId, 5, '0', STR_PAD_LEFT);
+        return $alias . '-' . str_pad((string)$periodCount, 2, '0', STR_PAD_LEFT)
+            . $month .
+            str_pad((string)$nextId, 5, '0', STR_PAD_LEFT);
     }
 
     /**
      * @param $request
      * @param $type
-     * @param  null  $id
+     * @param null $id
      * @return array
      */
     public function formData($request, $type, $id = null): array
     {
-        $request->merge([
-            'narration' => $request->notes,
-            'main_account_amount' => $request->amount,
-            'reference' => $request->reference_no,
-        ]);
-
-        $request->request->remove('items');
-        $request->request->remove('tax_details');
-        $request->request->remove('id');
-        $request->request->remove('created_at');
-        $request->request->remove('updated_at');
-        $request->request->remove('deleted_at');
-        $request->request->remove('currency');
-        $request->request->remove('entity');
-        $request->request->remove('parent');
-        $request->request->remove('child');
-
         $data = $request->all();
 
+        if ($data['action'] == 'saveDraft') {
+            $data['status'] = 'draft';
+        } else {
+            $data['status'] = 'open';
+        }
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
-            $data['status'] = 'draft';
         }
+
+        Arr::forget($data, 'items');
+        Arr::forget($data, 'tax_details');
+        Arr::forget($data, 'id');
+        Arr::forget($data, 'created_at');
+        Arr::forget($data, 'updated_at');
+        Arr::forget($data, 'deleted_at');
+        Arr::forget($data, 'currency');
+        Arr::forget($data, 'entity');
+        Arr::forget($data, 'parent');
+        Arr::forget($data, 'child');
+        Arr::forget($data, 'line_items');
+        Arr::forget($data, 'sales_person');
+        Arr::forget($data, 'amount');
+        Arr::forget($data, 'contact');
+        Arr::forget($data, 'ledgers');
+        Arr::forget($data, 'date');
+        Arr::forget($data, 'vat');
+        Arr::forget($data, 'type');
+        Arr::forget($data, 'isPosted');
+        Arr::forget($data, 'isCredited');
+        Arr::forget($data, 'assignable');
+        Arr::forget($data, 'clearable');
+        Arr::forget($data, 'hasIntegrity');
+        Arr::forget($data, 'clearances');
+        Arr::forget($data, 'assignments');
+        Arr::forget($data, 'withholding_amount');
+        Arr::forget($data, 'discount_per_line');
+        Arr::forget($data, 'sub_total');
+        Arr::forget($data, 'action');
+        Arr::forget($data, 'sales_person');
+        Arr::forget($data, 'taxDetails');
+
+        $data['narration'] = $data['notes'];
 
         return $data;
     }
@@ -209,7 +230,7 @@ class TransactionService
     public function processItems($items, $document, $tax_details)
     {
         foreach ($items as $item) {
-            if (! array_key_exists('tax_name', $item)) {
+            if (!array_key_exists('tax_name', $item)) {
                 $item['tax_name'] = null;
             }
 
@@ -236,7 +257,9 @@ class TransactionService
                 $this->processItemTax($document, $tax_detail, $item_detail);
             }
         }
-        $document->post();
+        if ($document->status == 'open') {
+            $document->post();
+        }
     }
 
     /**
@@ -252,13 +275,13 @@ class TransactionService
             'account_id' => $this->detailAccountId($document->transaction_type, $item),
             'transaction_id' => $document->id,
             'item_id' => $item['item_id'],
-            'name' => $item['name'],
-            'narration' => $item['description'],
-            'sku' => $item['sku'],
+            'narration' => $item['narration'],
+            'sku' => $item['unit'],
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
-            'unit' => $item['unit'],
+            //'unit' => $item['unit'],
             'vat_id' => (Arr::exists($item, 'tax_name')) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'warehouse_id' => (Arr::exists($item, 'whs_name')) ? $this->getWhsIdByName($item['whs_name']) : 0,
             'vat_inclusive' => array_key_exists('tax_name', $item),
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
             'amount' => floatval($item['amount']),
@@ -303,7 +326,7 @@ class TransactionService
                 ],
                 [
                     'entity_id' => $document->entity_id,
-                    'type' => $document->type,
+                    'type' => $document->transaction_type,
                     'document_id' => $document->id,
                     'document_item_id' => $item_detail->id,
                     'tax_id' => $this->getTaxIdByName($tax['name']),
@@ -364,7 +387,7 @@ class TransactionService
             foreach ($sales_persons as $sales_person) {
                 $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;
                 SalesPerson::updateOrCreate([
-                    'document_type' => $document->type,
+                    'document_type' => $document->transaction_type,
                     'user_id' => $user_id,
                     'document_id' => $document->id,
                 ]);
@@ -384,7 +407,7 @@ class TransactionService
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
         $query = Document::where('type', $action)
-            ->whereIn('parent_id', (array) $parent_id);
+            ->whereIn('parent_id', (array)$parent_id);
 
         return [
             'title' => $title,

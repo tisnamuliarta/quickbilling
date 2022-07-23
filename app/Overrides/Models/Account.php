@@ -122,6 +122,10 @@ class Account extends Model implements Recyclable, Segregatable
         'code',
     ];
 
+//    protected $appends = [
+//        'balance',
+//    ];
+
     /**
      * Get Human Readable Account types
      *
@@ -320,6 +324,14 @@ class Account extends Model implements Recyclable, Segregatable
 
         return (object) $this->attributes;
     }
+
+//    /**
+//     * @throws \IFRS\Exceptions\MissingReportingPeriod
+//     */
+//    public function getBalanceAttribute()
+//    {
+//        return ($this->closingBalance()[1]) ? $this->closingBalance()[1] : 0;
+//    }
 
     /**
      * Get Account's Closing Balances for the Reporting Period.

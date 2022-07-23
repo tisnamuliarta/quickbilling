@@ -78,7 +78,8 @@ class Document extends Model implements Auditable
      */
     public function taxDetails(): HasMany
     {
-        return $this->hasMany(DocumentItemTax::class);
+        return $this->hasMany(DocumentItemTax::class)
+            ->where('type', '=', $this->transaction_type);
     }
 
     /**
@@ -143,7 +144,8 @@ class Document extends Model implements Auditable
      */
     public function salesPerson(): HasMany
     {
-        return $this->hasMany(SalesPerson::class);
+        return $this->hasMany(SalesPerson::class)
+            ->where('document_type', '=', $this->transaction_type);
     }
 
     // this is a recommended way to declare event handlers

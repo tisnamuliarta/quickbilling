@@ -62,6 +62,7 @@ class TransactionController extends Controller
 
         DB::beginTransaction();
         try {
+            //return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = $model::create($this->service->formData($request, 'store'));
 
             if ($document->parent_id !== 0) {
@@ -113,7 +114,7 @@ class TransactionController extends Controller
             }
             $model = $this->service->mappingTable($type);
             $data = $model::where('id', $id)
-                ->with(['entity', 'lineItems', 'contact'])
+                ->with(['entity', 'lineItems', 'lineItems.vat', 'contact', 'salesPerson', 'taxDetails'])
                 ->first();
 
             return $this->success([
@@ -141,11 +142,11 @@ class TransactionController extends Controller
      */
     public function update(StoreTransactionRequest $request, int $id): JsonResponse
     {
-        $type = $request->type;
+        $type = $request->transaction_type;
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
-        $sales_persons = collect($request->sales_persons);
+        $sales_persons = collect($request->sales_person);
 
         try {
             // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));

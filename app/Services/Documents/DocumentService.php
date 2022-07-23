@@ -166,6 +166,7 @@ class DocumentService
         Arr::forget($data, 'default_currency_code');
         Arr::forget($data, 'default_currency_symbol');
         Arr::forget($data, 'sales_person');
+        Arr::forget($data, 'action');
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;

@@ -10,6 +10,7 @@
 
 namespace IFRS\Models;
 
+use App\Models\Documents\DocumentItemTax;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use Carbon\Carbon;
@@ -139,6 +140,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'balance_due',
         'status',
         'classification_id',
+        'reference_no',
     ];
 
     protected $dates = [
@@ -169,6 +171,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'deposit' => 'double',
         'main_account_amount' => 'double',
         'transaction_date' => 'datetime:Y-m-d',
+        'due_date' => 'datetime:Y-m-d',
     ];
     /**
      * Compound Ledger entries for the transaction
@@ -329,7 +332,17 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      */
     public function salesPerson(): HasMany
     {
-        return $this->hasMany(SalesPerson::class, 'document_id');
+        return $this->hasMany(SalesPerson::class, 'document_id')
+            ->where('document_type', '=', $this->transaction_type);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function taxDetails(): HasMany
+    {
+        return $this->hasMany(DocumentItemTax::class, 'document_id')
+            ->where('type', '=', $this->transaction_type);
     }
 
     /**
@@ -513,9 +526,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function addLineItem(LineItem $lineItem): bool
     {
         if (in_array(
-                $lineItem->account->account_type,
-                config('ifrs.single_currency')
-            ) && $lineItem->account->currency_id != $this->currency_id) {
+            $lineItem->account->account_type,
+            config('ifrs.single_currency')
+        ) && $lineItem->account->currency_id != $this->currency_id) {
             throw new InvalidCurrency('Transaction', $lineItem->account);
         }
 

@@ -24,7 +24,7 @@ class StoreTransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            'document_number' => 'required',
+            'transaction_no' => 'required',
             'contact_id' => 'required',
             'notes' => 'required',
         ];
@@ -38,7 +38,7 @@ class StoreTransactionRequest extends FormRequest
     public function messages()
     {
         return [
-            'document_number.required' => __('validation')['required'],
+            'transaction_no.required' => __('validation')['required'],
             'contact_id.required' => __('document')['contactRequired'],
             'notes.required' => __('document')['narrationRequired'],
         ];
