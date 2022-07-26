@@ -37,7 +37,7 @@ class TaxController extends Controller
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('ifrs_vats');
+        $result['form'] = $this->form('vats');
         $collection = collect($this->service->index($request));
         $result = $collection->merge($result);
 

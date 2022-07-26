@@ -147,8 +147,6 @@ class DocumentService
             'contact_zip_code' => $contact->zip_code,
             'contact_city' => $contact->city,
         ]);
-        $request->request->remove('default_currency_code');
-        $request->request->remove('default_currency_symbol');
         $data = $request->all();
 
         Arr::forget($data, 'line_items');
@@ -217,9 +215,9 @@ class DocumentService
             'type' => $document->transaction_type,
             'document_id' => $document->id,
             'item_id' => $item['item_id'],
-            'name' => $item['name'],
+            'name' => $item['narration'],
             'narration' => $item['narration'],
-            'sku' => $item['sku'],
+            'sku' => $item['code'],
             'quantity' => floatval($item['quantity']),
             'price' => floatval($item['price']),
             'unit' => $item['unit'],
@@ -227,7 +225,8 @@ class DocumentService
             'vat_id' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'warehouse_id' => (array_key_exists('whs_name', $item)) ? $this->getWhsIdByName($item['whs_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => floatval($item['amount']),
+            'amount' => floatval($item['price']),
+            'sub_total' => floatval($item['sub_total']),
         ];
 
         if ($document->base_id && $type == 'store') {

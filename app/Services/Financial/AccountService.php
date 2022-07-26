@@ -25,8 +25,8 @@ class AccountService
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = isset($request->search) ? (string) $request->search : '';
 
-        $query = Account::with(['currency', 'category', 'balances'])
-            ->where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%'.$search.'%')
+        $query = Account::where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%'.$search.'%')
+            ->with(['currency', 'balances'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -90,11 +90,11 @@ class AccountService
     {
         try {
             Account::updateOrCreate([
-                'name' => $name,
                 'entity_id' => auth()->user()->entity->id,
                 'currency_id' => auth()->user()->entity->currency_id,
                 'account_type' => $accountType,
                 'category_id' => $subType,
+                'name' => $name,
             ]);
 
             return 0;

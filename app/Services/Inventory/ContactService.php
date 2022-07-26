@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Models\Inventory\Contact;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ContactService
 {
@@ -14,15 +15,19 @@ class ContactService
      */
     public function index($request, $type)
     {
-        $pages = isset($request->page) ? (int) $request->page : 1;
-        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
+        $sales = ['SQ', 'SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
+        $contact_type = (Str::contains($type, $sales)) ? 'Customer' : 'Vendor';
+        if ($type == 'index') {
+            $contact_type = '';
+        }
+
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $type = $request->contactType;
-        $offset = ($pages - 1) * $row_data;
 
         $result = [];
-        $query = Contact::where('contacts.type', 'LIKE', '%'.$type.'%')
+        $query = Contact::where('contacts.type', 'LIKE', '%' . $contact_type . '%')
             ->with(['banks', 'emails', 'sellAccount.balances', 'purchaseAccount.balances'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
@@ -39,6 +44,13 @@ class ContactService
     {
         $data = $request->all();
 
+        $data['enabled'] = (empty($data['enabled'])) ? true : $data['enabled'];
+        $data['currency_code'] = (empty($data['currency_code']))
+            ? auth()->user()->entity->currency->currency_code : $data['currency_code'];
+        $data['can_login'] = (empty($data['can_login'])) ? false : $data['can_login'];
+        $data['max_payable'] = (empty($data['max_payable'])) ? 0 : $data['max_payable'];
+        $data['active_max_payable'] = (empty($data['active_max_payable'])) ? false : $data['active_max_payable'];
+
         Arr::forget($data, 'updated_at');
         Arr::forget($data, 'created_at');
         Arr::forget($data, 'deleted_at');
@@ -48,6 +60,9 @@ class ContactService
         Arr::forget($data, 'emails');
         Arr::forget($data, 'sell_account');
         Arr::forget($data, 'purchase_account');
+        Arr::forget($data, 'default_currency_code');
+        Arr::forget($data, 'default_currency_symbol');
+        Arr::forget($data, 'password');
 
         return $data;
     }

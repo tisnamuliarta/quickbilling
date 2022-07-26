@@ -75,12 +75,12 @@ class LineItem extends Model implements Recyclable, Segregatable
         'base_line_id',
         'price',
         'warehouse_id',
+        'tax_name',
     ];
 
     protected $appends = [
         'code',
         'whs_name',
-        'tax_name',
         'unit',
         'default_currency_symbol',
     ];
@@ -247,21 +247,17 @@ class LineItem extends Model implements Recyclable, Segregatable
         return ($this->item) ? $this->item->code : null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getUnitAttribute()
     {
         return $this->sku;
     }
 
-    public function tax()
-    {
-        return $this->belongsTo(Vat::class);
-    }
-
-    public function getTaxNameAttribute()
-    {
-        return $this->tax;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getDefaultCurrencySymbolAttribute()
     {
         return auth()->user()->entity->currency->currency_code;

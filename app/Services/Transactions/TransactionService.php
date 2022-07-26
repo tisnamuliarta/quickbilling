@@ -5,6 +5,8 @@ namespace App\Services\Transactions;
 use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
+use App\Models\Inventory\Contact;
+use App\Models\Payroll\Employee;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
@@ -13,6 +15,7 @@ use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
 use IFRS\Models\Transaction;
 use IFRS\Models\Vat;
+use IFRS\Transactions\JournalEntry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -183,6 +186,11 @@ class TransactionService
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
         }
+        $data['discount_amount'] = (isset($data['discount_amount'])) ? $data['discount_amount'] : 0;
+        $data['balance_due'] = (isset($data['balance_due'])) ? $data['balance_due'] : 0;
+
+        $contact = Contact::find($data['contact_id']);
+        $data['account_id'] = $this->mappingHeaderAccount($data['transaction_type'], $contact);
 
         Arr::forget($data, 'items');
         Arr::forget($data, 'tax_details');
@@ -211,7 +219,6 @@ class TransactionService
         Arr::forget($data, 'assignments');
         Arr::forget($data, 'withholding_amount');
         Arr::forget($data, 'discount_per_line');
-        Arr::forget($data, 'sub_total');
         Arr::forget($data, 'action');
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'taxDetails');
@@ -222,35 +229,56 @@ class TransactionService
     }
 
     /**
+     * @param $type
+     * @param $contact
+     * @return int
+     */
+    public function mappingHeaderAccount($type, $contact): int
+    {
+        if ($type == 'IN' || $type == 'CN' || $type == 'RC') {
+            return $this->getAccountIdByName($contact->name, 'RECEIVABLE');
+        }
+
+        if ($type == 'BL' || $type == 'DN' || $type == 'PY') {
+            return $this->getAccountIdByName($contact->name, 'PAYABLE');
+        }
+        return 0;
+    }
+
+    /**
      * @param $items
      * @param $document
      * @param $tax_details
+     * @param $sales_persons
+     * @param $bank_account_id
      * @return void
+     * @throws \Exception
      */
-    public function processItems($items, $document, $tax_details)
+    public function processItems($items, $document, $tax_details, $sales_persons, $bank_account_id)
     {
         foreach ($items as $item) {
             if (!array_key_exists('tax_name', $item)) {
                 $item['tax_name'] = null;
             }
 
-            // throw new \Exception($this->detailAccountId($document->transaction_type, $item));
+            if (!array_key_exists('amount', $item)) {
+                throw new \Exception('Document line must have amount', 1);
+            }
+
             if (array_key_exists('id', $item) && $item['id']) {
                 $item_detail = LineItem::find($item['id']);
                 //$line_item[] = $this->detailsForm($document, $item, 'update');
-                $forms = $this->detailsForm($document, $item, 'update');
+                $forms = $this->detailsForm($document, $item, 'update', $bank_account_id);
                 foreach ($forms as $index => $form) {
                     $item_detail->$index = $form;
                 }
                 $item_detail->save();
             } else {
                 //$line_item[] = $this->detailsForm($document, $item, 'store');
-                $item_detail = LineItem::create($this->detailsForm($document, $item, 'store'));
-                $vat = Vat::where('id', $item_detail->vat_id)->first();
-                if ($vat) {
-                    $item_detail->addVat($vat);
-                }
+                $item_detail = LineItem::create($this->detailsForm($document, $item, 'store', $bank_account_id));
             }
+            $vat = Vat::where('id', $item_detail->vat_id)->first();
+            $item_detail->addVat($vat);
             $document->addLineItem($item_detail);
             // process tax details
             foreach ($tax_details as $tax_detail) {
@@ -259,6 +287,10 @@ class TransactionService
         }
         if ($document->status == 'open') {
             $document->post();
+
+            if ($document->transaction_type == 'IN') {
+                $this->storeEmployeeCommission($sales_persons, $document);
+            }
         }
     }
 
@@ -266,25 +298,30 @@ class TransactionService
      * @param $document
      * @param $item
      * @param $type
+     * @param $bank_account_id
      * @return array
      */
-    public function detailsForm($document, $item, $type): array
+    public function detailsForm($document, $item, $type, $bank_account_id): array
     {
+        $price = (array_key_exists('price', $item)) ? floatval($item['price']) : 1;
         $form = [
             'entity_id' => $document->entity_id,
-            'account_id' => $this->detailAccountId($document->transaction_type, $item),
+            'account_id' => $this->detailAccountId($document->transaction_type, $item, $bank_account_id),
             'transaction_id' => $document->id,
-            'item_id' => $item['item_id'],
+            'item_id' => (array_key_exists('item_id', $item)) ? $item['item_id'] : null,
             'narration' => $item['narration'],
-            'sku' => $item['unit'],
-            'quantity' => floatval($item['quantity']),
-            'price' => floatval($item['price']),
+            'sku' => array_key_exists('unit', $item) ? $item['unit'] : null,
+            'tax_name' => $item['tax_name'],
+            'quantity' => (array_key_exists('quantity', $item)) ? floatval($item['quantity']) : 1,
+            'price' => $price,
             //'unit' => $item['unit'],
             'vat_id' => (Arr::exists($item, 'tax_name')) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'warehouse_id' => (Arr::exists($item, 'whs_name')) ? $this->getWhsIdByName($item['whs_name']) : 0,
-            'vat_inclusive' => array_key_exists('tax_name', $item),
+            //'vat_inclusive' => array_key_exists('tax_name', $item),
+            'vat_inclusive' => (Arr::exists($item, 'vat_inclusive')) ? $item['vat_inclusive'] : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => floatval($item['amount']),
+            'amount' => (array_key_exists('amount', $item)) ? floatval($item['amount']) :  $price,
+            'sub_total' => floatval($item['sub_total']),
         ];
 
         $merge = [];
@@ -299,12 +336,15 @@ class TransactionService
     /**
      * @param $type
      * @param $item
+     * @param $bank_account_id
      * @return int
      */
-    public function detailAccountId($type, $item): int
+    public function detailAccountId($type, $item, $bank_account_id): int
     {
-        if (Str::contains($type, ['CS', 'CN', 'RC', 'IN'])) {
+        if (Str::contains($type, ['CS', 'CN', 'IN'])) {
             return $this->getAccountIdItem($item['item_id'], 'sales');
+        } elseif (Str::contains($type, ['RC', 'PY'])) {
+            return $bank_account_id;
         } else {
             return $this->getAccountIdItem($item['item_id'], 'purchase');
         }
@@ -334,6 +374,50 @@ class TransactionService
                     'amount' => floatval($tax['amount']),
                 ]
             );
+        }
+    }
+
+    /**
+     * @param $sales_persons
+     * @param $document
+     * @return void
+     */
+    protected function storeEmployeeCommission($sales_persons, $document)
+    {
+        foreach ($document->lineItems as $lineItem) {
+            $commission_rate = $lineItem->item->commision_rate;
+            $amount = $commission_rate / count($sales_persons) * $lineItem->quantity;
+
+            $journalEntry = JournalEntry::create([
+                'account_id' => $this->getAccountIdByName('Employee Sales Commission', 'PAYABLE'),
+                'date' => Carbon::now(),
+                'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
+                'credited' => false, // main account should be debited
+                'main_account_amount' => $commission_rate * $lineItem->quantity,
+                'status' => 'open',
+                'base_id' => $document->id,
+                'reference' => $document->transaction_no,
+                'base_num' => $document->transaction_no,
+                'base_type' => $document->transaction_type,
+            ]);
+
+            foreach ($sales_persons as $line_item) {
+                $user_id = (is_array($line_item)) ? $line_item['user_id'] : $line_item;
+                $employee = Employee::find($user_id);
+                $journalEntry->addLineItem(
+                    LineItem::create([
+                        'account_id' => $employee->account_id,
+                        'description' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
+                        'amount' => $amount,
+                        //'credited' => false,
+                        'transaction_id' => $journalEntry->id,
+                        'item_id' => $lineItem->item_id,
+                        'base_line_id' => $lineItem->id
+                    ])
+                );
+            }
+
+            $journalEntry->post();
         }
     }
 

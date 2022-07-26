@@ -11,6 +11,7 @@ use App\Models\Inventory\ContactEmail;
 use App\Services\Financial\AccountService;
 use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
+use App\Traits\Financial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +19,9 @@ use Illuminate\Support\Facades\DB;
 class ContactController extends Controller
 {
     use ContactDetail;
+    use Financial;
 
-    public $service;
+    public ContactService $service;
 
     /**
      * MasterUserController constructor.
@@ -111,10 +113,12 @@ class ContactController extends Controller
     protected function processDetails($request, $contact)
     {
         $accountService = new AccountService();
-        $accountType = ($request->type == 'Customer') ? 'RECEIVABLE' : 'PAYABLE';
-        $accountCategory = Category::where('category_type', $accountType)->first();
+        // $accountType = ($request->type == 'Customer') ? 'RECEIVABLE' : 'PAYABLE';
+        $accountCategory1 = Category::where('category_type', 'RECEIVABLE')->first();
+        $accountCategory2 = Category::where('category_type', 'PAYABLE')->first();
 
-        $accountService->createAccount($request->name, $accountType, $accountCategory->id);
+        $accountService->createAccount($request->name, 'RECEIVABLE', $accountCategory1->id);
+        $accountService->createAccount($request->name, 'PAYABLE', $accountCategory2->id);
 
         if (! empty($request->banks)) {
             $this->storeContactBank($request->banks, $contact['id']);
@@ -127,6 +131,10 @@ class ContactController extends Controller
         if (! empty($request->can_login)) {
             $this->createUser($request->all());
         }
+        $contact = Contact::find($contact['id']);
+        $contact->receivable_account_id = $this->getAccountIdByName($request->name, 'RECEIVABLE');
+        $contact->receivable_account_id = $this->getAccountIdByName($request->name, 'PAYABLE');
+        $contact->save();
     }
 
     /**

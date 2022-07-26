@@ -122,9 +122,9 @@ class Account extends Model implements Recyclable, Segregatable
         'code',
     ];
 
-//    protected $appends = [
-//        'balance',
-//    ];
+    protected $appends = [
+        'balance',
+    ];
 
     /**
      * Get Human Readable Account types
@@ -325,13 +325,13 @@ class Account extends Model implements Recyclable, Segregatable
         return (object) $this->attributes;
     }
 
-//    /**
-//     * @throws \IFRS\Exceptions\MissingReportingPeriod
-//     */
-//    public function getBalanceAttribute()
-//    {
-//        return ($this->closingBalance()[1]) ? $this->closingBalance()[1] : 0;
-//    }
+    /**
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
+     */
+    public function getBalanceAttribute()
+    {
+        return ($this->entity) ? $this->closingBalance()[1] : 0;
+    }
 
     /**
      * Get Account's Closing Balances for the Reporting Period.
@@ -545,6 +545,7 @@ class Account extends Model implements Recyclable, Segregatable
             ->where($transactionsTable.'.entity_id', $this->entity_id)
             ->where($transactionsTable.'.transaction_date', '>=', $startDate)
             ->where($transactionsTable.'.transaction_date', '<=', $endDate->endOfDay())
+            ->orderBy($transactionsTable.'.transaction_no', 'desc')
             ->select(
                 $transactionsTable.'.id',
                 $transactionsTable.'.transaction_date',
@@ -553,6 +554,7 @@ class Account extends Model implements Recyclable, Segregatable
                 $transactionsTable.'.transaction_type',
                 $transactionsTable.'.credited',
                 $transactionsTable.'.narration',
+                $transactionsTable.'.status',
                 $ledgerTable.'.rate'
             )->distinct();
 

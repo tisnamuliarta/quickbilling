@@ -22,6 +22,7 @@ use App\Http\Controllers\Payroll\WorkLocationController;
 use App\Http\Controllers\Production\ProductionController;
 use App\Http\Controllers\Production\ProductionIssueController;
 use App\Http\Controllers\Production\ProductionReceiptController;
+use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Settings\EntityController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Transactions\TransactionController;
@@ -83,9 +84,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     ]);
 
     // List all sales routes
+    Route::group(['prefix' => 'transaction'], function () {
+        Route::get('ledger/{id}', [TransactionController::class, 'getLedger']);
+        Route::get('invoice', [TransactionController::class, 'getInvoice']);
+    });
+
     Route::apiResources([
         'transactions' => TransactionController::class,
     ]);
+
+    Route::get('report', [ReportController::class, 'preview']);
 
     // List all documents routes
     Route::post('document-files', [FileController::class, 'store']);

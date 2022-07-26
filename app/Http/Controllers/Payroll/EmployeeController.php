@@ -8,12 +8,15 @@ use App\Models\Financial\Category;
 use App\Models\Payroll\Employee;
 use App\Services\Financial\AccountService;
 use App\Services\Payroll\EmployeeService;
+use App\Traits\Financial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
+    use Financial;
+
     public EmployeeService $service;
 
     /**
@@ -72,9 +75,9 @@ class EmployeeController extends Controller
     {
         DB::beginTransaction();
         try {
-            Employee::create($this->service->formData($request, 'store'));
+            $employee = Employee::create($this->service->formData($request, 'store'));
 
-            $this->processDetails($request);
+            $this->processDetails($request, $employee);
 
             DB::commit();
 
@@ -121,7 +124,9 @@ class EmployeeController extends Controller
         try {
             Employee::where('id', '=', $id)->update($this->service->formData($request, 'update'));
 
-            $this->processDetails($request);
+            $employee = Employee::find($id);
+
+            $this->processDetails($request, $employee);
 
             DB::commit();
 
@@ -163,7 +168,7 @@ class EmployeeController extends Controller
     /**
      * @throws \Exception
      */
-    protected function processDetails($request)
+    protected function processDetails($request, $employee)
     {
         $accountService = new AccountService();
         $accountType = 'OPERATING_EXPENSE';
@@ -174,5 +179,9 @@ class EmployeeController extends Controller
             $accountType,
             $accountCategory->id
         );
+
+        $account = $this->getAccountIdByName($request->first_name . ' ' . $request->last_name, 'OPERATING_EXPENSE');
+        $employee->account_id = $account;
+        $employee->save();
     }
 }

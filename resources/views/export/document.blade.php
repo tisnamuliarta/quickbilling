@@ -482,7 +482,7 @@
 
 <span>Berikut merupakan hasil rekapan Invoice:</span>
 
-<table class='table  table-sm' style="width: 100%; margin-bottom: 30px; margin-top: 10px;">
+<table class='table  table-sm' style="width: 100% !important; margin-bottom: 30px; margin-top: 10px;">
   <thead>
   <tr style="font-weight: 500">
     <td class="text-left">{{ __('NO')  }}</td>
@@ -499,7 +499,7 @@
   @foreach($documents->lineItems as $index => $row)
     <tr>
       <td>{{ ++$index }}</td>
-      <td width="150px">{{ $row->name . ' - '. $row->narration }}</td>
+      <td width="150px">{{ $row->narration }}</td>
       <td></td>
       <td >{{ $row->unit }}</td>
       <td class="text-right">{{ number_format($row->quantity, 0) }}</td>

@@ -23,6 +23,7 @@ class DocumentItem extends Model implements Auditable
     protected $appends = [
         'code',
         'whs_name',
+        'default_currency_symbol'
     ];
 
     /**
@@ -83,6 +84,14 @@ class DocumentItem extends Model implements Auditable
     public function getWhsNameAttribute(): mixed
     {
         return ($this->warehouse) ? $this->warehouse->code : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultCurrencySymbolAttribute()
+    {
+        return auth()->user()->entity->currency->currency_code;
     }
 
     /**

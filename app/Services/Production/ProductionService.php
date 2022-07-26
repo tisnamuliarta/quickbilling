@@ -192,6 +192,7 @@ class ProductionService
      * @param $document
      * @param $line_items
      * @return void
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function processIssue($document, $line_items)
     {
@@ -212,9 +213,10 @@ class ProductionService
         $journalEntry = JournalEntry::create([
             'account_id' => $accountMapping->getAccountByName('WIP Inventory Account')->account_id,
             'date' => Carbon::now(),
-            'narration' => "Compound Journal Entry",
+            'narration' => "Komisi produksi " . $document->transaction_date,
             'credited' => false, // main account should be debited
-            'main_account_amount' => $document->main_account_amount
+            'main_account_amount' => $document->main_account_amount,
+            'status' => 'open'
         ]);
 
         foreach ($line_items as $line_item) {
@@ -247,14 +249,14 @@ class ProductionService
         }
         $journalEntry->post();
 
-        $entity = Entity::first();
-        $period = ReportingPeriod::getPeriod(date('Y-m-d'), $entity);
-        ClosingTransaction::create([
-            'entity_id' => $document->entity_id,
-            'reporting_period_id' => $period->id,
-            'currency_id' => $entity->currency->id,
-            'transaction_id' => $journalEntry->id
-        ]);
+//        $entity = Entity::first();
+//        $period = ReportingPeriod::getPeriod(date('Y-m-d'), $entity);
+//        ClosingTransaction::create([
+//            'entity_id' => $document->entity_id,
+//            'reporting_period_id' => $period->id,
+//            'currency_id' => $entity->currency->id,
+//            'transaction_id' => $journalEntry->id
+//        ]);
     }
 
     /**

@@ -30,6 +30,8 @@ class Item extends Model
 
     protected $appends = [
         'whs_name',
+        'available_qty',
+        'item_group'
     ];
 
     /**
@@ -93,5 +95,26 @@ class Item extends Model
         $warehouse = Warehouse::first();
 
         return $warehouse->code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailableQtyAttribute()
+    {
+        return floatval($this->on_hand_qty) - floatval($this->committed_qty) + floatval($this->ordered_qty);
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemGroupAttribute()
+    {
+        return match ($this->item_group_id) {
+            1 => 'Inventory',
+            2 => 'Non inventory',
+            3 => 'Service',
+            default => '',
+        };
     }
 }

@@ -89,6 +89,9 @@ class ItemService
         Arr::forget($data, 'purchase_tax');
         Arr::forget($data, 'contact');
         Arr::forget($data, 'inventory_accounts');
+        Arr::forget($data, 'whs_name');
+        Arr::forget($data, 'item_group');
+        Arr::forget($data, 'available_qty');
 
         $data['image'] = '';
         $data['buy_tax_id'] = (isset($request->buy_tax_id)) ? $request->buy_tax_id : 0;

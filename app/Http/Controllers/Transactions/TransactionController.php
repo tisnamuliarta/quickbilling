@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Services\Transactions\TransactionService;
+use IFRS\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class TransactionController extends Controller
     /**
      * MasterUserController constructor.
      *
-     * @param  TransactionService  $service
+     * @param TransactionService $service
      */
     public function __construct(TransactionService $service)
     {
@@ -30,7 +31,7 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -47,7 +48,7 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreTransactionRequest  $request
+     * @param StoreTransactionRequest $request
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -58,11 +59,15 @@ class TransactionController extends Controller
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
-        $sales_persons = collect($request->sales_persons);
+        $sales_persons = collect($request->sales_person);
+        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id']: 0;
 
         DB::beginTransaction();
         try {
-            //return $this->error('', 422, $this->service->formData($request, 'store'));
+            if (empty($request->main_account_amount)) {
+                throw new \Exception('Transactions must have amount', 1);
+            }
+            // return $this->error('', 422, $this->service->formData($request, 'store'));
             $document = $model::create($this->service->formData($request, 'store'));
 
             if ($document->parent_id !== 0) {
@@ -73,7 +78,7 @@ class TransactionController extends Controller
                 }
             }
 
-            $this->service->processItems($items, $document, $tax_details);
+            $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
 
             $this->service->processSalesPerson($sales_persons, $document);
 
@@ -97,8 +102,8 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return JsonResponse
      */
     public function show(Request $request, int $id): JsonResponse
@@ -114,7 +119,7 @@ class TransactionController extends Controller
             }
             $model = $this->service->mappingTable($type);
             $data = $model::where('id', $id)
-                ->with(['entity', 'lineItems', 'lineItems.vat', 'contact', 'salesPerson', 'taxDetails'])
+                ->with(['entity', 'lineItems.appliedVats', 'lineItems.vat', 'contact', 'salesPerson', 'taxDetails'])
                 ->first();
 
             return $this->success([
@@ -134,8 +139,8 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreTransactionRequest  $request
-     * @param  int  $id
+     * @param StoreTransactionRequest $request
+     * @param int $id
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -147,6 +152,7 @@ class TransactionController extends Controller
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
+        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id']: 0;
 
         try {
             // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
@@ -158,7 +164,7 @@ class TransactionController extends Controller
             }
             $document->save();
 
-            $this->service->processItems($items, $document, $tax_details);
+            $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
 
             $this->service->processSalesPerson($sales_persons, $document);
 
@@ -180,15 +186,15 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return JsonResponse
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
         $type = $request->type;
         $model = $this->service->mappingTable($type);
-        $document = $model::find($id);
+        $document = Transaction::find($id);
         if ($document) {
             $document->delete();
 
@@ -199,6 +205,54 @@ class TransactionController extends Controller
 
         return $this->error('Row not found', 422, [
             'errors' => true,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getLedger(Request $request, $id): JsonResponse
+    {
+        $transaction = Transaction::with(['ledgers.postAccount', 'ledgers.folioAccount', 'ledgers.lineItem'])
+            ->find($id);
+
+        return $this->success([
+            'data' => $transaction->ledgers
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getInvoice(Request $request): JsonResponse
+    {
+        $payment = $request->type;
+        $contact = $request->contact;
+
+        $type = '';
+        if ($payment == 'RC') {
+            $type = 'IN';
+        }
+
+        if ($payment == 'PY') {
+            $type = 'BL';
+        }
+
+        $invoice = DB::table('transactions')
+            ->where('transaction_type', $type)
+            ->where('contact_id', $contact)
+            ->select(
+                DB::raw("CONCAT(narration, ' No Invoice: ', transaction_no) as narration"),
+                DB::raw('CAST(due_date as DATE) as service_date'),
+                'main_account_amount as sub_total'
+            )
+            ->get();
+
+        return $this->success([
+            'data' => $invoice
         ]);
     }
 }

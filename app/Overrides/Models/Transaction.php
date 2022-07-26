@@ -141,6 +141,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'status',
         'classification_id',
         'reference_no',
+        'sub_total',
     ];
 
     protected $dates = [
@@ -683,8 +684,14 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Post Transaction to the Ledger.
      *
+     * @throws AdjustingReportingPeriod
+     * @throws ClosedReportingPeriod
+     * @throws InvalidCurrency
+     * @throws InvalidTransactionDate
+     * @throws InvalidTransactionType
      * @throws MissingLineItem
      * @throws UnbalancedTransaction
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function post(): void
     {
@@ -849,10 +856,12 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function getCompoundEntries(): array
     {
         if ($this->compound) {
-            $this->compoundEntries[Transaction::getCompoundEntrytype($this->credited)][$this->account_id] = floatval($this->main_account_amount);
+            $this->compoundEntries[Transaction::getCompoundEntrytype($this->credited)][$this->account_id]
+                = floatval($this->main_account_amount);
 
             foreach ($this->lineItems as $lineItem) {
-                $this->compoundEntries[Transaction::getCompoundEntrytype($lineItem->credited)][$lineItem->account_id] = $lineItem->amount * $lineItem->quantity;
+                $this->compoundEntries[Transaction::getCompoundEntrytype($lineItem->credited)][$lineItem->account_id]
+                    = $lineItem->amount * $lineItem->quantity;
             }
         }
 
@@ -912,7 +921,8 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      */
     protected function addCompoundEntry(array $compoundEntry, bool $credited): void
     {
-        $this->compoundEntries[Transaction::getCompoundEntrytype($credited)][$compoundEntry['id']] = $compoundEntry['amount'];
+        $this->compoundEntries[Transaction::getCompoundEntrytype($credited)][$compoundEntry['id']]
+            = $compoundEntry['amount'];
     }
 
     /**

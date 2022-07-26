@@ -91,11 +91,13 @@ class AccountController extends Controller
      */
     public function show(Request $request, $id): JsonResponse
     {
+        $start_date = $request->date_from;
+        $end_date = $request->date_to;
         $data = Account::find($id);
 
         $result['data'] = $data;
 
-        $collect = $data->getTransactions();
+        $collect = $data->getTransactions($start_date, $end_date);
         $result = array_merge($result, $collect);
         //$collect->merge($data);
 
