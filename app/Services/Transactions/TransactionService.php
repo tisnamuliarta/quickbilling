@@ -6,6 +6,7 @@ use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\Warehouse;
 use App\Models\Payroll\Employee;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
@@ -117,6 +118,8 @@ class TransactionService
         $form['id'] = 0;
         $form['account_id'] = $this->defaultHeaderAccount($type);
         $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
+        $form['warehouse_id'] = $this->defaultWarehouse()->id;
+        $form['warehouse_name'] = $this->defaultWarehouse()->code;
 
         if (Str::contains($type, ['CP', 'RC', 'CN', 'BL'])) {
             $form['credited'] = true;
@@ -125,6 +128,14 @@ class TransactionService
         }
 
         return $form;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function defaultWarehouse()
+    {
+        return Warehouse::first();
     }
 
     /**
@@ -278,7 +289,9 @@ class TransactionService
                 $item_detail = LineItem::create($this->detailsForm($document, $item, 'store', $bank_account_id));
             }
             $vat = Vat::where('id', $item_detail->vat_id)->first();
-            $item_detail->addVat($vat);
+            if ($vat) {
+                $item_detail->addVat($vat);
+            }
             $document->addLineItem($item_detail);
             // process tax details
             foreach ($tax_details as $tax_detail) {

@@ -7,6 +7,7 @@ use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\Warehouse;
 use App\Models\Sales\SalesPerson;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
@@ -90,8 +91,18 @@ class DocumentService
         $form['id'] = 0;
         $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
         $form['temp_id'] = mt_rand(100000, 999999999999);
+        $form['warehouse_id'] = $this->defaultWarehouse()->id;
+        $form['warehouse_name'] = $this->defaultWarehouse()->code;
 
         return $form;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function defaultWarehouse()
+    {
+        return Warehouse::first();
     }
 
     /**

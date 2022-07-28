@@ -9,6 +9,7 @@ use IFRS\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TransactionController extends Controller
 {
@@ -60,7 +61,16 @@ class TransactionController extends Controller
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
-        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id']: 0;
+
+        if (Str::contains($request->transaction_type, ['RC', 'PY'])) {
+            if ($request->account_id == 0) {
+                throw new \Exception('Please select deposit account', 1);
+            }
+
+            $bank_account_id = $request->account_id['id'];
+        } else {
+            $bank_account_id = 0;
+        }
 
         DB::beginTransaction();
         try {
