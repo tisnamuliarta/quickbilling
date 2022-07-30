@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Documents\StoreDocumentRequest;
 use App\Models\Documents\Document;
 use App\Services\Documents\DocumentService;
+use App\Services\Transactions\PurchaseService;
+use App\Services\Transactions\SalesService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,15 +15,21 @@ use Illuminate\Support\Facades\DB;
 class DocumentController extends Controller
 {
     public DocumentService $service;
+    public PurchaseService $purchase;
+    public SalesService $sales;
 
     /**
      * MasterUserController constructor.
      *
-     * @param  DocumentService  $service
+     * @param DocumentService $service
+     * @param PurchaseService $purchase
+     * @param SalesService $sales
      */
-    public function __construct(DocumentService $service)
+    public function __construct(DocumentService $service, PurchaseService $purchase, SalesService $sales)
     {
         $this->service = $service;
+        $this->purchase = $purchase;
+        $this->sales = $sales;
         //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
         //    $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
         //    $this->middleware(['direct_permission:Roles-edits'])->only('update');
@@ -31,7 +39,7 @@ class DocumentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -46,7 +54,7 @@ class DocumentController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      * @return JsonResponse
      */
     public function arrowAction(Request $request): JsonResponse
@@ -66,7 +74,7 @@ class DocumentController extends Controller
                 $row = $query->where('id', '>', $document)->first();
             }
 
-            if (! $row) {
+            if (!$row) {
                 return $this->error('Document not found', 404);
             }
 
@@ -81,7 +89,7 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreDocumentRequest  $request
+     * @param StoreDocumentRequest $request
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -113,6 +121,8 @@ class DocumentController extends Controller
                     $doc->save();
                 }
             }
+            // process inventory qty
+            $this->processInventory($document);
 
             DB::commit();
 
@@ -144,7 +154,7 @@ class DocumentController extends Controller
         foreach ($details as $index => $detail) {
             $lines = $index + 1;
 
-            if (! array_key_exists('item_id', $detail)) {
+            if (!array_key_exists('item_id', $detail)) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
             } elseif (empty($detail['item_id'])) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
@@ -162,9 +172,43 @@ class DocumentController extends Controller
     }
 
     /**
+     * @param $document
+     * @return void
+     */
+    protected function processInventory($document)
+    {
+        switch ($document->transaction_type) {
+            // purchase
+            case 'PO':
+                $this->purchase->purchaseOrderTransaction($document->lineItems);
+                break;
+
+            case 'GR':
+                $this->purchase->goodsReceiptPurchaseOrderTransaction($document);
+                break;
+
+            case 'GN':
+                $this->purchase->goodsReturnTransaction($document);
+                break;
+            // sales
+            case 'SO':
+                $this->sales->salesOrderTransaction($document->lineItems);
+                break;
+
+            case 'SD':
+                $this->sales->deliveryTransaction($document);
+                break;
+
+            case 'SR':
+                $this->sales->salesReturnTransaction($document);
+                break;
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @param $id
      * @return JsonResponse
      */
@@ -215,8 +259,8 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreDocumentRequest  $request
-     * @param  int  $id
+     * @param StoreDocumentRequest $request
+     * @param int $id
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -252,6 +296,9 @@ class DocumentController extends Controller
                     $this->service->processItems($items, $document, $tax_details);
 
                     $this->service->processSalesPerson($sales_persons, $document);
+
+                    // process inventory qty
+                    $this->processInventory($document);
                     break;
             }
 
@@ -273,7 +320,7 @@ class DocumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse

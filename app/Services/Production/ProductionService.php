@@ -6,12 +6,10 @@ use App\Models\Inventory\ReceiptLine;
 use App\Models\Inventory\ReceiptProduction;
 use App\Models\Productions\Production;
 use App\Models\Productions\ProductionItem;
-use App\Models\Settings\Entity;
 use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
-use IFRS\Models\ClosingTransaction;
 use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
 use IFRS\Transactions\JournalEntry;
@@ -266,7 +264,7 @@ class ProductionService
      */
     protected function generateDocNumIssue($sysDate): string
     {
-        $alias = 'GU';
+        $alias = 'GI';
         $data_date = strtotime($sysDate);
         $month = date('m', $data_date);
 

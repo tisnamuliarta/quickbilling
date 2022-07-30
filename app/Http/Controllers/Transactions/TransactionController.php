@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
+use App\Services\Transactions\PurchaseService;
+use App\Services\Transactions\SalesService;
 use App\Services\Transactions\TransactionService;
 use IFRS\Models\Transaction;
 use Illuminate\Http\JsonResponse;
@@ -14,15 +16,21 @@ use Illuminate\Support\Str;
 class TransactionController extends Controller
 {
     public TransactionService $service;
+    public PurchaseService $purchase;
+    public SalesService $sales;
 
     /**
      * MasterUserController constructor.
      *
      * @param TransactionService $service
+     * @param PurchaseService $purchase
+     * @param SalesService $sales
      */
-    public function __construct(TransactionService $service)
+    public function __construct(TransactionService $service, PurchaseService $purchase, SalesService $sales)
     {
         $this->service = $service;
+        $this->purchase = $purchase;
+        $this->sales = $sales;
         //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
         //    $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
         //    $this->middleware(['direct_permission:Roles-edits'])->only('update');
@@ -92,6 +100,9 @@ class TransactionController extends Controller
 
             $this->service->processSalesPerson($sales_persons, $document);
 
+            // process inventory qty
+            $this->processInventory($document);
+
             DB::commit();
 
             return $this->success([
@@ -106,6 +117,32 @@ class TransactionController extends Controller
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
             ]);
+        }
+    }
+
+    /**
+     * @param $document
+     * @return void
+     */
+    protected function processInventory($document)
+    {
+        switch ($document->transaction_type) {
+            // purchase
+            case 'BL':
+                $this->purchase->supplierBillTransaction($document);
+                break;
+
+            case 'DN':
+                $this->purchase->debitNoteTransaction($document);
+                break;
+            // sales
+            case 'IN':
+                $this->sales->clientInvoiceTransaction($document);
+                break;
+
+            case 'CN':
+                $this->sales->creditNoteTransaction($document);
+                break;
         }
     }
 
@@ -162,7 +199,7 @@ class TransactionController extends Controller
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
-        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id']: 0;
+        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id'] : 0;
 
         try {
             // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
@@ -177,6 +214,9 @@ class TransactionController extends Controller
             $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
 
             $this->service->processSalesPerson($sales_persons, $document);
+
+            // process inventory qty
+            $this->processInventory($document);
 
             DB::commit();
 

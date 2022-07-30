@@ -49,7 +49,7 @@ class ItemService
                 'purchaseTax',
                 'contact',
             ])
-            ->where(DB::raw("CONCAT(name, ' ', code)"), 'LIKE', '%'.$search.'%')
+            ->where(DB::raw("CONCAT(name, ' ', code)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -166,7 +166,7 @@ class ItemService
      * @param $item
      * @param $request
      * @param $int
-     * @return int|mixed|null
+     * @return mixed
      */
     public function checkItem($item, $request, $int): mixed
     {
