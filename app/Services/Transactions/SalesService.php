@@ -59,6 +59,9 @@ class SalesService
             'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
             'status' => 'open'
         ]);
 
@@ -67,17 +70,20 @@ class SalesService
 
             $journalEntry->addLineItem(
                 LineItem::create([
-                    'account_id' => $line_item->inventory_account,
-                    'description' => $line_item->item->item_name,
-                    'narration' => $line_item->item->item_name,
+                    // 'account_id' => $line_item->inventory_account,
+                    'account_id' =>  $accountMapping->getAccountByName('Inventory Account')->account_id,
+                    'description' => $line_item->item->name,
+                    'narration' => $line_item->item->name,
                     'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'credited' => true,
                     'transaction_id' => $journalEntry->id
                 ])
             );
         }
-        $journalEntry->post();
+        if ($document->status == 'open') {
+            $journalEntry->post();
+        }
     }
 
     /**
@@ -93,7 +99,7 @@ class SalesService
                 $this->processOnHandQty($line_item, $document);
             }
         } else {
-            $this->createInventoryJournal($document, 'Sales invoice base on ');
+            $this->createInventoryJournal($document, 'Base On Sales invoice ');
         }
     }
 
@@ -104,7 +110,7 @@ class SalesService
      */
     public function creditNoteTransaction($document)
     {
-        $this->returnInventoryJournal($document, 'Credit note base on ');
+        $this->returnInventoryJournal($document, 'Base on Credit note ');
 
         $line_items = $document->lineItems;
         foreach ($line_items as $line_item) {
@@ -129,6 +135,9 @@ class SalesService
             'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
             'status' => 'open'
         ]);
 
@@ -138,16 +147,18 @@ class SalesService
             $journalEntry->addLineItem(
                 LineItem::create([
                     'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
-                    'description' => $line_item->item->item_name,
-                    'narration' => $line_item->item->item_name,
+                    'description' => $line_item->item->name,
+                    'narration' => $line_item->item->name,
                     'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'credited' => true,
                     'transaction_id' => $journalEntry->id
                 ])
             );
         }
-        $journalEntry->post();
+        if ($document->status == 'open') {
+            $journalEntry->post();
+        }
     }
 
     /**
@@ -157,6 +168,6 @@ class SalesService
      */
     public function salesReturnTransaction($document)
     {
-        $this->returnInventoryJournal($document, 'Sales return base on ');
+        $this->returnInventoryJournal($document, 'Base on Sales return ');
     }
 }

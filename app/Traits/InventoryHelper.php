@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemWarehouse;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 trait InventoryHelper
 {
@@ -28,9 +29,9 @@ trait InventoryHelper
             throw new \Exception('Item warehouse not found', 1);
         }
 
-        $prev_cost = floatval($item_warehouse->item_cost);
+        $prev_cost = round(floatval($item_warehouse->item_cost), 2);
 
-        $temp_cost = $quantity * $price;
+        $temp_cost = round($quantity * $price, 2);
         // calculate qty
         switch ($document->transaction_type) {
             // goods receipt PO and a/p invoice
@@ -140,7 +141,7 @@ trait InventoryHelper
 
         $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI'];
         if (!Str::contains($document->transaction_type, $sales)) {
-            $item_cost = ($temp_cost + $prev_cost) / $item_warehouse->available_qty;
+            $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
 
             $item_warehouse->item_cost = $item_cost;
             $item_warehouse->save();
@@ -148,11 +149,29 @@ trait InventoryHelper
     }
 
     /**
+     * @param $request
+     * @return void
+     */
+    protected function validateRequest($request)
+    {
+        $request->validate([
+            'transaction_no' => 'required',
+            'narration' => 'required',
+            'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
+        ], [
+            'transaction_no.required' => __('validation')['required'],
+            'narration.required' => __('validation')['required'],
+            'contact_id.required' => __('document')['contactRequired'],
+        ]);
+    }
+
+    /**
      * @param $details
      * @param $transaction_type
+     * @param $action
      * @return array
      */
-    protected function validateDetails($details, $transaction_type): array
+    protected function validateDetails($details, $transaction_type, $action): array
     {
         if (count($details) == 0) {
             return ['error' => true, 'message' => 'Details cannot empty!'];
@@ -178,27 +197,36 @@ trait InventoryHelper
                 return ['error' => true, 'message' => "Line $lines: Quantity cannot 0!"];
             }
 
+            if (empty($detail['amount'])) {
+                return ['error' => true, 'message' => "Line $lines: Price cannot empty!"];
+            }
+            if ($detail['amount'] == 0) {
+                return ['error' => true, 'message' => "Line $lines: Price cannot 0!"];
+            }
+
             $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
 
             if (Str::contains($transaction_type, $sales)) {
                 $item = Item::find($detail['item_id']);
 
-                // item warehouse
-                if (count($item->itemWarehouse) < 1) {
-                    return [
-                        'error' => true,
-                        'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
-                    ];
-                }
+                if (!Str::contains($action, ['closed', 'canceled'])) {
+                    // item warehouse
+                    if (count($item->itemWarehouse) < 1) {
+                        return [
+                            'error' => true,
+                            'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
+                        ];
+                    }
 
-                foreach ($item->itemWarehouse as $item) {
-                    if ($detail['whs_name'] === $item->whs_name) {
-                        if ($detail['quantity'] > $item->available_qty) {
-                            return [
-                                'error' => true,
-                                'message' => "Line $lines: Available quantity for item "
-                                    . $item->code . " is " . $item->available_qty
-                            ];
+                    foreach ($item->itemWarehouse as $item) {
+                        if ($detail['whs_name'] === $item->whs_name) {
+                            if ($detail['quantity'] > $item->available_qty) {
+                                return [
+                                    'error' => true,
+                                    'message' => "Line $lines: Available quantity for item "
+                                        . $item->code . " is " . $item->available_qty
+                                ];
+                            }
                         }
                     }
                 }

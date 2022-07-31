@@ -14,7 +14,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
@@ -38,8 +37,7 @@ class DocumentController extends Controller
         PurchaseService  $purchase,
         SalesService     $sales,
         InventoryService $inventory
-    )
-    {
+    ) {
         $this->service = $service;
         $this->purchase = $purchase;
         $this->sales = $sales;
@@ -110,19 +108,13 @@ class DocumentController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'transaction_no' => 'required',
-            'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
-        ], [
-            'transaction_no.required' => __('validation')['required'],
-            'contact_id.required' => __('document')['contactRequired'],
-        ]);
+        $this->validateRequest($request);
 
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
-        $validate_details = $this->validateDetails($items, $request->transaction_type);
+        $validate_details = $this->validateDetails($items, $request->transaction_type, '');
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
@@ -276,16 +268,15 @@ class DocumentController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $request->validate([
-            'transaction_no' => 'required',
-            'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
-        ], [
-            'transaction_no.required' => __('validation')['required'],
-            'contact_id.required' => __('document')['contactRequired'],
-        ]);
+        $this->validateRequest($request);
 
         try {
             $action = $request->updateStatus;
+
+            $inventory = ['GI', 'GE'];
+            if (Str::contains($request->transaction_type, $inventory)) {
+                throw new \Exception('Cannot change document that have been posted!', 1);
+            }
 
             $document = Document::find($id);
             switch ($action) {
@@ -299,7 +290,7 @@ class DocumentController extends Controller
                     $tax_details = collect($request->tax_details);
                     $sales_persons = collect($request->sales_persons);
 
-                    $validate_details = $this->validateDetails($items, $request->transaction_type);
+                    $validate_details = $this->validateDetails($items, $request->transaction_type, $action);
                     if ($validate_details['error']) {
                         return $this->error($validate_details['message']);
                     }

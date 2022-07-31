@@ -65,8 +65,10 @@ class TransactionController extends Controller
      *
      * @throws \Throwable
      */
-    public function store(StoreTransactionRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
+        $this->validateRequest($request);
+
         $type = $request->type;
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
@@ -84,7 +86,7 @@ class TransactionController extends Controller
         }
 
         // validate details before store
-        $validate_details = $this->validateDetails($items, $request->transaction_type);
+        $validate_details = $this->validateDetails($items, $request->transaction_type, '');
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
@@ -110,6 +112,7 @@ class TransactionController extends Controller
             $this->service->processSalesPerson($sales_persons, $document);
 
             // process inventory qty
+            $document = $model::find($document->id);
             $this->processInventory($document);
 
             DB::commit();
@@ -214,8 +217,10 @@ class TransactionController extends Controller
      *
      * @throws \Throwable
      */
-    public function update(StoreTransactionRequest $request, int $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
+        $this->validateRequest($request);
+
         $type = $request->transaction_type;
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
@@ -223,28 +228,40 @@ class TransactionController extends Controller
         $sales_persons = collect($request->sales_person);
         $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id'] : 0;
 
+        $action = $request->updateStatus;
+
         // validate details before update
-        $validate_details = $this->validateDetails($items, $request->transaction_type);
+        $validate_details = $this->validateDetails($items, $request->transaction_type, $action);
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
 
         try {
-            // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
             $document = $model::find($id);
-            $forms = collect($this->service->formData($request, 'update'));
-            //return $this->error('', 422, [$forms]);
-            foreach ($forms as $index => $form) {
-                $document->$index = $form;
+
+            switch ($action) {
+                case 'closed':
+                case 'canceled':
+                    $this->service->updateStatus($id, $action);
+                    break;
+
+                default:
+                    // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));
+                    $forms = collect($this->service->formData($request, 'update'));
+                    //return $this->error('', 422, [$forms]);
+                    foreach ($forms as $index => $form) {
+                        $document->$index = $form;
+                    }
+                    $document->save();
+
+                    $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
+
+                    $this->service->processSalesPerson($sales_persons, $document);
+
+                    // process inventory qty
+                    $this->processInventory($document);
+                    break;
             }
-            $document->save();
-
-            $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
-
-            $this->service->processSalesPerson($sales_persons, $document);
-
-            // process inventory qty
-            $this->processInventory($document);
 
             DB::commit();
 
@@ -293,11 +310,26 @@ class TransactionController extends Controller
      */
     public function getLedger(Request $request, $id): JsonResponse
     {
-        $transaction = Transaction::with(['ledgers.postAccount', 'ledgers.folioAccount', 'ledgers.lineItem'])
+        $transaction = Transaction::with(['ledgers.postAccount.category', 'ledgers.folioAccount', 'ledgers.lineItem'])
             ->find($id);
 
+        $data = [];
+        foreach ($transaction->ledgers as $ledger) {
+            $data[] = [
+                'amount_credit' => ($ledger->entry_type == 'C') ? $ledger->amount : 0,
+                'amount_debit' => ($ledger->entry_type == 'D') ? $ledger->amount : 0,
+                'folio_account' => $ledger->folio_account,
+                'post_account' => $ledger->postAccount,
+                'line_item' => $ledger->line_item,
+                'id' => $ledger->id,
+                'rate' => $ledger->rate,
+                'posting_date' => $ledger->posting_date,
+            ];
+        }
+
         return $this->success([
-            'data' => $transaction->ledgers
+            'data' => $data,
+            'transaction' => $transaction
         ]);
     }
 

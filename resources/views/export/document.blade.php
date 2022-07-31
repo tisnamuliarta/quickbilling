@@ -501,10 +501,10 @@
       <td>{{ ++$index }}</td>
       <td width="150px">{{ $row->narration }}</td>
       <td></td>
-      <td >{{ $row->unit }}</td>
+      <td>{{ $row->unit }}</td>
       <td class="text-right">{{ number_format($row->quantity, 0) }}</td>
-      <td class="text-right">{{ number_format($row->price, 2) }}</td>
-      <td class="text-right">{{ number_format($row->amount, 2)  }}</td>
+      <td class="text-right">{{ number_format($row->amount, 2) }}</td>
+      <td class="text-right">{{ number_format($row->sub_total, 2)  }}</td>
     </tr>
   @endforeach
   </tbody>
@@ -551,29 +551,30 @@
   </tfoot>
 </table>
 
-
-<table class=" table-borderless table-sm table-active" style="text-align: left; width: 40%; float: left;">
-  <tr>
-    <td colspan="3">
-      <span>TRANSFER KE REKENING</span>
-    </td>
-  </tr>
-  <tr>
-    <td width="30">{{ __('Issue Bank') }}</td>
-    <td width="5">:</td>
-    <td width="65">{{ $company['company_bank_name'] }}</td>
-  </tr>
-  <tr>
-    <td width="30">{{ __('Beneficiary') }}</td>
-    <td width="5">:</td>
-    <td width="65">{{ $company['company_bank_account_name'] }}</td>
-  </tr>
-  <tr>
-    <td width="30">{{ __('Bank Account') }}</td>
-    <td width="5">:</td>
-    <td width="65">{{ $company['company_bank_account_number'] }}</td>
-  </tr>
-</table>
+@if($documents->transaction_type == 'IN')
+  <table class=" table-borderless table-sm table-active" style="text-align: left; width: 40%; float: left;">
+    <tr>
+      <td colspan="3">
+        <span>TRANSFER KE REKENING</span>
+      </td>
+    </tr>
+    <tr>
+      <td width="30">{{ __('Issue Bank') }}</td>
+      <td width="5">:</td>
+      <td width="65">{{ $company['company_bank_name'] }}</td>
+    </tr>
+    <tr>
+      <td width="30">{{ __('Beneficiary') }}</td>
+      <td width="5">:</td>
+      <td width="65">{{ $company['company_bank_account_name'] }}</td>
+    </tr>
+    <tr>
+      <td width="30">{{ __('Bank Account') }}</td>
+      <td width="5">:</td>
+      <td width="65">{{ $company['company_bank_account_number'] }}</td>
+    </tr>
+  </table>
+@endif
 
 <table class=" table-borderless table-sm" style="text-align: right; width: 31%; float: right;">
   <tr>

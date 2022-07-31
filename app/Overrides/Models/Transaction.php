@@ -142,6 +142,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'classification_id',
         'reference_no',
         'sub_total',
+        'base_id',
+        'base_num',
+        'base_type',
     ];
 
     protected $dates = [
@@ -439,7 +442,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     /**
      * Check if LineItem already exists.
      *
-     * @param int $id
+     * @param int|null $id
      * @return int|false
      */
     private function lineItemExists(int $id = null)

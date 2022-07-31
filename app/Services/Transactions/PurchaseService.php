@@ -49,6 +49,9 @@ class PurchaseService
             'credited' => true, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
             'status' => 'open'
         ]);
         foreach ($line_items as $line_item) {
@@ -57,16 +60,18 @@ class PurchaseService
             $journalEntry->addLineItem(
                 LineItem::create([
                     'account_id' => $line_item->inventory_account,
-                    'description' => $line_item->item->item_name,
-                    'narration' => $line_item->item->item_name,
+                    'description' => $line_item->item->name,
+                    'narration' => $line_item->item->name,
                     'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'credited' => false,
                     'transaction_id' => $journalEntry->id
                 ])
             );
         }
-        $journalEntry->post();
+        if ($document->status == 'open') {
+            $journalEntry->post();
+        }
     }
 
     /**
@@ -111,6 +116,9 @@ class PurchaseService
             'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
             'status' => 'open'
         ]);
         foreach ($line_items as $line_item) {
@@ -119,15 +127,17 @@ class PurchaseService
             $journalEntry->addLineItem(
                 LineItem::create([
                     'account_id' => $line_item->inventory_account,
-                    'description' => $line_item->item->item_name,
-                    'narration' => $line_item->item->item_name,
+                    'description' => $line_item->item->name,
+                    'narration' => $line_item->item->name,
                     'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'credited' => true,
                     'transaction_id' => $journalEntry->id
                 ])
             );
         }
-        $journalEntry->post();
+        if ($document->status == 'open') {
+            $journalEntry->post();
+        }
     }
 }

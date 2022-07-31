@@ -236,8 +236,6 @@ class TransactionService
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'taxDetails');
 
-        $data['narration'] = $data['notes'];
-
         return $data;
     }
 
@@ -335,7 +333,7 @@ class TransactionService
             //'vat_inclusive' => array_key_exists('tax_name', $item),
             'vat_inclusive' => (Arr::exists($item, 'vat_inclusive')) ? $item['vat_inclusive'] : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => (array_key_exists('amount', $item)) ? floatval($item['amount']) : $price,
+            'amount' => (array_key_exists('amount', $item)) ? floatval($item['amount']) : 0,
             'sub_total' => floatval($item['sub_total']),
         ];
 
@@ -433,8 +431,11 @@ class TransactionService
                 $journalEntry->addLineItem(
                     LineItem::create([
                         'account_id' => $employee->account_id,
-                        'description' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
+                        'narration' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
                         'amount' => $amount,
+                        'quantity' => $line_item->quantity,
+                        'price' => $commission_rate / count($sales_persons),
+                        'sub_total' => $amount * $line_item->quantity,
                         //'credited' => false,
                         'transaction_id' => $journalEntry->id,
                         'item_id' => $lineItem->item_id,
@@ -503,6 +504,87 @@ class TransactionService
                 ]);
             }
         }
+    }
+
+    /**
+     * @param $id
+     * @param $status
+     * @throws \Exception
+     */
+    public function updateStatus($id, $status)
+    {
+        $document = Transaction::find($id);
+        $document->status = $status;
+        $document->save();
+
+        $document->lineItems()->update([
+            'status' => $status,
+        ]);
+
+        if ($status == 'canceled') {
+            // post journal to cancel main document
+            $this->processCancelDocument($document);
+
+            // process reference transaction
+            $references = Transaction::where('reference', $document->transaction_no)
+                ->orWhere('base_id', $document->id)
+                ->get();
+
+            foreach ($references as $reference) {
+                $this->processCancelDocument($reference);
+            }
+        }
+    }
+
+    /**
+     * @param $document
+     * @return void
+     */
+    public function processCancelDocument($document)
+    {
+        $line_items = $document->lineItems;
+        $journalEntry = JournalEntry::create([
+            'account_id' => $document->account_id,
+            'date' => Carbon::now(),
+            'narration' => 'Cancel transaction no ' . $document->transaction_no,
+            'credited' => !(($document->credited == 1)),
+            'main_account_amount' => $document->main_account_amount,
+            'reference' => $document->transaction_no,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
+            'status' => 'closed'
+        ]);
+
+        foreach ($line_items as $line_item) {
+            // $this->processOnHandQty($line_item, $document);
+            $journalEntry->addLineItem(
+                LineItem::create([
+                    'account_id' => $line_item->account_id,
+                    'description' => $line_item->narration,
+                    'narration' => $line_item->narration,
+                    'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
+                    'sub_total' => $line_item->sub_total,
+                    'transaction_id' => $journalEntry->id
+                ])
+            );
+
+            if (count($line_item->appliedVats) > 0) {
+                $journalEntry->addLineItem(
+                    LineItem::create([
+                        'account_id' => $line_item->appliedVats[0]->vat->account_id,
+                        'description' => $line_item->narration,
+                        'narration' => $line_item->narration,
+                        'amount' => $line_item->appliedVats[0]->amount,
+                        'quantity' => 1,
+                        'sub_total' => $line_item->sub_total,
+                        'transaction_id' => $journalEntry->id
+                    ])
+                );
+            }
+        }
+        $journalEntry->post();
     }
 
     /**

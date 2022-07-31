@@ -133,7 +133,7 @@ class DocumentService
     /**
      * @return mixed
      */
-    public function defaultWarehouse()
+    public function defaultWarehouse(): mixed
     {
         return Warehouse::first();
     }
@@ -223,10 +223,10 @@ class DocumentService
             $accountMapping = new AccountMappingService();
             $account_id = $accountMapping->getAccountByName('Inventory Account')->account_id;
             if ($transaction_type == 'GI') {
-                $credited = false;
+                $credited = true;
                 $line_account = $accountMapping->getAccountByName('Inventory Offset Decrease Account')->account_id;
             } else {
-                $credited = true;
+                $credited = false;
                 $line_account = $accountMapping->getAccountByName('Inventory Offset Increase Account')->account_id;
             }
             $this->processIssueReceipt($document, $account_id, $line_account, $credited);
@@ -318,6 +318,9 @@ class DocumentService
             'reference' => $document->transaction_no,
             'credited' => $credited, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
+            'base_id' => $document->id,
+            'base_type' => $document->transaction_type,
+            'base_num' => $document->transaction_no,
             'status' => 'open'
         ]);
 
@@ -327,6 +330,7 @@ class DocumentService
                     'account_id' => $line_account,
                     'description' => $line_item->item_name,
                     'amount' => $line_item->amount,
+                    'quantity' => $line_item->quantity,
                     'item_id' => $line_item->item_id,
                     'unit' => $line_item->unit,
                     'warehouse_id' => $line_item->warehouse_id,
@@ -335,7 +339,14 @@ class DocumentService
                 ])
             );
         }
-        $journalEntry->post();
+
+        if ($document->status == 'open') {
+            $journalEntry->post();
+        }
+
+        $document = Document::find($document->id);
+        $document->transaction_id = $journalEntry->id;
+        $document->save();
     }
 
     /**
