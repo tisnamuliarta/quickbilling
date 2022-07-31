@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemWarehouse;
 use Illuminate\Support\Str;
 
@@ -11,16 +12,21 @@ trait InventoryHelper
      * @param $line_item
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function processOnHandQty($line_item, $document)
     {
         $item = $line_item->item_id;
         $warehouse = $line_item->warehouse_id;
-        $price = $line_item->price;
+        $price = $line_item->amount;
         $quantity = $line_item->quantity;
 
         // get item warehouse
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+
+        if (!$item_warehouse) {
+            throw new \Exception('Item warehouse not found', 1);
+        }
 
         $prev_cost = floatval($item_warehouse->item_cost);
 
@@ -84,6 +90,15 @@ trait InventoryHelper
 //                    $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $quantity;
 //                }
                 break;
+
+            // Goods receipt
+            case 'GE':
+                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                break;
+            // Goods issue
+            case 'GI':
+                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                break;
         }
 
         $item_warehouse->save();
@@ -98,9 +113,17 @@ trait InventoryHelper
      */
     public function getItemWarehouse($item, $warehouse): mixed
     {
-        return ItemWarehouse::where('item_id', $item->id)
+        $item_warehouse = ItemWarehouse::where('item_id', $item)
             ->where('warehouse_id', $warehouse)
             ->first();
+
+        if (!$item_warehouse) {
+            $item_warehouse = ItemWarehouse::updateOrCreate([
+                'item_id' => $item,
+                'warehouse_id' => $warehouse
+            ]);
+        }
+        return $item_warehouse;
     }
 
     /**
@@ -115,12 +138,73 @@ trait InventoryHelper
         // calculate with average cost
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
+        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI'];
         if (!Str::contains($document->transaction_type, $sales)) {
             $item_cost = ($temp_cost + $prev_cost) / $item_warehouse->available_qty;
 
             $item_warehouse->item_cost = $item_cost;
             $item_warehouse->save();
         }
+    }
+
+    /**
+     * @param $details
+     * @param $transaction_type
+     * @return array
+     */
+    protected function validateDetails($details, $transaction_type): array
+    {
+        if (count($details) == 0) {
+            return ['error' => true, 'message' => 'Details cannot empty!'];
+        }
+
+        foreach ($details as $index => $detail) {
+            $lines = $index + 1;
+
+            if (!array_key_exists('item_id', $detail)) {
+                return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
+            } elseif (empty($detail['item_id'])) {
+                return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
+            }
+
+            if (empty($detail['whs_name'])) {
+                return ['error' => true, 'message' => "Line $lines: Warehouse cannot empty!"];
+            }
+
+            if (empty($detail['quantity'])) {
+                return ['error' => true, 'message' => "Line $lines: Quantity cannot empty!"];
+            }
+            if ($detail['quantity'] == 0) {
+                return ['error' => true, 'message' => "Line $lines: Quantity cannot 0!"];
+            }
+
+            $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
+
+            if (Str::contains($transaction_type, $sales)) {
+                $item = Item::find($detail['item_id']);
+
+                // item warehouse
+                if (count($item->itemWarehouse) < 1) {
+                    return [
+                        'error' => true,
+                        'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
+                    ];
+                }
+
+                foreach ($item->itemWarehouse as $item) {
+                    if ($detail['whs_name'] === $item->whs_name) {
+                        if ($detail['quantity'] > $item->available_qty) {
+                            return [
+                                'error' => true,
+                                'message' => "Line $lines: Available quantity for item "
+                                    . $item->code . " is " . $item->available_qty
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return ['error' => false];
     }
 }

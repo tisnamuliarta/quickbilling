@@ -47,7 +47,7 @@ class ItemService
                 'inventoryAccounts',
                 'salesTax',
                 'purchaseTax',
-                'contact',
+                'itemWarehouse',
             ])
             ->where(DB::raw("CONCAT(name, ' ', code)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order)

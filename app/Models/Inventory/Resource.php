@@ -17,16 +17,25 @@ class Resource extends Model
         'whs_code',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
     }
 
+    /**
+     * @return null
+     */
     public function getWhsCodeAttribute()
     {
         return ($this->warehouse) ? $this->warehouse->code : null;

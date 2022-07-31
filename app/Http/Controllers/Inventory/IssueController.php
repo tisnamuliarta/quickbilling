@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\ReceiptProduction;
+use App\Services\Financial\AccountMappingService;
 use App\Services\Inventory\IssueService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,6 +57,11 @@ class IssueController extends Controller
         try {
             ReceiptProduction::create($this->service->formData($request, 'store'));
 
+            $accountMapping = new AccountMappingService();
+            $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
+            // process issue for production
+            $this->service->processIssue($document, $items, 'Issue for production based on ', $account_id);
+
             DB::commit();
 
             return $this->success([
@@ -74,16 +80,37 @@ class IssueController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
-        $data = ReceiptProduction::find($id);
+        try {
+            $copy_from_id = $request->copyFromId;
 
-        return $this->success([
-            'rows' => $data,
-        ]);
+            if (isset($copy_from_id)) {
+                if (intval($copy_from_id) != 0) {
+                    $id = $copy_from_id;
+                }
+            }
+
+            $data = ReceiptProduction::where('id', '=', $id)
+                ->with(['lineItems', 'account'])
+                ->first();
+
+            $form = $this->service->getForm('PE');
+
+            return $this->success([
+                'data' => $data,
+                'count' => ($data) ? 1 : 0,
+                'form' => $form
+            ]);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                'trace' => $exception->getTrace(),
+            ]);
+        }
     }
 
     /**

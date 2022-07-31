@@ -7,6 +7,7 @@ use IFRS\Models\Vat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Item extends Model
 {
@@ -88,6 +89,14 @@ class Item extends Model
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function itemWarehouse(): HasMany
+    {
+        return $this->hasMany(ItemWarehouse::class);
     }
 
     public function getWhsNameAttribute()

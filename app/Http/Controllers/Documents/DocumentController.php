@@ -6,17 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Documents\StoreDocumentRequest;
 use App\Models\Documents\Document;
 use App\Services\Documents\DocumentService;
+use App\Services\Transactions\InventoryService;
 use App\Services\Transactions\PurchaseService;
 use App\Services\Transactions\SalesService;
+use App\Traits\InventoryHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
+    use InventoryHelper;
+
     public DocumentService $service;
     public PurchaseService $purchase;
     public SalesService $sales;
+    public InventoryService $inventory;
 
     /**
      * MasterUserController constructor.
@@ -24,12 +31,19 @@ class DocumentController extends Controller
      * @param DocumentService $service
      * @param PurchaseService $purchase
      * @param SalesService $sales
+     * @param InventoryService $inventory
      */
-    public function __construct(DocumentService $service, PurchaseService $purchase, SalesService $sales)
+    public function __construct(
+        DocumentService  $service,
+        PurchaseService  $purchase,
+        SalesService     $sales,
+        InventoryService $inventory
+    )
     {
         $this->service = $service;
         $this->purchase = $purchase;
         $this->sales = $sales;
+        $this->inventory = $inventory;
         //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
         //    $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
         //    $this->middleware(['direct_permission:Roles-edits'])->only('update');
@@ -94,13 +108,21 @@ class DocumentController extends Controller
      *
      * @throws \Throwable
      */
-    public function store(StoreDocumentRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
+        $request->validate([
+            'transaction_no' => 'required',
+            'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
+        ], [
+            'transaction_no.required' => __('validation')['required'],
+            'contact_id.required' => __('document')['contactRequired'],
+        ]);
+
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
-        $validate_details = $this->validateDetails($items);
+        $validate_details = $this->validateDetails($items, $request->transaction_type);
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
@@ -142,38 +164,9 @@ class DocumentController extends Controller
     }
 
     /**
-     * @param $details
-     * @return array
-     */
-    protected function validateDetails($details): array
-    {
-        if (count($details) == 0) {
-            return ['error' => true, 'message' => 'Details cannot empty!'];
-        }
-
-        foreach ($details as $index => $detail) {
-            $lines = $index + 1;
-
-            if (!array_key_exists('item_id', $detail)) {
-                return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
-            } elseif (empty($detail['item_id'])) {
-                return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
-            }
-
-            if (empty($detail['quantity'])) {
-                return ['error' => true, 'message' => "Line ${lines}: Quantity cannot empty!"];
-            }
-            if ($detail['quantity'] == 0) {
-                return ['error' => true, 'message' => "Line ${lines}: Quantity cannot 0!"];
-            }
-        }
-
-        return ['error' => false];
-    }
-
-    /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     protected function processInventory($document)
     {
@@ -202,6 +195,11 @@ class DocumentController extends Controller
             case 'SR':
                 $this->sales->salesReturnTransaction($document);
                 break;
+
+            case 'GI':
+            case 'GE':
+                $this->inventory->goodsIssueTransaction($document);
+                break;
         }
     }
 
@@ -225,7 +223,18 @@ class DocumentController extends Controller
             }
 
             $data = Document::where('id', '=', $id)
-                ->with(['lineItems', 'taxDetails', 'entity', 'parent', 'child', 'salesPerson'])
+                ->with([
+                    'lineItems',
+                    'entity',
+                    'parent',
+                    'child',
+                    'taxDetails' => function ($query) use ($type) {
+                        $query->where('type', '=', $type);
+                    },
+                    'salesPerson' => function ($query) use ($type) {
+                        $query->where('document_type', '=', $type);
+                    },
+                ])
                 ->first();
 
             $form = $this->service->getForm(($data) ? $data->transaction_type : $type);
@@ -265,8 +274,16 @@ class DocumentController extends Controller
      *
      * @throws \Throwable
      */
-    public function update(StoreDocumentRequest $request, int $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
+        $request->validate([
+            'transaction_no' => 'required',
+            'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
+        ], [
+            'transaction_no.required' => __('validation')['required'],
+            'contact_id.required' => __('document')['contactRequired'],
+        ]);
+
         try {
             $action = $request->updateStatus;
 
@@ -282,7 +299,7 @@ class DocumentController extends Controller
                     $tax_details = collect($request->tax_details);
                     $sales_persons = collect($request->sales_persons);
 
-                    $validate_details = $this->validateDetails($items);
+                    $validate_details = $this->validateDetails($items, $request->transaction_type);
                     if ($validate_details['error']) {
                         return $this->error($validate_details['message']);
                     }

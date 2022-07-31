@@ -9,10 +9,13 @@ use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
 use App\Models\Inventory\Warehouse;
 use App\Models\Sales\SalesPerson;
+use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
+use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
+use IFRS\Transactions\JournalEntry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +35,8 @@ class DocumentService
     public function index($request): array
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 10;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'transaction_no';
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
 
         $result = [];
@@ -47,7 +50,7 @@ class DocumentService
             ")
         )
             ->with(['lineItems', 'taxDetails', 'contact'])
-            ->where('transaction_type', 'LIKE', '%'.$type.'%')
+            ->where('transaction_type', 'LIKE', '%' . $type . '%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -98,14 +101,6 @@ class DocumentService
     }
 
     /**
-     * @return mixed
-     */
-    public function defaultWarehouse()
-    {
-        return Warehouse::first();
-    }
-
-    /**
      * @param $sysDate
      * @param $alias
      * @return string
@@ -130,15 +125,23 @@ class DocumentService
 
         $nextId = $nextId + 1;
 
-        return $alias.'-'.str_pad((string) $periodCount, 2, '0', STR_PAD_LEFT)
-            .$month.
-            str_pad((string) $nextId, 4, '0', STR_PAD_LEFT);
+        return $alias . '-' . str_pad((string)$periodCount, 2, '0', STR_PAD_LEFT)
+            . $month .
+            str_pad((string)$nextId, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function defaultWarehouse()
+    {
+        return Warehouse::first();
     }
 
     /**
      * @param $request
      * @param $type
-     * @param  null  $id
+     * @param null $id
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -151,14 +154,16 @@ class DocumentService
             'currency_code' => $request->user()->entity->currency->currency_code,
             // 'currency_rate' => $currency->rate,
             'currency_rate' => 0,
-            'contact_name' => $contact->name,
-            'contact_email' => $contact->email,
-            'contact_tax_number' => $contact->tax_number,
-            'contact_phone' => $contact->phone,
-            'contact_zip_code' => $contact->zip_code,
-            'contact_city' => $contact->city,
+            'contact_name' => (isset($contact)) ? $contact->name : '',
+            'contact_email' => (isset($contact)) ? $contact->email : '',
+            'contact_tax_number' => (isset($contact)) ? $contact->tax_number : '',
+            'contact_phone' => (isset($contact)) ? $contact->phone : '',
+            'contact_zip_code' => (isset($contact)) ? $contact->zip_code : '',
+            'contact_city' => (isset($contact)) ? $contact->city : '',
         ]);
         $data = $request->all();
+
+        $data['contact_id'] = (isset($data['contact_id'])) ? $data['contact_id'] : 0;
 
         Arr::forget($data, 'line_items');
         Arr::forget($data, 'contact');
@@ -176,6 +181,7 @@ class DocumentService
         Arr::forget($data, 'default_currency_symbol');
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'action');
+        Arr::forget($data, 'warehouse_name');
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
@@ -211,6 +217,20 @@ class DocumentService
                 $this->processItemTax($document, $item_detail);
             }
         }
+
+        if (Str::contains($document->transaction_type, ['GI', 'GE'])) {
+            $transaction_type = $document->transaction_type;
+            $accountMapping = new AccountMappingService();
+            $account_id = $accountMapping->getAccountByName('Inventory Account')->account_id;
+            if ($transaction_type == 'GI') {
+                $credited = false;
+                $line_account = $accountMapping->getAccountByName('Inventory Offset Decrease Account')->account_id;
+            } else {
+                $credited = true;
+                $line_account = $accountMapping->getAccountByName('Inventory Offset Increase Account')->account_id;
+            }
+            $this->processIssueReceipt($document, $account_id, $line_account, $credited);
+        }
     }
 
     /**
@@ -228,15 +248,15 @@ class DocumentService
             'item_id' => $item['item_id'],
             'name' => $item['narration'],
             'narration' => $item['narration'],
-            'sku' => $item['code'],
+            'sku' => (isset($item['code'])) ? $item['code'] : null,
             'quantity' => floatval($item['quantity']),
-            'price' => floatval($item['price']),
+            'price' => (isset($item['price'])) ? floatval($item['price']) : 0,
             'unit' => $item['unit'],
             'tax_name' => (array_key_exists('tax_name', $item)) ? $item['tax_name'] : null,
             'vat_id' => (array_key_exists('tax_name', $item)) ? $this->getTaxIdByName($item['tax_name']) : 0,
             'warehouse_id' => (array_key_exists('whs_name', $item)) ? $this->getWhsIdByName($item['whs_name']) : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => floatval($item['price']),
+            'amount' => (isset($item['amount'])) ? floatval($item['amount']) : floatval($item['price']),
             'sub_total' => floatval($item['sub_total']),
         ];
 
@@ -277,6 +297,45 @@ class DocumentService
                 'amount' => floatval($amount),
             ]
         );
+    }
+
+    /**
+     * @param $document
+     * @param $account_id
+     * @param $line_account
+     * @param bool $credited
+     * @return void
+     */
+    public function processIssueReceipt($document, $account_id, $line_account, bool $credited = false)
+    {
+        $line_items = $document->lineItems;
+
+        $journalEntry = JournalEntry::create([
+            'account_id' => $account_id,
+            'date' => Carbon::now(),
+            'narration' => $document->narration,
+            'reference_no' => $document->transaction_no,
+            'reference' => $document->transaction_no,
+            'credited' => $credited, // main account should be debited
+            'main_account_amount' => $document->main_account_amount,
+            'status' => 'open'
+        ]);
+
+        foreach ($line_items as $line_item) {
+            $journalEntry->addLineItem(
+                LineItem::create([
+                    'account_id' => $line_account,
+                    'description' => $line_item->item_name,
+                    'amount' => $line_item->amount,
+                    'item_id' => $line_item->item_id,
+                    'unit' => $line_item->unit,
+                    'warehouse_id' => $line_item->warehouse_id,
+                    //'credited' => true,
+                    'transaction_id' => $journalEntry->id
+                ])
+            );
+        }
+        $journalEntry->post();
     }
 
     /**
@@ -336,7 +395,7 @@ class DocumentService
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array
     {
         $query = Document::where('transaction_type', $action)
-            ->whereIn('parent_id', (array) $parent_id);
+            ->whereIn('parent_id', (array)$parent_id);
 
         return [
             'title' => $title,

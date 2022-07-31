@@ -7,6 +7,7 @@ use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Services\Transactions\PurchaseService;
 use App\Services\Transactions\SalesService;
 use App\Services\Transactions\TransactionService;
+use App\Traits\InventoryHelper;
 use IFRS\Models\Transaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ use Illuminate\Support\Str;
 
 class TransactionController extends Controller
 {
+    use InventoryHelper;
+
     public TransactionService $service;
     public PurchaseService $purchase;
     public SalesService $sales;
@@ -80,6 +83,12 @@ class TransactionController extends Controller
             $bank_account_id = 0;
         }
 
+        // validate details before store
+        $validate_details = $this->validateDetails($items, $request->transaction_type);
+        if ($validate_details['error']) {
+            return $this->error($validate_details['message']);
+        }
+
         DB::beginTransaction();
         try {
             if (empty($request->main_account_amount)) {
@@ -123,6 +132,7 @@ class TransactionController extends Controller
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     protected function processInventory($document)
     {
@@ -166,7 +176,19 @@ class TransactionController extends Controller
             }
             $model = $this->service->mappingTable($type);
             $data = $model::where('id', $id)
-                ->with(['entity', 'lineItems.appliedVats', 'lineItems.vat', 'contact', 'salesPerson', 'taxDetails'])
+                ->with([
+                    'entity',
+                    'lineItems.appliedVats',
+                    'lineItems.vat',
+                    'contact',
+                    'salesPerson',
+                    'taxDetails' => function ($query) use ($type) {
+                        $query->where('type', '=', $type);
+                    },
+                    'salesPerson' => function ($query) use ($type) {
+                        $query->where('document_type', '=', $type);
+                    },
+                ])
                 ->first();
 
             return $this->success([
@@ -200,6 +222,12 @@ class TransactionController extends Controller
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
         $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id'] : 0;
+
+        // validate details before update
+        $validate_details = $this->validateDetails($items, $request->transaction_type);
+        if ($validate_details['error']) {
+            return $this->error($validate_details['message']);
+        }
 
         try {
             // Document::where("id", "=", $id)->update($this->service->formData($request, 'update'));

@@ -333,8 +333,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      */
     public function salesPerson(): HasMany
     {
-        return $this->hasMany(SalesPerson::class, 'document_id')
-            ->where('document_type', '=', $this->transaction_type);
+        return $this->hasMany(SalesPerson::class, 'document_id');
     }
 
     /**
@@ -342,8 +341,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      */
     public function taxDetails(): HasMany
     {
-        return $this->hasMany(DocumentItemTax::class, 'document_id')
-            ->where('type', '=', $this->transaction_type);
+        return $this->hasMany(DocumentItemTax::class, 'document_id');
     }
 
     /**

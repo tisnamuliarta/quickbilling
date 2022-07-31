@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Production;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Production\StoreProductionRequest;
 use App\Models\Productions\Production;
+use App\Services\Financial\AccountMappingService;
+use App\Services\Inventory\IssueService;
 use App\Services\Production\ProductionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,15 +15,18 @@ use Illuminate\Support\Facades\DB;
 class ProductionController extends Controller
 {
     public ProductionService $service;
+    public IssueService $issue;
 
     /**
      * MasterUserController constructor.
      *
      * @param ProductionService $service
+     * @param IssueService $issue
      */
-    public function __construct(ProductionService $service)
+    public function __construct(ProductionService $service, IssueService $issue)
     {
         $this->service = $service;
+        $this->issue = $issue;
         //    $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
         //    $this->middleware(['direct_permission:Roles-store'])->only(['store', 'storePermissionRole']);
         //    $this->middleware(['direct_permission:Roles-edits'])->only('update');
@@ -115,9 +120,7 @@ class ProductionController extends Controller
                 }
             }
 
-            if ($document->status == 'closed') {
-                $this->service->processIssue($document, $items);
-            }
+            $this->processIssueForProduction($document, $items);
 
             DB::commit();
 
@@ -164,6 +167,26 @@ class ProductionController extends Controller
         }
 
         return ['error' => false];
+    }
+
+    /**
+     * @param $document
+     * @param $items
+     * @return void
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
+     */
+    protected function processIssueForProduction($document, $items)
+    {
+        if ($document->status == 'closed') {
+            $accountMapping = new AccountMappingService();
+            $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
+            // process issue for production
+            $this->issue->processIssue($document, $items, 'Issue for production based on ', $account_id);
+
+            //process receive from production
+            $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
+            $this->issue->processIssue($document, $items, 'Receipt production base on ', $account_id, 'receipt');
+        }
     }
 
     /**
@@ -243,9 +266,7 @@ class ProductionController extends Controller
 
             $this->service->processItems($items, $document);
 
-            if ($document->status == 'closed') {
-                $this->service->processIssue($document, $items);
-            }
+            $this->processIssueForProduction($document, $items);
 
             DB::commit();
 

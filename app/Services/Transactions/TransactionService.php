@@ -6,9 +6,11 @@ use App\Models\Documents\Document;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\Item;
 use App\Models\Inventory\Warehouse;
 use App\Models\Payroll\Employee;
 use App\Models\Sales\SalesPerson;
+use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
@@ -131,14 +133,6 @@ class TransactionService
     }
 
     /**
-     * @return mixed
-     */
-    public function defaultWarehouse()
-    {
-        return Warehouse::first();
-    }
-
-    /**
      * @param $type
      * @return int
      */
@@ -177,6 +171,14 @@ class TransactionService
         return $alias . '-' . str_pad((string)$periodCount, 2, '0', STR_PAD_LEFT)
             . $month .
             str_pad((string)$nextId, 5, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function defaultWarehouse()
+    {
+        return Warehouse::first();
     }
 
     /**
@@ -319,7 +321,7 @@ class TransactionService
         $price = (array_key_exists('price', $item)) ? floatval($item['price']) : 1;
         $form = [
             'entity_id' => $document->entity_id,
-            'account_id' => $this->detailAccountId($document->transaction_type, $item, $bank_account_id),
+            'account_id' => $this->detailAccountId($document, $item, $bank_account_id),
             'transaction_id' => $document->id,
             'item_id' => (array_key_exists('item_id', $item)) ? $item['item_id'] : null,
             'narration' => $item['narration'],
@@ -333,7 +335,7 @@ class TransactionService
             //'vat_inclusive' => array_key_exists('tax_name', $item),
             'vat_inclusive' => (Arr::exists($item, 'vat_inclusive')) ? $item['vat_inclusive'] : 0,
             'discount_rate' => floatval((array_key_exists('discount_rate', $item)) ? $item['discount_rate'] : 0),
-            'amount' => (array_key_exists('amount', $item)) ? floatval($item['amount']) :  $price,
+            'amount' => (array_key_exists('amount', $item)) ? floatval($item['amount']) : $price,
             'sub_total' => floatval($item['sub_total']),
         ];
 
@@ -347,19 +349,30 @@ class TransactionService
     }
 
     /**
-     * @param $type
+     * @param $document
      * @param $item
      * @param $bank_account_id
      * @return int
      */
-    public function detailAccountId($type, $item, $bank_account_id): int
+    public function detailAccountId($document, $item, $bank_account_id): int
     {
+        $type = $document->transaction_type;
         if (Str::contains($type, ['CS', 'CN', 'IN'])) {
             return $this->getAccountIdItem($item['item_id'], 'sales');
         } elseif (Str::contains($type, ['RC', 'PY'])) {
             return $bank_account_id;
         } else {
-            return $this->getAccountIdItem($item['item_id'], 'purchase');
+            if (Str::contains($type, ['BL', 'DN'])) {
+                $accountMapping = new AccountMappingService();
+                if ($document->base_id) {
+                    return $accountMapping->getAccountByName('Allocation Account')->account_id;
+                } else {
+                    $item = Item::find($item['item_id']);
+                    return $item->inventory_account;
+                }
+            } else {
+                return $this->getAccountIdItem($item['item_id'], 'purchase');
+            }
         }
     }
 

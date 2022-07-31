@@ -14,6 +14,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
+/**
+ * Class Transaction
+ *
+ * @property Carbon $transaction_date
+ * @property string $transaction_no
+ * @property string $transaction_type
+ * @property string $narration
+ * @property float $main_account_amount
+ */
 class Document extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
@@ -78,8 +87,7 @@ class Document extends Model implements Auditable
      */
     public function taxDetails(): HasMany
     {
-        return $this->hasMany(DocumentItemTax::class)
-            ->where('type', '=', $this->transaction_type);
+        return $this->hasMany(DocumentItemTax::class);
     }
 
     /**
@@ -144,8 +152,7 @@ class Document extends Model implements Auditable
      */
     public function salesPerson(): HasMany
     {
-        return $this->hasMany(SalesPerson::class)
-            ->where('document_type', '=', $this->transaction_type);
+        return $this->hasMany(SalesPerson::class);
     }
 
     // this is a recommended way to declare event handlers

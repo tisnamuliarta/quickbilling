@@ -26,7 +26,7 @@ class PurchaseService
 
             $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-            $item_warehouse->ordered_qty = $ordered_qty;
+            $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $ordered_qty;
             $item_warehouse->save();
         }
     }
@@ -34,6 +34,7 @@ class PurchaseService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function goodsReceiptPurchaseOrderTransaction($document)
     {
@@ -71,6 +72,7 @@ class PurchaseService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function supplierBillTransaction($document)
     {
@@ -83,6 +85,7 @@ class PurchaseService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function debitNoteTransaction($document)
     {
@@ -95,6 +98,7 @@ class PurchaseService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function goodsReturnTransaction($document)
     {

@@ -115,7 +115,7 @@ class ProductionService
             'base_qty' => floatval($item['base_qty']),
             'planned_qty' => floatval($document->planned_qty) * floatval($item['base_qty']),
             'price' => floatval($item['price']),
-            'uom' => $item['uom'],
+            'unit' => $item['unit'],
             'warehouse_id' => (array_key_exists('whs_code', $item)) ? $this->getWhsIdByName($item['whs_code']) : 0,
             'amount' => floatval($item['amount']),
             'issue_method' => 'backflush',
@@ -177,104 +177,6 @@ class ProductionService
 
         $nextId = Production::where('transaction_date', '>=', $periodStart)
             ->where('transaction_type', $alias)
-            ->count();
-
-        $nextId = $nextId + 1;
-
-        return $alias . '-' . str_pad((string)$periodCount, 2, '0', STR_PAD_LEFT)
-            . $month .
-            str_pad((string)$nextId, 4, '0', STR_PAD_LEFT);
-    }
-
-    /**
-     * @param $document
-     * @param $line_items
-     * @return void
-     * @throws \IFRS\Exceptions\MissingReportingPeriod
-     */
-    public function processIssue($document, $line_items)
-    {
-        $accountMapping = new AccountMappingService();
-        $header = [
-            'entity_id' => $document->entity_id,
-            'transaction_no' => $this->generateDocNumIssue(Carbon::now()),
-            'transaction_type' => 'issue',
-            'transaction_date' => date('Y-m-d'),
-            'account_id' => $accountMapping->getAccountByName('WIP Inventory Account')->account_id,
-            'main_account_amount' => $document->main_account_amount,
-            'reference_no' => $document->transaction_no,
-            'narration' => $document->item_name
-        ];
-
-        $issue = ReceiptProduction::create($header);
-
-        $journalEntry = JournalEntry::create([
-            'account_id' => $accountMapping->getAccountByName('WIP Inventory Account')->account_id,
-            'date' => Carbon::now(),
-            'narration' => "Komisi produksi " . $document->transaction_date,
-            'credited' => false, // main account should be debited
-            'main_account_amount' => $document->main_account_amount,
-            'status' => 'open'
-        ]);
-
-        foreach ($line_items as $line_item) {
-            $item = [
-                'production_id' => $issue->id,
-                'entity_id' => $line_item['entity_id'],
-                'item_id' => $line_item['item_id'],
-                'quantity' => $line_item['base_qty'],
-                'warehouse_id' => $line_item['warehouse_id'],
-                'price' => $line_item['price'],
-                'amount' => $line_item['amount'],
-                'account_id' => $line_item['account_id'],
-                'item_type' => $line_item['item_type'],
-                'item_name' => $line_item['item_name'],
-                'uom' => $line_item['uom'],
-                'narration' => $line_item['item_name'],
-            ];
-
-            $line = ReceiptLine::create($item);
-
-            $journalEntry->addLineItem(
-                LineItem::create([
-                    'account_id' => $line->account_id,
-                    'description' => $line->item_name,
-                    'amount' => $line->amount,
-                    'credited' => true,
-                    'transaction_id' => $journalEntry->id
-                ])
-            );
-        }
-        $journalEntry->post();
-
-//        $entity = Entity::first();
-//        $period = ReportingPeriod::getPeriod(date('Y-m-d'), $entity);
-//        ClosingTransaction::create([
-//            'entity_id' => $document->entity_id,
-//            'reporting_period_id' => $period->id,
-//            'currency_id' => $entity->currency->id,
-//            'transaction_id' => $journalEntry->id
-//        ]);
-    }
-
-    /**
-     * @param $sysDate
-     * @return string
-     * @throws \IFRS\Exceptions\MissingReportingPeriod
-     */
-    protected function generateDocNumIssue($sysDate): string
-    {
-        $alias = 'GI';
-        $data_date = strtotime($sysDate);
-        $month = date('m', $data_date);
-
-        $entity = Auth::user()->entity;
-        $periodCount = ReportingPeriod::getPeriod($sysDate, $entity)->period_count;
-        $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
-        $periodStart = date('Y-m-d', strtotime($periodStart));
-
-        $nextId = ReceiptProduction::where('transaction_date', '>=', $periodStart)
-            ->where('transaction_type', 'issue')
             ->count();
 
         $nextId = $nextId + 1;

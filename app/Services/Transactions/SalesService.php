@@ -25,7 +25,7 @@ class SalesService
 
             $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-            $item_warehouse->committed_qty = $quantity;
+            $item_warehouse->committed_qty = $item_warehouse->committed_qty + $quantity;
             $item_warehouse->save();
         }
     }
@@ -33,10 +33,11 @@ class SalesService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function deliveryTransaction($document)
     {
-        $this->createInventoryJournal($document, 'Sales delivery ');
+        $this->createInventoryJournal($document, 'Sales delivery base on ');
     }
 
     /**
@@ -44,6 +45,7 @@ class SalesService
      * @param $narration
      * @param bool $reverse
      * @return void
+     * @throws \Exception
      */
     protected function createInventoryJournal($document, $narration, bool $reverse = false)
     {
@@ -54,7 +56,7 @@ class SalesService
             'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
             'date' => Carbon::now(),
             'narration' => $narration . $document->transaction_no,
-            'credited' => (bool)$reverse, // main account should be debited
+            'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
             'status' => 'open'
@@ -70,7 +72,7 @@ class SalesService
                     'narration' => $line_item->item->item_name,
                     'amount' => $line_item->amount,
                     'sub_total' => $line_item->sub_total,
-                    'credited' => !$reverse,
+                    'credited' => true,
                     'transaction_id' => $journalEntry->id
                 ])
             );
@@ -81,6 +83,7 @@ class SalesService
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function clientInvoiceTransaction($document)
     {
@@ -90,17 +93,18 @@ class SalesService
                 $this->processOnHandQty($line_item, $document);
             }
         } else {
-            $this->createInventoryJournal($document, 'Sales invoice ');
+            $this->createInventoryJournal($document, 'Sales invoice base on ');
         }
     }
 
     /**
      * @param $document
      * @return void
+     * @throws \Exception
      */
     public function creditNoteTransaction($document)
     {
-        $this->createInventoryJournal($document, 'Credit note ', true);
+        $this->returnInventoryJournal($document, 'Credit note base on ');
 
         $line_items = $document->lineItems;
         foreach ($line_items as $line_item) {
@@ -110,21 +114,24 @@ class SalesService
 
     /**
      * @param $document
+     * @param $narration
      * @return void
+     * @throws \Exception
      */
-    public function salesReturnTransaction($document)
+    protected function returnInventoryJournal($document, $narration)
     {
         $line_items = $document->lineItems;
         $accountMapping = new AccountMappingService();
         $journalEntry = JournalEntry::create([
             'account_id' => $accountMapping->getAccountByName('Sales Returns Account')->account_id,
             'date' => Carbon::now(),
-            'narration' => "Sales Return " . $document->transaction_no,
+            'narration' => $narration . $document->transaction_no,
             'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
             'status' => 'open'
         ]);
+
         foreach ($line_items as $line_item) {
             $this->processOnHandQty($line_item, $document);
 
@@ -141,5 +148,15 @@ class SalesService
             );
         }
         $journalEntry->post();
+    }
+
+    /**
+     * @param $document
+     * @return void
+     * @throws \Exception
+     */
+    public function salesReturnTransaction($document)
+    {
+        $this->returnInventoryJournal($document, 'Sales return base on ');
     }
 }

@@ -52,6 +52,7 @@ class EmployeeService
         Arr::forget($data, 'created_at');
         Arr::forget($data, 'id');
         Arr::forget($data, 'user_id');
+        Arr::forget($data, 'full_name');
 
         $data['pay_schedule_name'] = (empty($data['pay_schedule_name'])) ? '-' : $data['pay_schedule_name'];
         $data['employee_id'] = (empty($data['employee_id'])) ? '-' : $data['employee_id'];

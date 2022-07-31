@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inventory\ReceiptProduction;
-use Illuminate\Http\Request;
-use App\Services\Inventory\ReceiptService;
-use Illuminate\Support\Facades\DB;
+use App\Services\Inventory\IssueService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReceiptController extends Controller
 {
-    public ReceiptService $service;
+    public IssueService $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(ReceiptService $service)
+    public function __construct(IssueService $service)
     {
         $this->service = $service;
         //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -28,7 +28,7 @@ class ReceiptController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -45,7 +45,7 @@ class ReceiptController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -74,23 +74,44 @@ class ReceiptController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
-        $data = ReceiptProduction::find($id);
+        try {
+            $copy_from_id = $request->copyFromId;
 
-        return $this->success([
-            'rows' => $data,
-        ]);
+            if (isset($copy_from_id)) {
+                if (intval($copy_from_id) != 0) {
+                    $id = $copy_from_id;
+                }
+            }
+
+            $data = ReceiptProduction::where('id', '=', $id)
+                ->with(['lineItems', 'account'])
+                ->first();
+
+            $form = $this->service->getForm('PE');
+
+            return $this->success([
+                'data' => $data,
+                'count' => ($data) ? 1 : 0,
+                'form' => $form
+            ]);
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                'trace' => $exception->getTrace(),
+            ]);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -119,7 +140,7 @@ class ReceiptController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): JsonResponse

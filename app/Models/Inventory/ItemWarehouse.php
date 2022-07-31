@@ -13,6 +13,18 @@ class ItemWarehouse extends Model
 
     protected $guarded = [];
 
+    /**
+     * cast attribute
+     *
+     * @var array
+     */
+    protected $casts = [
+        'item_cost' => 'double',
+        'on_hand_qty' => 'double',
+        'committed_qty' => 'double',
+        'ordered_qty' => 'double',
+    ];
+
     protected $appends = [
         'whs_name',
         'available_qty',
