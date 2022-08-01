@@ -86,7 +86,7 @@ class TransactionController extends Controller
         }
 
         // validate details before store
-        $validate_details = $this->validateDetails($items, $request->transaction_type, '');
+        $validate_details = $this->validateDetails($items, $request->transaction_type, $request->id, '');
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
@@ -107,12 +107,13 @@ class TransactionController extends Controller
                 }
             }
 
+            $document = $model::find($document->id);
+
             $this->service->processItems($items, $document, $tax_details, $sales_persons, $bank_account_id);
 
             $this->service->processSalesPerson($sales_persons, $document);
 
             // process inventory qty
-            $document = $model::find($document->id);
             $this->processInventory($document);
 
             DB::commit();
@@ -231,7 +232,7 @@ class TransactionController extends Controller
         $action = $request->updateStatus;
 
         // validate details before update
-        $validate_details = $this->validateDetails($items, $request->transaction_type, $action);
+        $validate_details = $this->validateDetails($items, $request->transaction_type, $request->id, $action);
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }

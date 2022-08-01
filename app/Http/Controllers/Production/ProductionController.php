@@ -8,12 +8,15 @@ use App\Models\Productions\Production;
 use App\Services\Financial\AccountMappingService;
 use App\Services\Inventory\IssueService;
 use App\Services\Production\ProductionService;
+use App\Traits\InventoryHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductionController extends Controller
 {
+    use InventoryHelper;
+
     public ProductionService $service;
     public IssueService $issue;
 
@@ -174,10 +177,32 @@ class ProductionController extends Controller
      * @param $items
      * @return void
      * @throws \IFRS\Exceptions\MissingReportingPeriod
+     * @throws \Exception
      */
     protected function processIssueForProduction($document, $items)
     {
         if ($document->status == 'closed') {
+            // calculate cost after receipt
+            $item_warehouse = $this->getItemWarehouse($document->item_id, $document->warehouse_id);
+            if (!$item_warehouse) {
+                throw new \Exception('Item warehouse not found', 1);
+            }
+
+            $price = $document->commission_rate;
+            $quantity = $document->planned_qty;
+
+            $prev_cost = round(floatval($item_warehouse->item_cost), 2);
+
+            $temp_cost = round($quantity * $price, 2);
+
+            $item_cost = ($item_warehouse->available_qty != 0)  ?
+                round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2) : $price;
+
+            $item_warehouse->item_cost = $item_cost;
+            $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+            $item_warehouse->save();
+
+
             $accountMapping = new AccountMappingService();
             $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
             // process issue for production
@@ -185,7 +210,9 @@ class ProductionController extends Controller
 
             //process receive from production
             $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
-            $this->issue->processIssue($document, $items, 'Receipt production base on ', $account_id, 'receipt');
+            $account_line = $accountMapping->getAccountByName('Inventory Account')->account_id;
+
+            $this->issue->processReceipt($document, $account_line, 'Receipt production base on ', $account_id);
         }
     }
 

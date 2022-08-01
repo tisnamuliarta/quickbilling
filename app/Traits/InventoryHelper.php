@@ -94,6 +94,7 @@ trait InventoryHelper
 
             // Goods receipt
             case 'GE':
+            case 'PR':
                 $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
                 break;
             // Goods issue
@@ -139,7 +140,7 @@ trait InventoryHelper
         // calculate with average cost
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI'];
+        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI', 'PI'];
         if (!Str::contains($document->transaction_type, $sales)) {
             $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
 
@@ -168,10 +169,11 @@ trait InventoryHelper
     /**
      * @param $details
      * @param $transaction_type
+     * @param $doc_id
      * @param $action
      * @return array
      */
-    protected function validateDetails($details, $transaction_type, $action): array
+    protected function validateDetails($details, $transaction_type, $doc_id, $action): array
     {
         if (count($details) == 0) {
             return ['error' => true, 'message' => 'Details cannot empty!'];
@@ -210,22 +212,24 @@ trait InventoryHelper
                 $item = Item::find($detail['item_id']);
 
                 if (!Str::contains($action, ['closed', 'canceled'])) {
-                    // item warehouse
-                    if (count($item->itemWarehouse) < 1) {
-                        return [
-                            'error' => true,
-                            'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
-                        ];
-                    }
+                    if ($doc_id == 0) {
+                        // item warehouse
+                        if (count($item->itemWarehouse) < 1) {
+                            return [
+                                'error' => true,
+                                'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
+                            ];
+                        }
 
-                    foreach ($item->itemWarehouse as $item) {
-                        if ($detail['whs_name'] === $item->whs_name) {
-                            if ($detail['quantity'] > $item->available_qty) {
-                                return [
-                                    'error' => true,
-                                    'message' => "Line $lines: Available quantity for item "
-                                        . $item->code . " is " . $item->available_qty
-                                ];
+                        foreach ($item->itemWarehouse as $item) {
+                            if ($detail['whs_name'] === $item->whs_name) {
+                                if ($detail['quantity'] > $item->available_qty) {
+                                    return [
+                                        'error' => true,
+                                        'message' => "Line $lines: Available quantity for item "
+                                            . $item->code . " is " . $item->available_qty
+                                    ];
+                                }
                             }
                         }
                     }

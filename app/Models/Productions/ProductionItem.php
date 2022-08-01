@@ -18,6 +18,7 @@ class ProductionItem extends Model
     protected $appends = [
         'item_code',
         'whs_code',
+        'sub_total',
         'account_code',
     ];
 
@@ -60,6 +61,11 @@ class ProductionItem extends Model
     public function getItemCodeAttribute(): mixed
     {
         return ($this->item) ? $this->item->code : null;
+    }
+
+    public function getSubTotalAttribute()
+    {
+        return $this->base_qty * $this->amount;
     }
 
     public function getAccountCodeAttribute(): mixed

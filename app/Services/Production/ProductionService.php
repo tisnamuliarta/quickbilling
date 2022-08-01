@@ -2,17 +2,12 @@
 
 namespace App\Services\Production;
 
-use App\Models\Inventory\ReceiptLine;
-use App\Models\Inventory\ReceiptProduction;
 use App\Models\Productions\Production;
 use App\Models\Productions\ProductionItem;
-use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
-use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
-use IFRS\Transactions\JournalEntry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -51,10 +46,6 @@ class ProductionService
     public function formData($request, $type): array
     {
         $data = $request->all();
-
-        if ($type == 'store') {
-            $data['main_account_amount'] = $data['sub_total'];
-        }
 
         Arr::forget($data, 'updated_at');
         Arr::forget($data, 'created_at');
@@ -114,7 +105,7 @@ class ProductionService
             'narration' => $item['narration'],
             'base_qty' => floatval($item['base_qty']),
             'planned_qty' => floatval($document->planned_qty) * floatval($item['base_qty']),
-            'price' => floatval($item['price']),
+            'price' => floatval($item['amount']),
             'unit' => $item['unit'],
             'warehouse_id' => (array_key_exists('whs_code', $item)) ? $this->getWhsIdByName($item['whs_code']) : 0,
             'amount' => floatval($item['amount']),

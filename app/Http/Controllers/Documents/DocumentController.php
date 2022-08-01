@@ -114,7 +114,7 @@ class DocumentController extends Controller
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_persons);
 
-        $validate_details = $this->validateDetails($items, $request->transaction_type, '');
+        $validate_details = $this->validateDetails($items, $request->transaction_type, $request->id, '');
         if ($validate_details['error']) {
             return $this->error($validate_details['message']);
         }
@@ -290,7 +290,12 @@ class DocumentController extends Controller
                     $tax_details = collect($request->tax_details);
                     $sales_persons = collect($request->sales_persons);
 
-                    $validate_details = $this->validateDetails($items, $request->transaction_type, $action);
+                    $validate_details = $this->validateDetails(
+                        $items,
+                        $request->transaction_type,
+                        $request->id,
+                        $action
+                    );
                     if ($validate_details['error']) {
                         return $this->error($validate_details['message']);
                     }

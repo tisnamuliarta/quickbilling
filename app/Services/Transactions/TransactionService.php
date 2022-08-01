@@ -424,7 +424,6 @@ class TransactionService
                 'base_num' => $document->transaction_no,
                 'base_type' => $document->transaction_type,
             ]);
-
             foreach ($sales_persons as $line_item) {
                 $user_id = (is_array($line_item)) ? $line_item['user_id'] : $line_item;
                 $employee = Employee::find($user_id);
@@ -432,10 +431,10 @@ class TransactionService
                     LineItem::create([
                         'account_id' => $employee->account_id,
                         'narration' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
-                        'amount' => $amount,
-                        'quantity' => $line_item->quantity,
-                        'price' => $commission_rate / count($sales_persons),
-                        'sub_total' => $amount * $line_item->quantity,
+                        'amount' => $commission_rate,
+                        'quantity' => $lineItem->quantity / count($sales_persons),
+                        'price' => $commission_rate,
+                        'sub_total' => $lineItem->quantity / count($sales_persons) * $commission_rate,
                         //'credited' => false,
                         'transaction_id' => $journalEntry->id,
                         'item_id' => $lineItem->item_id,
