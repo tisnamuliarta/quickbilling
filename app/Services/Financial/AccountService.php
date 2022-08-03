@@ -27,6 +27,11 @@ class AccountService
         $zero_balance = (isset($request->show_zero_balance)) ? $request->show_zero_balance : null;
 
         $query = Account::where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%' . $search . '%')
+            ->orWhere(function ($query) use ($search) {
+                $query->whereHas('category', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                });
+            })
             ->with(['currency', 'category'])
             ->orderBy($sorts, $order)
             ->get()
