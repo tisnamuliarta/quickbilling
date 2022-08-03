@@ -37,7 +37,7 @@ class ProductionIssueController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            return $this->success($this->service->index($request));
+            return $this->success($this->service->index($request, 'PI'));
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [
                 $exception->getTrace(),

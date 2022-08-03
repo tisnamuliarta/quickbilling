@@ -45,7 +45,7 @@ class PurchaseService
         $journalEntry = JournalEntry::create([
             'account_id' => $accountMapping->getAccountByName('Allocation Account')->account_id,
             'date' => Carbon::now(),
-            'narration' => "Goods Receipt PO " . $document->transaction_no,
+            'narration' => "Inventory Transaction Base On Goods Receipt PO " . $document->transaction_no,
             'credited' => true, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
@@ -112,7 +112,7 @@ class PurchaseService
         $journalEntry = JournalEntry::create([
             'account_id' => $accountMapping->getAccountByName('Allocation Account')->account_id,
             'date' => Carbon::now(),
-            'narration' => "Goods Return " . $document->transaction_no,
+            'narration' => "Inventory Transaction  Base On Goods Return " . $document->transaction_no,
             'credited' => false, // main account should be debited
             'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,

@@ -69,7 +69,7 @@ class ProductionController extends Controller
             $status = $request->status;
             $document = $request->document;
 
-            $query = Production::where('type', $type);
+            $query = Production::where('transaction_type', $type);
             $row = [];
             if ($status == 'prev') {
                 $row = $query->where('id', '<', $document)

@@ -37,7 +37,7 @@ class SalesService
      */
     public function deliveryTransaction($document)
     {
-        $this->createInventoryJournal($document, 'Sales delivery base on ');
+        $this->createInventoryJournal($document, 'Inventory Transaction Base on Sales delivery ');
     }
 
     /**
@@ -99,7 +99,7 @@ class SalesService
                 $this->processOnHandQty($line_item, $document);
             }
         } else {
-            $this->createInventoryJournal($document, 'Base On Sales invoice ');
+            $this->createInventoryJournal($document, 'Inventory Transaction Base On Sales invoice ');
         }
     }
 
@@ -110,7 +110,7 @@ class SalesService
      */
     public function creditNoteTransaction($document)
     {
-        $this->returnInventoryJournal($document, 'Base on Credit note ');
+        $this->returnInventoryJournal($document, 'Inventory Transaction Base on Credit note ');
 
         $line_items = $document->lineItems;
         foreach ($line_items as $line_item) {
@@ -168,6 +168,6 @@ class SalesService
      */
     public function salesReturnTransaction($document)
     {
-        $this->returnInventoryJournal($document, 'Base on Sales return ');
+        $this->returnInventoryJournal($document, 'Inventory Transaction Base on Sales return ');
     }
 }

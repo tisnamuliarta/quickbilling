@@ -13,22 +13,24 @@ use Illuminate\Support\Arr;
 class ProductionIssueService
 {
     use ApiResponse;
+
     /**
      * @param $request
+     * @param $type
      * @return array
      */
-    public function index($request)
+    public function index($request, $type)
     {
         $pages = isset($request->page) ? (int) $request->page : 1;
         $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 1000;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'name';
+        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = $request->search;
         $offset = ($pages - 1) * $row_data;
 
         $query = ReceiptProduction::select('*')
-            ->where('name', 'LIKE', '%'.$search.'%')
-            ->where('transaction_type', 'issue')
+            ->where('transaction_no', 'LIKE', '%'.$search.'%')
+            ->where('transaction_type', $type)
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 

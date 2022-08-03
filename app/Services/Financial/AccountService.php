@@ -16,21 +16,31 @@ class AccountService
 
     /**
      * @param $request
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return mixed
      */
-    public function index($request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function index($request)
     {
-        $row_data = isset($request->itemsPerPage) ? (int) $request->itemsPerPage : 150;
-        $sorts = isset($request->sortBy[0]) ? (string) $request->sortBy[0] : 'code';
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 150;
+        $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'code';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
-        $search = isset($request->search) ? (string) $request->search : '';
+        $search = isset($request->search) ? (string)$request->search : '';
+        $zero_balance = (isset($request->show_zero_balance)) ? $request->show_zero_balance : null;
 
-        $query = Account::where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%'.$search.'%')
-            ->with(['currency', 'balances'])
+        $query = Account::where(DB::raw("CONCAT(name, ' ', account_type)"), 'LIKE', '%' . $search . '%')
+            ->with(['currency', 'category'])
             ->orderBy($sorts, $order)
-            ->paginate($row_data);
+            ->get()
+            //->paginate($row_data)
+            ->filter(function ($user) use ($zero_balance) {
+                if ($zero_balance == 'No') {
+                    return $user->balance != 0;
+                }
+                return $user;
+            });
 
-        return $query;
+        return [
+            'data' => collect($query)->values()
+        ];
     }
 
     /**
@@ -43,7 +53,7 @@ class AccountService
         $query = Account::selectRaw(
             " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
         )
-            ->where('account_type', 'LIKE', '%'.$type.'%')
+            ->where('account_type', 'LIKE', '%' . $type . '%')
             ->orderBy('code')
             ->get();
 
@@ -72,6 +82,7 @@ class AccountService
         Arr::forget($data, 'entity');
         Arr::forget($data, 'category');
         Arr::forget($data, 'balances');
+        Arr::forget($data, 'balance');
 
         return $data;
     }
@@ -79,9 +90,9 @@ class AccountService
     /**
      * create new account
      *
-     * @param  string  $name
-     * @param  string  $accountType
-     * @param  int  $subType
+     * @param string $name
+     * @param string $accountType
+     * @param int $subType
      * @return int
      *
      * @throws \Exception

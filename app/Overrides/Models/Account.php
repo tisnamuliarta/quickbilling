@@ -126,6 +126,7 @@ class Account extends Model implements Recyclable, Segregatable
         'balance',
     ];
 
+
     /**
      * Get Human Readable Account types
      *

@@ -2,6 +2,7 @@
 
 namespace App\Services\Production;
 
+use App\Models\Inventory\Warehouse;
 use App\Models\Productions\Production;
 use App\Models\Productions\ProductionItem;
 use App\Traits\ApiResponse;
@@ -144,8 +145,17 @@ class ProductionService
         $form['line_items'] = [];
         $form['id'] = 0;
         $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
+        $form['warehouse_id'] = $this->defaultWarehouse()->id;
 
         return $form;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function defaultWarehouse()
+    {
+        return Warehouse::first();
     }
 
     /**

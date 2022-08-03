@@ -525,8 +525,8 @@ class TransactionService
             $this->processCancelDocument($document);
 
             // process reference transaction
-            $references = Transaction::where('reference', $document->transaction_no)
-                ->orWhere('base_id', $document->id)
+            $references = Transaction::where('base_id', $document->id)
+                ->where('base_type', $document->transacction_type)
                 ->get();
 
             foreach ($references as $reference) {

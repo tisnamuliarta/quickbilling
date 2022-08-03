@@ -76,7 +76,7 @@ class DocumentController extends Controller
             $status = $request->status;
             $document = $request->document;
 
-            $query = Document::where('type', $type);
+            $query = Document::where('transaction_type', $type);
             $row = [];
             if ($status == 'prev') {
                 $row = $query->where('id', '<', $document)

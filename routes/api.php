@@ -24,11 +24,12 @@ use App\Http\Controllers\Production\ProductionIssueController;
 use App\Http\Controllers\Production\ProductionReceiptController;
 use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Settings\EntityController;
+use App\Http\Controllers\Settings\LogoController;
 use App\Http\Controllers\Settings\SettingController;
 use App\Http\Controllers\Transactions\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('logo', [\App\Http\Controllers\Settings\LogoController::class, 'index']);
+Route::get('logo', [LogoController::class, 'index']);
 // List nav bar menu for guest
 Route::post('/auth/login', [AuthController::class, 'login']);
 
@@ -101,7 +102,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('document-files', [FileController::class, 'destroy']);
 
     Route::group(['prefix' => 'document'], function () {
-        // Route::get('form/arrow', [DocumentController::class, 'arrowAction']);
         Route::get('audit/{id}', [DocumentController::class, 'getAudit']);
         Route::get('copy/{id}', [CopyDocumentController::class, 'copyDocument']);
         Route::get('print', [DocumentExportController::class, 'print']);
@@ -109,11 +109,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::group(['prefix' => 'production'], function () {
+        Route::get('order/arrow', [ProductionController::class, 'arrowAction']);
         Route::apiResource('order', ProductionController::class);
         Route::apiResource('issue', ProductionIssueController::class);
         Route::apiResource('receipt', ProductionReceiptController::class);
     });
 
+    Route::get('documents/arrow', [DocumentController::class, 'arrowAction']);
     Route::apiResource('documents', DocumentController::class);
 
     // List all master routes
