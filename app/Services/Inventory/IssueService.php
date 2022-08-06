@@ -2,9 +2,13 @@
 
 namespace App\Services\Inventory;
 
-use App\Models\Inventory\ReceiptLine;
+use App\Models\Documents\Document;
+use App\Models\Documents\DocumentItem;
 use App\Models\Inventory\ReceiptProduction;
+use App\Models\Payroll\EmployeeCommission;
+use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
+use App\Traits\InventoryHelper;
 use Carbon\Carbon;
 use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
@@ -14,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IssueService
 {
+    use InventoryHelper;
     use ApiResponse;
 
     /**
@@ -81,15 +86,47 @@ class IssueService
             'transaction_no' => $this->generateDocNum(Carbon::now(), $type),
             'transaction_type' => $type,
             'transaction_date' => date('Y-m-d'),
-            'account_id' => $account_id,
+            //'account_id' => $account_id,
             'main_account_amount' => $document->main_account_amount,
             'reference_no' => $document->transaction_no,
             'narration' => $document->item_name,
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
+            'status' => 'closed',
+            'due_date' => $document->due_date,
+            'currency_code' => auth()->user()->entity->currency->currency_code,
+            'currency_rate' => 0,
+            'contact_id' => 0,
+            'contact_name' => '',
+            'contact_email' => '',
+            'contact_tax_number' => '',
+            'contact_phone' => '',
+            'contact_zip_code' => '',
+            'contact_city' => '',
         ];
         // create production receipt
-        $issue = ReceiptProduction::create($header);
+        $issue = Document::create($header);
+
+        // production receipt items
+        $item = [
+            'document_id' => $issue->id,
+            'entity_id' => $issue->entity_id,
+            'item_id' => $document->item_id,
+            'quantity' => $document->planned_qty,
+            'warehouse_id' => $document->warehouse_id,
+            'price' => $document->commission_rate,
+            'amount' => $document->commission_rate,
+            //'account_id' => $account_line,
+            'type' => $type,
+            'name' => '-',
+            'unit' => '-',
+            //'unit' => $line_item['unit'],
+            'narration' => 'receipt from production',
+            'sub_total' => floatval($document->commission_rate) * $document->planned_qty
+        ];
+
+        $line = DocumentItem::create($item);
+
         // post journal production receipt
         $journalEntry = JournalEntry::create([
             'account_id' => $account_id,
@@ -104,30 +141,12 @@ class IssueService
             'base_num' => $issue->transaction_no
         ]);
 
-        $item = [
-            'production_id' => $issue->id,
-            'entity_id' => $issue->entity_id,
-            'item_id' => $document->item_id,
-            'quantity' => $issue->planned_qty,
-            'warehouse_id' => $document->warehouse_id,
-            'price' => $document->commission_rate,
-            'amount' => $document->commission_rate,
-            'account_id' => $account_line,
-            'item_type' => '-',
-            'item_name' => '-',
-            'unit' => '-',
-            //'unit' => $line_item['unit'],
-            'narration' => 'receipt from production',
-            'sub_total' => floatval($document->commission_rate) * $document->planned_qty
-        ];
-
-        $line = ReceiptLine::create($item);
-
         $journalEntry->addLineItem(
             LineItem::create([
                 'item_id' => $document->item_id,
-                'account_id' => $line->account_id,
-                'description' => $line->item_name,
+                'account_id' => $account_line,
+                'description' => 'receipt from production',
+                'narration' => 'receipt from production',
                 'amount' => $document->commission_rate,
                 'quantity' => $document->planned_qty,
                 'base_line_id' => $line->id,
@@ -135,6 +154,23 @@ class IssueService
             ])
         );
         $journalEntry->post();
+
+        $item = $document->item_id;
+        $warehouse = $document->warehouse_id;
+
+        // get item warehouse
+        $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+        $prev_cost = round(floatval($item_warehouse->item_cost), 2);
+
+        // increase stock
+        $temp_cost = round($document->main_account_amount, 2);
+        $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $document->planned_qty;
+        $item_warehouse->save();
+
+        // calculate cost
+        $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+        $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
+        $item_warehouse->item_cost = $item_cost;
     }
 
     /**
@@ -175,23 +211,81 @@ class IssueService
      */
     public function processIssue($document, $line_items, $narration, $account_id)
     {
+        $accountMapping = new AccountMappingService();
+
         $type = 'PI';
         $header = [
             'entity_id' => $document->entity_id,
             'transaction_no' => $this->generateDocNum(Carbon::now(), $type),
             'transaction_type' => $type,
             'transaction_date' => date('Y-m-d'),
-            'account_id' => $account_id,
+            //'account_id' => $account_id,
             'main_account_amount' => $document->main_account_amount,
             'reference_no' => $document->transaction_no,
             'narration' => $document->item_name,
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
-            //'base_num' => $document->transaction_no
+            'status' => 'closed',
+            'due_date' => $document->due_date,
+            'currency_code' => auth()->user()->entity->currency->currency_code,
+            'currency_rate' => 0,
+            'contact_id' => 0,
+            'contact_name' => '',
+            'contact_email' => '',
+            'contact_tax_number' => '',
+            'contact_phone' => '',
+            'contact_zip_code' => '',
+            'contact_city' => '',
         ];
 
-        $issue = ReceiptProduction::create($header);
+        $issue = Document::create($header);
 
+        $sum_direct_labor = 0;
+        $sum_direct_material = 0;
+
+        $payroll_clearing = $accountMapping->getAccountByName('Payroll Clearing')->account_id;
+
+        foreach ($document->lineItems as $line_item) {
+            if ($line_item->item_type == 'resource' && $line_item->item->resource_type == 'labor') {
+                $commission = EmployeeCommission::create([
+                    'employee_id' => $line_item->item->employee_id,
+                    'transaction_id' => $issue->id,
+                    'account_id' => $payroll_clearing,
+                    'line_item_id' => $line_item->id,
+                    'transaction_type' => $type,
+                    'transaction_date' => $issue->transaction_date,
+                    'quantity' => $line_item->base_qty,
+                    'amount' => $line_item->amount,
+                    'status' => 'open'
+                ]);
+
+                $sum_direct_labor = $sum_direct_labor + $commission->sub_total;
+            } else {
+                $sub_total = floatval($line_item->amount) * $line_item->base_qty;
+                $sum_direct_material = $sum_direct_material + $sub_total;
+            }
+
+            $item = [
+                'document_id' => $issue->id,
+                'entity_id' => $line_item->entity_id,
+                'item_id' => $line_item->item_id,
+                'type' => $line_item->item_type,
+                'quantity' => $line_item->base_qty,
+                'warehouse_id' => $line_item->warehouse_id,
+                'price' => $line_item->price,
+                'amount' => $line_item->amount,
+                //'account_id' => $line_item->account_id,
+                //'item_type' => $line_item->item_type,
+                'name' => $line_item->item_name,
+                'unit' => $line_item->unit,
+                'narration' => $line_item->item_name,
+                'sub_total' => floatval($line_item->amount) * $line_item->base_qty
+            ];
+
+            $line = DocumentItem::create($item);
+        }
+
+        // create journal entry for debit WIP account
         $journalEntry = JournalEntry::create([
             'account_id' => $account_id,
             'date' => Carbon::now(),
@@ -205,37 +299,15 @@ class IssueService
             'base_num' => $issue->transaction_no
         ]);
 
-        foreach ($document->lineItems as $line_item) {
-            $item = [
-                'production_id' => $line_item->production_id,
-                'entity_id' => $line_item->entity_id,
-                'item_id' => $line_item->item_id,
-                'quantity' => $line_item->base_qty,
-                'warehouse_id' => $line_item->warehouse_id,
-                'price' => $line_item->price,
-                'amount' => $line_item->amount,
-                'account_id' => $line_item->account_id,
-                'item_type' => $line_item->item_type,
-                'item_name' => $line_item->item_name,
-                'unit' => $line_item->unit,
-                'narration' => $line_item->item_name,
-                'sub_total' => floatval($line_item->amount) * $line_item->base_qty
-            ];
+        $journalEntry->addLineItem(
+            LineItem::create([
+                'account_id' => $document->item->inventory_account,
+                'description' => 'Issue for production',
+                'narration' => 'Issue for production',
+                'amount' => $sum_direct_labor + $sum_direct_material,
+            ])
+        );
 
-            $line = ReceiptLine::create($item);
-
-            $journalEntry->addLineItem(
-                LineItem::create([
-                    'account_id' => $line->account_id,
-                    'description' => $line->item_name,
-                    'amount' => $line->amount,
-                    'quantity' => $line->quantity,
-                    'item_id' => $line->item_id,
-                    'base_line_id' => $line->id,
-                    'transaction_id' => $journalEntry->id
-                ])
-            );
-        }
         $journalEntry->post();
     }
 

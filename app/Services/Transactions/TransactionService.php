@@ -9,6 +9,7 @@ use App\Models\Inventory\Contact;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\Warehouse;
 use App\Models\Payroll\Employee;
+use App\Models\Payroll\EmployeeCommission;
 use App\Models\Sales\SalesPerson;
 use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
@@ -408,43 +409,66 @@ class TransactionService
      */
     protected function storeEmployeeCommission($sales_persons, $document)
     {
+        $accountMapping = new AccountMappingService();
+        $wages_expense = $accountMapping->getAccountByName('Wages Expense Account')->account_id;
+        $account_id = $accountMapping->getAccountByName('Payroll Clearing')->account_id;
+
+        $journalEntry = JournalEntry::create([
+            'account_id' => $wages_expense,
+            'date' => Carbon::now(),
+            'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
+            'credited' => false, // main account should be debited
+            //'main_account_amount' => $commission_rate * $lineItem->quantity,
+            'status' => 'open',
+            'base_id' => $document->id,
+            'reference' => $document->transaction_no,
+            'base_num' => $document->transaction_no,
+            'base_type' => $document->transaction_type,
+        ]);
+
+        $sum_amount = 0;
+        $sum_qty = 0;
+
         foreach ($document->lineItems as $lineItem) {
             $commission_rate = $lineItem->item->commision_rate;
             $amount = $commission_rate / count($sales_persons) * $lineItem->quantity;
 
-            $journalEntry = JournalEntry::create([
-                'account_id' => $this->getAccountIdByName('Employee Sales Commission', 'PAYABLE'),
-                'date' => Carbon::now(),
-                'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
-                'credited' => false, // main account should be debited
-                'main_account_amount' => $commission_rate * $lineItem->quantity,
-                'status' => 'open',
-                'base_id' => $document->id,
-                'reference' => $document->transaction_no,
-                'base_num' => $document->transaction_no,
-                'base_type' => $document->transaction_type,
-            ]);
             foreach ($sales_persons as $line_item) {
                 $user_id = (is_array($line_item)) ? $line_item['user_id'] : $line_item;
                 $employee = Employee::find($user_id);
-                $journalEntry->addLineItem(
-                    LineItem::create([
-                        'account_id' => $employee->account_id,
-                        'narration' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
-                        'amount' => $commission_rate,
-                        'quantity' => $lineItem->quantity / count($sales_persons),
-                        'price' => $commission_rate,
-                        'sub_total' => $lineItem->quantity / count($sales_persons) * $commission_rate,
-                        //'credited' => false,
-                        'transaction_id' => $journalEntry->id,
-                        'item_id' => $lineItem->item_id,
-                        'base_line_id' => $lineItem->id
-                    ])
-                );
+
+                $commission = EmployeeCommission::create([
+                    'employee_id' => $employee->id,
+                    'transaction_id' => $document->id,
+                    'account_id' => $account_id,
+                    'line_item_id' => $line_item->id,
+                    'transaction_type' => $document->transaction_type,
+                    'transaction_date' => $document->transaction_date,
+                    'quantity' => $lineItem->quantity / count($sales_persons),
+                    'amount' => $commission_rate,
+                    'status' => 'open'
+                ]);
+
+                $sum_amount = $sum_amount + $commission_rate;
+                $sum_qty = $sum_qty + $lineItem->quantity / count($sales_persons);
             }
 
-            $journalEntry->post();
+            $journalEntry->addLineItem(
+                LineItem::create([
+                    'account_id' => $account_id,
+                    'narration' => 'komisi penjualan ' . $lineItem->item->name . ' ' . $document->transaction_no,
+                    'amount' => $commission_rate,
+                    'quantity' => $lineItem->quantity,
+                    'price' => $commission_rate,
+                    'sub_total' => $lineItem->quantity * $commission_rate,
+                    //'credited' => false,
+                    //'transaction_id' => $journalEntry->id,
+                    'item_id' => $lineItem->item_id,
+                    'base_line_id' => $lineItem->id
+                ])
+            );
         }
+        $journalEntry->post();
     }
 
     /**

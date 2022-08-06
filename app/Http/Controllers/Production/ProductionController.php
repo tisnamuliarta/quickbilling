@@ -195,7 +195,7 @@ class ProductionController extends Controller
 
             $temp_cost = round($quantity * $price, 2);
 
-            $item_cost = ($item_warehouse->available_qty != 0)  ?
+            $item_cost = ($item_warehouse->available_qty != 0) ?
                 round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2) : $price;
 
             $item_warehouse->item_cost = $item_cost;
@@ -210,7 +210,8 @@ class ProductionController extends Controller
 
             //process receive from production
             $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
-            $account_line = $accountMapping->getAccountByName('Inventory Account')->account_id;
+            $account_line = (isset($document->item->inventory_account)) ? $document->item->inventory_account
+                : $accountMapping->getAccountByName('Inventory Account')->account_id;
 
             $this->issue->processReceipt($document, $account_line, 'Receipt production base on ', $account_id);
         }

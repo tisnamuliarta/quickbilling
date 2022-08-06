@@ -41,12 +41,12 @@ class Production extends Model implements Auditable
         return $this->hasMany(ProductionItem::class);
     }
 
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
     }

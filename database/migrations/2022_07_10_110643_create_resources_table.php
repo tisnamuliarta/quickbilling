@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('code', 50)->unique();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->enum('resource_type', ['machine', 'labor', 'other'])->default('machine');
+            $table->enum('resource_type', ['machine', 'labor', 'other', 'item'])->default('machine');
             $table->string('uom', 50)->nullable();
             $table->time('resource_time')->nullable();
             $table->tinyInteger('resource_unit')->nullable();
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->float('available_capacity')->nullable();
             $table->float('consumed_capacity')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
+            $table->unsignedBigInteger('item_id')->nullable();
             $table->timestamps();
         });
     }
