@@ -18,6 +18,8 @@ use App\Http\Controllers\Inventory\ResourceController;
 use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Payroll\EmployeeController;
 use App\Http\Controllers\Payroll\PayrollController;
+use App\Http\Controllers\Payroll\PayScheduleController;
+use App\Http\Controllers\Payroll\PayTypeController;
 use App\Http\Controllers\Payroll\WorkLocationController;
 use App\Http\Controllers\Production\ProductionController;
 use App\Http\Controllers\Production\ProductionIssueController;
@@ -69,20 +71,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('master')
-        ->group(__DIR__.'/master.php');
+        ->group(__DIR__ . '/master.php');
 
     // payroll route
     Route::group(['prefix' => 'payroll'], function () {
         Route::apiResources([
             'employees' => EmployeeController::class,
+            'pay-types' => PayTypeController::class,
+            'pay-schedules' => PayScheduleController::class,
+            'payroll' => PayrollController::class,
             // 'contractors' => \App\Http\Controllers\Payroll\ContractorController::class,
             'work-locations' => WorkLocationController::class,
         ]);
     });
-
-    Route::apiResources([
-        'payrolls' => PayrollController::class,
-    ]);
 
     // List all sales routes
     Route::group(['prefix' => 'transaction'], function () {
@@ -120,7 +121,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // List all master routes
     Route::prefix('financial')
-        ->group(__DIR__.'/financial.php');
+        ->group(__DIR__ . '/financial.php');
 
     // Route Resource for settings
     Route::apiResources([
