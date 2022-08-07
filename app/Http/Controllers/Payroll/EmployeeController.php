@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Payrolls\StoreEmployeeRequest;
 use App\Models\Financial\Category;
 use App\Models\Payroll\Employee;
+use App\Models\Payroll\PaySchedule;
 use App\Services\Financial\AccountService;
 use App\Services\Payroll\EmployeeService;
 use App\Traits\Financial;
@@ -42,6 +43,8 @@ class EmployeeController extends Controller
         $result = [];
         $result['form'] = $this->form('employees');
         $result['form']['status'] = 'active';
+        $result['form']['pay_frequency'] = 'Per Month';
+        $result['form']['pay_type'] = 'Salary';
 
         $result['itemGender'] = [
             ['id' => 1, 'name' => __('Male')],
@@ -54,6 +57,7 @@ class EmployeeController extends Controller
         ];
 
         $result['payFrequency'] = ['Per Week', 'Per Month', 'Per Quarter'];
+        $result['paySchedule'] = PaySchedule::select('id', 'name')->get();
 
         $result['payType'] = ['Salary', 'Per Hour', 'Commission'];
 

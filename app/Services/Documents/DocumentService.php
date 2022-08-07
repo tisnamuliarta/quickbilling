@@ -28,6 +28,7 @@ class DocumentService
 
     /**
      * @param $request
+     *
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -64,6 +65,7 @@ class DocumentService
 
     /**
      * @param $type
+     *
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -103,6 +105,7 @@ class DocumentService
     /**
      * @param $sysDate
      * @param $alias
+     *
      * @return string
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -139,9 +142,10 @@ class DocumentService
     }
 
     /**
-     * @param $request
-     * @param $type
+     * @param      $request
+     * @param      $type
      * @param null $id
+     *
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -196,6 +200,7 @@ class DocumentService
      * @param $items
      * @param $document
      * @param $tax_details
+     *
      * @return void
      */
     public function processItems($items, $document, $tax_details)
@@ -237,6 +242,7 @@ class DocumentService
      * @param $document
      * @param $item
      * @param $type
+     *
      * @return array
      */
     protected function detailsForm($document, $item, $type): array
@@ -277,6 +283,7 @@ class DocumentService
     /**
      * @param $document
      * @param $item_detail
+     *
      * @return void
      */
     public function processItemTax($document, $item_detail)
@@ -300,10 +307,11 @@ class DocumentService
     }
 
     /**
-     * @param $document
-     * @param $account_id
-     * @param $line_account
+     * @param      $document
+     * @param      $account_id
+     * @param      $line_account
      * @param bool $credited
+     *
      * @return void
      */
     public function processIssueReceipt($document, $account_id, $line_account, bool $credited = false)
@@ -352,6 +360,7 @@ class DocumentService
     /**
      * @param $sales_persons
      * @param $document
+     *
      * @return void
      */
     public function processSalesPerson($sales_persons, $document)
@@ -371,6 +380,7 @@ class DocumentService
     /**
      * @param $id
      * @param $status
+     *
      * @return void
      */
     public function updateStatus($id, $status)
@@ -401,6 +411,7 @@ class DocumentService
      * @param $icon
      * @param $color
      * @param $button
+     *
      * @return array
      */
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array

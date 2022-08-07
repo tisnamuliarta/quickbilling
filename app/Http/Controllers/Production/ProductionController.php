@@ -40,6 +40,7 @@ class ProductionController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -60,6 +61,7 @@ class ProductionController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function arrowAction(Request $request): JsonResponse
@@ -95,6 +97,7 @@ class ProductionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreProductionRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -144,6 +147,7 @@ class ProductionController extends Controller
 
     /**
      * @param $details
+     *
      * @return array
      */
     protected function validateDetails($details): array
@@ -175,6 +179,7 @@ class ProductionController extends Controller
     /**
      * @param $document
      * @param $items
+     *
      * @return void
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      * @throws \Exception
@@ -221,7 +226,8 @@ class ProductionController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
+     *
      * @return JsonResponse
      */
     public function show(Request $request, $id): JsonResponse
@@ -255,6 +261,7 @@ class ProductionController extends Controller
 
     /**
      * @param $id
+     *
      * @return JsonResponse
      */
     public function getAudit($id): JsonResponse
@@ -271,6 +278,7 @@ class ProductionController extends Controller
      *
      * @param StoreProductionRequest $request
      * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -315,6 +323,7 @@ class ProductionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse

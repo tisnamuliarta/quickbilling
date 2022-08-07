@@ -2,6 +2,7 @@
 
 namespace App\Models\Payroll;
 
+use App\Models\Financial\PaymentMethod;
 use App\Models\Master\Bank;
 use IFRS\Models\Account;
 use IFRS\Models\Entity;
@@ -64,6 +65,21 @@ class Employee extends Model implements Auditable
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    public function commission(): HasMany
+    {
+        return $this->hasMany(EmployeeCommission::class);
+    }
+
+    public function payMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function paySchedule(): BelongsTo
+    {
+        return $this->belongsTo(PaySchedule::class);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models\Payroll;
 use IFRS\Models\Entity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EmployeeDetail extends Model
 {
@@ -14,17 +15,17 @@ class EmployeeDetail extends Model
 
     protected $table = 'employee_pay_details';
 
-    public function entity()
+    public function entity(): BelongsTo
     {
         return $this->belongsTo(Entity::class);
     }
 
-    public function employee()
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
-    public function payType()
+    public function payType(): BelongsTo
     {
         return $this->belongsTo(PayType::class);
     }

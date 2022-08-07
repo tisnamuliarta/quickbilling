@@ -28,7 +28,8 @@ class AccountCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
@@ -46,7 +47,8 @@ class AccountCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  UpdateAccountCategoryRequest  $request
+     * @param UpdateAccountCategoryRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -75,7 +77,8 @@ class AccountCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id): \Illuminate\Http\JsonResponse
@@ -90,8 +93,9 @@ class AccountCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateAccountCategoryRequest  $request
-     * @param  int  $id
+     * @param UpdateAccountCategoryRequest $request
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
@@ -120,7 +124,8 @@ class AccountCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id): \Illuminate\Http\JsonResponse

@@ -44,6 +44,7 @@ class TransactionController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -61,6 +62,7 @@ class TransactionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreTransactionRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -135,6 +137,7 @@ class TransactionController extends Controller
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -165,6 +168,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function show(Request $request, int $id): JsonResponse
@@ -214,6 +218,7 @@ class TransactionController extends Controller
      *
      * @param StoreTransactionRequest $request
      * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -284,6 +289,7 @@ class TransactionController extends Controller
      *
      * @param Request $request
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy(Request $request, int $id): JsonResponse
@@ -306,7 +312,8 @@ class TransactionController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param         $id
+     *
      * @return JsonResponse
      */
     public function getLedger(Request $request, $id): JsonResponse
@@ -336,6 +343,7 @@ class TransactionController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function getInvoice(Request $request): JsonResponse

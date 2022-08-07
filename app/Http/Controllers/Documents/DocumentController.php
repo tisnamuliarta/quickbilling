@@ -37,7 +37,8 @@ class DocumentController extends Controller
         PurchaseService  $purchase,
         SalesService     $sales,
         InventoryService $inventory
-    ) {
+    )
+    {
         $this->service = $service;
         $this->purchase = $purchase;
         $this->sales = $sales;
@@ -52,6 +53,7 @@ class DocumentController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
@@ -67,6 +69,7 @@ class DocumentController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function arrowAction(Request $request): JsonResponse
@@ -102,6 +105,7 @@ class DocumentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreDocumentRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -157,6 +161,7 @@ class DocumentController extends Controller
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -199,7 +204,8 @@ class DocumentController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
+     *
      * @return JsonResponse
      */
     public function show(Request $request, $id): JsonResponse
@@ -246,6 +252,7 @@ class DocumentController extends Controller
 
     /**
      * @param $id
+     *
      * @return JsonResponse
      */
     public function getAudit($id): JsonResponse
@@ -262,6 +269,7 @@ class DocumentController extends Controller
      *
      * @param StoreDocumentRequest $request
      * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -334,6 +342,7 @@ class DocumentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
