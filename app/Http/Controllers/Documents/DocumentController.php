@@ -37,8 +37,7 @@ class DocumentController extends Controller
         PurchaseService  $purchase,
         SalesService     $sales,
         InventoryService $inventory
-    )
-    {
+    ) {
         $this->service = $service;
         $this->purchase = $purchase;
         $this->sales = $sales;

@@ -24,7 +24,21 @@ class StorePayrollRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'transaction_no' => 'required',
+            'account_id' => 'required',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'transaction_no.required' => __('validation')['required'],
+            'account_id.required' => __('validation')['required'],
         ];
     }
 }

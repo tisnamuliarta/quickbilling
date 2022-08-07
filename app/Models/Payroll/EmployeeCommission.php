@@ -18,12 +18,18 @@ class EmployeeCommission extends Model
     protected $guarded = [];
 
     protected $appends = [
-        'sub_total'
+        'sub_total',
+        'employee_name'
     ];
 
     public function getSubTotalAttribute(): float|int
     {
         return $this->quantity * $this->amount;
+    }
+
+    public function getEmployeeNameAttribute()
+    {
+        return $this->employee->full_name;
     }
 
     public function transaction(): BelongsTo

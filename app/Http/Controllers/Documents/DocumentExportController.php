@@ -59,7 +59,7 @@ class DocumentExportController extends Controller
 //            }
 //        }
 
-        $file_name = Str::upper($documents->document_number) . '.pdf';
+        $file_name = Str::upper($documents->transaction_no) . '.pdf';
 
 //        file_put_contents($destination_path . $file_name, $pdf->output());
 //        return response()->download($destination_path . $file_name);

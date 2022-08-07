@@ -76,6 +76,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // payroll route
     Route::group(['prefix' => 'payroll'], function () {
         Route::get('pay-period', [PayrollController::class, 'payPeriod']);
+        Route::get('employee-commission', [PayrollController::class, 'getEmployeeCommission']);
+
         Route::apiResources([
             'employees' => EmployeeController::class,
             'pay-types' => PayTypeController::class,

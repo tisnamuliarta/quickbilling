@@ -74,7 +74,7 @@ class Employee extends Model implements Auditable
 
     public function payMethod(): BelongsTo
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->belongsTo(PaymentMethod::class, 'payment_method');
     }
 
     public function paySchedule(): BelongsTo
