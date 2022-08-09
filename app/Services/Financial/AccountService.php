@@ -7,7 +7,6 @@ use App\Traits\Categories;
 use IFRS\Models\Account;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use JetBrains\PhpStorm\ArrayShape;
 
 class AccountService
 {
@@ -16,6 +15,7 @@ class AccountService
 
     /**
      * @param $request
+     *
      * @return mixed
      */
     public function index($request)
@@ -50,17 +50,27 @@ class AccountService
 
     /**
      * @param $type
+     *
      * @return array
      */
-    #[ArrayShape(['data' => 'mixed'])]
     public function dataByType($type): array
     {
-        $query = Account::selectRaw(
-            " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
-        )
-            ->where('account_type', 'LIKE', '%' . $type . '%')
-            ->orderBy('code')
-            ->get();
+        if ($type == '') {
+            $query = Account::selectRaw(
+                " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
+            )
+                ->orderBy('code')
+                ->where('account_type', 'LIKE', '%' . $type . '%')
+                ->get();
+        } else {
+            $type = explode(', ', $type);
+            $query = Account::selectRaw(
+                " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
+            )
+                ->orderBy('code')
+                ->whereIn('account_type', $type)->get();
+        }
+
 
         return [
             'data' => $query,
@@ -69,6 +79,7 @@ class AccountService
 
     /**
      * @param $request
+     *
      * @return array
      */
     public function formData($request): array
@@ -98,6 +109,7 @@ class AccountService
      * @param string $name
      * @param string $accountType
      * @param int $subType
+     *
      * @return int
      *
      * @throws \Exception

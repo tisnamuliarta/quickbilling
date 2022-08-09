@@ -77,15 +77,7 @@ class TransactionController extends Controller
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
 
-        if (Str::contains($request->transaction_type, ['RC', 'PY'])) {
-            if ($request->account_id == 0) {
-                throw new \Exception('Please select deposit account', 1);
-            }
-
-            $bank_account_id = $request->account_id['id'];
-        } else {
-            $bank_account_id = 0;
-        }
+        $bank_account_id = $this->service->getBankAccountId($request);
 
         // validate details before store
         $validate_details = $this->validateDetails($items, $request->transaction_type, $request->id, '');
@@ -232,7 +224,8 @@ class TransactionController extends Controller
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);
         $sales_persons = collect($request->sales_person);
-        $bank_account_id = ($request->transaction_type == 'RC') ? $request->account_id['id'] : 0;
+
+        $bank_account_id = $this->service->getBankAccountId($request);
 
         $action = $request->updateStatus;
 
@@ -371,7 +364,9 @@ class TransactionController extends Controller
             ->get();
 
         return $this->success([
-            'data' => $invoice
+            'data' => [
+                'line_items' => $invoice
+            ]
         ]);
     }
 }

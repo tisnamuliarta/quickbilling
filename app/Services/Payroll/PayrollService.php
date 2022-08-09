@@ -16,6 +16,7 @@ use IFRS\Transactions\JournalEntry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PayrollService
@@ -32,9 +33,11 @@ class PayrollService
         $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
+        $search = (isset($request->search)) ? $request->search : '';
 
         $query = Payroll::select('*')
             ->with(['user'])
+            ->where(DB::raw("CONCAT(transaction_no, ' ', transaction_date)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 

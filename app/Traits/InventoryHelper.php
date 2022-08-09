@@ -12,6 +12,7 @@ trait InventoryHelper
     /**
      * @param $line_item
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -111,6 +112,7 @@ trait InventoryHelper
     /**
      * @param $item
      * @param $warehouse
+     *
      * @return mixed
      */
     public function getItemWarehouse($item, $warehouse): mixed
@@ -151,6 +153,7 @@ trait InventoryHelper
 
     /**
      * @param $request
+     *
      * @return void
      */
     protected function validateRequest($request)
@@ -171,32 +174,37 @@ trait InventoryHelper
      * @param $transaction_type
      * @param $doc_id
      * @param $action
+     *
      * @return array
      */
     protected function validateDetails($details, $transaction_type, $doc_id, $action): array
     {
-        if (count($details) == 0) {
-            return ['error' => true, 'message' => 'Details cannot empty!'];
+        if (!Str::contains($transaction_type, ['RC', 'PY'])) {
+            if (count($details) == 0) {
+                return ['error' => true, 'message' => 'Details cannot empty!'];
+            }
         }
 
         foreach ($details as $index => $detail) {
             $lines = $index + 1;
 
-            if (!array_key_exists('item_id', $detail)) {
-                return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
-            } elseif (empty($detail['item_id'])) {
-                return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
-            }
+            if (!Str::contains($transaction_type, ['RC', 'PY'])) {
+                if (!array_key_exists('item_id', $detail)) {
+                    return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
+                } elseif (empty($detail['item_id'])) {
+                    return ['error' => true, 'message' => "Line $lines: Item cannot empty!"];
+                }
 
-            if (empty($detail['whs_name'])) {
-                return ['error' => true, 'message' => "Line $lines: Warehouse cannot empty!"];
-            }
+                if (empty($detail['whs_name'])) {
+                    return ['error' => true, 'message' => "Line $lines: Warehouse cannot empty!"];
+                }
 
-            if (empty($detail['quantity'])) {
-                return ['error' => true, 'message' => "Line $lines: Quantity cannot empty!"];
-            }
-            if ($detail['quantity'] == 0) {
-                return ['error' => true, 'message' => "Line $lines: Quantity cannot 0!"];
+                if (empty($detail['quantity'])) {
+                    return ['error' => true, 'message' => "Line $lines: Quantity cannot empty!"];
+                }
+                if ($detail['quantity'] == 0) {
+                    return ['error' => true, 'message' => "Line $lines: Quantity cannot 0!"];
+                }
             }
 
             if (empty($detail['amount'])) {
@@ -206,7 +214,7 @@ trait InventoryHelper
                 return ['error' => true, 'message' => "Line $lines: Price cannot 0!"];
             }
 
-            $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
+            $sales = ['SO', 'SD', 'IN', 'CN', 'SR'];
 
             if (Str::contains($transaction_type, $sales)) {
                 $item = Item::find($detail['item_id']);

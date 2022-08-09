@@ -22,6 +22,7 @@ use IFRS\Models\Vat;
 use IFRS\Transactions\JournalEntry;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TransactionService
@@ -31,6 +32,7 @@ class TransactionService
 
     /**
      * @param $request
+     *
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -41,11 +43,13 @@ class TransactionService
         $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
+        $search = (isset($request->search)) ? $request->search : '';
 
         $model = $this->mappingTable($type);
         $result = [];
         $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
             ->where('transaction_type', $type)
+            ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 
@@ -58,6 +62,7 @@ class TransactionService
 
     /**
      * @param $type
+     *
      * @return string|void
      */
     public function mappingTable($type)
@@ -88,6 +93,7 @@ class TransactionService
 
     /**
      * @param $type
+     *
      * @return array
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -135,6 +141,7 @@ class TransactionService
 
     /**
      * @param $type
+     *
      * @return int
      */
     protected function defaultHeaderAccount($type): int
@@ -150,6 +157,7 @@ class TransactionService
     /**
      * @param $sysDate
      * @param $alias
+     *
      * @return string
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -186,7 +194,9 @@ class TransactionService
      * @param $request
      * @param $type
      * @param null $id
+     *
      * @return array
+     * @throws \Exception
      */
     public function formData($request, $type, $id = null): array
     {
@@ -202,6 +212,7 @@ class TransactionService
         }
         $data['discount_amount'] = (isset($data['discount_amount'])) ? $data['discount_amount'] : 0;
         $data['balance_due'] = (isset($data['balance_due'])) ? $data['balance_due'] : 0;
+        $data['deposit_account_id'] = $this->getBankAccountId($request);
 
         $contact = Contact::find($data['contact_id']);
         $data['account_id'] = $this->mappingHeaderAccount($data['transaction_type'], $contact);
@@ -241,8 +252,26 @@ class TransactionService
     }
 
     /**
+     * @throws \Exception
+     */
+    public function getBankAccountId($request)
+    {
+        if (Str::contains($request->transaction_type, ['RC', 'PY'])) {
+            if ($request->deposit_account_id == 0) {
+                throw new \Exception('Please select deposit account', 1);
+            }
+
+            $bank_account_id = $request->deposit_account_id['id'];
+        } else {
+            $bank_account_id = 0;
+        }
+        return $bank_account_id;
+    }
+
+    /**
      * @param $type
      * @param $contact
+     *
      * @return int
      */
     public function mappingHeaderAccount($type, $contact): int
@@ -263,6 +292,7 @@ class TransactionService
      * @param $tax_details
      * @param $sales_persons
      * @param $bank_account_id
+     *
      * @return void
      * @throws \Exception
      */
@@ -288,11 +318,17 @@ class TransactionService
             } else {
                 //$line_item[] = $this->detailsForm($document, $item, 'store');
                 $item_detail = LineItem::create($this->detailsForm($document, $item, 'store', $bank_account_id));
+                if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
+                    $vat = Vat::find($item_detail->vat_id);
+                    $item_detail->addVat($vat);
+                }
             }
-            $vat = Vat::where('id', $item_detail->vat_id)->first();
-            if ($vat) {
+
+            if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
+                $vat = Vat::where('code', 'VAT0')->first();
                 $item_detail->addVat($vat);
             }
+
             $document->addLineItem($item_detail);
             // process tax details
             foreach ($tax_details as $tax_detail) {
@@ -313,10 +349,22 @@ class TransactionService
      * @param $item
      * @param $type
      * @param $bank_account_id
+     *
      * @return array
+     * @throws \Exception
      */
     public function detailsForm($document, $item, $type, $bank_account_id): array
     {
+        if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
+            $vat = Vat::where('code', 'VAT0')->first();
+            $vat_id = $vat->id;
+        } else {
+            if (Arr::exists($item, 'tax_name')) {
+                $vat_id = $this->getTaxIdByName($item['tax_name']);
+            } else {
+                $vat_id = 0;
+            }
+        }
         $price = (array_key_exists('price', $item)) ? floatval($item['price']) : 1;
         $form = [
             'entity_id' => $document->entity_id,
@@ -325,11 +373,12 @@ class TransactionService
             'item_id' => (array_key_exists('item_id', $item)) ? $item['item_id'] : null,
             'narration' => $item['narration'],
             'sku' => array_key_exists('unit', $item) ? $item['unit'] : null,
+            'service_date' => array_key_exists('service_date', $item) ? $item['service_date'] : null,
             'tax_name' => $item['tax_name'],
             'quantity' => (array_key_exists('quantity', $item)) ? floatval($item['quantity']) : 1,
             'price' => $price,
             //'unit' => $item['unit'],
-            'vat_id' => (Arr::exists($item, 'tax_name')) ? $this->getTaxIdByName($item['tax_name']) : 0,
+            'vat_id' => $vat_id,
             'warehouse_id' => (Arr::exists($item, 'whs_name')) ? $this->getWhsIdByName($item['whs_name']) : 0,
             //'vat_inclusive' => array_key_exists('tax_name', $item),
             'vat_inclusive' => (Arr::exists($item, 'vat_inclusive')) ? $item['vat_inclusive'] : 0,
@@ -351,6 +400,7 @@ class TransactionService
      * @param $document
      * @param $item
      * @param $bank_account_id
+     *
      * @return int
      */
     public function detailAccountId($document, $item, $bank_account_id): int
@@ -379,6 +429,7 @@ class TransactionService
      * @param $document
      * @param $tax
      * @param $item_detail
+     *
      * @return void
      */
     public function processItemTax($document, $tax, $item_detail)
@@ -405,6 +456,7 @@ class TransactionService
     /**
      * @param $sales_persons
      * @param $document
+     *
      * @return void
      */
     protected function storeEmployeeCommission($sales_persons, $document)
@@ -433,15 +485,15 @@ class TransactionService
             $commission_rate = $lineItem->item->commision_rate;
             $amount = $commission_rate / count($sales_persons) * $lineItem->quantity;
 
-            foreach ($sales_persons as $line_item) {
-                $user_id = (is_array($line_item)) ? $line_item['user_id'] : $line_item;
+            foreach ($sales_persons as $sales_person) {
+                $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;
                 $employee = Employee::find($user_id);
 
                 $commission = EmployeeCommission::create([
                     'employee_id' => $employee->id,
                     'transaction_id' => $document->id,
                     'account_id' => $account_id,
-                    'line_item_id' => $line_item->id,
+                    'line_item_id' => $lineItem->id,
                     'transaction_type' => $document->transaction_type,
                     'transaction_date' => $document->transaction_date,
                     'quantity' => $lineItem->quantity / count($sales_persons),
@@ -474,6 +526,7 @@ class TransactionService
     /**
      * @param $type
      * @param $parent_id
+     *
      * @return string[][]
      */
     public function mappingAction($type, $parent_id): array
@@ -513,6 +566,7 @@ class TransactionService
     /**
      * @param $sales_persons
      * @param $document
+     *
      * @return void
      */
     public function processSalesPerson($sales_persons, $document)
@@ -532,6 +586,7 @@ class TransactionService
     /**
      * @param $id
      * @param $status
+     *
      * @throws \Exception
      */
     public function updateStatus($id, $status)
@@ -561,6 +616,7 @@ class TransactionService
 
     /**
      * @param $document
+     *
      * @return void
      */
     public function processCancelDocument($document)
@@ -617,6 +673,7 @@ class TransactionService
      * @param $icon
      * @param $color
      * @param $button
+     *
      * @return array
      */
     protected function orderAction($title, $action, $parent_id, $icon, $color, $button): array

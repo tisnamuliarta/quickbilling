@@ -193,19 +193,19 @@ class ProductionController extends Controller
                 throw new \Exception('Item warehouse not found', 1);
             }
 
-            $price = $document->commission_rate;
-            $quantity = $document->planned_qty;
-
-            $prev_cost = round(floatval($item_warehouse->item_cost), 2);
-
-            $temp_cost = round($quantity * $price, 2);
-
-            $item_cost = ($item_warehouse->available_qty != 0) ?
-                round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2) : $price;
-
-            $item_warehouse->item_cost = $item_cost;
-            $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
-            $item_warehouse->save();
+//            $price = $document->commission_rate;
+//            $quantity = $document->planned_qty;
+//
+//            $prev_cost = round(floatval($item_warehouse->item_cost), 2);
+//
+//            $temp_cost = round($quantity * $price, 2);
+//
+//            $item_cost = ($item_warehouse->available_qty != 0) ?
+//                round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2) : $price;
+//
+//            $item_warehouse->item_cost = $item_cost;
+//            $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+//            $item_warehouse->save();
 
 
             $accountMapping = new AccountMappingService();

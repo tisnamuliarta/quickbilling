@@ -145,6 +145,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         'base_id',
         'base_num',
         'base_type',
+        'warehouse_id'
     ];
 
     protected $dates = [

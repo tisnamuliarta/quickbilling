@@ -25,6 +25,7 @@ class EmployeeService
             'employees.id as user_id',
             DB::raw("'actions' as actions")
         )
+            ->where(DB::raw("CONCAT(first_name, ' ', last_name)"), 'LIKE', '%' . $search . '%')
             ->with(['workLocation', 'bank', 'entity'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);

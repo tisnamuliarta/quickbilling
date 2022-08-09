@@ -98,8 +98,8 @@ class PayrollController extends Controller
         $array_period = explode(' to ', $date_period);
 
         $commissions = EmployeeCommission::whereBetween('transaction_date', $array_period)
-            ->select('employee_id', DB::raw('SUM(CONVERT(amount * quantity, DECIMAL)) as amount'))
-            ->groupBy('employee_id', 'transaction_date', 'status')
+            ->select('employee_id', DB::raw('SUM(CONVERT(amount * quantity, DECIMAL(13, 2) )) as amount'))
+            ->groupBy('employee_id', 'status')
             ->where('status', 'open')
             ->get();
 

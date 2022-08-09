@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Financial;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Financial\StoreAccountRequest;
-use App\Models\Financial\Account;
 use App\Services\Financial\AccountService;
+use IFRS\Models\Account;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,12 +29,13 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        $type = isset($request->type) ? (string) $request->type : 'index';
+        $type = isset($request->type) ? (string)$request->type : 'index';
 
         if ($type == 'index') {
             $result = [];
@@ -56,7 +57,8 @@ class AccountController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreAccountRequest  $request
+     * @param StoreAccountRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -87,6 +89,7 @@ class AccountController extends Controller
      *
      * @param Request $request
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function show(Request $request, $id): JsonResponse
@@ -107,8 +110,9 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreAccountRequest  $request
-     * @param  int  $id
+     * @param StoreAccountRequest $request
+     * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -137,7 +141,8 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse

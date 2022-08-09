@@ -12,16 +12,18 @@ trait Financial
 {
     /**
      * @param $name
+     *
      * @return int
+     * @throws \Exception
      */
     public function getTaxIdByName($name): int
     {
         $tax = Vat::where('name', $name)->first();
         if ($tax) {
             return $tax->id;
+        } else {
+            throw new \Exception('Vat name not found');
         }
-
-        return 0;
     }
 
     /**

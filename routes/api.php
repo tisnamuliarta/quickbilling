@@ -16,6 +16,7 @@ use App\Http\Controllers\Inventory\PriceListController;
 use App\Http\Controllers\Inventory\ReceiptController;
 use App\Http\Controllers\Inventory\ResourceController;
 use App\Http\Controllers\Inventory\WarehouseController;
+use App\Http\Controllers\Payroll\EmployeeCommissionController;
 use App\Http\Controllers\Payroll\EmployeeController;
 use App\Http\Controllers\Payroll\PayrollController;
 use App\Http\Controllers\Payroll\PayScheduleController;
@@ -54,8 +55,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             'item-groups' => ItemGroupController::class,
             'price-list' => PriceListController::class,
             'warehouse' => WarehouseController::class,
-            'receipt' => ReceiptController::class,
-            'issue' => IssueController::class,
+            'goods-receipt' => ReceiptController::class,
+            'goods-issue' => IssueController::class,
             'resource' => ResourceController::class,
         ]);
     });
@@ -76,6 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // payroll route
     Route::group(['prefix' => 'payroll'], function () {
         Route::get('pay-period', [PayrollController::class, 'payPeriod']);
+        Route::get('list-commission', [EmployeeCommissionController::class, 'index']);
         Route::get('employee-commission', [PayrollController::class, 'getEmployeeCommission']);
 
         Route::apiResources([
