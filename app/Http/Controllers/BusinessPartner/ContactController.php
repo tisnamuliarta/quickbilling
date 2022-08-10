@@ -12,6 +12,7 @@ use App\Services\Financial\AccountService;
 use App\Services\Inventory\ContactService;
 use App\Traits\ContactDetail;
 use App\Traits\Financial;
+use IFRS\Models\Account;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,12 +39,13 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
-        $type = isset($request->type) ? (string) $request->type : 'index';
+        $type = isset($request->type) ? (string)$request->type : 'index';
         $result = [];
         $extra_list['emails'] = [
             [
@@ -69,7 +71,8 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreContactRequest  $request
+     * @param StoreContactRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -108,6 +111,7 @@ class ContactController extends Controller
      *
      * @param request The request object
      * @param contact The contact array returned from the storeContact method.
+     *
      * @throws \Exception
      */
     protected function processDetails($request, $contact)
@@ -120,15 +124,15 @@ class ContactController extends Controller
         $accountService->createAccount($request->name, 'RECEIVABLE', $accountCategory1->id);
         $accountService->createAccount($request->name, 'PAYABLE', $accountCategory2->id);
 
-        if (! empty($request->banks)) {
+        if (!empty($request->banks)) {
             $this->storeContactBank($request->banks, $contact['id']);
         }
 
-        if (! empty($request->emails)) {
+        if (!empty($request->emails)) {
             $this->storeContactEmail($request->emails, $contact['id']);
         }
 
-        if (! empty($request->can_login)) {
+        if (!empty($request->can_login)) {
             $this->createUser($request->all());
         }
         $contact = Contact::find($contact['id']);
@@ -140,13 +144,24 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
+     *
      * @return JsonResponse
      */
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
         $data = Contact::where('id', '=', $id)
+            ->with(['banks', 'emails', 'sellAccount.balances', 'purchaseAccount.balances'])
             ->first();
+
+        $start_date = $request->date_from;
+        $end_date = $request->date_to;
+        if ($data->type == 'Customer') {
+            $account = Account::find($data->receivable_account_id);
+        } else {
+            $account = Account::find($data->payable_account_id);
+        }
 
         $extra_list['emails'] = [
             [
@@ -162,19 +177,21 @@ class ContactController extends Controller
                 'contact_account_number' => null,
             ],
         ];
+
+        $collect = $account->getTransactions($start_date, $end_date);
         $form = array_merge($this->form('contacts'), $extra_list);
 
-        return $this->success([
-            'data' => $data,
-            'form' => $form,
-        ]);
+        $result = array_merge(['form' => $form], ['data' => $data], $collect);
+
+        return $this->success($result);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreContactRequest  $request
-     * @param  int  $id
+     * @param StoreContactRequest $request
+     * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
@@ -210,7 +227,8 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse
@@ -231,6 +249,7 @@ class ContactController extends Controller
 
     /**
      * @param $id
+     *
      * @return void
      */
     public function deleteBank($id)
@@ -240,6 +259,7 @@ class ContactController extends Controller
 
     /**
      * @param $id
+     *
      * @return void
      */
     public function deleteEmail($id)

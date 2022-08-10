@@ -122,6 +122,8 @@ class DocumentController extends Controller
             return $this->error($validate_details['message']);
         }
 
+        $tags = $request->tags;
+
         DB::beginTransaction();
         try {
             // return $this->error('', 422, $this->service->formData($request, 'store'));
@@ -140,6 +142,10 @@ class DocumentController extends Controller
             }
             // process inventory qty
             $this->processInventory($document);
+
+            if (isset($tags)) {
+                $document->syncTags($tags);
+            }
 
             DB::commit();
 
@@ -225,6 +231,7 @@ class DocumentController extends Controller
                     'entity',
                     'parent',
                     'child',
+                    'tags',
                     'taxDetails' => function ($query) use ($type) {
                         $query->where('type', '=', $type);
                     },
@@ -285,6 +292,8 @@ class DocumentController extends Controller
                 throw new \Exception('Cannot change document that have been posted!', 1);
             }
 
+            $tags = $request->tags;
+
             $document = Document::find($id);
             switch ($action) {
                 case 'closed':
@@ -319,6 +328,10 @@ class DocumentController extends Controller
 
                     // process inventory qty
                     $this->processInventory($document);
+
+                    if (isset($tags)) {
+                        $document->syncTags($tags);
+                    }
                     break;
             }
 

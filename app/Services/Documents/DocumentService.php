@@ -170,6 +170,7 @@ class DocumentService
         $data = $request->all();
 
         $data['contact_id'] = (isset($data['contact_id'])) ? $data['contact_id'] : 0;
+        $data['notes'] = (isset($data['footer'])) ? $data['footer'] : 0;
 
         Arr::forget($data, 'line_items');
         Arr::forget($data, 'contact');
@@ -188,6 +189,8 @@ class DocumentService
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'action');
         Arr::forget($data, 'warehouse_name');
+        Arr::forget($data, 'tags');
+        Arr::forget($data, 'footer');
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;

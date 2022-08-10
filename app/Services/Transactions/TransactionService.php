@@ -247,6 +247,7 @@ class TransactionService
         Arr::forget($data, 'action');
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'taxDetails');
+        Arr::forget($data, 'tags');
 
         return $data;
     }

@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Tags\HasTags;
 
 /**
  * Class Transaction
@@ -70,6 +71,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     use Assigning;
     use ModelTablePrefix;
     use \OwenIt\Auditing\Auditable;
+    use HasTags;
 
     /**
      * Transaction Model Name

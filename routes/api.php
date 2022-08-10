@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         'transactions' => TransactionController::class,
     ]);
 
+    Route::get('report-list', [ReportController::class, 'index']);
     Route::get('report', [ReportController::class, 'preview']);
 
     // List all documents routes

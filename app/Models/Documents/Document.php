@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Tags\HasTags;
 
 /**
  * Class Transaction
@@ -28,6 +29,7 @@ class Document extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use SoftDeletes;
+    use HasTags;
 
     protected $guarded = [];
 

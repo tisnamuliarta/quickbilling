@@ -18,95 +18,97 @@ trait InventoryHelper
      */
     public function processOnHandQty($line_item, $document)
     {
-        $item = $line_item->item_id;
-        $warehouse = $line_item->warehouse_id;
-        $price = $line_item->amount;
-        $quantity = $line_item->quantity;
+        if ($line_item->item->group_name == 'Inventory') {
+            $item = $line_item->item_id;
+            $warehouse = $line_item->warehouse_id;
+            $price = $line_item->amount;
+            $quantity = $line_item->quantity;
 
-        // get item warehouse
-        $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+            // get item warehouse
+            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-        if (!$item_warehouse) {
-            throw new \Exception('Item warehouse not found', 1);
-        }
+            if (!$item_warehouse) {
+                throw new \Exception('Item warehouse not found', 1);
+            }
 
-        $prev_cost = round(floatval($item_warehouse->item_cost), 2);
+            $prev_cost = round(floatval($item_warehouse->item_cost), 2);
 
-        $temp_cost = round($quantity * $price, 2);
-        // calculate qty
-        switch ($document->transaction_type) {
-            // goods receipt PO and a/p invoice
-            case 'GR':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
-                if ($document->base_type == 'PO') {
-                    $item_warehouse->ordered_qty = $item_warehouse->ordered_qty - $quantity;
-                }
-                break;
-
-            case 'BL':
-                if (!$document->base_type) {
+            $temp_cost = round($quantity * $price, 2);
+            // calculate qty
+            switch ($document->transaction_type) {
+                // goods receipt PO and a/p invoice
+                case 'GR':
                     $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
-                }
+                    if ($document->base_type == 'PO') {
+                        $item_warehouse->ordered_qty = $item_warehouse->ordered_qty - $quantity;
+                    }
+                    break;
 
-                if ($document->base_type == 'PO') {
-                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
-                    $item_warehouse->ordered_qty = $item_warehouse->ordered_qty - $quantity;
-                }
-                break;
+                case 'BL':
+                    if (!$document->base_type) {
+                        $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                    }
 
-            // goods return and debit note / a/p credit memo
-            case 'GN':
-            case 'DN':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                    if ($document->base_type == 'PO') {
+                        $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                        $item_warehouse->ordered_qty = $item_warehouse->ordered_qty - $quantity;
+                    }
+                    break;
 
-                // TODO open purchase order
+                // goods return and debit note / a/p credit memo
+                case 'GN':
+                case 'DN':
+                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+
+                    // TODO open purchase order
 //                if ($document->transaction_type == 'GN') {
 //                    $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $quantity;
 //                }
-                break;
+                    break;
 
-            case 'SD':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
-                if ($document->base_type == 'SO') {
-                    $item_warehouse->committed_qty = $item_warehouse->committed_qty - $quantity;
-                }
-                break;
-
-            case 'IN':
-                if (!$document->base_type) {
+                case 'SD':
                     $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
-                }
+                    if ($document->base_type == 'SO') {
+                        $item_warehouse->committed_qty = $item_warehouse->committed_qty - $quantity;
+                    }
+                    break;
 
-                if ($document->base_type == 'SO') {
-                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
-                    $item_warehouse->committed_qty = $item_warehouse->committed_qty - $quantity;
-                }
-                break;
+                case 'IN':
+                    if (!$document->base_type) {
+                        $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                    }
 
-            case 'SR':
-            case 'CN':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                    if ($document->base_type == 'SO') {
+                        $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                        $item_warehouse->committed_qty = $item_warehouse->committed_qty - $quantity;
+                    }
+                    break;
 
-                // TODO open purchase order
+                case 'SR':
+                case 'CN':
+                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+
+                    // TODO open purchase order
 //                if ($document->transaction_type == 'GN') {
 //                    $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $quantity;
 //                }
-                break;
+                    break;
 
-            // Goods receipt
-            case 'GE':
-            case 'PR':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
-                break;
-            // Goods issue
-            case 'GI':
-                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
-                break;
+                // Goods receipt
+                case 'GE':
+                case 'PR':
+                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                    break;
+                // Goods issue
+                case 'GI':
+                    $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                    break;
+            }
+
+            $item_warehouse->save();
+            // calculate cost
+            $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document);
         }
-
-        $item_warehouse->save();
-        // calculate cost
-        $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document);
     }
 
     /**

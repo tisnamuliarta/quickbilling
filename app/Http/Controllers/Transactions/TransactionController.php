@@ -85,6 +85,8 @@ class TransactionController extends Controller
             return $this->error($validate_details['message']);
         }
 
+        $tags = $request->tags;
+
         DB::beginTransaction();
         try {
             if (empty($request->main_account_amount)) {
@@ -109,6 +111,10 @@ class TransactionController extends Controller
 
             // process inventory qty
             $this->processInventory($document);
+
+            if (isset($tags)) {
+                $document->syncTags($tags);
+            }
 
             DB::commit();
 
@@ -182,6 +188,7 @@ class TransactionController extends Controller
                     'lineItems.vat',
                     'contact',
                     'salesPerson',
+                    'tags',
                     'taxDetails' => function ($query) use ($type) {
                         $query->where('type', '=', $type);
                     },
@@ -229,6 +236,8 @@ class TransactionController extends Controller
 
         $action = $request->updateStatus;
 
+        $tags = $request->tags;
+
         // validate details before update
         $validate_details = $this->validateDetails($items, $request->transaction_type, $request->id, $action);
         if ($validate_details['error']) {
@@ -259,6 +268,10 @@ class TransactionController extends Controller
 
                     // process inventory qty
                     $this->processInventory($document);
+
+                    if (isset($tags)) {
+                        $document->syncTags($tags);
+                    }
                     break;
             }
 

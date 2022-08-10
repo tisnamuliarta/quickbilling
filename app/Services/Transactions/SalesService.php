@@ -14,24 +14,28 @@ class SalesService
 
     /**
      * @param $line_items
+     *
      * @return void
      */
     public function salesOrderTransaction($line_items)
     {
         foreach ($line_items as $line_item) {
-            $warehouse = $line_item->warehouse_id;
-            $quantity = $line_item->quantity;
-            $item = $line_item->item_id;
+            if ($line_item->item->group_name == 'Inventory') {
+                $warehouse = $line_item->warehouse_id;
+                $quantity = $line_item->quantity;
+                $item = $line_item->item_id;
 
-            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+                $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-            $item_warehouse->committed_qty = $item_warehouse->committed_qty + $quantity;
-            $item_warehouse->save();
+                $item_warehouse->committed_qty = $item_warehouse->committed_qty + $quantity;
+                $item_warehouse->save();
+            }
         }
     }
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -44,6 +48,7 @@ class SalesService
      * @param $document
      * @param $narration
      * @param bool $reverse
+     *
      * @return void
      * @throws \Exception
      */
@@ -71,7 +76,7 @@ class SalesService
             $journalEntry->addLineItem(
                 LineItem::create([
                     // 'account_id' => $line_item->inventory_account,
-                    'account_id' =>  $accountMapping->getAccountByName('Inventory Account')->account_id,
+                    'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
                     'description' => $line_item->item->name,
                     'narration' => $line_item->item->name,
                     'amount' => $line_item->amount,
@@ -88,6 +93,7 @@ class SalesService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -105,6 +111,7 @@ class SalesService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -121,6 +128,7 @@ class SalesService
     /**
      * @param $document
      * @param $narration
+     *
      * @return void
      * @throws \Exception
      */
@@ -163,6 +171,7 @@ class SalesService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */

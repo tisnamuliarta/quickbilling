@@ -14,25 +14,29 @@ class PurchaseService
 
     /**
      * @param $line_items
+     *
      * @return void
      */
     public function purchaseOrderTransaction($line_items)
     {
         //$item, $ordered_qty, $warehouse
         foreach ($line_items as $line_item) {
-            $warehouse = $line_item->warehouse_id;
-            $ordered_qty = $line_item->quantity;
-            $item = $line_item->item_id;
+            if ($line_item->item->group_name == 'Inventory') {
+                $warehouse = $line_item->warehouse_id;
+                $ordered_qty = $line_item->quantity;
+                $item = $line_item->item_id;
 
-            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+                $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-            $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $ordered_qty;
-            $item_warehouse->save();
+                $item_warehouse->ordered_qty = $item_warehouse->ordered_qty + $ordered_qty;
+                $item_warehouse->save();
+            }
         }
     }
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -76,6 +80,7 @@ class PurchaseService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -89,6 +94,7 @@ class PurchaseService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
@@ -102,6 +108,7 @@ class PurchaseService
 
     /**
      * @param $document
+     *
      * @return void
      * @throws \Exception
      */
