@@ -207,13 +207,13 @@ trait InventoryHelper
                 if ($detail['quantity'] == 0) {
                     return ['error' => true, 'message' => "Line $lines: Quantity cannot 0!"];
                 }
-            }
 
-            if (empty($detail['amount'])) {
-                return ['error' => true, 'message' => "Line $lines: Price cannot empty!"];
-            }
-            if ($detail['amount'] == 0) {
-                return ['error' => true, 'message' => "Line $lines: Price cannot 0!"];
+                if (empty($detail['amount'])) {
+                    return ['error' => true, 'message' => "Line $lines: Price cannot empty!!"];
+                }
+                if ($detail['amount'] == 0) {
+                    return ['error' => true, 'message' => "Line $lines: Price cannot 0!"];
+                }
             }
 
             $sales = ['SO', 'SD', 'IN', 'CN', 'SR'];

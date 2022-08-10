@@ -76,6 +76,7 @@ class LineItem extends Model implements Recyclable, Segregatable
         'price',
         'warehouse_id',
         'tax_name',
+        'classification',
     ];
 
     protected $appends = [
@@ -83,6 +84,10 @@ class LineItem extends Model implements Recyclable, Segregatable
         'whs_name',
         'unit',
         'default_currency_symbol',
+    ];
+
+    protected $casts = [
+        'check_payment' => 'boolean',
     ];
 
     /**

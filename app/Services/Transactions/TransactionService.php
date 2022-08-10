@@ -262,7 +262,8 @@ class TransactionService
                 throw new \Exception('Please select deposit account', 1);
             }
 
-            $bank_account_id = $request->deposit_account_id['id'];
+            $bank_account_id = (is_array($request->deposit_account_id))
+                ? $request->deposit_account_id['id'] : $request->deposit_account_id;
         } else {
             $bank_account_id = 0;
         }
@@ -304,45 +305,96 @@ class TransactionService
                 $item['tax_name'] = null;
             }
 
-            if (!array_key_exists('amount', $item)) {
-                throw new \Exception('Document line must have amount', 1);
-            }
-
-            if (array_key_exists('id', $item) && $item['id']) {
-                $item_detail = LineItem::find($item['id']);
-                //$line_item[] = $this->detailsForm($document, $item, 'update');
-                $forms = $this->detailsForm($document, $item, 'update', $bank_account_id);
-                foreach ($forms as $index => $form) {
-                    $item_detail->$index = $form;
-                }
-                $item_detail->save();
-            } else {
-                //$line_item[] = $this->detailsForm($document, $item, 'store');
-                $item_detail = LineItem::create($this->detailsForm($document, $item, 'store', $bank_account_id));
-                if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
-                    $vat = Vat::find($item_detail->vat_id);
-                    $item_detail->addVat($vat);
+            if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
+                if (!array_key_exists('amount', $item)) {
+                    throw new \Exception('Document line must have amount', 1);
                 }
             }
 
             if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
-                $vat = Vat::where('code', 'VAT0')->first();
-                $item_detail->addVat($vat);
-            }
+                if (array_key_exists('amount', $item)) {
+                    // only save line item > 0 for receipt client and  Supplier Payment
+                    $item_detail = $this->saveLineItem($item, $bank_account_id, $document, $tax_details);
 
-            $document->addLineItem($item_detail);
-            // process tax details
-            foreach ($tax_details as $tax_detail) {
-                $this->processItemTax($document, $tax_detail, $item_detail);
+                    if ($document->status == 'open') {
+                        $transaction = Transaction::where('transaction_no', $item_detail->classification)->first();
+                        //throw new \Exception($item_detail->classification, 1);
+                        $transaction->balance_due = $transaction->balance_due - $item_detail->amount;
+                        $transaction->save();
+
+                        $transaction = Transaction::where('transaction_no', $item_detail->classification)->first();
+                        if ($transaction->balance_due != 0) {
+                            $transaction->status = 'partial';
+                            $transaction->save();
+                        }
+
+                        if ($transaction->balance_due == 0) {
+                            $transaction->status = 'closed';
+                            $transaction->save();
+                        }
+                    }
+                }
+            } else {
+                $item_detail = $this->saveLineItem($item, $bank_account_id, $document, $tax_details);
             }
         }
         if ($document->status == 'open') {
-            $document->post();
+            // $document->post();
 
             if ($document->transaction_type == 'IN') {
                 $this->storeEmployeeCommission($sales_persons, $document);
             }
         }
+    }
+
+    /**
+     * @param $item
+     * @param $bank_account_id
+     * @param $document
+     * @param $tax_details
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function saveLineItem($item, $bank_account_id, $document, $tax_details)
+    {
+        if (array_key_exists('id', $item) && $item['id']) {
+            $item_detail = LineItem::find($item['id']);
+            //$line_item[] = $this->detailsForm($document, $item, 'update');
+            $forms = $this->detailsForm($document, $item, 'update', $bank_account_id);
+            foreach ($forms as $index => $form) {
+                $item_detail->$index = $form;
+            }
+            $item_detail->save();
+        } else {
+            //$line_item[] = $this->detailsForm($document, $item, 'store');
+            $item_detail = LineItem::create(
+                $this->detailsForm($document, $item, 'store', $bank_account_id)
+            );
+            if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
+                $vat = Vat::find($item_detail->vat_id);
+                $item_detail->addVat($vat);
+            }
+        }
+
+        if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
+            $vat = Vat::where('code', 'VAT0')->first();
+            $item_detail->addVat($vat);
+        }
+
+        //throw new \Exception($item_detail->classification, 1);
+
+        $document->addLineItem($item_detail);
+
+        if ($document->status == 'open') {
+            $document->post();
+        }
+        // process tax details
+        foreach ($tax_details as $tax_detail) {
+            $this->processItemTax($document, $tax_detail, $item_detail);
+        }
+
+        return $item_detail;
     }
 
     /**
@@ -375,6 +427,8 @@ class TransactionService
             'narration' => $item['narration'],
             'sku' => array_key_exists('unit', $item) ? $item['unit'] : null,
             'service_date' => array_key_exists('service_date', $item) ? $item['service_date'] : null,
+            'check_payment' => array_key_exists('check_payment', $item) ? $item['check_payment'] : false,
+            'classification' => array_key_exists('classification', $item) ? $item['classification'] : false,
             'tax_name' => $item['tax_name'],
             'quantity' => (array_key_exists('quantity', $item)) ? floatval($item['quantity']) : 1,
             'price' => $price,

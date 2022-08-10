@@ -370,9 +370,10 @@ class TransactionController extends Controller
             ->where('transaction_type', $type)
             ->where('contact_id', $contact)
             ->select(
+                'transaction_no as classification',
                 DB::raw("CONCAT(narration, ' No Invoice: ', transaction_no) as narration"),
                 DB::raw('CAST(due_date as DATE) as service_date'),
-                'main_account_amount as sub_total'
+                'balance_due as sub_total'
             )
             ->get();
 
