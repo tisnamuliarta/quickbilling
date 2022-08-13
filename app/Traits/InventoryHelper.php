@@ -18,7 +18,7 @@ trait InventoryHelper
      */
     public function processOnHandQty($line_item, $document)
     {
-        if ($line_item->item->group_name == 'Inventory') {
+        if ($line_item->item->item_group == 'Inventory') {
             $item = $line_item->item_id;
             $warehouse = $line_item->warehouse_id;
             $price = $line_item->amount;

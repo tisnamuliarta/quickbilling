@@ -69,6 +69,7 @@ class ProductionService
     /**
      * @param $items
      * @param $document
+     *
      * @return void
      */
     public function processItems($items, $document)
@@ -95,14 +96,22 @@ class ProductionService
      */
     protected function detailsForm($document, $item, $type): array
     {
+        if ($item['item_type'] == 'resource') {
+            $item_name = (array_key_exists('item_id', $item)) ? $this->getResourceById($item['item_id'])->name : '';
+            $account_id =  (array_key_exists('item_id', $item))
+                ? $this->getResourceById($item['item_id'])->account_id : '';
+        } else {
+            $item_name = (array_key_exists('item_id', $item)) ? $this->getItemById($item['item_id'])->name : '';
+            $account_id = (array_key_exists('item_id', $item))
+                ? $this->getItemById($item['item_id'])->inventory_account : '';
+        }
         $form = [
             'entity_id' => $document->entity_id,
             'production_id' => $document->id,
             'item_id' => $item['item_id'],
-            'item_name' => (array_key_exists('item_id', $item)) ? $this->getResourceById($item['item_id'])->name : '',
-            'account_id' => (array_key_exists('item_id', $item))
-                ? $this->getResourceById($item['item_id'])->account_id : '',
-            'item_type' => 'resource',
+            'item_name' => $item_name,
+            'account_id' => $account_id,
+            'item_type' => $item['item_type'],
             'narration' => $item['narration'],
             'base_qty' => floatval($item['base_qty']),
             'planned_qty' => floatval($document->planned_qty) * floatval($item['base_qty']),

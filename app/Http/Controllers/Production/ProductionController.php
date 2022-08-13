@@ -8,6 +8,7 @@ use App\Models\Productions\Production;
 use App\Services\Financial\AccountMappingService;
 use App\Services\Inventory\IssueService;
 use App\Services\Production\ProductionService;
+use App\Traits\Financial;
 use App\Traits\InventoryHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 class ProductionController extends Controller
 {
     use InventoryHelper;
+    use Financial;
 
     public ProductionService $service;
     public IssueService $issue;
@@ -149,6 +151,7 @@ class ProductionController extends Controller
      * @param $details
      *
      * @return array
+     * @throws \Exception
      */
     protected function validateDetails($details): array
     {
@@ -163,6 +166,29 @@ class ProductionController extends Controller
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
             } elseif (empty($detail['item_id'])) {
                 return ['error' => true, 'message' => "Line ${lines}: Item cannot empty!"];
+            }
+
+            if (!array_key_exists('whs_code', $detail)) {
+                return ['error' => true, 'message' => "Line ${lines}: Warehouse cannot empty!"];
+            } elseif (empty($detail['whs_code'])) {
+                return ['error' => true, 'message' => "Line ${lines}: Warehouse cannot empty!"];
+            }
+
+            if (!array_key_exists('item_type', $detail)) {
+                return ['error' => true, 'message' => "Line ${lines}: Item type empty!"];
+            } elseif (empty($detail['item_type'])) {
+                return ['error' => true, 'message' => "Line ${lines}: Item type empty!"];
+            }
+
+            if ($detail['item_type'] == 'item') {
+                $whs_id = $this->getWhsIdByName($detail['whs_code']);
+                $item_id = $detail['item_id'];
+
+                $item_whs = $this->getItemWarehouse($item_id, $whs_id);
+
+                if ($item_whs->available_qty <= 0) {
+                    throw new \Exception("Line ${lines}: available quantity must greater than 0!", 1);
+                }
             }
 
             if (empty($detail['base_qty'])) {

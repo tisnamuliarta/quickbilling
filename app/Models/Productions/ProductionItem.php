@@ -8,6 +8,7 @@ use App\Models\Inventory\Warehouse;
 use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductionItem extends Model
 {
@@ -32,19 +33,23 @@ class ProductionItem extends Model
         'price' => 'double',
     ];
 
-    public function account()
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
-    public function warehouse()
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
-        return $this->belongsTo(Resource::class, 'item_id');
+        if ($this->item_type == 'item') {
+            return $this->belongsTo(Item::class, 'item_id');
+        } else {
+            return $this->belongsTo(Resource::class, 'item_id');
+        }
     }
 
     /**

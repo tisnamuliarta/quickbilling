@@ -68,6 +68,16 @@ trait Financial
     }
 
     /**
+     * @param $name
+     * @return mixed
+     */
+    public function getItemById($name): mixed
+    {
+        return Item::where('id', $name)
+            ->first();
+    }
+
+    /**
      * @param $item_id
      * @param $type
      * @return int

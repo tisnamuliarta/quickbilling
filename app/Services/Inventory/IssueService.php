@@ -141,14 +141,26 @@ class IssueService
             'base_num' => $issue->transaction_no
         ]);
 
+        $sum_direct_labor = 0;
+        $sum_direct_material = 0;
+
+        foreach ($document->lineItems as $line_item) {
+            if ($line_item->item_type == 'resource' && $line_item->item->resource_type == 'labor') {
+                $sub_total = $line_item->base_qty * $line_item->amount;
+                $sum_direct_labor = $sum_direct_labor + $sub_total;
+            } else {
+                $sub_total = floatval($line_item->amount) * $line_item->base_qty;
+                $sum_direct_material = $sum_direct_material + $sub_total;
+            }
+        }
+
         $journalEntry->addLineItem(
             LineItem::create([
                 'item_id' => $document->item_id,
                 'account_id' => $account_line,
                 'description' => 'receipt from production',
                 'narration' => 'receipt from production',
-                'amount' => $document->commission_rate,
-                'quantity' => $document->planned_qty,
+                'amount' => $sum_direct_labor + $sum_direct_material,
                 'base_line_id' => $line->id,
                 'transaction_id' => $journalEntry->id
             ])

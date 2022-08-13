@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Models\Inventory\Contact;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ContactService
@@ -24,11 +25,13 @@ class ContactService
         $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'name';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
+        $search = isset($request->search) ? $request->search : '';
         $type = $request->contactType;
 
         $result = [];
         $query = Contact::where('contacts.type', 'LIKE', '%' . $contact_type . '%')
             ->with(['banks', 'emails', 'sellAccount.balances', 'purchaseAccount.balances'])
+            ->where(DB::raw("CONCAT(name, ' ', type)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order)
             ->paginate($row_data);
 

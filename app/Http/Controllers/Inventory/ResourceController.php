@@ -36,6 +36,7 @@ class ResourceController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('resources');
+        $result['form']['status'] = 'active';
         $result['url'] = url('/');
 
         $collection = collect($this->service->index($request));

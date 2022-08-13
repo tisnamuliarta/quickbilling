@@ -33,25 +33,28 @@ class AccountController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         $type = isset($request->type) ? (string)$request->type : 'index';
-
+        $start = microtime(true);
         if ($type == 'index') {
             $result = [];
             $result['form'] = $this->form('accounts');
             $result['form']['account_type_list'] = $this->getEnumValues('accounts', 'account_type');
             //$result = array_merge($result, $this->service->index($request));
             $collection = collect($this->service->index($request));
-            $result = $collection->merge($result);
+            $result = $collection->merge($result)->all();
         } else {
             if ($type == 'All') {
                 $type = '';
             }
             $result = $this->service->dataByType($type);
         }
+        $end = microtime(true);
 
-        return $this->success($result);
+        $execution = $end - $start;
+        return json_encode(array_merge(['execution' => $execution], $result));
+        // return $this->success(array_merge(['execution' => $execution], $result->all()));
     }
 
     /**

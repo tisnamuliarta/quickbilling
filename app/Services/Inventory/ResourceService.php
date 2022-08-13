@@ -83,45 +83,9 @@ class ResourceService
 
         $day_val = date('j', $data_date);
 
-        if ((int)$day_val === 1) {
-            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
-            $check_document = Resource::where('code', '=', $document)->first();
-            if (!$check_document) {
-                return Str::upper($alias) . '-' . sprintf('%05s', '1');
-            } else {
-                //ITM-xxxxx
-                return $this->itemCode($data_date, $alias);
-            }
-        }
+        $doc_num = Resource::count() + 1;
 
-        return $this->itemCode($data_date, $alias);
-    }
-
-    /**
-     * @param $data_date
-     * @param $alias
-     * @return string
-     */
-    protected function itemCode($data_date, $alias): string
-    {
-        $year_val = date('y', $data_date);
-        $full_year = date('Y', $data_date);
-        $month = date('m', $data_date);
-        $end_date = date('t', $data_date);
-
-        $first_date = "${full_year}-${month}-01";
-        $second_date = "${full_year}-${month}-${end_date}";
-
-        $doc_num = Resource::selectRaw('code')
-            ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
-            ->orderBy('code', 'DESC')
-            ->first();
-
-        $number = empty($doc_num) ? '0000000000' : $doc_num->code;
-        $clear_doc_num = (int)substr($number, 4, 9);
-        $number = $clear_doc_num + 1;
-
-        return Str::upper($alias) . '-' . sprintf('%05s', $number);
+        return Str::upper($alias) . '-' . str_pad((string)$doc_num, 5, '0', STR_PAD_LEFT);
     }
 
     /**

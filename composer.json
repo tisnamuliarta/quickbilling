@@ -18,7 +18,7 @@
     "intervention/image": "^2.7",
     "kwn/number-to-words": "^2.2",
     "laravel/cashier": "^13.11",
-    "laravel/framework": "^9.21.0",
+    "laravel/framework": "^9.24.0",
     "laravel/sanctum": "^2.14",
     "laravel/scout": "^9.4",
     "laravel/tinker": "^2.7",
