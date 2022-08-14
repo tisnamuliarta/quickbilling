@@ -3,3 +3,6 @@
 ## About QuickBilling
 
 Accounting and bookkeeping apps for small business
+
+## frontend
+https://github.com/tisnamuliarta/qbi.git
