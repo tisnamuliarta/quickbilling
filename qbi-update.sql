@@ -12,6 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table quickbilling.accounts
+
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `entity_id` bigint(20) unsigned NOT NULL,
