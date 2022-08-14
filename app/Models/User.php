@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Recyclable
+class User extends Authenticatable implements Recyclable, Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasApiTokens;
     use HasFactory;
     use Notifiable;

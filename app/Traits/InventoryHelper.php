@@ -107,7 +107,7 @@ trait InventoryHelper
 
             $item_warehouse->save();
             // calculate cost
-            $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document);
+            $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $price);
         }
     }
 
@@ -139,14 +139,18 @@ trait InventoryHelper
      * @param $prev_cost
      * @param $document
      */
-    public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document)
+    public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $amount)
     {
         // calculate with average cost
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
         $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI', 'PI'];
         if (!Str::contains($document->transaction_type, $sales)) {
-            $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
+            if ($item_warehouse->available_qty) {
+                $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
+            } else {
+                $item_cost = round($amount, 2);
+            }
 
             $item_warehouse->item_cost = $item_cost;
             $item_warehouse->save();

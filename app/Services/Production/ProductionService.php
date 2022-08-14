@@ -48,6 +48,10 @@ class ProductionService
     {
         $data = $request->all();
 
+        if ($type == 'store') {
+            $data['created_by'] = $request->user()->id;
+        }
+
         Arr::forget($data, 'updated_at');
         Arr::forget($data, 'created_at');
         Arr::forget($data, 'deleted_at');
@@ -121,6 +125,11 @@ class ProductionService
             'amount' => floatval($item['amount']),
             'issue_method' => 'backflush',
         ];
+
+        if ($type == 'store') {
+            $merge['created_by'] = auth()->user()->id;
+            $form = array_merge($form, $merge);
+        }
 
         if ($document->base_id && $type == 'store') {
             $merge['base_line_id'] = $item['id'];

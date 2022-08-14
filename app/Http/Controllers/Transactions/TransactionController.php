@@ -71,7 +71,7 @@ class TransactionController extends Controller
     {
         $this->validateRequest($request);
 
-        $type = $request->type;
+        $type = (isset($request->type)) ? $request->type : $request->transaction_type;
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);

@@ -15,6 +15,7 @@ use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
 use App\Traits\Financial;
 use Carbon\Carbon;
+use IFRS\Models\AppliedVat;
 use IFRS\Models\LineItem;
 use IFRS\Models\ReportingPeriod;
 use IFRS\Models\Transaction;
@@ -211,6 +212,8 @@ class TransactionService
             $data['created_by'] = $request->user()->id;
         }
         $data['discount_amount'] = (isset($data['discount_amount'])) ? $data['discount_amount'] : 0;
+        $data['discount_rate'] = (isset($data['discount_rate'])) ? $data['discount_rate'] : 0;
+        $data['discount_type'] = (isset($data['discount_type'])) ? $data['discount_type'] : 'Percent';
         $data['balance_due'] = (isset($data['balance_due'])) ? $data['balance_due'] : 0;
         $data['deposit_account_id'] = $this->getBankAccountId($request);
 
@@ -339,7 +342,7 @@ class TransactionService
             }
         }
         if ($document->status == 'open') {
-            // $document->post();
+            $document->post();
 
             if ($document->transaction_type == 'IN') {
                 $this->storeEmployeeCommission($sales_persons, $document);
@@ -356,7 +359,7 @@ class TransactionService
      * @return mixed
      * @throws \Exception
      */
-    protected function saveLineItem($item, $bank_account_id, $document, $tax_details)
+    protected function saveLineItem($item, $bank_account_id, $document, $tax_details): mixed
     {
         if (array_key_exists('id', $item) && $item['id']) {
             $item_detail = LineItem::find($item['id']);
@@ -371,24 +374,32 @@ class TransactionService
             $item_detail = LineItem::create(
                 $this->detailsForm($document, $item, 'store', $bank_account_id)
             );
-            if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
-                $vat = Vat::find($item_detail->vat_id);
+        }
+        if (!Str::contains($document->transaction_type, ['RC', 'PY'])) {
+            $vat = Vat::where('id', $item_detail->vat_id)->first();
+            if ($vat) {
                 $item_detail->addVat($vat);
+
+                $this->appliedVat($item_detail, $vat);
             }
         }
 
         if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
             $vat = Vat::where('code', 'VAT0')->first();
-            $item_detail->addVat($vat);
+            if ($vat) {
+                $item_detail->addVat($vat);
+
+                $this->appliedVat($item_detail, $vat);
+            }
         }
 
         //throw new \Exception($item_detail->classification, 1);
 
         $document->addLineItem($item_detail);
 
-        if ($document->status == 'open') {
-            $document->post();
-        }
+//        if ($document->status == 'open') {
+//            $document->post();
+//        }
         // process tax details
         foreach ($tax_details as $tax_detail) {
             $this->processItemTax($document, $tax_detail, $item_detail);
@@ -467,17 +478,38 @@ class TransactionService
             return $bank_account_id;
         } else {
             if (Str::contains($type, ['BL', 'DN'])) {
-                $accountMapping = new AccountMappingService();
-                if ($document->base_id) {
-                    return $accountMapping->getAccountByName('Allocation Account')->account_id;
-                } else {
-                    $item = Item::find($item['item_id']);
-                    return $item->inventory_account;
-                }
+                $item = Item::find($item['item_id']);
+                return $item->inventory_account;
+//                $accountMapping = new AccountMappingService();
+//                if ($document->base_id) {
+//                    return $accountMapping->getAccountByName('Allocation Account')->account_id;
+//                } else {
+//                    $item = Item::find($item['item_id']);
+//                    return $item->inventory_account;
+//                }
             } else {
                 return $this->getAccountIdItem($item['item_id'], 'purchase');
             }
         }
+    }
+
+    /**
+     * @param $item_detail
+     * @param $vat
+     *
+     * @return void
+     */
+    protected function appliedVat($item_detail, $vat)
+    {
+        $itemAmount = $item_detail->amount * $item_detail->quantity;
+        $tax = $item_detail->vat_inclusive ?
+            $itemAmount - ($itemAmount / (1 + ($vat->rate / 100))) : $itemAmount * $vat->rate / 100;
+
+        AppliedVat::firstOrCreate([
+            'vat_id' => $vat->id,
+            'line_item_id' => $item_detail->id,
+            'amount' => $tax,
+        ]);
     }
 
     /**

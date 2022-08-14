@@ -11,6 +11,7 @@
 namespace IFRS\Models;
 
 use Carbon\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 use function collect;
 use function config;
 use IFRS\Exceptions\HangingTransactions;
@@ -43,8 +44,9 @@ use Illuminate\Support\Facades\DB;
  * @property Carbon $destroyed_at
  * @property Carbon $deleted_at
  */
-class Account extends Model implements Recyclable, Segregatable
+class Account extends Model implements Recyclable, Segregatable, Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use Segregating;
     use SoftDeletes;
     use Recycling;

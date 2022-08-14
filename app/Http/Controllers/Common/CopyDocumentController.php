@@ -24,7 +24,10 @@ class CopyDocumentController extends Controller
                     ->first();
             }
 
-            return $this->success(['data' => $documents]);
+            return $this->success([
+                'form' => $documents,
+                'count' => 0
+            ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage());
         }

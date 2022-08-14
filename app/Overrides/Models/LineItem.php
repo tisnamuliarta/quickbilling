@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Class LineItem
@@ -42,8 +43,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $destroyed_at
  * @property Carbon $deleted_at
  */
-class LineItem extends Model implements Recyclable, Segregatable
+class LineItem extends Model implements Recyclable, Segregatable, Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use Segregating;
     use SoftDeletes;
     use Recycling;
@@ -77,6 +79,7 @@ class LineItem extends Model implements Recyclable, Segregatable
         'warehouse_id',
         'tax_name',
         'classification',
+        'created_by',
     ];
 
     protected $appends = [
