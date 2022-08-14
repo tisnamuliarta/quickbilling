@@ -138,7 +138,8 @@ class IssueService
             'status' => 'closed',
             'base_id' => $issue->id,
             'base_type' => $issue->transaction_type,
-            'base_num' => $issue->transaction_no
+            'base_num' => $issue->transaction_no,
+            'created_by' => auth()->user()->id
         ]);
 
         $sum_direct_labor = 0;
@@ -151,6 +152,10 @@ class IssueService
             } else {
                 $sub_total = floatval($line_item->amount) * $line_item->base_qty;
                 $sum_direct_material = $sum_direct_material + $sub_total;
+
+                $item_warehouse = $this->getItemWarehouse($line_item->item_id, $line_item->warehouse_id);
+                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $line_item->base_qty;
+                $item_warehouse->save();
             }
         }
 
@@ -162,7 +167,8 @@ class IssueService
                 'narration' => 'receipt from production',
                 'amount' => $sum_direct_labor + $sum_direct_material,
                 'base_line_id' => $line->id,
-                'transaction_id' => $journalEntry->id
+                'transaction_id' => $journalEntry->id,
+                'created_by' => auth()->user()->id
             ])
         );
         $journalEntry->post();
@@ -308,7 +314,8 @@ class IssueService
             'status' => 'closed',
             'base_id' => $issue->id,
             'base_type' => $issue->transaction_type,
-            'base_num' => $issue->transaction_no
+            'base_num' => $issue->transaction_no,
+            'created_by' => auth()->user()->id
         ]);
 
         $journalEntry->addLineItem(
@@ -317,6 +324,7 @@ class IssueService
                 'description' => 'Issue for production',
                 'narration' => 'Issue for production',
                 'amount' => $sum_direct_labor + $sum_direct_material,
+                'created_by' => auth()->user()->id
             ])
         );
 
