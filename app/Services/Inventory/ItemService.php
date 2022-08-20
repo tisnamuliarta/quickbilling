@@ -7,7 +7,9 @@ use App\Models\Inventory\ItemCategory;
 use App\Traits\Categories;
 use App\Traits\FileUpload;
 use App\Traits\Financial;
+use IFRS\Models\ReportingPeriod;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -105,7 +107,7 @@ class ItemService
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
             $data['code'] = (isset($request->code)) ? $request->code :
-                $this->generateDocNum(date('Y-m-d H:i:s'), 'ITM');
+                $this->generateDocNum(date('Y-m-d H:i:s'), 'IT');
         }
 
         return $data;
@@ -114,7 +116,9 @@ class ItemService
     /**
      * @param $sysDate
      * @param $alias
+     *
      * @return string
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     protected function generateDocNum($sysDate, $alias): string
     {
@@ -122,18 +126,24 @@ class ItemService
 
         $day_val = date('j', $data_date);
 
-        if ((int)$day_val === 1) {
-            $document = Str::upper($alias) . '-' . sprintf('%05s', '1');
-            $check_document = Item::where('code', '=', $document)->first();
-            if (!$check_document) {
-                return Str::upper($alias) . '-' . sprintf('%05s', '1');
-            } else {
-                //ITM-xxxxx
-                return $this->itemCode($data_date, $alias);
-            }
-        }
+        $alias = Str::limit($alias, 2);
 
-        return $this->itemCode($data_date, $alias);
+        $data_date = strtotime($sysDate);
+        $month = date('m', $data_date);
+
+        $entity = Auth::user()->entity;
+        $periodCount = ReportingPeriod::getPeriod($sysDate, $entity)->period_count;
+        $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
+        $periodStart = date('Y-m-d', strtotime($periodStart));
+
+        $nextId = Item::where('created_at', '>=', $periodStart)
+            ->count();
+
+        $nextId = $nextId + 1;
+
+        return $alias . '-' . str_pad((string)$periodCount, 2, '0', STR_PAD_LEFT)
+            . $month .
+            str_pad((string)$nextId, 4, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -152,7 +162,7 @@ class ItemService
         $second_date = "${full_year}-${month}-${end_date}";
 
         $doc_num = Item::selectRaw('code')
-            ->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
+            //->whereBetween(DB::raw('CONVERT(created_at, date)'), [$first_date, $second_date])
             ->orderBy('code', 'DESC')
             ->first();
 

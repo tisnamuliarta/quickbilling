@@ -31,7 +31,7 @@ class AccountController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return false|string
      */
     public function index(Request $request)
     {

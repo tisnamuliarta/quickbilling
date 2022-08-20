@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\StoreItemRequest;
 use App\Models\File\File;
 use App\Models\Inventory\Item;
+use App\Services\Financial\AccountMappingService;
 use App\Services\Inventory\ItemService;
 use App\Services\Inventory\ResourceService;
 use App\Traits\Accounting;
 use App\Traits\FileUpload;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,18 +38,23 @@ class ItemController extends Controller
      * Display a listing of the resource.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $accountMapping = new AccountMappingService();
         $result = [];
         $result['form'] = $this->form('items');
         $result['form']['temp_id'] = mt_rand(100000, 999999999999);
         $result['form']['is_sell'] = true;
         $result['form']['is_purchase'] = false;
-        $result['form']['inventory_account'] = $this->accountByName('Inventory Account');
-        $result['form']['revenue_account_id'] = $this->accountByName('Sales of Product Income');
-        $result['form']['expense_account_id'] = $this->accountByName('Cost of Goods Sold');
+        $result['form']['issue_method'] = 'backflush';
+        $result['form']['material_type'] = 'production';
+        $result['form']['valuation_method'] = 'moving average';
+        $result['form']['inventory_account'] = $accountMapping->getAccountByName('Inventory Account')->account_id;
+        $result['form']['revenue_account_id'] = $accountMapping->getAccountByName('Revenue Account')->account_id;
+        $result['form']['expense_account_id'] = $accountMapping->getAccountByName('Cost of Goods Sold Account')
+            ->account_id;
         $result['url'] = url('/');
 
         $collection = collect($this->service->index($request));
@@ -60,11 +67,11 @@ class ItemController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreItemRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreItemRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreItemRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -92,7 +99,7 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show($product)
     {
@@ -108,16 +115,21 @@ class ItemController extends Controller
      *
      * @param  StoreItemRequest  $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreItemRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(StoreItemRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $item = Item::where('id', '=', $id)
-                ->update($this->service->formData($request, 'update', $id));
+            $data = Item::find($id);
+            $forms = collect($this->service->formData($request, 'update', $id));
+            //return $this->error('', 422, [$forms]);
+            foreach ($forms as $index => $form) {
+                $data->$index = $form;
+            }
+            $data->save();
 
             // $this->processItemDetails($category, $id);
 
@@ -140,9 +152,9 @@ class ItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy($id): \Illuminate\Http\JsonResponse
+    public function destroy($id): JsonResponse
     {
         $details = Item::find($id);
         if ($details) {

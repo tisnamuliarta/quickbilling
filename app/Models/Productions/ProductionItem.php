@@ -9,22 +9,21 @@ use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class ProductionItem extends Model implements Auditable
+class ProductionItem extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use LogsActivity;
 
     protected $guarded = [];
-
     protected $appends = [
         'item_code',
         'whs_code',
         'sub_total',
         'account_code',
     ];
-
     /**
      * The attributes that should be cast.
      *
@@ -34,6 +33,16 @@ class ProductionItem extends Model implements Auditable
         'amount' => 'double',
         'price' => 'double',
     ];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     public function account(): BelongsTo
     {

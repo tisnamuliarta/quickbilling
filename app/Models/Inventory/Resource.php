@@ -6,18 +6,28 @@ use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Resource extends Model implements Auditable
+class Resource extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use LogsActivity;
 
     protected $guarded = [];
-
     protected $appends = [
         'whs_code',
     ];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * @return BelongsTo

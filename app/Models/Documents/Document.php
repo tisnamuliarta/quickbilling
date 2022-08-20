@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Tags\HasTags;
 
 /**
@@ -24,15 +25,15 @@ use Spatie\Tags\HasTags;
  * @property string $narration
  * @property float $main_account_amount
  */
-class Document extends Model implements Auditable
+class Document extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use SoftDeletes;
     use HasTags;
 
-    protected $guarded = [];
+    use LogsActivity;
 
+    protected $guarded = [];
     /**
      * The attributes that should be cast.
      *
@@ -51,8 +52,31 @@ class Document extends Model implements Auditable
         'due_date' => 'datetime:Y-m-d',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($document) {
+            // before delete() method call this
+            $document->items()->delete();
+            $document->taxDetails()->delete();
+            // do the rest of the cleanup...
+        });
+    }
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
+
     /**
      * @param $value
+     *
      * @return string
      */
     public function getIssueAtAttribute($value): string
@@ -149,24 +173,13 @@ class Document extends Model implements Auditable
             ->where('type', '=', 'SO');
     }
 
+    // this is a recommended way to declare event handlers
+
     /**
      * @return HasMany
      */
     public function salesPerson(): HasMany
     {
         return $this->hasMany(SalesPerson::class);
-    }
-
-    // this is a recommended way to declare event handlers
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($document) {
-            // before delete() method call this
-            $document->items()->delete();
-            $document->taxDetails()->delete();
-            // do the rest of the cleanup...
-        });
     }
 }

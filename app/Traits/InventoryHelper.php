@@ -138,6 +138,7 @@ trait InventoryHelper
      * @param $temp_cost
      * @param $prev_cost
      * @param $document
+     * @param $amount
      */
     public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $amount)
     {
@@ -228,11 +229,14 @@ trait InventoryHelper
                 if (!Str::contains($action, ['closed', 'canceled'])) {
                     if ($doc_id == 0) {
                         // item warehouse
-                        if (count($item->itemWarehouse) < 1) {
-                            return [
-                                'error' => true,
-                                'message' => "Line $lines: Cannot find item in this warehouse " . $detail['whs_name']
-                            ];
+                        if ($item->item_group == 'Inventory') {
+                            if (count($item->itemWarehouse) < 1) {
+                                return [
+                                    'error' => true,
+                                    'message' => "Line $lines: Cannot find item in this warehouse "
+                                        . $detail['whs_name']
+                                ];
+                            }
                         }
 
                         foreach ($item->itemWarehouse as $item) {

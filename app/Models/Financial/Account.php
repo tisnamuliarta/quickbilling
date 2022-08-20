@@ -23,8 +23,16 @@ class Account extends IfrsAccount
         'entity_id',
         'description',
         'code',
-        'parent_id',
-        'opening_balance_date',
-        'opening_balance_amount',
     ];
+
+    protected $appends = [
+        'balance',
+    ];
+
+    /**
+     */
+    public function getBalanceAttribute()
+    {
+        return ($this->entity) ? $this->closingBalance()[1] : 0;
+    }
 }

@@ -247,7 +247,7 @@ class DocumentController extends Controller
                 'data' => $data,
                 'form' => $form,
                 'count' => ($data) ? 1 : 0,
-                'audits' => ($id != 0) ? $data->audits()->with('user')->get() : [],
+                'audits' => ($id != 0) ? $data->activities : [],
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [

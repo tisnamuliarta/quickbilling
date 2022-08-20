@@ -27,7 +27,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Class LineItem
@@ -43,13 +44,13 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property Carbon $destroyed_at
  * @property Carbon $deleted_at
  */
-class LineItem extends Model implements Recyclable, Segregatable, Auditable
+class LineItem extends Model implements Recyclable, Segregatable
 {
-    use \OwenIt\Auditing\Auditable;
     use Segregating;
     use SoftDeletes;
     use Recycling;
     use ModelTablePrefix;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -101,70 +102,44 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
     private array $vats = [];
 
     /**
-     * Check if Vat already exists.
-     *
-     * @param  int|null  $id
-     * @return int|false
-     */
-    private function vatExists(int $id = null): bool|int
-    {
-        return collect($this->vats)->search(
-            function ($vat, $key) use ($id) {
-                return $vat->id == $id;
-            }
-        );
-    }
-
-    /**
-     * Create applied vat objects for the vats being staged.
-     *
-     * @return void
-     */
-    private function applyVats(): void
-    {
-        $itemAmount = $this->amount * $this->quantity;
-
-        foreach ($this->vats as $vat) {
-            $tax = $this->vat_inclusive ?
-                $itemAmount - ($itemAmount / (1 + ($vat->rate / 100))) : $itemAmount * $vat->rate / 100;
-
-            AppliedVat::firstOrCreate([
-                'vat_id' => $vat->id,
-                'line_item_id' => $this->id,
-                'amount' => $tax,
-            ]);
-            $itemAmount += $this->compound_vat ? $tax : 0;
-        }
-    }
-
-    /**
      * Construct new LineItem
      *
-     * @param  array  $attributes
+     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
-        if (! isset($attributes['credited'])) {
+        if (!isset($attributes['credited'])) {
             $attributes['credited'] = false;
         }
-        if (! isset($attributes['quantity'])) {
+        if (!isset($attributes['quantity'])) {
             $attributes['quantity'] = 1;
         }
         parent::__construct($attributes);
     }
 
     /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
+
+    /**
      * Instance Identifier.
      *
-     * @param  bool  $type
+     * @param bool $type
+     *
      * @return string
      */
     public function toString(bool $type = false): string
     {
         $classname = explode('\\', self::class);
-        $description = $this->account->toString().' for '.$this->amount * $this->quantity;
+        $description = $this->account->toString() . ' for ' . $this->amount * $this->quantity;
 
-        return $type ? array_pop($classname).': '.$description : $description;
+        return $type ? array_pop($classname) . ': ' . $description : $description;
     }
 
     /**
@@ -298,13 +273,14 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
      */
     public function attributes(): object
     {
-        return (object) $this->attributes;
+        return (object)$this->attributes;
     }
 
     /**
      * Add Vat to LineItem Vats.
      *
-     * @param  Vat  $vat
+     * @param Vat $vat
+     *
      * @return bool
      *
      * @throws MultipleVatError
@@ -356,9 +332,25 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
     }
 
     /**
+     * Check if Vat already exists.
+     *
+     * @param int|null $id
+     *
+     * @return int|false
+     */
+    private function vatExists(int $id = null): bool|int
+    {
+        return collect($this->vats)->search(
+            function ($vat, $key) use ($id) {
+                return $vat->id == $id;
+            }
+        );
+    }
+
+    /**
      * Remove Vat from LineItem Vats.
      *
-     * @param  Vat  $vat
+     * @param Vat $vat
      *
      * @throws PostedTransaction
      */
@@ -390,7 +382,8 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
     /**
      * Validate LineItem.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return bool
      *
      * @throws NegativeAmount
@@ -407,7 +400,7 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
             throw new NegativeQuantity();
         }
 
-        if (! is_null($this->transaction) && count($this->transaction->ledgers) > 0 && $this->isDirty()) {
+        if (!is_null($this->transaction) && count($this->transaction->ledgers) > 0 && $this->isDirty()) {
             throw new PostedTransaction('change a LineItem of');
         }
 
@@ -418,5 +411,27 @@ class LineItem extends Model implements Recyclable, Segregatable, Auditable
         $this->load('appliedVats');
 
         return $save;
+    }
+
+    /**
+     * Create applied vat objects for the vats being staged.
+     *
+     * @return void
+     */
+    private function applyVats(): void
+    {
+        $itemAmount = $this->amount * $this->quantity;
+
+        foreach ($this->vats as $vat) {
+            $tax = $this->vat_inclusive ?
+                $itemAmount - ($itemAmount / (1 + ($vat->rate / 100))) : $itemAmount * $vat->rate / 100;
+
+            AppliedVat::firstOrCreate([
+                'vat_id' => $vat->id,
+                'line_item_id' => $this->id,
+                'amount' => $tax,
+            ]);
+            $itemAmount += $this->compound_vat ? $tax : 0;
+        }
     }
 }

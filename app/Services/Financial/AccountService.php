@@ -65,7 +65,7 @@ class AccountService
         } else {
             $type = explode(', ', $type);
             $query = Account::selectRaw(
-                " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id "
+                " CONCAT('(', code, ') ', name, ' (', account_type, ')') as name, id, code "
             )
                 ->orderBy('code')
                 ->whereIn('account_type', $type)->get();
@@ -110,22 +110,19 @@ class AccountService
      * @param string $accountType
      * @param int $subType
      *
-     * @return int
-     *
+     * @return mixed
      * @throws \Exception
      */
-    public function createAccount(string $name, string $accountType, int $subType)
+    public function createAccount(string $name, string $accountType, int $subType): mixed
     {
         try {
-            Account::updateOrCreate([
+            return Account::updateOrCreate([
                 'entity_id' => auth()->user()->entity->id,
                 'currency_id' => auth()->user()->entity->currency_id,
                 'account_type' => $accountType,
                 'category_id' => $subType,
                 'name' => $name,
             ]);
-
-            return 0;
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
         }

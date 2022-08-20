@@ -121,8 +121,8 @@ class ContactController extends Controller
         $accountCategory1 = Category::where('category_type', 'RECEIVABLE')->first();
         $accountCategory2 = Category::where('category_type', 'PAYABLE')->first();
 
-        $accountService->createAccount($request->name, 'RECEIVABLE', $accountCategory1->id);
-        $accountService->createAccount($request->name, 'PAYABLE', $accountCategory2->id);
+        $receiveable = $accountService->createAccount($request->name, 'RECEIVABLE', $accountCategory1->id);
+        $payable = $accountService->createAccount($request->name, 'PAYABLE', $accountCategory2->id);
 
         if (!empty($request->banks)) {
             $this->storeContactBank($request->banks, $contact['id']);
@@ -136,8 +136,12 @@ class ContactController extends Controller
             $this->createUser($request->all());
         }
         $contact = Contact::find($contact['id']);
-        $contact->receivable_account_id = $this->getAccountIdByName($request->name, 'RECEIVABLE');
-        $contact->receivable_account_id = $this->getAccountIdByName($request->name, 'PAYABLE');
+        if (!$contact->receivable_account_id) {
+            $contact->receivable_account_id = $this->getAccountIdByName($request->name, 'RECEIVABLE');
+        }
+        if (!$contact->payable_account_id) {
+            $contact->payable_account_id = $this->getAccountIdByName($request->name, 'PAYABLE');
+        }
         $contact->save();
     }
 

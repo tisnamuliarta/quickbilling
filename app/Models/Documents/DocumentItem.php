@@ -10,22 +10,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class DocumentItem extends Model implements Auditable
+class DocumentItem extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = [];
+    use LogsActivity;
 
+    protected $guarded = [];
     protected $appends = [
         'code',
         'whs_name',
         'default_currency_symbol'
     ];
-
     /**
      * The attributes that should be cast.
      *
@@ -37,6 +37,16 @@ class DocumentItem extends Model implements Auditable
         'quantity' => 'double',
         'amount' => 'double',
     ];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * @return BelongsTo

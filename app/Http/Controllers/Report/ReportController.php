@@ -31,6 +31,8 @@ class ReportController extends Controller
      */
     public function preview(Request $request)
     {
+        App::setLocale(auth()->user()->locale);
+        Carbon::setLocale(auth()->user()->locale);
         $report_type = strtoupper($request->report_type);
         $account_id = $request->account_id;
         $first_date = date('Y-m-') . '01';
@@ -45,8 +47,8 @@ class ReportController extends Controller
                 $report = new AccountStatement($account_id, null, $start_date, $end_date);
                 return $this->success([
                     'data' => $report->getTransactions(),
-                    'start_date' => Carbon::parse($start_date)->format('M d Y'),
-                    'end_date' => Carbon::parse($end_date)->format('M d Y'),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                 ]);
 
             case strtoupper('Profit and loss statement'):
@@ -54,8 +56,8 @@ class ReportController extends Controller
                 //$data = $this->service->transformProfitAndLoss($report->getSections());
                 return $this->success([
                     'data' => collect($report->getSections($start_date, $end_date)),
-                    'start_date' => Carbon::parse($start_date)->format('M d Y'),
-                    'end_date' => Carbon::parse($end_date)->format('M d Y'),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                 ]);
             //return $this->success(['data' => $report->getResults(date('m'), date('Y'), $entity)]);
 
@@ -63,16 +65,16 @@ class ReportController extends Controller
                 $report = new BalanceSheet($end_date, $entity);
                 return $this->success([
                     'data' => $report->getSections(),
-                    'start_date' => Carbon::parse($start_date)->format('M d Y'),
-                    'end_date' => Carbon::parse($end_date)->format('M d Y'),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                 ]);
 
             case strtoupper('Trial Balance'):
                 $report = new TrialBalance($end_date, $entity);
                 return $this->success([
                     'data' => $report->getSections(),
-                    'start_date' => Carbon::parse($start_date)->format('M d Y'),
-                    'end_date' => Carbon::parse($end_date)->format('M d Y'),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                 ]);
 
             case strtoupper('Statement of cash flow'):
@@ -80,8 +82,8 @@ class ReportController extends Controller
                 $report = new CashFlowStatement($start_date, $end_date, $entity);
                 return $this->success([
                     'data' => $report->getSections(),
-                    'start_date' => Carbon::parse($start_date)->format('M d Y'),
-                    'end_date' => Carbon::parse($end_date)->format('M d Y'),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                 ]);
 
             case strtoupper('Product/Service List'):

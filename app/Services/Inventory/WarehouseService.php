@@ -14,6 +14,8 @@ class WarehouseService
 
     /**
      * @param $request
+     *
+     * @return array|\TValue[]
      */
     public function index($request)
     {
@@ -35,6 +37,8 @@ class WarehouseService
 
     /**
      * @param $request
+     * @param $type
+     *
      * @return array
      */
     public function formData($request, $type): array

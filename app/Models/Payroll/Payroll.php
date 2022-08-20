@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Payroll extends Model implements Auditable
+class Payroll extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use LogsActivity;
+
     /**
      * The attributes that should be cast.
      *
@@ -22,9 +24,17 @@ class Payroll extends Model implements Auditable
     protected $casts = [
         'main_account_amount' => 'double',
     ];
-
-
     protected $guarded = [];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     public function account(): BelongsTo
     {

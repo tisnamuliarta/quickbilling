@@ -6,16 +6,26 @@ use IFRS\Models\Entity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class EmployeeDetail extends Model implements Auditable
+class EmployeeDetail extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use LogsActivity;
 
     protected $guarded = [];
-
     protected $table = 'employee_pay_details';
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     public function entity(): BelongsTo
     {

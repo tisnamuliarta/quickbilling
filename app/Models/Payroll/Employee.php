@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Employee extends Model implements Auditable
+class Employee extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use SoftDeletes;
+    use LogsActivity;
 
     protected $guarded = [];
-
     protected $casts = [
         'gender' => 'integer',
         'payment_method' => 'integer',
@@ -30,10 +30,19 @@ class Employee extends Model implements Auditable
         'day_per_week' => 'double',
         'hire_date' => 'datetime:Y-m-d',
     ];
-
     protected $appends = [
         'full_name',
     ];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * @return BelongsTo

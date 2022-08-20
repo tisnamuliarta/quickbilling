@@ -39,7 +39,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Tags\HasTags;
 
 /**
@@ -62,7 +63,7 @@ use Spatie\Tags\HasTags;
  * @property Carbon $destroyed_at
  * @property Carbon $deleted_at
  */
-class Transaction extends Model implements Segregatable, Recyclable, Clearable, Assignable, Auditable
+class Transaction extends Model implements Segregatable, Recyclable, Clearable, Assignable
 {
     use Segregating;
     use SoftDeletes;
@@ -70,7 +71,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     use Clearing;
     use Assigning;
     use ModelTablePrefix;
-    use \OwenIt\Auditing\Auditable;
+    use LogsActivity;
     use HasTags;
 
     /**
@@ -219,6 +220,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Get Transaction Class
      *
      * @param string $type
+     *
      * @return string
      */
     public static function getClass($type): string
@@ -241,6 +243,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Get Human Readable Transaction types
      *
      * @param array $types
+     *
      * @return array
      */
     public static function getTypes($types): array
@@ -258,11 +261,22 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Get Human Readable Transaction type
      *
      * @param string $type
+     *
      * @return string
      */
     public static function getType($type): string
     {
         return config('ifrs')['transactions'][$type];
+    }
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
     }
 
     /**
@@ -424,7 +438,19 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
             }
         }
 
-        return $amount;
+        return floatval($amount);
+    }
+
+    /**
+     * Get the entry type for the Compound Entry.
+     *
+     * @param bool $credited
+     *
+     * @return string
+     */
+    private static function getCompoundEntrytype(bool $credited): string
+    {
+        return $credited ? Balance::CREDIT : Balance::DEBIT;
     }
 
     /**
@@ -447,6 +473,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Check if LineItem already exists.
      *
      * @param int|null $id
+     *
      * @return int|false
      */
     private function lineItemExists(int $id = null)
@@ -523,6 +550,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Add LineItem to Transaction LineItems.
      *
      * @param LineItem $lineItem
+     *
      * @return bool
      *
      * @throws InvalidCurrency
@@ -532,9 +560,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function addLineItem(LineItem $lineItem): bool
     {
         if (in_array(
-            $lineItem->account->account_type,
-            config('ifrs.single_currency')
-        ) && $lineItem->account->currency_id != $this->currency_id) {
+                $lineItem->account->account_type,
+                config('ifrs.single_currency')
+            ) && $lineItem->account->currency_id != $this->currency_id) {
             throw new InvalidCurrency('Transaction', $lineItem->account);
         }
 
@@ -638,6 +666,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Check if Assigned Transaction already exists.
      *
      * @param int $id
+     *
      * @return int|false
      */
     private function assignedTransactionExists(int $id = null)
@@ -668,6 +697,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Create assignments for the assigned transactions being staged.
      *
      * @param int|null $forexAccountId
+     *
      * @return void
      */
     public function processAssigned(int $forexAccountId = null): void
@@ -718,6 +748,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * Relate LineItems to Transaction.
      *
      * @param array $options
+     *
      * @return bool
      *
      * @throws AdjustingReportingPeriod
@@ -804,6 +835,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
      * @param string $type
      * @param Carbon|null $transaction_date
      * @param Entity|null $entity
+     *
      * @return string
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
@@ -928,16 +960,5 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     {
         $this->compoundEntries[Transaction::getCompoundEntrytype($credited)][$compoundEntry['id']]
             = $compoundEntry['amount'];
-    }
-
-    /**
-     * Get the entry type for the Compound Entry.
-     *
-     * @param bool $credited
-     * @return string
-     */
-    private static function getCompoundEntrytype(bool $credited): string
-    {
-        return $credited ? Balance::CREDIT : Balance::DEBIT;
     }
 }

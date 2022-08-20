@@ -103,8 +103,14 @@ class ResourceController extends Controller
     {
         DB::beginTransaction();
         try {
-            $item = Resource::where('id', '=', $id)
-                ->update($this->service->formData($request, 'update', $id));
+            $data = Resource::find($id);
+            $forms = collect($this->service->formData($request, 'update', $id));
+            //return $this->error('', 422, [$forms]);
+            foreach ($forms as $index => $form) {
+                $data->$index = $form;
+            }
+            $data->save();
+
 
             // $this->processItemDetails($category, $id);
 

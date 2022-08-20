@@ -38,7 +38,7 @@ class EmployeeController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $result = [];
         $result['form'] = $this->form('employees');
@@ -81,7 +81,7 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::create($this->service->formData($request, 'store'));
 
-            $this->processDetails($request, $employee);
+            // $this->processDetails($request, $employee);
 
             DB::commit();
 
@@ -130,7 +130,7 @@ class EmployeeController extends Controller
 
             $employee = Employee::find($id);
 
-            $this->processDetails($request, $employee);
+            //$this->processDetails($request, $employee);
 
             DB::commit();
 

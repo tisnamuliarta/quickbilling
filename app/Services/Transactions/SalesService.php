@@ -67,6 +67,7 @@ class SalesService
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
+            'created_by' => auth()->user()->id,
             'status' => 'open'
         ]);
 
@@ -82,6 +83,7 @@ class SalesService
                     'amount' => $line_item->amount,
                     'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
+                    'created_by' => auth()->user()->id,
                     'transaction_id' => $journalEntry->id
                 ])
             );
@@ -146,6 +148,7 @@ class SalesService
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
+            'created_by' => auth()->user()->id,
             'status' => 'open'
         ]);
 
@@ -160,7 +163,8 @@ class SalesService
                     'amount' => $line_item->amount,
                     'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'transaction_id' => $journalEntry->id
+                    'transaction_id' => $journalEntry->id,
+                    'created_by' => auth()->user()->id,
                 ])
             );
         }

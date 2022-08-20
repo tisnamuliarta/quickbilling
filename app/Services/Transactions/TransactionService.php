@@ -556,6 +556,7 @@ class TransactionService
             'account_id' => $wages_expense,
             'date' => Carbon::now(),
             'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
+            'created_by' => auth()->user()->id,
             'credited' => false, // main account should be debited
             //'main_account_amount' => $commission_rate * $lineItem->quantity,
             'status' => 'open',
@@ -599,6 +600,7 @@ class TransactionService
                     'amount' => $commission_rate,
                     'quantity' => $lineItem->quantity,
                     'price' => $commission_rate,
+                    'created_by' => auth()->user()->id,
                     'sub_total' => $lineItem->quantity * $commission_rate,
                     //'credited' => false,
                     //'transaction_id' => $journalEntry->id,

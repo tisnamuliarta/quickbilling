@@ -203,7 +203,7 @@ class TransactionController extends Controller
                 'form' => $this->service->getForm(($data) ? $data->type : $type),
                 'count' => ($data) ? 1 : 0,
                 'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
-                'audits' => ($id != 0) ? $data->audits()->with('user')->get() : [],
+                'audits' => ($id != 0) ? $data->activities : [],
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), 422, [

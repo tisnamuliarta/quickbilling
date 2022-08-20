@@ -6,15 +6,16 @@ use IFRS\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class ItemWarehouse extends Model implements Auditable
+class ItemWarehouse extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
-    protected $guarded = [];
+    use LogsActivity;
 
+    protected $guarded = [];
     /**
      * cast attribute
      *
@@ -26,11 +27,20 @@ class ItemWarehouse extends Model implements Auditable
         'committed_qty' => 'double',
         'ordered_qty' => 'double',
     ];
-
     protected $appends = [
         'whs_name',
         'available_qty',
     ];
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+        // Chain fluent methods for configuration options
+    }
 
     /**
      * @return BelongsTo

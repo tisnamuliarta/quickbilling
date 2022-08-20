@@ -207,6 +207,7 @@ class DocumentService
      * @param $tax_details
      *
      * @return void
+     * @throws \Exception
      */
     public function processItems($items, $document, $tax_details)
     {
@@ -249,6 +250,7 @@ class DocumentService
      * @param $type
      *
      * @return array
+     * @throws \Exception
      */
     protected function detailsForm($document, $item, $type): array
     {
@@ -334,7 +336,8 @@ class DocumentService
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
-            'status' => 'open'
+            'status' => 'open',
+            'created_by' => auth()->user()->id
         ]);
 
         foreach ($line_items as $line_item) {
@@ -348,7 +351,8 @@ class DocumentService
                     'unit' => $line_item->unit,
                     'warehouse_id' => $line_item->warehouse_id,
                     //'credited' => true,
-                    'transaction_id' => $journalEntry->id
+                    'transaction_id' => $journalEntry->id,
+                    'created_by' => auth()->user()->id
                 ])
             );
         }

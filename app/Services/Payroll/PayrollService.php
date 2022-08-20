@@ -361,7 +361,8 @@ class PayrollService
                 'status' => 'closed',
                 'base_id' => $document->id,
                 'base_type' => $document->transaction_type,
-                'base_num' => $document->transaction_no
+                'base_num' => $document->transaction_no,
+                'created_by' => auth()->user()->id
             ]);
 
             $journalEntry->addLineItem(
@@ -370,6 +371,7 @@ class PayrollService
                     'description' => 'Payroll clearing',
                     'narration' => 'Payroll clearing',
                     'amount' => $document->main_account_amount,
+                    'created_by' => auth()->user()->id
                 ])
             );
 
@@ -391,7 +393,8 @@ class PayrollService
                 'status' => 'closed',
                 'base_id' => $document->id,
                 'base_type' => $document->transaction_type,
-                'base_num' => $document->transaction_no
+                'base_num' => $document->transaction_no,
+                'created_by' => auth()->user()->id
             ]);
 
             $journalEntry->addLineItem(
@@ -400,6 +403,7 @@ class PayrollService
                     'description' => 'Payroll clearing',
                     'narration' => 'Payroll clearing',
                     'amount' => $document->main_account_amount,
+                    'created_by' => auth()->user()->id
                 ])
             );
         }
