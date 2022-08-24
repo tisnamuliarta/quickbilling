@@ -16,11 +16,15 @@ use App\Http\Controllers\Inventory\PriceListController;
 use App\Http\Controllers\Inventory\ReceiptController;
 use App\Http\Controllers\Inventory\ResourceController;
 use App\Http\Controllers\Inventory\WarehouseController;
+use App\Http\Controllers\Payroll\DeductionController;
+use App\Http\Controllers\Payroll\LoanController;
 use App\Http\Controllers\Payroll\EmployeeCommissionController;
 use App\Http\Controllers\Payroll\EmployeeController;
+use App\Http\Controllers\Payroll\LoanTypeController;
 use App\Http\Controllers\Payroll\PayrollController;
 use App\Http\Controllers\Payroll\PayScheduleController;
 use App\Http\Controllers\Payroll\PayTypeController;
+use App\Http\Controllers\Payroll\TimesheetController;
 use App\Http\Controllers\Payroll\WorkLocationController;
 use App\Http\Controllers\Production\ProductionController;
 use App\Http\Controllers\Production\ProductionIssueController;
@@ -79,12 +83,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('pay-period', [PayrollController::class, 'payPeriod']);
         Route::get('list-commission', [EmployeeCommissionController::class, 'index']);
         Route::get('employee-commission', [PayrollController::class, 'getEmployeeCommission']);
+        Route::get('print/{id}', [PayrollController::class, 'printSlip']);
 
         Route::apiResources([
             'employees' => EmployeeController::class,
             'pay-types' => PayTypeController::class,
             'pay-schedules' => PayScheduleController::class,
             'payroll' => PayrollController::class,
+            'loan' => LoanController::class,
+            'loan-type' => LoanTypeController::class,
+            'deduction' => DeductionController::class,
+            'timesheet' => TimesheetController::class,
             // 'contractors' => \App\Http\Controllers\Payroll\ContractorController::class,
             'work-locations' => WorkLocationController::class,
         ]);

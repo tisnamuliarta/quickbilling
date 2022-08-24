@@ -3,27 +3,26 @@
 namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Payrolls\StoreEmployeeRequest;
+use App\Http\Requests\Payrolls\StoreTimesheetRequest;
 use App\Models\Financial\Category;
-use App\Models\Payroll\Employee;
-use App\Models\Payroll\PaySchedule;
+use App\Models\Payroll\Timesheet;
 use App\Services\Financial\AccountService;
-use App\Services\Payroll\EmployeeService;
+use App\Services\Payroll\TimesheetService;
 use App\Traits\Financial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class EmployeeController extends Controller
+class TimesheetController extends Controller
 {
     use Financial;
 
-    public EmployeeService $service;
+    public TimesheetService $service;
 
     /**
      * MasterUserController constructor.
      */
-    public function __construct(EmployeeService $service)
+    public function __construct(TimesheetService $service)
     {
         $this->service = $service;
         //        $this->middleware(['direct_permission:Roles-index'])->only(['index', 'show', 'permissionRole']);
@@ -36,30 +35,13 @@ class EmployeeController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
         $result = [];
-        $result['form'] = $this->form('employees');
-        $result['form']['status'] = 'active';
-        $result['form']['pay_frequency'] = 'Per Month';
-        $result['form']['pay_type'] = 'Salary';
-
-        $result['itemGender'] = [
-            ['id' => 1, 'name' => __('Male')],
-            ['id' => 2, 'name' => __('Female')],
-        ];
-
-        $result['paymentMethod'] = [
-            ['id' => 1, 'name' => __('Cash')],
-            ['id' => 2, 'name' => __('Direct Deposit')],
-        ];
-
-        $result['payFrequency'] = ['Per Week', 'Per Month', 'Per Quarter'];
-        $result['paySchedule'] = PaySchedule::select('id', 'name')->get();
-
-        $result['payType'] = ['Salary', 'Per Hour', 'Commission'];
+        $result['form'] = $this->form('timesheet');
 
         $collection = collect($this->service->index($request));
         $result = $collection->merge($result);
@@ -70,16 +52,17 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreEmployeeRequest $request
+     * @param StoreTimesheetRequest $request
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreEmployeeRequest $request): JsonResponse
+    public function store(StoreTimesheetRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $employee = Employee::create($this->service->formData($request, 'store'));
+            $employee = Timesheet::create($this->service->formData($request, 'store'));
 
             // $this->processDetails($request, $employee);
 
@@ -102,11 +85,12 @@ class EmployeeController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function show($id): JsonResponse
     {
-        $data = Employee::find($id);
+        $data = Timesheet::find($id);
 
         return $this->success([
             'data' => $data,
@@ -116,17 +100,18 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreEmployeeRequest $request
+     * @param StoreTimesheetRequest $request
      * @param int $id
+     *
      * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreEmployeeRequest $request, $id): JsonResponse
+    public function update(StoreTimesheetRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
-            $document = Employee::find($id);
+            $document = Timesheet::find($id);
             $forms = collect($this->service->formData($request, 'update'));
             //return $this->error('', 422, [$forms]);
             foreach ($forms as $index => $form) {
@@ -155,11 +140,12 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
+     *
      * @return JsonResponse
      */
     public function destroy($id): JsonResponse
     {
-        $details = Employee::find($id);
+        $details = Timesheet::find($id);
         if ($details) {
             $details->delete();
 

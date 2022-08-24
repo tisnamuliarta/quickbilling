@@ -288,7 +288,7 @@ class PayrollService
     public function getSingleDocument($id): array
     {
         if ($id == 0) {
-            return  [];
+            return [];
         }
         $data = Payroll::where('id', '=', $id)
             ->first();
@@ -324,6 +324,60 @@ class PayrollService
                     }
                 }
                 $item_employee[$index]['sub_total'] = $sub_total;
+            }
+
+            // $lineItems = $collect_pay->merge($item_employee)->all();
+            return $item_employee;
+        } else {
+            throw new \Exception('Data not found!', 1);
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getSingleSlipDocument($id): array
+    {
+        App::setLocale(auth()->user()->locale);
+        if ($id == 0) {
+            return [];
+        }
+        $data = Payroll::where('id', '=', $id)
+            ->first();
+
+        if ($data) {
+            $item_employee = [];
+            $item_salary = [];
+            foreach ($data->lineItem as $lineItem) {
+                $item_employee[$lineItem->line_num][__('Total Pay')] = 0;
+                $sub_total = $item_employee[$lineItem->line_num][__('Total Pay')];
+
+                $item_employee[$lineItem->line_num]['header'] = [
+                    __('Employees') => $lineItem->employee->full_name,
+                    __('Payment Method') => ($lineItem->employee->payMethod)
+                        ? $lineItem->employee->payMethod->name : '',
+                ];
+
+                $item_employee[$lineItem->line_num]['allowance'] = [
+                    __('Salary') => $lineItem->salary,
+                ];
+                foreach ($data->lineItem as $lineItm) {
+                    $pay_type = PayType::find($lineItm->pay_type_id);
+                    $item_employee[$lineItm->line_num]['allowance'][$pay_type->name] = $lineItm->amount;
+                }
+            }
+
+            foreach ($item_employee as $index => $item) {
+                [$keys, $values] = Arr::divide($item);
+                $sub_total = 0;
+                foreach ($keys as $value) {
+                    if (Str::contains($value, ['allowance'])) {
+                        foreach ($item[$value] as $data) {
+                            $sub_total = $sub_total + $data;
+                        }
+                    }
+                }
+                $item_employee[$index][__('Total Pay')] = $sub_total;
             }
 
             // $lineItems = $collect_pay->merge($item_employee)->all();

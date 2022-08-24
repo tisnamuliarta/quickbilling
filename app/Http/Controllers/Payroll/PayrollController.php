@@ -15,7 +15,6 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -219,12 +218,12 @@ class PayrollController extends Controller
     /**
      * @throws \Exception
      */
-    public function printSlip(Request $request, $id): Response
+    public function printSlip(Request $request, $id)
     {
         $documents = Payroll::where('id', '=', $id)
             ->first();
 
-        $lineItems = $this->service->getSingleDocument($id);
+        $lineItems = $this->service->getSingleSlipDocument($id);
 
         $pdf = $this->pdfInstance($documents, $lineItems);
 
@@ -252,13 +251,15 @@ class PayrollController extends Controller
         App::setLocale(auth()->user()->locale);
         Carbon::setLocale(auth()->user()->locale);
         $document_date = Carbon::parse($documents->transaction_date)->isoFormat('D MMMM Y');
+        $type = __('Salary Receipt Slip');
 
         return Pdf::loadView('export.payslip', compact(
             'documents',
             'company',
             'amount',
             'document_date',
-            'lineItems'
+            'lineItems',
+            'type'
         ));
     }
 
