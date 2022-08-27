@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Financial;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreAccountRequest extends FormRequest
 {
@@ -36,6 +37,8 @@ class StoreAccountRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'name.required' => __('validation')['required'],
             'account_type.required' => __('validation')['required'],

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Payrolls;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreDeductionRequest extends FormRequest
 {
@@ -35,6 +36,8 @@ class StoreDeductionRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'name.required' => __('validation')['required'],
         ];

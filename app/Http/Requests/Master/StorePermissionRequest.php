@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StorePermissionRequest extends FormRequest
 {
@@ -37,6 +38,8 @@ class StorePermissionRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'menu_name.required' => __('validation')['required'],
             'order_line.required' => __('validation')['required'],

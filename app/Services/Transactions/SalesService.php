@@ -62,17 +62,23 @@ class SalesService
             'date' => Carbon::now(),
             'narration' => $narration . $document->transaction_no,
             'credited' => false, // main account should be debited
-            'main_account_amount' => $document->main_account_amount,
+            // 'main_account_amount' => $document->main_account_amount,
             'reference' => $document->transaction_no,
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
             'created_by' => auth()->user()->id,
-            'status' => 'open'
+            'status' => 'open',
         ]);
 
         foreach ($line_items as $line_item) {
             $this->processOnHandQty($line_item, $document);
+
+            $item = $line_item->item_id;
+            $warehouse = $line_item->warehouse_id;
+
+            // get item warehouse
+            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
             $journalEntry->addLineItem(
                 LineItem::create([
@@ -80,8 +86,8 @@ class SalesService
                     'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
                     'description' => $line_item->item->name,
                     'narration' => $line_item->item->name,
-                    'amount' => $line_item->amount,
-                    'quantity' => $line_item->quantity,
+                    'amount' => $item_warehouse->item_cost,
+                    'quantity' => $item_warehouse->on_hand_qty,
                     'sub_total' => $line_item->sub_total,
                     'created_by' => auth()->user()->id,
                     'transaction_id' => $journalEntry->id
@@ -108,6 +114,24 @@ class SalesService
             }
         } else {
             $this->createInventoryJournal($document, 'Inventory Transaction Base On Sales invoice ');
+        }
+    }
+
+    /**
+     * @param $document
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function cashSaleTransaction($document)
+    {
+        if ($document->base_id) {
+            $line_items = $document->lineItems;
+            foreach ($line_items as $line_item) {
+                $this->processOnHandQty($line_item, $document);
+            }
+        } else {
+            $this->createInventoryJournal($document, 'Inventory Transaction Base On Cash sale ');
         }
     }
 

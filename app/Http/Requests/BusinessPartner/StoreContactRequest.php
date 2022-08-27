@@ -3,6 +3,7 @@
 namespace App\Http\Requests\BusinessPartner;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreContactRequest extends FormRequest
 {
@@ -35,6 +36,7 @@ class StoreContactRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
         return [
             'name.required' => __('validation')['required'],
         ];

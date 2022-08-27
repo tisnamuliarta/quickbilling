@@ -189,6 +189,7 @@ class IssueService
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
         $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
         $item_warehouse->item_cost = $item_cost;
+        $item_warehouse->save();
     }
 
     /**

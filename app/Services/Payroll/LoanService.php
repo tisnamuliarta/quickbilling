@@ -3,14 +3,13 @@
 namespace App\Services\Payroll;
 
 use App\Models\Payroll\Loan;
-use App\Models\Payroll\Employee;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
-class DeductionService
+class LoanService
 {
     /**
      * @param $request
+     *
      * @return array
      */
     public function index($request)
@@ -21,7 +20,11 @@ class DeductionService
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = (isset($request->search)) ? $request->search : '';
 
-        $query = Loan::where(DB::raw("CONCAT(narration)"), 'LIKE', '%' . $search . '%')
+        $query = Loan::where(function ($query) use ($search) {
+            $query->whereHas('employee', function ($query) use ($search) {
+                $query->where('first_name', 'LIKE', '%' . $search . '%');
+            });
+        })
             ->with(['employee'])
             ->orderBy($sorts, $order)
             ->paginate($row_data);
@@ -32,6 +35,7 @@ class DeductionService
     /**
      * @param $request
      * @param $type
+     *
      * @return array
      */
     public function formData($request, $type): array

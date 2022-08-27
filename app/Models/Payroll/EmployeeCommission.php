@@ -10,6 +10,7 @@ use IFRS\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -44,14 +45,14 @@ class EmployeeCommission extends Model
         return $this->employee->full_name;
     }
 
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class, 'transaction_id', 'id');
+    }
+
     public function transaction(): BelongsTo
     {
-        $inventory = ['IN'];
-        if (str($this->transaction_type)->contains($inventory)) {
-            return $this->belongsTo(Transaction::class);
-        } else {
-            return $this->belongsTo(Document::class);
-        }
+        return $this->belongsTo(Transaction::class, 'transaction_id', 'id');
     }
 
     public function account(): BelongsTo

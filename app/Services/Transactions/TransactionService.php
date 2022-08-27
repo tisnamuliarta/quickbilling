@@ -45,14 +45,21 @@ class TransactionService
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = (isset($request->search)) ? $request->search : '';
+        $date_from = (isset($request->dateFrom)) ? $request->dateFrom : null;
+        $date_to = (isset($request->dateTo)) ? $request->dateTo : null;
 
         $model = $this->mappingTable($type);
         $result = [];
         $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
             ->where('transaction_type', $type)
             ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
-            ->orderBy($sorts, $order)
-            ->paginate($row_data);
+            ->orderBy($sorts, $order);
+
+        if ($date_from && $date_to) {
+            $query = $query->whereBetween('transaction_date', [$date_from, $date_to]);
+        }
+
+        $query = $query->paginate($row_data);
 
         $result['form'] = $this->getForm($type);
         $collect = collect($query);
@@ -131,7 +138,7 @@ class TransactionService
         $form['warehouse_id'] = $this->defaultWarehouse()->id;
         $form['warehouse_name'] = $this->defaultWarehouse()->code;
 
-        if (Str::contains($type, ['CP', 'RC', 'CN', 'BL'])) {
+        if (Str::contains($type, ['CP', 'RC', 'CN', 'BL', 'CP'])) {
             $form['credited'] = true;
         } else {
             $form['credited'] = false;
@@ -147,10 +154,15 @@ class TransactionService
      */
     protected function defaultHeaderAccount($type): int
     {
+        $accountMapping = new AccountMappingService();
+        $bank = $accountMapping->getAccountByName('Cash on Hand')->account_id;
+        $revenue = $accountMapping->getAccountByName('Domestic Accounts Receiveable')->account_id;
+        $expense = $accountMapping->getAccountByName('Accounts Payable')->account_id;
+
         return match ($type) {
-            'CP', 'CS' => $this->getAccountIdByName('Cash on hand', 'BANK'),
-            'CN', 'RC', 'IN' => $this->getAccountIdByName('Accounts Receivable (A/R)', 'RECEIVABLE'),
-            'BL', 'DN', 'PY' => $this->getAccountIdByName('Accounts Payable (A/P)', 'PAYABLE'),
+            'CP', 'CS' => $bank,
+            'CN', 'RC', 'IN' => $revenue,
+            'BL', 'DN', 'PY' => $expense,
             default => 0,
         };
     }
@@ -218,7 +230,7 @@ class TransactionService
         $data['deposit_account_id'] = $this->getBankAccountId($request);
 
         $contact = Contact::find($data['contact_id']);
-        $data['account_id'] = $this->mappingHeaderAccount($data['transaction_type'], $contact);
+        $data['account_id'] = $this->mappingHeaderAccount($data, $contact);
 
         Arr::forget($data, 'items');
         Arr::forget($data, 'tax_details');
@@ -251,6 +263,7 @@ class TransactionService
         Arr::forget($data, 'sales_person');
         Arr::forget($data, 'taxDetails');
         Arr::forget($data, 'tags');
+        Arr::forget($data, 'activities');
 
         return $data;
     }
@@ -274,19 +287,25 @@ class TransactionService
     }
 
     /**
-     * @param $type
+     * @param $data
      * @param $contact
      *
      * @return int
      */
-    public function mappingHeaderAccount($type, $contact): int
+    public function mappingHeaderAccount($data, $contact): int
     {
-        if ($type == 'IN' || $type == 'CN' || $type == 'RC') {
+        $type = $data['transaction_type'];
+        $account_id = $data['account_id'];
+        if (Str::contains($type, ['IN', 'CN', 'RC'])) {
             return $this->getAccountIdByName($contact->name, 'RECEIVABLE');
         }
 
-        if ($type == 'BL' || $type == 'DN' || $type == 'PY') {
+        if (Str::contains($type, ['BL', 'DN', 'PY'])) {
             return $this->getAccountIdByName($contact->name, 'PAYABLE');
+        }
+
+        if (Str::contains($type, ['CS', 'CP'])) {
+            return $account_id;
         }
         return 0;
     }
@@ -344,7 +363,7 @@ class TransactionService
         if ($document->status == 'open') {
             $document->post();
 
-            if ($document->transaction_type == 'IN') {
+            if (Str::contains($document->transaction_type, ['IN', 'CS'])) {
                 $this->storeEmployeeCommission($sales_persons, $document);
             }
         }
@@ -477,18 +496,16 @@ class TransactionService
         } elseif (Str::contains($type, ['RC', 'PY'])) {
             return $bank_account_id;
         } else {
+            $accountMapping = new AccountMappingService();
             if (Str::contains($type, ['BL', 'DN'])) {
-                $item = Item::find($item['item_id']);
-                return $item->inventory_account;
-//                $accountMapping = new AccountMappingService();
-//                if ($document->base_id) {
-//                    return $accountMapping->getAccountByName('Allocation Account')->account_id;
-//                } else {
-//                    $item = Item::find($item['item_id']);
-//                    return $item->inventory_account;
-//                }
+                if ($document->base_id && $type == 'BL') {
+                    return $accountMapping->getAccountByName('Allocation Account')->account_id;
+                } else {
+                    $item = Item::find($item['item_id']);
+                    return $item->inventory_account;
+                }
             } else {
-                return $this->getAccountIdItem($item['item_id'], 'purchase');
+                return $this->getAccountIdItem($item['item_id'], 'inventory');
             }
         }
     }
@@ -518,6 +535,7 @@ class TransactionService
      * @param $item_detail
      *
      * @return void
+     * @throws \Exception
      */
     public function processItemTax($document, $tax, $item_detail)
     {

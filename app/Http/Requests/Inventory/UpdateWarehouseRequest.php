@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class UpdateWarehouseRequest extends FormRequest
 {
@@ -35,6 +36,8 @@ class UpdateWarehouseRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'name.required' => __('validation')['required'],
         ];

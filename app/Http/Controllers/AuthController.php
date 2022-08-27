@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class AuthController extends Controller
      * @param  Request  $request
      * @return mixed
      */
-    public function login(Request $request)
+    public function login(Request $request): mixed
     {
         try {
             $attr = $request->validate([
@@ -49,7 +50,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function logout(Request $request)
     {
@@ -76,7 +77,7 @@ class AuthController extends Controller
      * Get the token array structure.
      *
      * @param  string  $token
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     protected function respondWithToken($token)
     {
@@ -90,7 +91,7 @@ class AuthController extends Controller
 
     /**
      * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function user(Request $request)
     {
@@ -106,9 +107,9 @@ class AuthController extends Controller
     /**
      * Display a listing of permissions from current logged user.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function permissions(): \Illuminate\Http\JsonResponse
+    public function permissions(): JsonResponse
     {
         return response()->json(auth()->user()->getAllPermissions()->pluck('name'));
     }
@@ -116,20 +117,120 @@ class AuthController extends Controller
     /**
      * Display a listing of roles from current logged user.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function roles(): \Illuminate\Http\JsonResponse
+    public function roles(): JsonResponse
     {
         return response()->json(auth()->user()->getRoleNames());
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function dateFilter(): JsonResponse
+    {
+        App::setLocale(auth()->user()->locale);
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        $startOfMonth = $now->startOfMonth('Y-m-d')->format('Y-m-d');
+        $endOfMonth = $now->endOfMonth()->format('Y-m-d');
+
+        // $startOfYear = $now->startOfYear();
+        $startOfYear = Carbon::create(date('Y'), '01')->startOfMonth()->format('Y-m-d');
+        $endOfYear   = $now->endOfYear()->format('Y-m-d');
+
+
+        $lastWeek = Carbon::now()->addDays(-7);
+        $startOfLastWeek = $lastWeek->startOfWeek()->format('Y-m-d');
+        $endOfLastWeek = $lastWeek->endOfWeek()->format('Y-m-d');
+
+        $filter = [
+            [
+                'text' => 'Custom',
+                'date_from' => null,
+                'date_to' => null
+            ],
+            [
+                'text' => __('Since Yesterday'),
+                'date_from' => Carbon::now()->addDays(-1)->format('Y-m-d'),
+                'date_to' => date('Y-m-d')
+            ],
+            [
+                'text' => __('Since 2 Days Ago'),
+                'date_from' => Carbon::now()->addDays(-2)->format('Y-m-d'),
+                'date_to' => date('Y-m-d')
+            ],
+            [
+                'text' => __('This Week'),
+                'date_from' => $weekStartDate,
+                'date_to' => $weekEndDate
+            ],
+            [
+                'text' => __('Last Week'),
+                'date_from' => $startOfLastWeek,
+                'date_to' => $endOfLastWeek
+            ],
+             [
+                 'text' => __('This Week to date'),
+                 'date_from' => $weekStartDate,
+                 'date_to' => date('Y-m-d')
+             ],
+            [
+                'text' => __('This Month'),
+                'date_from' => $startOfMonth,
+                'date_to' => $endOfMonth
+            ],
+             [
+                 'text' => __('This Month-to-date'),
+                 'date_from' => $startOfMonth,
+                 'date_to' => date('Y-m-d')
+             ],
+             [
+                 'text' => __('This Year'),
+                 'date_from' => $startOfYear,
+                 'date_to' => $endOfYear
+             ],
+             [
+                 'text' => __('This Year to date'),
+                 'date_from' => $startOfYear,
+                 'date_to' => date('Y-m-d')
+             ],
+             [
+                 'text' => __('Since 30 Days Ago'),
+                 'date_from' => Carbon::now()->addDays(-30)->format('Y-m-d'),
+                 'date_to' => date('Y-m-d')
+             ],
+             [
+                 'text' => __('Since 60 Days Ago'),
+                 'date_from' => Carbon::now()->addDays(-60)->format('Y-m-d'),
+                 'date_to' => date('Y-m-d')
+             ],
+             [
+                 'text' => __('Since 90 Days Ago'),
+                 'date_from' => Carbon::now()->addDays(-90)->format('Y-m-d'),
+                 'date_to' => date('Y-m-d')
+             ],
+             [
+                 'text' => __('Since 365 Days Ago'),
+                 'date_from' => Carbon::now()->addDays(-365)->format('Y-m-d'),
+                 'date_to' => date('Y-m-d')
+             ],
+        ];
+
+        return $this->success([
+            'date_filter' => $filter
+        ]);
     }
 
     /**
      * list menus
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function menus(Request $request)
+    public function menus(Request $request): JsonResponse
     {
         try {
             App::setLocale(auth()->user()->locale);

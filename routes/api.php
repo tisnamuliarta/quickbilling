@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessPartner\ContactController;
 use App\Http\Controllers\BusinessPartner\ContactTransactionController;
+use App\Http\Controllers\Common\ChartController;
 use App\Http\Controllers\Common\CopyDocumentController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\Documents\DocumentExportController;
@@ -41,7 +42,9 @@ Route::get('logo', [LogoController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('date-filter', [AuthController::class, 'dateFilter']);
     Route::get('menus', [AuthController::class, 'menus']);
+    Route::get('chart', [ChartController::class, 'index']);
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/roles', [AuthController::class, 'roles']);

@@ -144,6 +144,7 @@ class TransactionController extends Controller
         switch ($document->transaction_type) {
             // purchase
             case 'BL':
+            case 'CP':
                 $this->purchase->supplierBillTransaction($document);
                 break;
 
@@ -151,6 +152,10 @@ class TransactionController extends Controller
                 $this->purchase->debitNoteTransaction($document);
                 break;
             // sales
+            case 'CS':
+                $this->sales->cashSaleTransaction($document);
+                break;
+
             case 'IN':
                 $this->sales->clientInvoiceTransaction($document);
                 break;

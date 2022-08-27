@@ -54,7 +54,7 @@ class LoanTypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            LoanType::create($this->service->formData($request));
+            LoanType::create($this->service->formData($request, 'update'));
 
             DB::commit();
 
@@ -101,7 +101,7 @@ class LoanTypeController extends Controller
         DB::beginTransaction();
         try {
             LoanType::where('id', '=', $id)
-                ->update($this->service->formData($request));
+                ->update($this->service->formData($request, 'update'));
             DB::commit();
 
             return $this->success([

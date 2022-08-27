@@ -56,7 +56,8 @@ class PurchaseService
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
-            'status' => 'open'
+            'status' => 'open',
+            'created_by' => auth()->user()->id
         ]);
         foreach ($line_items as $line_item) {
             $this->processOnHandQty($line_item, $document);
@@ -69,7 +70,8 @@ class PurchaseService
                     'amount' => $line_item->amount,
                     'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
-                    'transaction_id' => $journalEntry->id
+                    'transaction_id' => $journalEntry->id,
+                    'created_by' => auth()->user()->id
                 ])
             );
         }

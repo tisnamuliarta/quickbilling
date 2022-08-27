@@ -16,7 +16,7 @@ class ContactService
      */
     public function index($request, $type)
     {
-        $sales = ['SQ', 'SO', 'SD', 'IN', 'RC', 'CN', 'SR'];
+        $sales = ['SQ', 'SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'CS'];
         $contact_type = (Str::contains($type, $sales)) ? 'Customer' : 'Vendor';
         if ($type == 'index') {
             $contact_type = '';

@@ -22,10 +22,16 @@ class EmployeeCommissionController extends Controller
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'id';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = (isset($request->search)) ? $request->search : '';
+        $date_from = (isset($request->dateFrom)) ? $request->dateFrom : null;
+        $date_to = (isset($request->dateTo)) ? $request->dateTo : null;
         $offset = ($pages - 1) * $row_data;
 
-        $query = EmployeeCommission::with(['transaction', 'lineItem', 'employee'])
+        $query = EmployeeCommission::with(['transaction', 'lineItem', 'employee', 'document'])
             ->orderBy($sorts, $order);
+
+        if ($date_from && $date_to) {
+            $query = $query->whereBetween('transaction_date', [$date_from, $date_to]);
+        }
 
         $result["total"] = $query->count();
 

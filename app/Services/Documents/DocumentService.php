@@ -40,6 +40,8 @@ class DocumentService
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = (isset($request->search)) ? $request->search : '';
+        $date_from = (isset($request->dateFrom)) ? $request->dateFrom : null;
+        $date_to = (isset($request->dateTo)) ? $request->dateTo : null;
 
         $result = [];
         $query = Document::select(
@@ -54,8 +56,13 @@ class DocumentService
             ->with(['lineItems', 'taxDetails', 'contact'])
             ->where('transaction_type', 'LIKE', '%' . $type . '%')
             ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
-            ->orderBy($sorts, $order)
-            ->paginate($row_data);
+            ->orderBy($sorts, $order);
+
+        if ($date_from && $date_to) {
+            $query = $query->whereBetween('transaction_date', [$date_from, $date_to]);
+        }
+
+        $query = $query->paginate($row_data);
 
         $collect = collect($query);
         $result['form'] = $this->getForm($type);

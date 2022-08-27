@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Documents;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreDocumentRequest extends FormRequest
 {
@@ -36,6 +37,8 @@ class StoreDocumentRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'transaction_no.required' => __('validation')['required'],
             'contact_id.required' => __('document')['contactRequired'],

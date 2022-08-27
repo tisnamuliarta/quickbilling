@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Payroll;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payrolls\StoreDeductionRequest;
+use App\Http\Requests\Payrolls\StoreLoanRequest;
 use App\Models\Financial\Category;
 use App\Models\Payroll\Loan;
 use App\Models\Payroll\Employee;
@@ -43,6 +44,10 @@ class LoanController extends Controller
     {
         $result = [];
         $result['form'] = $this->form('loans');
+        $result['form']['transaction_date'] = date('Y-m-d');
+        $result['form']['interest_rate'] = 0;
+        $result['form']['outstanding_loan'] = 0;
+        $result['form']['admin_charge'] = 0;
         $result['employee'] = Employee::all();
 
         $collection = collect($this->service->index($request));
@@ -54,12 +59,12 @@ class LoanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreDeductionRequest $request
+     * @param StoreLoanRequest $request
      * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreDeductionRequest $request): JsonResponse
+    public function store(StoreLoanRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -100,13 +105,13 @@ class LoanController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreDeductionRequest $request
+     * @param StoreLoanRequest $request
      * @param int $id
      * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(StoreDeductionRequest $request, $id): JsonResponse
+    public function update(StoreLoanRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {

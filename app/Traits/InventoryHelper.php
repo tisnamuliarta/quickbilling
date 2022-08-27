@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemWarehouse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -38,6 +39,7 @@ trait InventoryHelper
             switch ($document->transaction_type) {
                 // goods receipt PO and a/p invoice
                 case 'GR':
+                case 'CP':
                     $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
                     if ($document->base_type == 'PO') {
                         $item_warehouse->ordered_qty = $item_warehouse->ordered_qty - $quantity;
@@ -67,6 +69,7 @@ trait InventoryHelper
                     break;
 
                 case 'SD':
+                case 'CS':
                     $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
                     if ($document->base_type == 'SO') {
                         $item_warehouse->committed_qty = $item_warehouse->committed_qty - $quantity;
@@ -145,7 +148,7 @@ trait InventoryHelper
         // calculate with average cost
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI', 'PI'];
+        $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI', 'PI', 'CS'];
         if (!Str::contains($document->transaction_type, $sales)) {
             if ($item_warehouse->available_qty) {
                 $item_cost = round(($temp_cost + $prev_cost) / $item_warehouse->available_qty, 2);
@@ -165,6 +168,7 @@ trait InventoryHelper
      */
     protected function validateRequest($request)
     {
+        App::setLocale(auth()->user()->locale);
         $request->validate([
             'transaction_no' => 'required',
             'narration' => 'required',

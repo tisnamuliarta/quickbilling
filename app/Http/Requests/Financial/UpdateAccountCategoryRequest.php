@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Financial;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class UpdateAccountCategoryRequest extends FormRequest
 {
@@ -36,6 +37,8 @@ class UpdateAccountCategoryRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'category_type.required' => __('validation')['required'],
             'name.required' => __('validation')['required'],

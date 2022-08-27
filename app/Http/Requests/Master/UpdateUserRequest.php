@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -23,6 +24,8 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'entity_id' => 'required',
             'username' => 'required',

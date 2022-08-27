@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class UpdatePriceListRequest extends FormRequest
 {
@@ -35,6 +36,8 @@ class UpdatePriceListRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'price_list_name.required' => __('validation')['required'],
         ];

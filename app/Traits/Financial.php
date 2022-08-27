@@ -87,6 +87,8 @@ trait Financial
         $item = Item::where('id', $item_id)->first();
         if ($type == 'purchase') {
             $item_type = $item->expense_account_id;
+        } elseif ($type == 'inventory') {
+            $item_type = $item->inventory_account;
         } else {
             $item_type = $item->revenue_account_id;
         }
