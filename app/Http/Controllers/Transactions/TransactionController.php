@@ -340,6 +340,8 @@ class TransactionController extends Controller
                 'folio_account' => $ledger->folio_account,
                 'post_account' => $ledger->postAccount,
                 'line_item' => $ledger->line_item,
+                'reference' => $ledger->transaction->reference,
+                'transaction_type' => $ledger->transaction->type,
                 'id' => $ledger->id,
                 'rate' => $ledger->rate,
                 'posting_date' => $ledger->posting_date,

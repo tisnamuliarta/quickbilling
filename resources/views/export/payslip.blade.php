@@ -58,7 +58,7 @@
                     <td>:</td>
                     <td class="text-right">
                       {{ auth()->user()->entity->currency->currency_symbol  }}  {{ number_format($row, 2) }}
-                    </td>9
+                    </td>
                   </tr>
                 @endforeach
 

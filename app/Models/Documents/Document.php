@@ -34,6 +34,32 @@ class Document extends Model
     use LogsActivity;
 
     protected $guarded = [];
+
+    /**
+     * Transaction Types
+     *
+     * @var string
+     */
+    const SO = 'SO';
+
+    const SD = 'SD';
+
+    const SQ = 'SQ';
+
+    const SR = 'SR';
+
+    const PO = 'PO';
+
+    const PQ = 'PQ';
+
+    const GR = 'GR';
+
+    const GN = 'GN';
+
+    const GE = 'GE';
+
+    const GI = 'GI';
+
     /**
      * The attributes that should be cast.
      *
@@ -82,6 +108,28 @@ class Document extends Model
     public function getIssueAtAttribute($value): string
     {
         return Carbon::parse($value)->format('Y-m-d');
+    }
+
+    /**
+     * Instance Type Translator.
+     *
+     * @return string
+     */
+    public function getTypeAttribute(): string
+    {
+        return Document::getType($this->transaction_type);
+    }
+
+    /**
+     * Get Human Readable Transaction type
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function getType($type): string
+    {
+        return config('ifrs')['documents'][$type];
     }
 
     /**

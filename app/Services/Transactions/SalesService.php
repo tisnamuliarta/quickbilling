@@ -56,13 +56,24 @@ class SalesService
     {
         $line_items = $document->lineItems;
         $accountMapping = new AccountMappingService();
+        $main_account_amount = 0;
+        foreach ($line_items as $line_item) {
+            $quantity = $line_item->quantity;
+            $item = $line_item->item_id;
+            $warehouse = $line_item->warehouse_id;
+            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+
+            $this->processOnHandQty($line_item, $document);
+
+            $main_account_amount = $main_account_amount + ($item_warehouse->item_cost * $quantity);
+        }
 
         $journalEntry = JournalEntry::create([
             'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
             'date' => Carbon::now(),
             'narration' => $narration . $document->transaction_no,
             'credited' => false, // main account should be debited
-            // 'main_account_amount' => $document->main_account_amount,
+            'main_account_amount' => $main_account_amount,
             'reference' => $document->transaction_no,
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
@@ -72,13 +83,14 @@ class SalesService
         ]);
 
         foreach ($line_items as $line_item) {
-            $this->processOnHandQty($line_item, $document);
-
             $item = $line_item->item_id;
             $warehouse = $line_item->warehouse_id;
+            $quantity = $line_item->quantity;
 
-            // get item warehouse
+            // get item warehouse 2
             $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+
+            // throw new \Exception('cost :' . $item_warehouse->item_cost . ' qty :' . $quantity, 1);
 
             $journalEntry->addLineItem(
                 LineItem::create([
@@ -87,7 +99,7 @@ class SalesService
                     'description' => $line_item->item->name,
                     'narration' => $line_item->item->name,
                     'amount' => $item_warehouse->item_cost,
-                    'quantity' => $item_warehouse->on_hand_qty,
+                    'quantity' => $quantity,
                     'sub_total' => $line_item->sub_total,
                     'created_by' => auth()->user()->id,
                     'transaction_id' => $journalEntry->id
@@ -163,7 +175,8 @@ class SalesService
         $line_items = $document->lineItems;
         $accountMapping = new AccountMappingService();
         $journalEntry = JournalEntry::create([
-            'account_id' => $accountMapping->getAccountByName('Sales Returns Account')->account_id,
+            'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
+            //'account_id' => $accountMapping->getAccountByName('Sales Returns Account')->account_id,
             'date' => Carbon::now(),
             'narration' => $narration . $document->transaction_no,
             'credited' => false, // main account should be debited

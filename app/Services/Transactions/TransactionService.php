@@ -570,13 +570,19 @@ class TransactionService
         $wages_expense = $accountMapping->getAccountByName('Wages Expense Account')->account_id;
         $account_id = $accountMapping->getAccountByName('Payroll Clearing')->account_id;
 
+        $main_account_amount = 0;
+        foreach ($document->lineItems as $lineItem) {
+            $commission_rate = $lineItem->item->commision_rate;
+            $main_account_amount = $main_account_amount + ($lineItem->quantity * $commission_rate);
+        }
+
         $journalEntry = JournalEntry::create([
             'account_id' => $wages_expense,
             'date' => Carbon::now(),
             'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
             'created_by' => auth()->user()->id,
             'credited' => false, // main account should be debited
-            //'main_account_amount' => $commission_rate * $lineItem->quantity,
+            'main_account_amount' => $main_account_amount,
             'status' => 'open',
             'base_id' => $document->id,
             'reference' => $document->transaction_no,
@@ -589,7 +595,7 @@ class TransactionService
 
         foreach ($document->lineItems as $lineItem) {
             $commission_rate = $lineItem->item->commision_rate;
-            $amount = $commission_rate / count($sales_persons) * $lineItem->quantity;
+            //$amount = $commission_rate / count($sales_persons) * $lineItem->quantity;
 
             foreach ($sales_persons as $sales_person) {
                 $user_id = (is_array($sales_person)) ? $sales_person['user_id'] : $sales_person;

@@ -8,6 +8,7 @@
  * @license MIT
  */
 
+use App\Models\Documents\Document;
 use IFRS\Models\Account;
 use IFRS\Models\Balance;
 use IFRS\Models\ReportingPeriod;
@@ -234,6 +235,22 @@ return [
         // Internal Transactions
         Transaction::CE => 'Contra Entry',
         Transaction::JN => 'Journal Entry',
+    ],
+
+    'documents' => [
+        // sales
+        Document::SQ => 'Sales Quotations',
+        Document::SO => 'Sales Order',
+        Document::SD => 'Sales Delivery',
+        Document::SR => 'Sales Return',
+
+        // purchase
+        Document::PQ => 'Purchase Quotations',
+        Document::PO => 'Purchase Order',
+        Document::GR => 'Goods Receipt PO',
+        Document::GN => 'Goods Return',
+        Document::GE => 'Goods Receipt',
+        Document::GI => 'Goods Issue',
     ],
 
     'statements' => [

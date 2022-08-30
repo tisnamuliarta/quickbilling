@@ -2,8 +2,10 @@
 
 namespace App\Traits;
 
+use App\Models\Inventory\InventoryTransaction;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemWarehouse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -32,7 +34,7 @@ trait InventoryHelper
                 throw new \Exception('Item warehouse not found', 1);
             }
 
-            $prev_cost = round(floatval($item_warehouse->item_cost), 2);
+            $prev_cost = round(floatval($item_warehouse->item_cost) * $item_warehouse->available_qty, 2);
 
             $temp_cost = round($quantity * $price, 2);
             // calculate qty
@@ -110,7 +112,7 @@ trait InventoryHelper
 
             $item_warehouse->save();
             // calculate cost
-            $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $price);
+            $this->calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $price, $line_item);
         }
     }
 
@@ -142,8 +144,9 @@ trait InventoryHelper
      * @param $prev_cost
      * @param $document
      * @param $amount
+     * @param $line_item
      */
-    public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $amount)
+    public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $amount, $line_item)
     {
         // calculate with average cost
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
@@ -159,6 +162,21 @@ trait InventoryHelper
             $item_warehouse->item_cost = $item_cost;
             $item_warehouse->save();
         }
+
+        $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+        InventoryTransaction::create([
+            'item_id' => $item,
+            'transaction_id' => $document->id,
+            'account_id' => (isset($line_item->account_id)) ? $line_item->account_id : 0,
+            'line_item_id' => $line_item->id,
+            'transaction_type' => $document->transaction_type,
+            'transaction_date' => $document->transaction_date,
+            'quantity' => $line_item->quantity,
+            'amount' => $line_item->amount,
+            'main_account_amount' => $item_warehouse->item_cost,
+            'available_qty'=> $item_warehouse->available_qty,
+            'created_at' => Carbon::now()
+        ]);
     }
 
     /**
