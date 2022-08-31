@@ -7,6 +7,7 @@ use App\Models\Documents\DocumentItem;
 use App\Models\Documents\DocumentItemTax;
 use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\Item;
 use App\Models\Inventory\Warehouse;
 use App\Models\Sales\SalesPerson;
 use App\Services\Financial\AccountMappingService;
@@ -107,6 +108,9 @@ class DocumentService
         $form['temp_id'] = mt_rand(100000, 999999999999);
         $form['warehouse_id'] = $this->defaultWarehouse()->id;
         $form['warehouse_name'] = $this->defaultWarehouse()->code;
+        $form['narration'] = (isset($form['narration'])) ?
+            $form['narration'] :
+            config('ifrs')['documents'][$type] . ' ' . $this->generateDocNum(Carbon::now(), $type);
 
         return $form;
     }
@@ -198,6 +202,7 @@ class DocumentService
         Arr::forget($data, 'warehouse_name');
         Arr::forget($data, 'tags');
         Arr::forget($data, 'footer');
+        Arr::forget($data, 'type');
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
@@ -233,6 +238,12 @@ class DocumentService
             // process tax details
             if ($item_detail->vat_id != 0) {
                 $this->processItemTax($document, $item_detail);
+            }
+            if (Str::contains($document->transaction_type, ['GE'])) {
+                Item::where('id', $item['item_id'])
+                    ->update([
+                        'purchase_price' => $item['amount']
+                    ]);
             }
         }
 
@@ -335,7 +346,8 @@ class DocumentService
         $journalEntry = JournalEntry::create([
             'account_id' => $account_id,
             'date' => Carbon::now(),
-            'narration' => $document->narration,
+            'narration' => (isset($document->narration)) ?
+                $document->narration : $document->type . ' ' .$document->transaction_no,
             'reference_no' => $document->transaction_no,
             'reference' => $document->transaction_no,
             'credited' => $credited, // main account should be debited

@@ -4,8 +4,12 @@ namespace App\Services\Payroll;
 
 use App\Models\Payroll\Employee;
 use App\Models\Payroll\EmployeeCommission;
+use App\Models\Payroll\Loan;
+use App\Models\Payroll\LoanInstallment;
 use App\Models\Payroll\Payroll;
+use App\Models\Payroll\PayrollDeduction;
 use App\Models\Payroll\PayrollDetail;
+use App\Models\Payroll\PayrollTotal;
 use App\Models\Payroll\PayType;
 use App\Services\Financial\AccountMappingService;
 use App\Traits\ApiResponse;
@@ -53,8 +57,58 @@ class PayrollService
     public function processItems($document, $items)
     {
         $line_num = 0;
+        $total_deduction_amount = 0;
         foreach ($items as $item) {
             [$keys, $values] = Arr::divide($item);
+            $total_deduction = 0;
+            if ($document->status == 'closed') {
+                $loan = Loan::where('employee_id', $item['employee_id'])->first();
+                if ($loan) {
+                    $loan_installment = LoanInstallment::where('loan_id', $loan->id)
+                        ->where('employee_id', $item['employee_id'])
+                        ->first();
+
+                    if (!$loan_installment) {
+                        $installment = $loan->amount / $loan->installment_amount;
+                        $data_loan = LoanInstallment::create([
+                            'employee_id' => $item['employee_id'],
+                            'loan_id' => $loan->id,
+                            'installment' => $installment,
+                            'reminder_amount' => $loan->amount - $installment,
+                            'base_amount' => $loan->amount,
+                            'interest' => $loan->interest_rate,
+                            'transaction_date' => now(),
+                        ]);
+                    } else {
+                        $reminder_amount = $loan_installment->installment - $loan_installment->reminder_amount;
+                        LoanInstallment::updateOrCreate([
+                            'employee_id' => $item['employee_id'],
+                            'loan_id' => $loan->id,
+                            'installment' => $loan_installment->installment,
+                            'reminder_amount' => $reminder_amount,
+                            'base_amount' => $loan->amount,
+                            'interest' => $loan->interest_rate,
+                        ], [
+                            'transaction_date' => now(),
+                        ]);
+                        $data_loan = LoanInstallment::find($loan_installment->id);
+                    }
+
+                    PayrollDeduction::create([
+                        'payroll_id' => $document->id,
+                        'employee_id' => $item['employee_id'],
+                        'deduction_id' => 0,
+                        'amount' => $data_loan->installment,
+                        'created_by' => auth()->user()->id
+                    ]);
+
+                    $total_deduction = $data_loan->installment;
+
+                    $total_deduction_amount += $total_deduction;
+                }
+            }
+
+            $total_allowance = 0;
             foreach ($keys as $value) {
                 if (!Str::contains($value, [
                     'payroll_id', 'employee_name', 'payment_method', 'salary', 'sub_total', 'employee_id'
@@ -79,10 +133,29 @@ class PayrollService
                         $details->line_num = $line_num;
                     }
                     $details->save();
+
+                    $total_allowance += $item[$value];
                 }
+
+                if (Str::contains($value, ['salary'])) {
+                    $total_allowance += $item['salary'];
+                }
+
+                PayrollTotal::updateOrCreate([
+                    'payroll_id' => $document->id,
+                    'employee_id' => $item['employee_id']
+                ], [
+                    'amount_allowance' => $total_allowance,
+                    'amount_deduction' => $total_deduction,
+                    'amount' => $total_allowance - $total_deduction,
+                ]);
             }
             $line_num++;
         }
+
+        $payroll = Payroll::find($document->id);
+        $payroll->main_account_amount = $payroll->main_account_amount - $total_deduction_amount;
+        $payroll->save();
     }
 
     /**
@@ -361,6 +434,21 @@ class PayrollService
                 $item_employee[$lineItem->line_num]['allowance'] = [
                     __('Salary') => $lineItem->salary,
                 ];
+
+                $loan = PayrollDeduction::where('payroll_id', $data->id)
+                    ->where('employee_id', $lineItem->employee->id)
+                    ->first();
+                if ($loan) {
+                    $item_employee[$lineItem->line_num]['deduction'] = [
+                        __('Loans') => $loan->amount,
+                    ];
+                    $item_employee[$lineItem->line_num][__('Total Pay')] -= $loan->amount;
+                } else {
+                    $item_employee[$lineItem->line_num]['deduction'] = [
+                        '-' => 0,
+                    ];
+                }
+
                 foreach ($data->lineItem as $lineItm) {
                     $pay_type = PayType::find($lineItm->pay_type_id);
                     $item_employee[$lineItm->line_num]['allowance'][$pay_type->name] = $lineItm->amount;
@@ -374,10 +462,11 @@ class PayrollService
                     if (Str::contains($value, ['allowance'])) {
                         foreach ($item[$value] as $data) {
                             $sub_total = $sub_total + $data;
+                            $item_employee[$index][__('Total Pay')] += $data;
                         }
                     }
                 }
-                $item_employee[$index][__('Total Pay')] = $sub_total;
+                //$item_employee[$index][__('Total Pay')] = $sub_total;
             }
 
             // $lineItems = $collect_pay->merge($item_employee)->all();
@@ -390,13 +479,15 @@ class PayrollService
     /**
      * @param $document
      * @param $pay_period
+     * @param $items
      *
      * @return void
      */
-    public function processPayroll($document, $pay_period)
+    public function processPayroll($document, $pay_period, $items)
     {
         $accountMapping = new AccountMappingService();
         $payroll_clearing = $accountMapping->getAccountByName('Payroll Clearing')->account_id;
+        $document = Payroll::find($document->id);
 
         if ($document->status == 'closed') {
             EmployeeCommission::whereBetween('transaction_date', $pay_period)

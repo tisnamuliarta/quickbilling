@@ -60,6 +60,12 @@ class Document extends Model
 
     const GI = 'GI';
 
+    const PE = 'PE';
+
+    const PI = 'PI';
+
+    const PR = 'PR';
+
     /**
      * The attributes that should be cast.
      *
@@ -76,6 +82,10 @@ class Document extends Model
         'main_account_amount' => 'double',
         'transaction_date' => 'datetime:Y-m-d',
         'due_date' => 'datetime:Y-m-d',
+    ];
+
+    protected $appends = [
+        'type',
     ];
 
     public static function boot()

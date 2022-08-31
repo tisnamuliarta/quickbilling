@@ -8,6 +8,7 @@ use App\Http\Requests\Payrolls\StoreLoanRequest;
 use App\Models\Financial\Category;
 use App\Models\Payroll\Loan;
 use App\Models\Payroll\Employee;
+use App\Models\Payroll\LoanInstallment;
 use App\Models\Payroll\PaySchedule;
 use App\Services\Financial\AccountService;
 use App\Services\Payroll\LoanService;
@@ -160,6 +161,20 @@ class LoanController extends Controller
         return $this->error('Row not found', 422, [
             'errors' => true,
         ]);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return JsonResponse
+     */
+    public function loanInstallment($id): JsonResponse
+    {
+        $loan = LoanInstallment::where('employee_id', $id)
+            ->with(['loan', 'employee'])
+            ->get();
+
+        return $this->success(['data' => $loan]);
     }
 
     /**

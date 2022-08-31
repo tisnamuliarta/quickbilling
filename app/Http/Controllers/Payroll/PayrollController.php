@@ -126,7 +126,7 @@ class PayrollController extends Controller
 
             $this->service->processItems($document, $items);
 
-            $this->service->processPayroll($document, $pay_period);
+            $this->service->processPayroll($document, $pay_period, $items);
 
             DB::commit();
 
@@ -173,17 +173,28 @@ class PayrollController extends Controller
         return $this->success($result);
     }
 
+    public function summary($id)
+    {
+        $data = Payroll::where('id', '=', $id)
+            ->with(['totals.employee.payMethod'])
+            ->first();
+
+        $result['data'] = $data;
+
+        return $this->success($result);
+    }
+
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdatePayrollRequest $request
+     * @param StorePayrollRequest $request
      * @param int $id
      *
      * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(UpdatePayrollRequest $request, $id): JsonResponse
+    public function update(StorePayrollRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -195,7 +206,9 @@ class PayrollController extends Controller
 
             $document = Payroll::find($id);
 
-            $this->service->processPayroll($document, $pay_period);
+            $this->service->processItems($document, $items);
+
+            $this->service->processPayroll($document, $pay_period, $items);
 
             DB::commit();
 
@@ -251,7 +264,11 @@ class PayrollController extends Controller
         App::setLocale(auth()->user()->locale);
         Carbon::setLocale(auth()->user()->locale);
         $document_date = Carbon::parse($documents->transaction_date)->isoFormat('D MMMM Y');
-        $type = __('Salary Receipt Slip');
+        $from_date = Carbon::parse($documents->from_date)->isoFormat('D MMMM Y');
+        $to_date = Carbon::parse($documents->to_date)->isoFormat('D MMMM Y');
+
+        $period = __('Period') . ' '. $from_date . ' - '. $to_date;
+        $type = strtoupper(__('Salary Receipt Slip'));
 
         return Pdf::loadView('export.payslip', compact(
             'documents',
@@ -259,7 +276,8 @@ class PayrollController extends Controller
             'amount',
             'document_date',
             'lineItems',
-            'type'
+            'type',
+            'period'
         ));
     }
 

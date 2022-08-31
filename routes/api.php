@@ -87,6 +87,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('list-commission', [EmployeeCommissionController::class, 'index']);
         Route::get('employee-commission', [PayrollController::class, 'getEmployeeCommission']);
         Route::get('print/{id}', [PayrollController::class, 'printSlip']);
+        Route::get('summary/{id}', [PayrollController::class, 'summary']);
+        Route::get('loan-installment/{id}', [LoanController::class, 'loanInstallment']);
 
         Route::apiResources([
             'employees' => EmployeeController::class,

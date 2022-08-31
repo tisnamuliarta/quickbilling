@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Payrolls;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StorePayrollRequest extends FormRequest
 {
@@ -25,6 +26,7 @@ class StorePayrollRequest extends FormRequest
     {
         return [
             'transaction_no' => 'required',
+            'narration' => 'required',
             'account_id' => 'required',
         ];
     }
@@ -36,8 +38,11 @@ class StorePayrollRequest extends FormRequest
      */
     public function messages()
     {
+        App::setLocale(auth()->user()->locale);
+
         return [
             'transaction_no.required' => __('validation')['required'],
+            'narration.required' => __('validation')['required'],
             'account_id.required' => __('validation')['required'],
         ];
     }

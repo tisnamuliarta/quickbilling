@@ -10,4 +10,14 @@ class LoanInstallment extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function loan()
+    {
+        return $this->belongsTo(Loan::class);
+    }
 }

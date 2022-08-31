@@ -36,6 +36,16 @@ class Payroll extends Model
         // Chain fluent methods for configuration options
     }
 
+    public function deduction()
+    {
+        return $this->hasMany(PayrollDeduction::class);
+    }
+
+    public function totals()
+    {
+        return $this->hasMany(PayrollTotal::class);
+    }
+
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);

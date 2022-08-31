@@ -251,6 +251,9 @@ return [
         Document::GN => 'Goods Return',
         Document::GE => 'Goods Receipt',
         Document::GI => 'Goods Issue',
+        Document::PE => 'Production Order',
+        Document::PI => 'Production Issue',
+        Document::PR => 'Production Receipt',
     ],
 
     'statements' => [

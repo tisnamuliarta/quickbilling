@@ -66,6 +66,7 @@ class ProductionService
         Arr::forget($data, 'account');
         Arr::forget($data, 'item');
         Arr::forget($data, 'sub_total');
+        Arr::forget($data, 'type');
 
         return $data;
     }
@@ -164,6 +165,10 @@ class ProductionService
         $form['id'] = 0;
         $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
         $form['warehouse_id'] = $this->defaultWarehouse()->id;
+
+        $form['narration'] = (isset($form['narration'])) ?
+            $form['narration'] :
+            config('ifrs')['documents'][$type] . ' ' . $this->generateDocNum(Carbon::now(), $type);
 
         return $form;
     }

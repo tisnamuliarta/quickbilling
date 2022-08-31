@@ -1,4 +1,5 @@
 {
+  "Period": "Periode",
   "Since Yesterday": "Dari Kemarin",
   "Since 2 Days Ago": "Sejak 2 hari yang lalu",
   "This Week": "Minggu ini",
@@ -57,7 +58,7 @@
   "Bill Of Materials": "Tagihan Bahan",
   "Production Order": "Pesanan produksi",
   "Receipt From Production": "Peneriamaan Dari Produksi",
-  "Issue For Production": "Dikeluarkan Untuk Produksi",
+  "Issue For Productions": "Dikeluarkan Untuk Produksi",
   "Goods Receipt": "Penerimaan Barang",
   "Goods Issue": "Pengeluaran Barang",
   "Amount In Word": "Terbilang",

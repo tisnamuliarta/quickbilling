@@ -189,11 +189,9 @@ trait InventoryHelper
         App::setLocale(auth()->user()->locale);
         $request->validate([
             'transaction_no' => 'required',
-            'narration' => 'required',
             'contact_id' => Rule::requiredIf(!Str::contains($request->transaction_type, ['GI', 'GE'])),
         ], [
             'transaction_no.required' => __('validation')['required'],
-            'narration.required' => __('validation')['required'],
             'contact_id.required' => __('document')['contactRequired'],
         ]);
     }

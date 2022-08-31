@@ -137,6 +137,9 @@ class TransactionService
         $form['transaction_no'] = $this->generateDocNum(Carbon::now(), $type);
         $form['warehouse_id'] = $this->defaultWarehouse()->id;
         $form['warehouse_name'] = $this->defaultWarehouse()->code;
+        $form['narration'] = (isset($form['narration'])) ?
+            $form['narration'] :
+            config('ifrs')['transactions'][$type] . ' ' . $this->generateDocNum(Carbon::now(), $type);
 
         if (Str::contains($type, ['CP', 'RC', 'CN', 'BL', 'CP'])) {
             $form['credited'] = true;
@@ -579,7 +582,7 @@ class TransactionService
         $journalEntry = JournalEntry::create([
             'account_id' => $wages_expense,
             'date' => Carbon::now(),
-            'narration' => "Komisi penjualan ke " . $document->contact->name . ' ' . $document->transaction_no,
+            'narration' => "Sales commission " . $document->contact->name . ' ' . $document->transaction_no,
             'created_by' => auth()->user()->id,
             'credited' => false, // main account should be debited
             'main_account_amount' => $main_account_amount,

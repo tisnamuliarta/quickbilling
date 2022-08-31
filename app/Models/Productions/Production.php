@@ -2,6 +2,7 @@
 
 namespace App\Models\Productions;
 
+use App\Models\Documents\Document;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\Warehouse;
 use IFRS\Models\Account;
@@ -20,7 +21,8 @@ class Production extends Model
     protected $guarded = [];
     protected $appends = [
         'item_name',
-        'commission_rate'
+        'commission_rate',
+        'type',
     ];
     /**
      * The attributes that should be cast.
@@ -30,6 +32,28 @@ class Production extends Model
     protected $casts = [
         'main_account_amount' => 'double',
     ];
+
+    /**
+     * Instance Type Translator.
+     *
+     * @return string
+     */
+    public function getTypeAttribute(): string
+    {
+        return Document::getType($this->transaction_type);
+    }
+
+    /**
+     * Get Human Readable Transaction type
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function getType($type): string
+    {
+        return config('ifrs')['documents'][$type];
+    }
 
     /**
      * @return LogOptions
