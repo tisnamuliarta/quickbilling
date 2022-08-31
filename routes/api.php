@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::group(['prefix' => 'document'], function () {
         Route::get('audit/{id}', [DocumentController::class, 'getAudit']);
-        Route::get('copy/{id}', [CopyDocumentController::class, 'copyDocument']);
+        Route::get('copy', [CopyDocumentController::class, 'copyDocument']);
         Route::get('print', [DocumentExportController::class, 'print']);
         Route::post('email', [DocumentExportController::class, 'email']);
     });

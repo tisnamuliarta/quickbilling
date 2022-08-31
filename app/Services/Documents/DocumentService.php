@@ -123,7 +123,7 @@ class DocumentService
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    protected function generateDocNum($sysDate, $alias): string
+    public function generateDocNum($sysDate, $alias): string
     {
         $alias = Str::limit($alias, 2);
 

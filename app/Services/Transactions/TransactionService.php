@@ -178,7 +178,7 @@ class TransactionService
      *
      * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
-    protected function generateDocNum($sysDate, $alias): string
+    public function generateDocNum($sysDate, $alias): string
     {
         $alias = Str::limit($alias, 2);
         $entity = Auth::user()->entity;
@@ -367,7 +367,9 @@ class TransactionService
             $document->post();
 
             if (Str::contains($document->transaction_type, ['IN', 'CS'])) {
-                $this->storeEmployeeCommission($sales_persons, $document);
+                if (count($sales_persons) > 0) {
+                    $this->storeEmployeeCommission($sales_persons, $document);
+                }
             }
         }
     }
@@ -441,14 +443,17 @@ class TransactionService
      */
     public function detailsForm($document, $item, $type, $bank_account_id): array
     {
+        $vat_id = 0;
         if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
             $vat = Vat::where('code', 'VAT0')->first();
-            $vat_id = $vat->id;
+            if ($vat) {
+                $vat_id = $vat->id;
+            }
         } else {
-            if (Arr::exists($item, 'tax_name')) {
-                $vat_id = $this->getTaxIdByName($item['tax_name']);
-            } else {
-                $vat_id = 0;
+            if (array_key_exists('tax_name', $item)) {
+                if ($item['tax_name']) {
+                    $vat_id = $this->getTaxIdByName($item['tax_name']);
+                }
             }
         }
         $price = (array_key_exists('price', $item)) ? floatval($item['price']) : 1;

@@ -205,7 +205,7 @@ class TransactionController extends Controller
 
             return $this->success([
                 'data' => $data,
-                'form' => $this->service->getForm(($data) ? $data->type : $type),
+                'form' => $this->service->getForm(($data) ? $data->transaction_type : $type),
                 'count' => ($data) ? 1 : 0,
                 'action' => ($id != 0) ? $this->service->mappingAction($type, $id) : [],
                 'audits' => ($id != 0) ? $data->activities : [],

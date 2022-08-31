@@ -33,10 +33,10 @@
 </div>
 
 <div class="text-center" style="margin-top: -30px">
-  <span style="font-size: 20px; font-weight: bold;">{{ $type }}</span>
+  <span style="font-size: 20px; font-weight: bold; text-decoration: underline;">{{ $type }}</span>
 </div>
 
-<table class=" table-borderless table-sm" style="margin-bottom: 20px; width: 50%; margin-top: 50px">
+<table class=" table-borderless table-sm" style="margin-bottom: 20px; width: 50%; margin-top: 30px">
   <tr>
     <td>{{ __('No Contract') }}</td>
     <td>:</td>
@@ -54,7 +54,7 @@
   <tr>
     <td>{{ __('Bill To') }}</td>
     <td>:</td>
-    <td style="font-weight: bold">{{ strtoupper($documents->contact_name) }}</td>
+    <td style="font-weight: bold">{{ strtoupper($documents->contact->name) }}</td>
   </tr>
 </table>
 
@@ -81,8 +81,12 @@
       <td></td>
       <td>{{ $row->unit }}</td>
       <td class="text-right">{{ number_format($row->quantity, 0) }}</td>
-      <td class="text-right">{{ number_format($row->amount, 2) }}</td>
-      <td class="text-right">{{ number_format($row->sub_total, 2)  }}</td>
+      <td
+        class="text-right">{{ auth()->user()->entity->currency->currency_symbol  }} {{ number_format($row->amount, 2) }}
+      </td>
+      <td
+        class="text-right">{{ auth()->user()->entity->currency->currency_symbol  }} {{ number_format($row->sub_total, 2)  }}
+      </td>
     </tr>
   @endforeach
   </tbody>
@@ -99,7 +103,9 @@
       </table>
     </td>
     <td class="text-right" colspan="3">{{ strtoupper('Sub Total') }}</td>
-    <td class="text-right">{{ number_format($documents->sub_total, 2) }}</td>
+    <td
+      class="text-right">{{ auth()->user()->entity->currency->currency_symbol  }} {{ number_format($documents->sub_total, 2) }}
+    </td>
   </tr>
 
   @if($documents->discount_per_line > 0)
@@ -124,7 +130,9 @@
   @endforeach
   <tr class="table-active">
     <td class="text-right" colspan="3">{{ __('TOTAL') }}</td>
-    <td class="text-right" style="font-size: 1rem"><b>{{ number_format($documents->main_account_amount, 2) }}</b></td>
+    <td class="text-right" style="font-size: .8rem">
+      <b>{{ auth()->user()->entity->currency->currency_symbol  }} {{ number_format($documents->main_account_amount, 2) }}</b>
+    </td>
   </tr>
   </tfoot>
 </table>
