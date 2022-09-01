@@ -110,6 +110,8 @@ class ReportController extends Controller
                 ]);
 
             case strtoupper('Inventory Valuation Summary'):
+                $start_date = $start_date . ' 00:00:01';
+                $end_date = $end_date . ' 23:59:00';
                 $inventoryValuation = ItemWarehouse::whereBetween('updated_at', [$start_date, $end_date])
                     ->orderBy('item_id')
                     ->get();

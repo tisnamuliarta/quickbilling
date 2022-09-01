@@ -443,12 +443,10 @@ class TransactionService
      */
     public function detailsForm($document, $item, $type, $bank_account_id): array
     {
-        $vat_id = 0;
+        $vat_id = null;
         if (Str::contains($document->transaction_type, ['RC', 'PY'])) {
             $vat = Vat::where('code', 'VAT0')->first();
-            if ($vat) {
-                $vat_id = $vat->id;
-            }
+            $vat_id = $vat?->id;
         } else {
             if (array_key_exists('tax_name', $item)) {
                 if ($item['tax_name']) {

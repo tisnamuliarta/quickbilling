@@ -108,6 +108,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['prefix' => 'transaction'], function () {
         Route::get('ledger/{id}', [TransactionController::class, 'getLedger']);
         Route::get('invoice', [TransactionController::class, 'getInvoice']);
+        Route::get('group', [TransactionController::class, 'groupTransaction']);
     });
 
     Route::apiResources([

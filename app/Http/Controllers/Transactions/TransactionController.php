@@ -58,6 +58,41 @@ class TransactionController extends Controller
         }
     }
 
+    public function groupTransaction(Request $request): JsonResponse
+    {
+        try {
+            $type = (isset($request->type)) ? $request->type : '';
+            $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+            $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
+            $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
+            $search = (isset($request->search)) ? $request->search : '';
+            $date_from = (isset($request->dateFrom)) ? $request->dateFrom : null;
+            $date_to = (isset($request->dateTo)) ? $request->dateTo : null;
+
+            $result = [];
+            $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
+                ->whereIn('transaction_type', $type)
+                ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
+                ->orderBy($sorts, $order);
+
+            if ($date_from && $date_to) {
+                $query = $query->whereBetween('transaction_date', [$date_from, $date_to]);
+            }
+
+            $query = $query->paginate($row_data);
+
+            $result['form'] = $this->getForm($type);
+            $collect = collect($query);
+            $result = $collect->merge($result);
+
+            return $this->success($result->all());
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), 422, [
+                $exception->getTrace(),
+            ]);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -71,7 +106,8 @@ class TransactionController extends Controller
     {
         $this->validateRequest($request);
 
-        $type = (isset($request->type)) ? $request->type : $request->transaction_type;
+        //$type = (isset($request->type)) ? $request->type : $request->transaction_type;
+        $type = $request->transaction_type;
         $model = $this->service->mappingTable($type);
         $items = collect($request->line_items);
         $tax_details = collect($request->tax_details);

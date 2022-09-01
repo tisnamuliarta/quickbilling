@@ -54,7 +54,7 @@ class DocumentService
                 END as status
             ")
         )
-            ->with(['lineItems', 'taxDetails', 'contact'])
+            ->with(['lineItems', 'taxDetails', 'contact', 'warehouse'])
             ->where('transaction_type', 'LIKE', '%' . $type . '%')
             ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order);

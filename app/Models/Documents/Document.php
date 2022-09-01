@@ -4,6 +4,7 @@ namespace App\Models\Documents;
 
 use App\Models\Financial\Currency;
 use App\Models\Inventory\Contact;
+use App\Models\Inventory\Warehouse;
 use App\Models\Sales\SalesPerson;
 use Carbon\Carbon;
 use IFRS\Models\Entity;
@@ -148,6 +149,11 @@ class Document extends Model
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
     }
 
     /**
