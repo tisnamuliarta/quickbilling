@@ -510,6 +510,8 @@ class TransactionService
                     $item = Item::find($item['item_id']);
                     return $item->inventory_account;
                 }
+            } elseif (Str::contains($type, ['CP'])) {
+                return $this->getAccountIdItem($item['item_id'], 'purchase');
             } else {
                 return $this->getAccountIdItem($item['item_id'], 'inventory');
             }

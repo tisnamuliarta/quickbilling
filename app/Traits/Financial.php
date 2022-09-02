@@ -89,6 +89,8 @@ trait Financial
             $item_type = $item->expense_account_id;
         } elseif ($type == 'inventory') {
             $item_type = $item->inventory_account;
+        } elseif ($type == 'expense') {
+            $item_type = $item->expense_account_id;
         } else {
             $item_type = $item->revenue_account_id;
         }

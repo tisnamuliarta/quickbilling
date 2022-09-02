@@ -53,7 +53,8 @@ class ItemController extends Controller
         $result['form']['valuation_method'] = 'moving average';
         $result['form']['inventory_account'] = $accountMapping->getAccountByName('Inventory Account')->account_id;
         $result['form']['revenue_account_id'] = $accountMapping->getAccountByName('Revenue Account')->account_id;
-        $result['form']['expense_account_id'] = $accountMapping->getAccountByName('Cost of Goods Sold Account')
+        $result['form']['expense_account_id'] = $accountMapping->getAccountByName('Expense Account')->account_id;
+        $result['form']['cogs_account_id'] = $accountMapping->getAccountByName('Cost of Goods Sold Account')
             ->account_id;
         $result['url'] = url('/');
 

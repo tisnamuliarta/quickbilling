@@ -57,7 +57,11 @@ class SalesService
         $line_items = $document->lineItems;
         $accountMapping = new AccountMappingService();
         $main_account_amount = 0;
+        $count_non_inventory = 0;
         foreach ($line_items as $line_item) {
+            if ($line_item->item->group_name != 'Inventory') {
+                $count_non_inventory++;
+            }
             $quantity = $line_item->quantity;
             $item = $line_item->item_id;
             $warehouse = $line_item->warehouse_id;
@@ -68,46 +72,48 @@ class SalesService
             $main_account_amount = $main_account_amount + ($item_warehouse->item_cost * $quantity);
         }
 
-        $journalEntry = JournalEntry::create([
-            'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
-            'date' => Carbon::now(),
-            'narration' => $narration . $document->transaction_no,
-            'credited' => false, // main account should be debited
-            'main_account_amount' => $main_account_amount,
-            'reference' => $document->transaction_no,
-            'base_id' => $document->id,
-            'base_type' => $document->transaction_type,
-            'base_num' => $document->transaction_no,
-            'created_by' => auth()->user()->id,
-            'status' => 'open',
-        ]);
+        if ($count_non_inventory == 0) {
+            $journalEntry = JournalEntry::create([
+                'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
+                'date' => Carbon::now(),
+                'narration' => $narration . $document->transaction_no,
+                'credited' => false, // main account should be debited
+                'main_account_amount' => $main_account_amount,
+                'reference' => $document->transaction_no,
+                'base_id' => $document->id,
+                'base_type' => $document->transaction_type,
+                'base_num' => $document->transaction_no,
+                'created_by' => auth()->user()->id,
+                'status' => 'open',
+            ]);
 
-        foreach ($line_items as $line_item) {
-            $item = $line_item->item_id;
-            $warehouse = $line_item->warehouse_id;
-            $quantity = $line_item->quantity;
+            foreach ($line_items as $line_item) {
+                $item = $line_item->item_id;
+                $warehouse = $line_item->warehouse_id;
+                $quantity = $line_item->quantity;
 
-            // get item warehouse 2
-            $item_warehouse = $this->getItemWarehouse($item, $warehouse);
+                // get item warehouse 2
+                $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
-            // throw new \Exception('cost :' . $item_warehouse->item_cost . ' qty :' . $quantity, 1);
+                // throw new \Exception('cost :' . $item_warehouse->item_cost . ' qty :' . $quantity, 1);
 
-            $journalEntry->addLineItem(
-                LineItem::create([
-                    // 'account_id' => $line_item->inventory_account,
-                    'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
-                    'description' => $line_item->item->name,
-                    'narration' => $line_item->item->name,
-                    'amount' => $item_warehouse->item_cost,
-                    'quantity' => $quantity,
-                    'sub_total' => $line_item->sub_total,
-                    'created_by' => auth()->user()->id,
-                    'transaction_id' => $journalEntry->id
-                ])
-            );
-        }
-        if ($document->status == 'open') {
-            $journalEntry->post();
+                $journalEntry->addLineItem(
+                    LineItem::create([
+                        // 'account_id' => $line_item->inventory_account,
+                        'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
+                        'description' => $line_item->item->name,
+                        'narration' => $line_item->item->name,
+                        'amount' => $item_warehouse->item_cost,
+                        'quantity' => $quantity,
+                        'sub_total' => $line_item->sub_total,
+                        'created_by' => auth()->user()->id,
+                        'transaction_id' => $journalEntry->id
+                    ])
+                );
+            }
+            if ($document->status == 'open') {
+                $journalEntry->post();
+            }
         }
     }
 
@@ -173,40 +179,49 @@ class SalesService
     protected function returnInventoryJournal($document, $narration)
     {
         $line_items = $document->lineItems;
-        $accountMapping = new AccountMappingService();
-        $journalEntry = JournalEntry::create([
-            'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
-            //'account_id' => $accountMapping->getAccountByName('Sales Returns Account')->account_id,
-            'date' => Carbon::now(),
-            'narration' => $narration . $document->transaction_no,
-            'credited' => false, // main account should be debited
-            'main_account_amount' => $document->main_account_amount,
-            'reference' => $document->transaction_no,
-            'base_id' => $document->id,
-            'base_type' => $document->transaction_type,
-            'base_num' => $document->transaction_no,
-            'created_by' => auth()->user()->id,
-            'status' => 'open'
-        ]);
-
+        $count_non_inventory = 0;
         foreach ($line_items as $line_item) {
-            $this->processOnHandQty($line_item, $document);
-
-            $journalEntry->addLineItem(
-                LineItem::create([
-                    'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
-                    'description' => $line_item->item->name,
-                    'narration' => $line_item->item->name,
-                    'amount' => $line_item->amount,
-                    'quantity' => $line_item->quantity,
-                    'sub_total' => $line_item->sub_total,
-                    'transaction_id' => $journalEntry->id,
-                    'created_by' => auth()->user()->id,
-                ])
-            );
+            if ($line_item->item->group_name != 'Inventory') {
+                $count_non_inventory++;
+            }
         }
-        if ($document->status == 'open') {
-            $journalEntry->post();
+
+        if ($count_non_inventory == 0) {
+            $accountMapping = new AccountMappingService();
+            $journalEntry = JournalEntry::create([
+                'account_id' => $accountMapping->getAccountByName('Inventory Account')->account_id,
+                //'account_id' => $accountMapping->getAccountByName('Sales Returns Account')->account_id,
+                'date' => Carbon::now(),
+                'narration' => $narration . $document->transaction_no,
+                'credited' => false, // main account should be debited
+                'main_account_amount' => $document->main_account_amount,
+                'reference' => $document->transaction_no,
+                'base_id' => $document->id,
+                'base_type' => $document->transaction_type,
+                'base_num' => $document->transaction_no,
+                'created_by' => auth()->user()->id,
+                'status' => 'open'
+            ]);
+
+            foreach ($line_items as $line_item) {
+                $this->processOnHandQty($line_item, $document);
+
+                $journalEntry->addLineItem(
+                    LineItem::create([
+                        'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
+                        'description' => $line_item->item->name,
+                        'narration' => $line_item->item->name,
+                        'amount' => $line_item->amount,
+                        'quantity' => $line_item->quantity,
+                        'sub_total' => $line_item->sub_total,
+                        'transaction_id' => $journalEntry->id,
+                        'created_by' => auth()->user()->id,
+                    ])
+                );
+            }
+            if ($document->status == 'open') {
+                $journalEntry->post();
+            }
         }
     }
 

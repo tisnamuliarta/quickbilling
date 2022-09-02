@@ -174,7 +174,7 @@ trait InventoryHelper
             'quantity' => $line_item->quantity,
             'amount' => $line_item->amount,
             'main_account_amount' => $item_warehouse->item_cost,
-            'available_qty'=> $item_warehouse->available_qty,
+            'available_qty' => $item_warehouse->available_qty,
             'created_at' => Carbon::now()
         ]);
     }
@@ -210,6 +210,21 @@ trait InventoryHelper
             if (count($details) == 0) {
                 return ['error' => true, 'message' => 'Details cannot empty!'];
             }
+        }
+
+        $count_inventory = 0;
+        $count_non_inventory = 0;
+        foreach ($details as $detail) {
+            $item = Item::find($detail['item_id']);
+            if ($item->group_name == 'Inventory') {
+                $count_inventory++;
+            } else {
+                $count_non_inventory++;
+            }
+        }
+
+        if ($count_inventory > 0 && $count_non_inventory > 0) {
+            return ['error' => true, 'message' => 'Inventory and non-inventory cannot be in 1 document'];
         }
 
         foreach ($details as $index => $detail) {

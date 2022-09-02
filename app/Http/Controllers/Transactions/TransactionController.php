@@ -58,10 +58,15 @@ class TransactionController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function groupTransaction(Request $request): JsonResponse
     {
         try {
-            $type = (isset($request->type)) ? $request->type : '';
+            $type = (isset($request->typeTrans)) ? $request->typeTrans : '';
             $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
             $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
             $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
@@ -81,7 +86,7 @@ class TransactionController extends Controller
 
             $query = $query->paginate($row_data);
 
-            $result['form'] = $this->getForm($type);
+            $result['form'] = $this->service->getForm('PY');
             $collect = collect($query);
             $result = $collect->merge($result);
 

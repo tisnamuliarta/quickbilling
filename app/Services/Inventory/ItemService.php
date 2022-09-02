@@ -62,7 +62,9 @@ class ItemService
      * @param $request
      * @param $type
      * @param null $id
+     *
      * @return array
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function formData($request, $type, $id = null): array
     {
@@ -103,6 +105,7 @@ class ItemService
         $data['tract_stock'] = (isset($request->tract_stock)) ? $request->tract_stock : 0;
         $data['enabled'] = (isset($request->enabled)) ? $request->enabled : true;
         $data['sell_tax_id'] = (isset($request->sell_tax_id)) ? $request->sell_tax_id : 0;
+
 
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
