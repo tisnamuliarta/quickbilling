@@ -215,11 +215,13 @@ trait InventoryHelper
         $count_inventory = 0;
         $count_non_inventory = 0;
         foreach ($details as $detail) {
-            $item = Item::find($detail['item_id']);
-            if ($item->group_name == 'Inventory') {
-                $count_inventory++;
-            } else {
-                $count_non_inventory++;
+            if (!Str::contains($transaction_type, ['RC', 'PY'])) {
+                $item = Item::find($detail['item_id']);
+                if ($item->group_name == 'Inventory') {
+                    $count_inventory++;
+                } else {
+                    $count_non_inventory++;
+                }
             }
         }
 

@@ -184,12 +184,11 @@ class Account extends Model implements Recyclable, Segregatable
      */
     public static function sectionBalances(
         array  $accountTypes,
-               $startDate = null,
-               $endDate = null,
+        $startDate = null,
+        $endDate = null,
         bool   $fullBalance = true,
         Entity $entity = null
-    ): array
-    {
+    ): array {
         if (is_null($entity)) {
             $entity = Auth::user()->entity;
         }
@@ -423,7 +422,7 @@ class Account extends Model implements Recyclable, Segregatable
      */
     public function getBalanceAttribute()
     {
-        return ($this->entity) ? $this->closingBalance()[1] : 0;
+        return (count($this->balances) == 0) ? (($this->entity) ? $this->closingBalance()[1] : 0) : 0;
     }
 
     /**

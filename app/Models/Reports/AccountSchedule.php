@@ -150,7 +150,7 @@ class AccountSchedule extends AccountStatement
 
             $transaction->unclearedAmount = $unclearedAmount;
 
-            array_push($this->transactions, $transaction);
+            $this->transactions[] = $transaction;
         }
     }
 }

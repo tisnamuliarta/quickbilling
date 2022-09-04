@@ -11,6 +11,7 @@
 namespace IFRS\Models;
 
 use App\Models\Documents\DocumentItemTax;
+use App\Models\Financial\PaymentTerm;
 use App\Models\Inventory\Contact;
 use App\Models\Sales\SalesPerson;
 use Carbon\Carbon;
@@ -347,6 +348,11 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    public function paymentTerm()
+    {
+        return $this->belongsTo(PaymentTerm::class);
     }
 
     /**

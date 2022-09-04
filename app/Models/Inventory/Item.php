@@ -12,9 +12,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Item extends Model implements Auditable
+class Item extends Model
 {
-    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     use LogsActivity;
 
@@ -36,6 +35,7 @@ class Item extends Model implements Auditable
 
     protected $appends = [
         'whs_name',
+        'whs_code',
         'available_qty',
         'item_group'
     ];
@@ -115,6 +115,13 @@ class Item extends Model implements Auditable
     }
 
     public function getWhsNameAttribute()
+    {
+        $warehouse = Warehouse::first();
+
+        return $warehouse->code;
+    }
+
+    public function getWhsCodeAttribute()
     {
         $warehouse = Warehouse::first();
 

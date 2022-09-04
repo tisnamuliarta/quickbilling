@@ -48,6 +48,7 @@ class DeductionService
         Arr::forget($data, 'updated_at');
         Arr::forget($data, 'created_at');
         Arr::forget($data, 'employee');
+        Arr::forget($data, 'account');
         Arr::forget($data, 'id');
 
         if ($type == 'store') {

@@ -60,8 +60,12 @@ class AgingSchedule
      * @throws \IFRS\Exceptions\InvalidAccountType
      * @throws \IFRS\Exceptions\MissingAccount
      */
-    public function __construct(string $accountType = Account::RECEIVABLE, string $endDate = null, int $currencyId = null, Entity $entity = null)
-    {
+    public function __construct(
+        string $accountType = Account::RECEIVABLE,
+        string $endDate = null,
+        int $currencyId = null,
+        Entity $entity = null
+    ) {
         if (is_null($entity)) {
             $this->entity = Auth::user()->entity;
         } else {
@@ -91,7 +95,7 @@ class AgingSchedule
             }
             if (array_sum($account_balances) > 0) {
                 $account->balances = $account_balances;
-                array_push($this->accounts, $account);
+                $this->accounts[] = $account;
             }
         }
 

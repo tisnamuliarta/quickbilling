@@ -221,7 +221,11 @@ class TransactionService
         if ($data['action'] == 'saveDraft') {
             $data['status'] = 'draft';
         } else {
-            $data['status'] = 'open';
+            if (Str::contains($data['transaction_type'], ['CS', 'CP', 'PY', 'RC'])) {
+                $data['status'] = 'paid';
+            } else {
+                $data['status'] = 'open';
+            }
         }
         if ($type == 'store') {
             $data['created_by'] = $request->user()->id;
@@ -341,7 +345,7 @@ class TransactionService
                     // only save line item > 0 for receipt client and  Supplier Payment
                     $item_detail = $this->saveLineItem($item, $bank_account_id, $document, $tax_details);
 
-                    if ($document->status == 'open') {
+                    if ($document->status == 'paid') {
                         $transaction = Transaction::where('transaction_no', $item_detail->classification)->first();
                         //throw new \Exception($item_detail->classification, 1);
                         $transaction->balance_due = $transaction->balance_due - $item_detail->amount;
@@ -354,7 +358,7 @@ class TransactionService
                         }
 
                         if ($transaction->balance_due == 0) {
-                            $transaction->status = 'closed';
+                            $transaction->status = 'paid';
                             $transaction->save();
                         }
                     }
@@ -421,9 +425,9 @@ class TransactionService
 
         $document->addLineItem($item_detail);
 
-//        if ($document->status == 'open') {
-//            $document->post();
-//        }
+        if ($document->status == 'open' || $document->status == 'paid') {
+            $document->post();
+        }
         // process tax details
         foreach ($tax_details as $tax_detail) {
             $this->processItemTax($document, $tax_detail, $item_detail);

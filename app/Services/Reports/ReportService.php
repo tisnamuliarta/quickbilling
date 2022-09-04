@@ -81,21 +81,26 @@ class ReportService
                 "alias" => 'Who owe you',
                 "children" => [
                     // [ "id" => 21, "name" => 'Account receivable aging detail', "route" => '' ],
-                    // [ "id" => 22, "name" => 'Account receivable aging summary', "route" => '' ],
+                    [
+                        "id" => 22,
+                        "name" => __('Accounts receivable aging summary'),
+                        "alias" => 'Accounts receivable aging summary',
+                        "route" => '/app/reports/report/all'
+                    ],
                     // [ "id" => 23, "name" => 'Collections Report', "route" => '' ],
                     // [ "id" => 24, "name" => 'Customer Balance Detail', "route" => '' ],
                     [
                         "id" => 25,
                         "name" => __('Customer Balance Summary'),
                         "alias" => 'Customer Balance Summary',
-                        "route" => '/app/reports/report/inventory-valuation'],
+                        "route" => '/app/reports/report/all'],
                     // [ "id" => 26, "name" => 'Invoice List', "route" => '/app/reports/report/invoice' ],
                     // [ "id" => 27, "name" => 'Invoices and Received Payments', "route" => '' ],
                     [
                         "id" => 28,
                         "name" => __('Open invoice'),
                         "alias" => 'Open invoice',
-                        "route" => '/app/reports/report/open-invoice'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 29, "name" => 'Statement List', "route" => '' ],
                     // [ "id" => 211, "name" => 'Terms List', "route" => '' ],
@@ -120,7 +125,7 @@ class ReportService
                         "id" => 45,
                         "name" => __('Income by Customer Summary'),
                         "alias" => 'Income by Customer Summary',
-                        "route" => '/app/reports/report/customer-invoice'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 46,
@@ -140,7 +145,7 @@ class ReportService
                         "id" => 411,
                         "name" => __('Product/Service List'),
                         "alias" => 'Product/Service List',
-                        "route" => '/app/reports/report/product'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 412, "name" => 'Sales by Class Detail', "route" => '' ],
                     // [ "id" => 413, "name" => 'Sales by Class Summary', "route" => '' ],
@@ -149,7 +154,7 @@ class ReportService
                         "id" => 415,
                         "name" => __('Sales by Customer Summary'),
                         "alias" => 'Sales by Customer Summary',
-                        "route" => '/app/reports/report/sales-customer'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 416, "name" => 'Sales by Customer Type Detail', "route" => '' ],
                     // [ "id" => 417, "name" => 'Sales by Location Detail', "route" => '' ],
@@ -159,14 +164,14 @@ class ReportService
                         "id" => 421,
                         "name" => __('Sales by Product/Service Summary'),
                         "alias" => 'Sales by Product/Service Summary',
-                        "route" => '/app/reports/report/sales-product'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 422, "name" => 'Time Activities by Customer Detail', "route" => '' ],
                     [
                         "id" => 423,
                         "name" => __('Transaction List by Customer'),
                         "alias" => 'Transaction List by Customer',
-                        "route" => '/app/reports/report/transaction-customer'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 424, "name" => 'Transaction List by Tag Group', "route" => '' ],
                 ],
@@ -181,27 +186,27 @@ class ReportService
                         "id" => 52,
                         "name" => __('Accounts payable aging summary'),
                         "alias" => 'Accounts payable aging summary',
-                        "route" => '/app/reports/report/payable'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 53,
                         "name" => __('Bill Payment List'),
                         "alias" => 'Bill Payment List',
-                        "route" => '/app/reports/report/vendor-payment'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 54, "name" => 'Bills and Applied Payment', "route" => '' ],
                     [
                         "id" => 55,
                         "name" => __('Unpaid Bills'),
                         "alias" => 'Unpaid Bills',
-                        "route" => '/app/reports/report/vendor-unpaid'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 56, "name" => 'Vendor Balance Detail', "route" => '' ],
                     [
                         "id" => 57,
                         "name" => __('Vendor Balance Summary'),
                         "alias" => 'Vendor Balance Summary',
-                        "route" => '/app/reports/report/vendor'
+                        "route" => '/app/reports/report/all'
                     ],
                 ],
             ],
@@ -214,26 +219,26 @@ class ReportService
                         "id" => 61,
                         "name" => __('Expenses by Vendor Summary'),
                         "alias" => 'Expenses by Vendor Summary',
-                        "route" => '/app/reports/report/expense'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 62,
                         "name" => 'Open Purchase Order List',
-                        "route" => '/app/reports/report/open-purchase'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 63, "name" => 'Open Purchase Order Detail', "route" => '' ],
                     [
                         "id" => 64,
                         "name" => __('Purchases by Product/Service Detail'),
                         "alias" => 'Purchases by Product/Service Detail',
-                        "route" => '/app/reports/report/purchase-product'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 65, "name" => 'Purchases by Vendor Detail', "route" => '' ],
                     [
                         "id" => 66,
                         "name" => __('Transaction List by Vendor'),
                         "alias" => 'Transaction List by Vendor',
-                        "route" => '/app/reports/report/transaction-vendor'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 67, "name" => 'Vendor Contact List', "route" => '' ],
                 ],
@@ -247,19 +252,19 @@ class ReportService
                         "id" => 71,
                         "name" => __('Employee Contact List'),
                         "alias" => 'Employee Contact List',
-                        "route" => '/app/reports/report/employee'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 72,
                         "name" => __('Paycheck History'),
                         "alias" => 'Paycheck History',
-                        "route" => '/app/reports/report/paycheck'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 73,
                         "name" => __('Payroll Billing Summary'),
                         "alias" => 'Payroll Billing Summary',
-                        "route" => '/app/reports/report/payroll'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 74, "name" => 'Payroll Details', "route" => '' ],
                     // [ "id" => 75, "name" => 'Payroll Summary by Employee', "route" => '' ],
@@ -281,7 +286,7 @@ class ReportService
                         "id" => 81,
                         "name" => __('Account List'),
                         "alias" => 'Account List',
-                        "route" => '/app/reports/report/account'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 82, "name" => 'Balance Sheet Comparison', "route" => '' ],
                     [
@@ -294,13 +299,13 @@ class ReportService
                         "id" => 84,
                         "name" => __('General Ledger'),
                         "alias" => 'General Ledger',
-                        "route" => '/app/reports/report/gl'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 85,
                         "name" => __('Journal Entry'),
                         "alias" => 'Journal Entry',
-                        "route" => '/app/reports/report/journal'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 86, "name" => 'Profit and Loss Comparison', "route" => '' ],
                     // [ "id" => 87, "name" => 'Profit and Loss by Tag Group', "route" => '' ],
@@ -331,7 +336,7 @@ class ReportService
                         "id" => 817,
                         "name" => __('Trial Balance'),
                         "alias" => 'Trial Balance',
-                        "route" => '/app/reports/report/trial-balance'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 818,

@@ -16,9 +16,8 @@ use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Recyclable, Auditable
+class User extends Authenticatable implements Recyclable
 {
-    use \OwenIt\Auditing\Auditable;
     use HasApiTokens;
     use HasFactory;
     use Notifiable;

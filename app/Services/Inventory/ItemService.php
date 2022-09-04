@@ -94,6 +94,7 @@ class ItemService
         Arr::forget($data, 'contact');
         Arr::forget($data, 'inventory_accounts');
         Arr::forget($data, 'whs_name');
+        Arr::forget($data, 'whs_code');
         Arr::forget($data, 'item_group');
         Arr::forget($data, 'available_qty');
         Arr::forget($data, 'item_warehouse');

@@ -62,31 +62,37 @@ class AccountStatement
      * @var Entity
      */
     protected $entity;
+    /**
+     * @var null
+     */
+    private $currencyId;
 
     /**
      * Construct Account Statement for the account for the period.
      *
-     * @param int $accountId
-     * @param int $currencyId
-     * @param string $startDate
-     * @param string $endDate
+     * @param int|null $accountId
+     * @param null $currencyId
+     * @param string|null $startDate
+     * @param string|null $endDate
+     *
+     * @throws MissingAccount
      */
     public function __construct(
         int    $accountId = null,
-        int    $currencyId = null,
+        $currencyId = null,
         string $startDate = null,
         string $endDate = null
-    )
-    {
+    ) {
         if (is_null($accountId)) {
             throw new MissingAccount("Account Statement");
         } else {
             $this->account = Account::find($accountId);
         }
 
-        $this->entity = $this->account->entity;
+        $this->entity = auth()->user()->entity;
 
-        $this->period['startDate'] = is_null($startDate) ? ReportingPeriod::periodStart(null, $this->entity) : Carbon::parse($startDate);
+        $this->period['startDate'] = is_null($startDate)
+            ? ReportingPeriod::periodStart(null, $this->entity) : Carbon::parse($startDate);
         $this->period['endDate'] = is_null($endDate) ? Carbon::now() : Carbon::parse($endDate);
         $this->currency = is_null($currencyId) ? $this->entity->currency : Currency::find($currencyId);
         $this->currencyId = $currencyId;
@@ -111,14 +117,23 @@ class AccountStatement
 
     /**
      * Get Account Statement Transactions.
+     *
+     * @throws \IFRS\Exceptions\MissingReportingPeriod
      */
     public function getTransactions(): array
     {
         $entity = $this->account->entity;
 
-        $query = $this->account->transactionsQuery($this->period['startDate'], $this->period['endDate'], $this->currencyId);
+        $query = $this->account->transactionsQuery(
+            $this->period['startDate'],
+            $this->period['endDate'],
+            $this->currencyId
+        );
 
-        $this->balances['opening'] = $this->account->openingBalance(ReportingPeriod::year($this->period['startDate'], $entity), $this->currencyId)[$this->currency->id];
+        $this->balances['opening'] = $this->account->openingBalance(ReportingPeriod::year(
+            $this->period['startDate'],
+            $entity
+        ), $this->currencyId)[$this->currency->id];
         $this->balances['closing'] += $this->balances['opening'];
 
         $balance = $this->balances['opening'];
@@ -136,7 +151,7 @@ class AccountStatement
             $transaction->transactionType = config('ifrs')['transactions'][$transaction->transaction_type];
             $transaction->transactionDate = Carbon::parse($transaction->transaction_date)->toFormattedDateString();
 
-            array_push($this->transactions, $transaction);
+            $this->transactions[] = $transaction;
         }
 
         return $this->transactions;
