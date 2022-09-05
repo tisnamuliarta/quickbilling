@@ -74,6 +74,27 @@ class ReportController extends Controller
                     'width' => '10'
                 ]);
 
+            case strtoupper('General Ledger'):
+                $report = Account::select('*')->get();
+
+                return $this->success([
+                    'data' => view('reports.general_ledger',
+                        compact('report', 'start_date', 'end_date'))->render(),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
+                    'width' => '10'
+                ]);
+
+            case strtoupper('Account List'):
+                $report = Account::select('*')->get();
+
+                return $this->success([
+                    'data' => view('reports.account', compact('report'))->render(),
+                    'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
+                    'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
+                    'width' => '10'
+                ]);
+
             case strtoupper('Profit and loss statement'):
                 $report = new IncomeStatement($start_date, $end_date, $entity);
                 //$data = $this->service->transformProfitAndLoss($report->getSections());

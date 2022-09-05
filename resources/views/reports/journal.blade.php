@@ -11,13 +11,33 @@
 @foreach($report as $item)
   @php $total_debit = 0 @endphp
   @php $total_credit = 0 @endphp
+  @php $transaction_no = ''; $posting_date = ''; @endphp
 
-  @foreach($item->ledgers as $ledger)
-    @php $total_debit += ($ledger->entry_type == 'D') ? $ledger->amount : 0 @endphp
-    @php $total_credit += (($ledger->entry_type == 'C') ? $ledger->amount : 0) @endphp
+  @foreach($item->ledgers as $index => $ledger)
+    @php $total_debit += ($ledger->entry_type == 'D') ? $ledger->amount : null @endphp
+    @php $total_credit += (($ledger->entry_type == 'C') ? $ledger->amount : null) @endphp
+
+    @php
+      if ($index == 0) {
+    $transaction_no = $item->transaction_no;
+    $posting_date = $ledger->posting_date;
+} else {
+    if ($transaction_no == $item->transaction_no) {
+        $transaction_no = '';
+    } else {
+        $transaction_no = $item->transaction_no;
+    }
+    if ($posting_date == $ledger->posting_date) {
+        $posting_date = '';
+    } else {
+        $posting_date = $ledger->posting_date;
+    }
+}
+      @endphp
+
     <tr>
-      <td class="disable-wrap">{{ $item->transaction_no  }}</td>
-      <td class="disable-wrap">{{ $ledger->posting_date  }}</td>
+      <td class="disable-wrap">{{ $transaction_no  }}</td>
+      <td class="disable-wrap">{{ $posting_date  }}</td>
       <td class="disable-wrap">{{ $ledger->postAccount->code }}</td>
       <td class="disable-wrap">{{ $ledger->postAccount->account_type }}</td>
       <td class="disable-wrap">{{ $ledger->postAccount->name }}</td>

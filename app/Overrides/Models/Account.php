@@ -184,11 +184,12 @@ class Account extends Model implements Recyclable, Segregatable
      */
     public static function sectionBalances(
         array  $accountTypes,
-        $startDate = null,
-        $endDate = null,
+               $startDate = null,
+               $endDate = null,
         bool   $fullBalance = true,
         Entity $entity = null
-    ): array {
+    ): array
+    {
         if (is_null($entity)) {
             $entity = Auth::user()->entity;
         }
@@ -561,8 +562,10 @@ class Account extends Model implements Recyclable, Segregatable
                 $transactionsTable . '.transaction_type',
                 $transactionsTable . '.credited',
                 $transactionsTable . '.narration',
+                $transactionsTable . '.balance_due',
                 $transactionsTable . '.status',
-                $ledgerTable . '.rate'
+                $ledgerTable . '.rate',
+                DB::raw('(select name from contacts where id = ' . $transactionsTable . '.contact_id) as contact')
             )->distinct();
 
         if (!is_null($currencyId)) {

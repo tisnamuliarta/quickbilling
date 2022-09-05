@@ -41,6 +41,10 @@ class TransactionService
     public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
+        $status = (isset($request->searchStatus)) ? strtolower($request->searchStatus) : '';
+        if ($status == 'all') {
+            $status = '';
+        }
         $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'transaction_no';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
@@ -52,6 +56,7 @@ class TransactionService
         $result = [];
         $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
             ->where('transaction_type', $type)
+            ->where('status', 'LIKE', '%' . $status . '%')
             ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
             ->orderBy($sorts, $order);
 
