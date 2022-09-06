@@ -66,6 +66,7 @@ class PayrollService
                 if ($loan) {
                     $loan_installment = LoanInstallment::where('loan_id', $loan->id)
                         ->where('employee_id', $item['employee_id'])
+                        ->orderBy('updated_at', 'desc')
                         ->first();
 
                     if (!$loan_installment) {
@@ -80,31 +81,35 @@ class PayrollService
                             'transaction_date' => now(),
                         ]);
                     } else {
-                        $reminder_amount = $loan_installment->installment - $loan_installment->reminder_amount;
-                        LoanInstallment::updateOrCreate([
-                            'employee_id' => $item['employee_id'],
-                            'loan_id' => $loan->id,
-                            'installment' => $loan_installment->installment,
-                            'reminder_amount' => $reminder_amount,
-                            'base_amount' => $loan->amount,
-                            'interest' => $loan->interest_rate,
-                        ], [
-                            'transaction_date' => now(),
-                        ]);
+                        if ($loan_installment->reminder_amount != 0) {
+                            $reminder_amount = $loan_installment->reminder_amount - $loan_installment->installment;
+                            LoanInstallment::updateOrCreate([
+                                'employee_id' => $item['employee_id'],
+                                'loan_id' => $loan->id,
+                                'installment' => $loan_installment->installment,
+                                'reminder_amount' => $reminder_amount,
+                                'base_amount' => $loan->amount,
+                                'interest' => $loan->interest_rate,
+                            ], [
+                                'transaction_date' => now(),
+                            ]);
+                        }
                         $data_loan = LoanInstallment::find($loan_installment->id);
                     }
 
-                    PayrollDeduction::create([
-                        'payroll_id' => $document->id,
-                        'employee_id' => $item['employee_id'],
-                        'deduction_id' => 0,
-                        'amount' => $data_loan->installment,
-                        'created_by' => auth()->user()->id
-                    ]);
+                    if ($data_loan->reminder_amount != 0) {
+                        PayrollDeduction::create([
+                            'payroll_id' => $document->id,
+                            'employee_id' => $item['employee_id'],
+                            'deduction_id' => 0,
+                            'amount' => $data_loan->installment,
+                            'created_by' => auth()->user()->id
+                        ]);
 
-                    $total_deduction = $data_loan->installment;
+                        $total_deduction = $data_loan->installment;
 
-                    $total_deduction_amount += $total_deduction;
+                        $total_deduction_amount += $total_deduction;
+                    }
                 }
             }
 
