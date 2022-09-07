@@ -8,7 +8,7 @@
   <th class="text-right">Item Cost</th>
 </tr>
 
-@foreach($inventoryValuation as $item)
+@foreach($report as $item)
   <tr>
     <td class="disable-wrap">{{ $item->updated_at  }}</td>
     <td class="disable-wrap">{{ $item->item->name  }}</td>

@@ -12,7 +12,7 @@
   <th class="text-right">Amount</th>
   <th class="text-right">Balance Due</th>
 </tr>
-@foreach($items as $index => $item)
+@foreach($report as $index => $item)
   <tr>
     <td colspan="10">{{ $item['item']  }}</td>
   </tr>

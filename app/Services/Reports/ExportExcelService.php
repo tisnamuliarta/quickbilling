@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Services\Reports;
 
-use App\Http\Controllers\Controller;
 use App\Models\Inventory\Contact;
 use App\Models\Inventory\InventoryTransaction;
 use App\Models\Inventory\ItemWarehouse;
 use App\Models\Reports\AgingSchedule;
-use App\Models\Settings\Entity;
-use App\Services\Reports\ReportService;
 use Carbon\Carbon;
 use IFRS\Models\Account;
 use IFRS\Models\LineItem;
@@ -18,12 +15,9 @@ use IFRS\Reports\BalanceSheet;
 use IFRS\Reports\CashFlowStatement;
 use IFRS\Reports\IncomeStatement;
 use IFRS\Reports\TrialBalance;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 
-class ReportController extends Controller
+class ExportExcelService
 {
     public ReportService $service;
 
@@ -33,157 +27,150 @@ class ReportController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse|void
      * @throws \IFRS\Exceptions\MissingAccount
-     * @throws \Exception
+     * @throws \IFRS\Exceptions\InvalidAccountType
      */
-    public function preview(Request $request)
+    public function formData($reportType, $account_id, $start_date, $end_date, $entity)
     {
-        App::setLocale(auth()->user()->locale);
-        Carbon::setLocale(auth()->user()->locale);
-        $report_type = strtoupper($request->report_type);
-        $account_id = $request->account_id;
-        $first_date = date('Y-m-') . '01';
-        $end_day = date('Y-m-t');
-        $start_date = (isset($request->start_date)) ? $request->start_date : $first_date;
-        $end_date = (isset($request->end_date)) ? $request->end_date : $end_day;
-
-        $entity = Entity::find($request->user()->entity_id);
-
-        switch ($report_type) {
+        switch ($reportType) {
             case strtoupper('Account Balance'):
                 $report = new AccountStatement($account_id, null, $start_date, $end_date);
-                return $this->success([
+                return [
                     'data' => $report->getTransactions(),
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '6'
-                ]);
+                ];
 
             case strtoupper('Journal Entry'):
                 $report = Transaction::whereBetween('transaction_date', [$start_date, $end_date])
                     ->with(['ledgers.postAccount'])
                     ->get();
 
-                return $this->success([
-                    'data' => view('reports.journal', compact('report'))->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.journal',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '10'
-                ]);
+                ];
 
             case strtoupper('General Ledger'):
                 $report = Account::select('*')->get();
 
-                return $this->success([
-                    'data' => view(
-                        'reports.general_ledger',
-                        compact('report', 'start_date', 'end_date')
-                    )->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.general_ledger',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '10'
-                ]);
+                ];
 
             case strtoupper('Account List'):
                 $report = Account::select('*')->get();
 
-                return $this->success([
-                    'data' => view('reports.account', compact('report'))->render(),
+                return [
+                    'data' => $report,
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '10'
-                ]);
+                ];
 
             case strtoupper('Profit and loss statement'):
                 $reports = new IncomeStatement($start_date, $end_date, $entity);
                 //$data = $this->service->transformProfitAndLoss($report->getSections());
                 $report = collect($reports->getSections($start_date, $end_date));
-                return $this->success([
+                return [
                     //'data' => $report,
-                    'data' => view('reports.pnl', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.pnl',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '6'
-                ]);
-            //return $this->success(['data' => $report->getResults(date('m'), date('Y'), $entity)]);
+                ];
+            //return ['data' => $report->getResults(date('m'), date('Y'), $entity)]);
 
             case strtoupper('Balance sheet'):
                 $reports = new BalanceSheet($end_date, $entity);
                 $report = collect($reports->getSections($start_date, $end_date));
-                return $this->success([
+                return [
                     //'data' => $report,
-                    'data' => view('reports.balance-sheet', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.balance-sheet',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '6'
-                ]);
+                ];
 
             case strtoupper('Trial Balance'):
                 $reports = new TrialBalance($end_date, $entity);
                 $report = $reports->getSections();
-                return $this->success([
+                return [
                     // 'data' => $data,
-                    'data' => view('reports.trial-balance', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.trial-balance',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '6'
-                ]);
+                ];
 
             case strtoupper('Statement of cash flow'):
             case strtoupper('Statement of cash flows'):
                 $reports = new CashFlowStatement($start_date, $end_date, $entity);
                 $report = collect($reports->getSections($start_date, $end_date));
-                return $this->success([
+                return [
                     //'data' => $report,
-                    'data' => view('reports.cash-flow', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.cash-flow',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '6'
-                ]);
+                ];
 
             case strtoupper('Product/Service List'):
                 $report = $this->service->getItemList();
-                return $this->success([
-                    'data' => view('reports.item_list', compact('report'))->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.item_list',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Accounts payable aging summary'):
                 $reports = new AgingSchedule('PAYABLE', $end_date, auth()->user()->entity->currency_id);
-                $report = $report->attributes();
-                return $this->success([
-                    'data' => view('reports.ap_aging', compact('report'))->render(),
+                $report = $reports->attributes();
+                return [
+                    'data' => $report,
+                    'view' => 'reports.ap_aging',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '8'
-                ]);
+                ];
 
             case strtoupper('Accounts receivable aging summary'):
                 $reports = new AgingSchedule('RECEIVABLE', $end_date, auth()->user()->entity->currency_id);
                 $report = $reports->attributes();
-                return $this->success([
-                    'data' => view('reports.ap_aging', compact('report'))->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.ap_aging',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '8'
-                ]);
+                ];
 
             case strtoupper('Inventory Valuation Detail'):
                 $report = InventoryTransaction::whereBetween('transaction_date', [$start_date, $end_date])
                     ->orderBy('item_id')
                     ->get();
 
-                return $this->success([
-                    'data' => view('reports.inventory_valuation', compact('report'))->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.inventory_valuation',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Inventory Valuation Summary'):
                 $start_date = $start_date . ' 00:00:01';
@@ -192,12 +179,13 @@ class ReportController extends Controller
                     ->orderBy('item_id')
                     ->get();
 
-                return $this->success([
-                    'data' => view('reports.inventory_valuation_detail', compact('report'))->render(),
+                return [
+                    'data' => $report,
+                    'view' => 'reports.inventory_valuation_detail',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Customer Balance Summary'):
                 $customers = Contact::where('type', 'Customer')->get();
@@ -208,7 +196,7 @@ class ReportController extends Controller
 //                        $customer->receivable_account_id
 //                    );
 //                    if ($schedule->getTransactions()) {
-//                        $customer_account[] = $schedule->getTransactions();
+//                        $report[] = $schedule->getTransactions();
 //                    }
                     $transaction = $account->getTransactions($start_date, $end_date);
                     if ($transaction['transactions']) {
@@ -216,13 +204,14 @@ class ReportController extends Controller
                     }
                 }
 
-                return $this->success([
-                    //'data' => $customer_account,
-                    'data' => view('reports.customer_balance', compact('report'))->render(),
+                return [
+                    //'data' => $report,
+                    'data' => $report,
+                    'view' => 'reports.customer_balance',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Vendor Balance Summary'):
                 $customers = Contact::where('type', 'Vendor')->get();
@@ -233,7 +222,7 @@ class ReportController extends Controller
 //                        $customer->receivable_account_id
 //                    );
 //                    if ($schedule->getTransactions()) {
-//                        $customer_account[] = $schedule->getTransactions();
+//                        $report[] = $schedule->getTransactions();
 //                    }
                     $transaction = $account->getTransactions($start_date, $end_date);
                     if ($transaction['transactions']) {
@@ -241,13 +230,14 @@ class ReportController extends Controller
                     }
                 }
 
-                return $this->success([
-                    //'data' => $customer_account,
-                    'data' => view('reports.customer_balance', compact('report'))->render(),
+                return [
+                    //'data' => $report,
+                    'data' => $report,
+                    'view' => 'reports.customer_balance',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Sales by Product/Service Summary'):
                 $list_items = LineItem::select('item_id')
@@ -257,14 +247,14 @@ class ReportController extends Controller
                     })
                     ->distinct()
                     ->get();
-                $report = [];
+                $items = [];
                 foreach ($list_items as $item) {
                     $itm = LineItem::whereHas('transaction', function ($query) {
                         $query->whereIn('transaction_type', ['IN', 'CS']);
                     })
                         ->where('item_id', $item->item_id)
                         ->get();
-                    $report[] = [
+                    $items[] = [
                         'item' => $item->item->name,
                         'list' => $itm
                     ];
@@ -291,13 +281,14 @@ class ReportController extends Controller
                     ];
                 }
 
-                return $this->success([
+                return [
                     //'data' => $customer_account,
-                    'data' => view('reports.item_balance', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.item_balance',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Sales by Customer Summary'):
                 $list_items = Transaction::select('contact_id')
@@ -322,13 +313,14 @@ class ReportController extends Controller
                     ];
                 }
 
-                return $this->success([
+                return [
                     //'data' => $customer_account,
-                    'data' => view('reports.sales_by_customer', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.sales_by_customer',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Transaction List by Vendor'):
                 $list_items = Transaction::select('contact_id')
@@ -353,13 +345,14 @@ class ReportController extends Controller
                     ];
                 }
 
-                return $this->success([
+                return [
                     //'data' => $customer_account,
-                    'data' => view('reports.sales_by_customer', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.sales_by_customer',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Income by Customer Summary'):
                 $customers = Contact::where('type', 'Customer')->get();
@@ -370,13 +363,14 @@ class ReportController extends Controller
                     $report[] = array_merge(['customer' => $customer], $transaction);
                 }
 
-                return $this->success([
+                return [
                     'data' => $report,
-                    //'data' => view('reports.customer_income', compact('customer_account'))->render(),
+                    'view' => 'reports.item_list',
+                    //'data' => view('reports.customer_income', compact('report'))->render(),
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Open invoice'):
                 $report = Transaction::whereBetween('transaction_date', [$start_date, $end_date])
@@ -384,13 +378,14 @@ class ReportController extends Controller
                     ->where('transaction_type', 'IN')
                     ->get();
 
-                return $this->success([
-                    //'data' => $customer_account,
-                    'data' => view('reports.open_invoice', compact('report'))->render(),
+                return [
+                    //'data' => $report,
+                    'data' => $report,
+                    'view' => 'reports.open_invoice',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
 
             case strtoupper('Unpaid Bills'):
                 $report = Transaction::whereBetween('transaction_date', [$start_date, $end_date])
@@ -398,29 +393,14 @@ class ReportController extends Controller
                     ->where('transaction_type', 'BL')
                     ->get();
 
-                return $this->success([
+                return [
                     //'data' => $customer_account,
-                    'data' => view('reports.unpaid_bill', compact('report'))->render(),
+                    'data' => $report,
+                    'view' => 'reports.unpaid_bill',
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
                     'end_date' => Carbon::parse($end_date)->isoFormat('DD MMMM Y'),
                     'width' => '12'
-                ]);
+                ];
         }
-
-        throw new \Exception('No report match');
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function index(Request $request): JsonResponse
-    {
-        App::setLocale(auth()->user()->locale);
-
-        return $this->success([
-            'data' => $this->service->reportList()
-        ]);
     }
 }

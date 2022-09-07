@@ -12,7 +12,7 @@
 @php $total_balance_due = 0 @endphp
 @php $total = 0 @endphp
 
-@foreach($data as $item)
+@foreach($report as $item)
   @php $total_balance_due += $item->balance_due @endphp
   @php $total += $item->main_account_amount @endphp
   <tr>

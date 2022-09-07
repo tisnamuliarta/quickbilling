@@ -11,7 +11,7 @@
   <th class="text-right">COGS</th>
 </tr>
 
-@foreach($inventoryValuation as $item)
+@foreach($report as $item)
   <tr>
     <td class="disable-wrap">{{ $item->created_at  }}</td>
     <td class="disable-wrap">{{ $item->transaction_date  }}</td>

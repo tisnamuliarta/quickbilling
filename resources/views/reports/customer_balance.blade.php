@@ -8,7 +8,7 @@
   <th>Notes</th>
   <th class="text-right">Amount</th>
 </tr>
-@foreach($customer_account as $item)
+@foreach($report as $item)
   @php $total += $item['total'] @endphp
   <tr>
     <td>{{ $item['customer']  }}</td>

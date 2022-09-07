@@ -72,7 +72,8 @@ class SalesService
             $main_account_amount = $main_account_amount + ($item_warehouse->item_cost * $quantity);
         }
 
-        if ($count_non_inventory == 0) {
+        //throw new \Exception($count_non_inventory, 1);
+        if ($count_non_inventory != 0) {
             $journalEntry = JournalEntry::create([
                 'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,
                 'date' => Carbon::now(),
@@ -111,7 +112,7 @@ class SalesService
                     ])
                 );
             }
-            if ($document->status == 'open') {
+            if ($document->status == 'open' || $document->status == 'paid') {
                 $journalEntry->post();
             }
         }
@@ -219,7 +220,7 @@ class SalesService
                     ])
                 );
             }
-            if ($document->status == 'open') {
+            if ($document->status == 'open' || $document->status == 'paid') {
                 $journalEntry->post();
             }
         }

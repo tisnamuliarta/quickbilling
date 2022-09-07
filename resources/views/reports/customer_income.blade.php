@@ -10,7 +10,7 @@
   <th>Valuation Method</th>
 </tr>
 
-@foreach($customer_account as $item)
+@foreach($report as $item)
   <tr>
     <td class="disable-wrap">{{ $item->code  }}</td>
     <td class="disable-wrap">{{ $item->name  }}</td>

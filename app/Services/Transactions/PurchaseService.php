@@ -75,7 +75,7 @@ class PurchaseService
                 ])
             );
         }
-        if ($document->status == 'open') {
+        if ($document->status == 'open' || $document->status == 'paid') {
             $journalEntry->post();
         }
     }
@@ -145,7 +145,7 @@ class PurchaseService
                 ])
             );
         }
-        if ($document->status == 'open') {
+        if ($document->status == 'open' || $document->status == 'paid') {
             $journalEntry->post();
         }
     }

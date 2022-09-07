@@ -4,8 +4,8 @@
   <th class="text-right">Credit</th>
 </tr>
 
-@foreach($data['accounts']['BALANCE_SHEET'] as $index => $balance)
-  @foreach($data['accounts']['BALANCE_SHEET'][$index]['accounts'] as $acc)
+@foreach($report['accounts']['BALANCE_SHEET'] as $index => $balance)
+  @foreach($report['accounts']['BALANCE_SHEET'][$index]['accounts'] as $acc)
     <tr>
       <td>{{ $acc->name  }}</td>
       <td
@@ -15,8 +15,8 @@
   @endforeach
 @endforeach
 
-@foreach($data['accounts']['INCOME_STATEMENT'] as $index => $balance)
-  @foreach($data['accounts']['INCOME_STATEMENT'][$index]['accounts'] as $acc)
+@foreach($report['accounts']['INCOME_STATEMENT'] as $index => $balance)
+  @foreach($report['accounts']['INCOME_STATEMENT'][$index]['accounts'] as $acc)
     <tr>
       <td>{{ $acc->name  }}</td>
       <td class="text-right">0</td>
@@ -37,7 +37,7 @@
     <strong>
       {{ auth()->user()->entity->currency->currency_symbol
             . ' '.
-            number_format($data['results']['BALANCE_SHEET']['debit'] - $data['results']['BALANCE_SHEET']['credit']) }}
+            number_format($report['results']['BALANCE_SHEET']['debit'] - $report['results']['BALANCE_SHEET']['credit']) }}
     </strong>
   </td>
   <td
@@ -48,7 +48,7 @@
       {{
         auth()->user()->entity->currency->currency_symbol
         . ' '.
-        number_format($data['results']['INCOME_STATEMENT']['debit'] - $data['results']['INCOME_STATEMENT']['credit']) }}
+        number_format($report['results']['INCOME_STATEMENT']['debit'] - $report['results']['INCOME_STATEMENT']['credit']) }}
     </strong>
   </td>
 </tr>

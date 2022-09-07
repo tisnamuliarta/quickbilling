@@ -117,6 +117,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('report-list', [ReportController::class, 'index']);
     Route::get('report', [ReportController::class, 'preview']);
+    Route::get('report/pdf', [DocumentExportController::class, 'reportPdf']);
+    Route::get('report/excel', [DocumentExportController::class, 'reportExcel']);
 
     // List all documents routes
     Route::post('document-files', [FileController::class, 'store']);

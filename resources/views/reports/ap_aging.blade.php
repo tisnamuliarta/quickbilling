@@ -1,11 +1,11 @@
 <tr>
   <th>Account</th>
-  @foreach($items->Brackets as $index => $header)
+  @foreach($report->Brackets as $index => $header)
     <th class="text-right">{{ $index }}</th>
   @endforeach
 </tr>
 
-@foreach($items->Accounts as $account)
+@foreach($report->Accounts as $account)
   <tr>
     <td>
       {{ $account->name }}
@@ -18,7 +18,7 @@
 
 <tr>
   <th>Total</th>
-  @foreach($items->Balances as $index => $header)
+  @foreach($report->Balances as $index => $header)
     <td class="text-right">
       <strong>
         {{  auth()->user()->entity->currency->currency_symbol . ' '. number_format($header, 2) }}

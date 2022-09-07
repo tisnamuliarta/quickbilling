@@ -44,13 +44,13 @@ class ReportService
                         "id" => 12,
                         "name" => __('Statement of cash flow'),
                         "alias" => 'Statement of cash flow',
-                        "route" => '/app/reports/report/cash-flow'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 13,
                         "name" => __('Balance sheet'),
                         "alias" => 'Balance sheet',
-                        "route" => '/app/reports/report/balance-sheet'],
+                        "route" => '/app/reports/report/all'],
                     // [ "id" => 14, "name" => 'Balance Sheet Comparison', "route" => '' ],
                     // [ "id" => 15, "name" => 'Balance Sheet Detail', "route" => '' ],
                     // [ "id" => 16, "name" => 'Balance Sheet Summary', "route" => '' ],
@@ -59,7 +59,7 @@ class ReportService
                         "id" => 18,
                         "name" => __('Profit and loss statement'),
                         "alias" => 'Profit and loss statement',
-                        "route" => '/app/reports/report/profit-loss'],
+                        "route" => '/app/reports/report/all'],
                     // [ "id" => 19, "name" => 'Profit and Loss as % of total income', "route" => '' ],
                     // [ "id" => 111, "name" => 'Profit and Loss Comparison', "route" => '' ],
                     // [ "id" => 112, "name" => 'Profit and Loss Detail', "route" => '' ],
@@ -293,7 +293,7 @@ class ReportService
                         "id" => 83,
                         "name" => __('Balance Sheet'),
                         "alias" => 'Balance Sheet',
-                        "route" => '/app/reports/report/balance-sheet'
+                        "route" => '/app/reports/report/all'
                     ],
                     [
                         "id" => 84,
@@ -313,21 +313,21 @@ class ReportService
                         "id" => 88,
                         "name" => __('Profit and loss statement'),
                         "alias" => 'Profit and loss statement',
-                        "route" => '/app/reports/report/profit-loss'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 89, "name" => 'Recent Automatic Transactions', "route" => '' ],
                     [
                         "id" => 811,
                         "name" => __('Recent Transactions'),
                         "alias" => 'Recent Transactions',
-                        "route" => '/app/reports/report/transaction'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 812, "name" => 'Reconciliation Reports', "route" => '' ],
                     [
                         "id" => 813,
                         "name" => __('Statement of cash flow'),
                         "alias" => 'Statement of cash flow',
-                        "route" => '/app/reports/report/cash-flow'
+                        "route" => '/app/reports/report/all'
                     ],
                     // [ "id" => 814, "name" => 'Transaction Detail by Account', "route" => '' ],
                     // [ "id" => 815, "name" => 'Transaction List by Date', "route" => '' ],
@@ -342,7 +342,7 @@ class ReportService
                         "id" => 818,
                         "name" => __('Account Balance'),
                         "alias" => 'Account Balance',
-                        "route" => '/app/reports/report/account-balance'
+                        "route" => '/app/reports/report/all'
                     ],
                 ],
             ],
