@@ -157,6 +157,9 @@ class DocumentExportController extends Controller
      */
     public function reportPdf(Request $request): Response
     {
+        App::setLocale(auth()->user()->locale);
+        Carbon::setLocale(auth()->user()->locale);
+
         $first_date = date('Y-m-') . '01';
         $end_day = date('Y-m-t');
         $start_date = (isset($request->start_date)) ? $request->start_date : $first_date;
@@ -170,10 +173,10 @@ class DocumentExportController extends Controller
 
         $report = $service->formData($report_type, $account_id, $start_date, $end_date, $entity);
 
-        App::setLocale(auth()->user()->locale);
-        Carbon::setLocale(auth()->user()->locale);
-
-        $pdf = Pdf::loadView('export.report_pdf', compact('report', 'report_type'));
+        $pdf = Pdf::loadView('export.report_pdf', [
+            'report' => $report,
+            'report_type' => __($report_type)
+        ]);
 
         $file_name = Str::upper($report_type) . '.pdf';
 
@@ -186,6 +189,9 @@ class DocumentExportController extends Controller
      */
     public function reportExcel(Request $request): Response
     {
+        App::setLocale(auth()->user()->locale);
+        Carbon::setLocale(auth()->user()->locale);
+
         $first_date = date('Y-m-') . '01';
         $end_day = date('Y-m-t');
         $start_date = (isset($request->start_date)) ? $request->start_date : $first_date;

@@ -75,7 +75,7 @@ class TransactionController extends Controller
             $date_to = (isset($request->dateTo)) ? $request->dateTo : null;
 
             $result = [];
-            $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers'])
+            $query = Transaction::with(['entity', 'lineItems', 'contact', 'account.balances', 'ledgers', 'tags'])
                 ->whereIn('transaction_type', $type)
                 ->where(DB::raw("CONCAT(transaction_no, ' ', narration)"), 'LIKE', '%' . $search . '%')
                 ->orderBy($sorts, $order);
@@ -154,6 +154,7 @@ class TransactionController extends Controller
             $this->processInventory($document);
 
             if (isset($tags)) {
+                $document = Transaction::find($document->id);
                 $document->syncTags($tags);
             }
 
@@ -227,7 +228,7 @@ class TransactionController extends Controller
                 }
             }
             $model = $this->service->mappingTable($type);
-            $data = $model::where('id', $id)
+            $data = Transaction::where('id', $id)
                 ->with([
                     'entity',
                     'lineItems.appliedVats',
@@ -316,6 +317,7 @@ class TransactionController extends Controller
                     $this->processInventory($document);
 
                     if (isset($tags)) {
+                        $document = Transaction::find($document->id);
                         $document->syncTags($tags);
                     }
                     break;

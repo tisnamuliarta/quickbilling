@@ -5,6 +5,7 @@ use App\Http\Controllers\BusinessPartner\ContactController;
 use App\Http\Controllers\BusinessPartner\ContactTransactionController;
 use App\Http\Controllers\Common\ChartController;
 use App\Http\Controllers\Common\CopyDocumentController;
+use App\Http\Controllers\Common\TagController;
 use App\Http\Controllers\Documents\DocumentController;
 use App\Http\Controllers\Documents\DocumentExportController;
 use App\Http\Controllers\File\FileController;
@@ -45,6 +46,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('date-filter', [AuthController::class, 'dateFilter']);
     Route::get('menus', [AuthController::class, 'menus']);
     Route::get('chart', [ChartController::class, 'index']);
+
+    Route::get('tags', [TagController::class, 'index']);
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/roles', [AuthController::class, 'roles']);
