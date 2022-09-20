@@ -721,7 +721,12 @@ class TransactionService
      */
     public function updateStatus($id, $status)
     {
-        $document = Transaction::find($id);
+        $document = Transaction::withCount('childTransaction')->find($id);
+
+        if ($document->status == 'closed') {
+            throw new \Exception('Cannot updated closed document', 1);
+        }
+
         $document->status = $status;
         $document->save();
 
@@ -730,12 +735,15 @@ class TransactionService
         ]);
 
         if ($status == 'canceled') {
+            // if ($document->child_transaction_count > 0) {
+            //     throw new \Exception('Cannot cancel document, please cancel child transaction first!');
+            // }
             // post journal to cancel main document
             $this->processCancelDocument($document);
 
             // process reference transaction
             $references = Transaction::where('base_id', $document->id)
-                ->where('base_type', $document->transacction_type)
+                ->where('base_type', $document->transaction_type)
                 ->get();
 
             foreach ($references as $reference) {
@@ -762,6 +770,7 @@ class TransactionService
             'base_id' => $document->id,
             'base_type' => $document->transaction_type,
             'base_num' => $document->transaction_no,
+            'created_by' => auth()->user()->id,
             'status' => 'closed'
         ]);
 
@@ -775,6 +784,7 @@ class TransactionService
                     'amount' => $line_item->amount,
                     'quantity' => $line_item->quantity,
                     'sub_total' => $line_item->sub_total,
+                    'created_by' => auth()->user()->id,
                     'transaction_id' => $journalEntry->id
                 ])
             );
@@ -788,6 +798,7 @@ class TransactionService
                         'amount' => $line_item->appliedVats[0]->amount,
                         'quantity' => 1,
                         'sub_total' => $line_item->sub_total,
+                        'created_by' => auth()->user()->id,
                         'transaction_id' => $journalEntry->id
                     ])
                 );

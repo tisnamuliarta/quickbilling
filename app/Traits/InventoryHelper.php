@@ -149,6 +149,8 @@ trait InventoryHelper
     public function calculateCost($item, $warehouse, $temp_cost, $prev_cost, $document, $amount, $line_item)
     {
         // calculate with average cost
+        /* Getting the item warehouse. */
+        /* Getting the item warehouse. */
         $item_warehouse = $this->getItemWarehouse($item, $warehouse);
 
         $sales = ['SO', 'SD', 'IN', 'RC', 'CN', 'SR', 'GI', 'PI', 'CS'];

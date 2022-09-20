@@ -292,12 +292,19 @@ class TransactionController extends Controller
         }
 
         try {
+            DB::beginTransaction();
+
             $document = $model::find($id);
 
             switch ($action) {
                 case 'closed':
                 case 'canceled':
                     $this->service->updateStatus($id, $action);
+
+                    if ($action == 'canceled') {
+                        $this->processInventoryCancel($id);
+                    }
+
                     break;
 
                 default:
@@ -331,10 +338,63 @@ class TransactionController extends Controller
                 'type' => $request->type,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
+
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
             ]);
+        }
+    }
+
+    /**
+     * If the transaction type is IN, then call the function processInventoryCancelSales, otherwise if
+     * the transaction type is BL, then call the function processInventoryCancelPurchase
+     *
+     * @param $id
+     * The id of the transaction to be cancelled
+     */
+    public function processInventoryCancel($id)
+    {
+        $document = Transaction::find($id);
+        if ($document->transaction_type == 'IN') {
+            $this->processInventoryCancelSales($document);
+        }
+
+        if ($document->transaction_type == 'BL') {
+            $this->processInventoryCancelPurchase($document);
+        }
+    }
+
+    protected function processInventoryCancelSales($document)
+    {
+        foreach($document->lineItems() as $line_item) {
+            if ($line_item->item->item_group == 'Inventory') {
+                $item_warehouse = $this->getItemWarehouse($line_item->item_id, $line_item->warehouse_id);
+
+                if (!$item_warehouse) {
+                    throw new \Exception('Item warehouse not found', 1);
+                }
+                $quantity = $line_item->quantity;
+                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty + $quantity;
+                $item_warehouse->save();
+            }
+        }
+    }
+
+    protected function processInventoryCancelPurchase($document)
+    {
+        foreach($document->lineItems() as $line_item) {
+            if ($line_item->item->item_group == 'Inventory') {
+                $item_warehouse = $this->getItemWarehouse($line_item->item_id, $line_item->warehouse_id);
+
+                if (!$item_warehouse) {
+                    throw new \Exception('Item warehouse not found', 1);
+                }
+                $quantity = $line_item->quantity;
+                $item_warehouse->on_hand_qty = $item_warehouse->on_hand_qty - $quantity;
+                $item_warehouse->save();
+            }
         }
     }
 

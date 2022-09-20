@@ -312,6 +312,11 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
         return $this->belongsTo(Currency::class);
     }
 
+    public function childTransaction()
+    {
+        return $this->hasMany(Transaction::class, 'base_id', 'id');
+    }
+
     /**
      * Transaction Account.
      *

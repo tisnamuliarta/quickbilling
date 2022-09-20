@@ -15,6 +15,7 @@ class ChartController extends Controller
     public function index(Request $request)
     {
         $type = $request->type;
+        $data = $request->data;
 
         switch ($type) {
             case 'pie':

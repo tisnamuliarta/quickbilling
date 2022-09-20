@@ -285,6 +285,7 @@ class DocumentController extends Controller
         $this->validateRequest($request);
 
         try {
+            DB::beginTransaction();
             $action = $request->updateStatus;
 
             $inventory = ['GI', 'GE'];
@@ -343,6 +344,7 @@ class DocumentController extends Controller
                 'type' => $request->transaction_type,
             ], 'Data updated!');
         } catch (\Exception $exception) {
+            DB::rollBack();
             return $this->error($exception->getMessage(), 422, [
                 'errors' => true,
                 'Trace' => $exception->getTrace(),
