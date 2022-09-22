@@ -140,7 +140,7 @@ class ItemService
         $periodStart = ReportingPeriod::periodStart($sysDate, $entity);
         $periodStart = date('Y-m-d', strtotime($periodStart));
 
-        $nextId = Item::where('created_at', '>=', $periodStart)
+        $nextId = Item::withTrashed()->where('created_at', '>=', $periodStart)
             ->count();
 
         $nextId = $nextId + 1;

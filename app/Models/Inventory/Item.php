@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
     use HasFactory;
     use LogsActivity;
+    use SoftDeletes;
 
     protected $guarded = [];
 
