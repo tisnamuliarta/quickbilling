@@ -59,7 +59,7 @@ class SalesService
         $main_account_amount = 0;
         $count_non_inventory = 0;
         foreach ($line_items as $line_item) {
-            if ($line_item->item->group_name != 'Inventory') {
+            if ($line_item->item->group_name == 'Inventory') {
                 $count_non_inventory++;
             }
             $quantity = $line_item->quantity;

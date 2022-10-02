@@ -15,7 +15,7 @@ class EmployeeService
     public function index($request)
     {
         $type = (isset($request->type)) ? $request->type : '';
-        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 10;
+        $row_data = isset($request->itemsPerPage) ? (int)$request->itemsPerPage : 1000;
         $sorts = isset($request->sortBy[0]) ? (string)$request->sortBy[0] : 'id';
         $order = isset($request->sortDesc[0]) ? 'DESC' : 'asc';
         $search = (isset($request->search)) ? $request->search : '';

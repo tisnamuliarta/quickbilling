@@ -372,7 +372,7 @@ class TransactionService
                 $item_detail = $this->saveLineItem($item, $bank_account_id, $document, $tax_details);
             }
         }
-        if ($document->status == 'open') {
+        if ($document->status == 'open' || $document->status == 'paid') {
             $document->post();
 
             if (Str::contains($document->transaction_type, ['IN', 'CS'])) {
