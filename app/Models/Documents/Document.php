@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Tags\HasTags;
@@ -31,7 +32,7 @@ class Document extends Model
     use HasFactory;
     use SoftDeletes;
     use HasTags;
-
+    use Searchable;
     use LogsActivity;
 
     protected $guarded = [];
@@ -66,6 +67,16 @@ class Document extends Model
     const PI = 'PI';
 
     const PR = 'PR';
+
+    public function toSearchableArray()
+    {
+        return [
+            'transaction_no' => $this->transaction_no,
+            'transaction_date' => $this->transaction_date,
+            'transaction_type' => $this->type,
+            'contact' => $this->contact->name,
+        ];
+    }
 
     /**
      * The attributes that should be cast.

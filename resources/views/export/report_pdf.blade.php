@@ -25,6 +25,7 @@
     .text-center {
       text-align: center !important;
     }
+
     .styled-table {
       /*border-collapse: collapse;*/
       margin: 25px 0;
@@ -90,6 +91,9 @@
 
 <div class="text-center" style="margin-top: -30px">
   <span style="font-size: 20px; font-weight: bold; text-decoration: underline;">{{ __($report_type) }}</span>
+  <p>
+    <small>{{ $report['start_date'] }} - {{ $report['end_date']  }}</small>
+  </p>
 </div>
 
 <div class="theme--light">
