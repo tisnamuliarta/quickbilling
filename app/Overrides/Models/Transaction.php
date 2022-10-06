@@ -40,6 +40,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use JetBrains\PhpStorm\ArrayShape;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Tags\HasTags;
@@ -74,6 +76,7 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     use ModelTablePrefix;
     use LogsActivity;
     use HasTags;
+    use Searchable;
 
     /**
      * Transaction Model Name
@@ -215,6 +218,25 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
             ? Carbon::now() : Carbon::parse($attributes['transaction_date']);
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * @return array
+     */
+    #[ArrayShape([
+        'transaction_no' => "string",
+        'transaction_date' => "\Carbon\Carbon",
+        'transaction_type' => "mixed",
+        'contact' => "mixed"
+    ])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'transaction_no' => $this->transaction_no,
+            'transaction_date' => $this->transaction_date,
+            'transaction_type' => $this->type,
+            'contact' => $this->contact->name,
+        ];
     }
 
     /**
@@ -571,9 +593,9 @@ class Transaction extends Model implements Segregatable, Recyclable, Clearable, 
     public function addLineItem(LineItem $lineItem): bool
     {
         if (in_array(
-                $lineItem->account->account_type,
-                config('ifrs.single_currency')
-            ) && $lineItem->account->currency_id != $this->currency_id) {
+            $lineItem->account->account_type,
+            config('ifrs.single_currency')
+        ) && $lineItem->account->currency_id != $this->currency_id) {
             throw new InvalidCurrency('Transaction', $lineItem->account);
         }
 

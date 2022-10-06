@@ -60,7 +60,7 @@ class IssueController extends Controller
             $accountMapping = new AccountMappingService();
             $account_id = $accountMapping->getAccountByName('WIP Inventory Account')->account_id;
             // process issue for production
-            $this->service->processIssue($document, $items, 'Issue for production based on ', $account_id);
+            // $this->service->processIssue($document, $items, 'Issue for production based on ', $account_id);
 
             DB::commit();
 

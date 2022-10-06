@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -51,6 +52,7 @@ class LineItem extends Model implements Recyclable, Segregatable
     use Recycling;
     use ModelTablePrefix;
     use LogsActivity;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.

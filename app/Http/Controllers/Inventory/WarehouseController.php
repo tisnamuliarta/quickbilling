@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Inventory\StoreWarehouseRequest;
 use App\Http\Requests\Inventory\UpdateWarehouseRequest;
 use App\Models\Inventory\Warehouse;
+use App\Services\Financial\AccountMappingService;
 use App\Services\Inventory\WarehouseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,12 +32,14 @@ class WarehouseController extends Controller
      * Display a listing of the resource.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $accountMapping = new AccountMappingService();
         $result = [];
         $result['form'] = $this->form('warehouses');
+        $result['form']['inventory_account_id'] = $accountMapping->getAccountByName('Inventory Account')->account_id;
         $collection = collect($this->service->index($request));
         $result = $collection->merge($result);
 
@@ -46,11 +50,11 @@ class WarehouseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  StoreWarehouseRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function store(StoreWarehouseRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StoreWarehouseRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -75,9 +79,9 @@ class WarehouseController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
         $data = Warehouse::find($id);
 
@@ -91,11 +95,11 @@ class WarehouseController extends Controller
      *
      * @param  UpdateWarehouseRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      *
      * @throws \Throwable
      */
-    public function update(UpdateWarehouseRequest $request, $id): \Illuminate\Http\JsonResponse
+    public function update(UpdateWarehouseRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
         try {
@@ -120,9 +124,9 @@ class WarehouseController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function destroy(int $id): \Illuminate\Http\JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         $details = Warehouse::find($id);
         if ($details) {

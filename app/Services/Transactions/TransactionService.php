@@ -580,6 +580,7 @@ class TransactionService
      * @param $document
      *
      * @return void
+     * @throws \Exception
      */
     protected function storeEmployeeCommission($sales_persons, $document)
     {
@@ -589,6 +590,10 @@ class TransactionService
 
         $main_account_amount = 0;
         foreach ($document->lineItems as $lineItem) {
+            if (!$lineItem->item->commision_rate) {
+                throw new \Exception('Commission rate is empty for: ' . $lineItem->item->name, 1);
+            }
+
             $commission_rate = $lineItem->item->commision_rate;
             $main_account_amount = $main_account_amount + ($lineItem->quantity * $commission_rate);
         }

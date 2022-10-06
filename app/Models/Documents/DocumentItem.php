@@ -12,12 +12,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Laravel\Scout\Searchable;
 
 class DocumentItem extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
+    use Searchable;
     use LogsActivity;
 
     protected $guarded = [];

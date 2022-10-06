@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Documents;
 
+use App\Exports\TransactionExport;
 use App\Http\Controllers\Controller;
 use App\Mail\Documents\DocumentSend;
 use App\Models\Documents\Document;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use NumberToWords\NumberToWords;
 
 class DocumentExportController extends Controller
@@ -175,7 +177,7 @@ class DocumentExportController extends Controller
 
         $pdf = Pdf::loadView('export.report_pdf', [
             'report' => $report,
-            'report_type' => __($report_type)
+            'report_type' => $request->reportType
         ]);
 
         $file_name = Str::upper($report_type) . '.pdf';
@@ -187,16 +189,13 @@ class DocumentExportController extends Controller
      * @throws \IFRS\Exceptions\MissingAccount
      * @throws \IFRS\Exceptions\InvalidAccountType
      */
-    public function reportExcel(Request $request): Response
+    public function reportExcel(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        App::setLocale(auth()->user()->locale);
-        Carbon::setLocale(auth()->user()->locale);
-
         $first_date = date('Y-m-') . '01';
         $end_day = date('Y-m-t');
         $start_date = (isset($request->start_date)) ? $request->start_date : $first_date;
         $end_date = (isset($request->end_date)) ? $request->end_date : $end_day;
-        $report_type = strtoupper($request->reportType);
+        $report_type = strtoupper($request->type);
         $account_id = $request->account_id;
         $entity = auth()->user()->entity;
 
@@ -208,10 +207,13 @@ class DocumentExportController extends Controller
         App::setLocale(auth()->user()->locale);
         Carbon::setLocale(auth()->user()->locale);
 
-        $pdf = Pdf::loadView('export.document', compact('report'));
+        //$pdf = Pdf::loadView('export.document', compact('report'));
 
-        $file_name = Str::upper($report_type) . '.pdf';
+        //$file_name = Str::upper($report_type) . '.pdf';
 
-        return $pdf->stream($file_name);
+        return Excel::download(new TransactionExport(
+            $report,
+            $report_type
+        ), "${report_type}.xlsx");
     }
 }

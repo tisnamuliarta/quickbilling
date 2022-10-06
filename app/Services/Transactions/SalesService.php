@@ -59,7 +59,7 @@ class SalesService
         $main_account_amount = 0;
         $count_non_inventory = 0;
         foreach ($line_items as $line_item) {
-            if ($line_item->item->group_name == 'Inventory') {
+            if ($line_item->item->item_group == 'Inventory') {
                 $count_non_inventory++;
             }
             $quantity = $line_item->quantity;
@@ -72,7 +72,7 @@ class SalesService
             $main_account_amount = $main_account_amount + ($item_warehouse->item_cost * $quantity);
         }
 
-        //throw new \Exception($count_non_inventory, 1);
+        // throw new \Exception($count_non_inventory, 1);
         if ($count_non_inventory != 0) {
             $journalEntry = JournalEntry::create([
                 'account_id' => $accountMapping->getAccountByName('Cost of Goods Sold Account')->account_id,

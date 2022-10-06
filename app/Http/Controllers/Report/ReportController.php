@@ -155,7 +155,7 @@ class ReportController extends Controller
 
             case strtoupper('Accounts payable aging summary'):
                 $reports = new AgingSchedule('PAYABLE', $end_date, auth()->user()->entity->currency_id);
-                $report = $report->attributes();
+                $report = $reports->attributes();
                 return $this->success([
                     'data' => view('reports.ap_aging', compact('report'))->render(),
                     'start_date' => Carbon::parse($start_date)->isoFormat('DD MMMM Y'),
