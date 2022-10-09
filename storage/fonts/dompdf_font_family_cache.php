@@ -89,7 +89,7 @@ return array (
   ),
   'founder' => array(
     'normal' => $fontDir . '/founder_normal_85c728834f416278f96eb7bf44185af9',
-    '500' => $fontDir . '/founder_500_85c728834f416278f96eb7bf44185af9',
+    '500' => $fontDir . '/founder_500_5af2e820c594e7973a49bf77168ccd7b',
   ),
 );
 }; ?>

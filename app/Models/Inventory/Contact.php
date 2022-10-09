@@ -23,6 +23,7 @@ class Contact extends Model
     use LogsActivity;
 
     protected $guarded = [];
+	
 
     /**
      * @return LogOptions
