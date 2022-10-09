@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,10 @@ class AuthController extends Controller
     public function login(Request $request): mixed
     {
         try {
+            Artisan::call('cache:clear');
+            Artisan::call('route:clear');
+            Artisan::call('config:cache');
+
             $attr = $request->validate([
                 'username' => 'required|string',
                 'password' => 'required|string',
