@@ -20,14 +20,13 @@ class AuthController extends Controller
     public function login(Request $request): mixed
     {
         try {
-            Artisan::call('cache:clear');
-            Artisan::call('route:clear');
-            Artisan::call('config:cache');
-
             $attr = $request->validate([
                 'username' => 'required|string',
                 'password' => 'required|string',
             ]);
+
+            // Artisan::call('cache:clear');
+            // Artisan::call('config:cache');
 
             $remember = $request->remember;
 
